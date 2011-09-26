@@ -40,10 +40,10 @@
   #define HSCREENW 240
   #define HSCREENH 136
 #else
-  #define SCREENW 640 //320
-  #define SCREENH 480 //240
-  #define HSCREENW  320 //160
-  #define HSCREENH  240 //120
+  #define SCREENW /*640*/320
+  #define SCREENH /*480*/240
+  #define HSCREENW  /*320*/160
+  #define HSCREENH  /*240*/120
 #endif
 
 
