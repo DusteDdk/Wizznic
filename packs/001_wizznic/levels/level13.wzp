@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Smack.ogg
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000161616161616000000
+0000160000000016000000
+0000160000010016000000
+0000160400020016000000
+0000160100031616000000
+0000160200041600000000
+0000160100031600000000
+0000161616161600000000
+0000000000000000000000

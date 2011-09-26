@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Mysteria.ogg
+
+#The level-data block
+[data]
+0016000000000000001600
+1616161616161616161616
+0016001608000000051600
+0016001609000010041600
+0016000008000207091600
+0016000016000316161600
+0016000016070200001600
+0016020000051600101600
+0016040003111608091600
+1616161616161616161616
+0016000000000000001600

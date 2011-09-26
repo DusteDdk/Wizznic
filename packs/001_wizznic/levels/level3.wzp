@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk3
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Genesis.ogg
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+1616161616161616161616
+1600000504000000000016
+1600021616000000020416
+1600010005000000030116
+1603160016000000161616
+1616161616161616160000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000

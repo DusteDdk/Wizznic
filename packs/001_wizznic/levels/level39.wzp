@@ -1,0 +1,43 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Controlling.ogg
+
+#Teleports
+teleport=6,4:2,9
+teleport=5,3:8,9
+teleport=7,5:2,9
+teleport=8,6:6,9
+
+#The level-data block
+[data]
+0000000000000000010000
+0000000000030400080010
+0000001616161616160008
+0000000000001616160209
+0000000000000016161116
+0000000000000000161616
+0000000000000000001616
+1012090000000000001616
+1616161616161616161616
+1604000116030016020016
+1616161616161616161616

@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Trivial ;)
+
+#Seconds to complete level
+seconds=30
+
+#start/stop images, with themes as root. (optional)
+startimage=starts/start3.png
+
+#Background image
+board=boards/bg3
+
+#Tileset name
+tileset=tiles/cyber
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=none
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000161616161616161600
+0000160300000000001600
+0000161600000000011600
+0000001602030000021600
+0000001616161600011600
+0000000000001616161600
+0000000000000000000000

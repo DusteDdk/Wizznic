@@ -1,0 +1,33 @@
+#Level Author
+author=DusteD
+
+#Level Name
+levelname=Have you tried the editor?
+
+#Seconds to complete
+seconds=234
+
+#Name of background to use
+board=oldskool/boards/cyberpunk3
+
+#Name of tileset to use
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects
+sounddir=oldskool/snd
+
+#Name of music to play.
+music=music/Sean Hawk - All U Can Eat.ogg
+
+[data]
+0000001616161616000000
+0000000000050400000000
+0000000016161600000000
+0000020100160001000000
+0000011600160016000000
+0000161600160305020000
+0000000000161616031600
+0016001600000000041600
+1616001616161616161616
+0016000000000000000001
+1616120000000000161616

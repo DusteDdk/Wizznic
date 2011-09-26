@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - 7 Nights.ogg
+
+#The level-data block
+[data]
+0016161616161616161600
+0016160000000000161600
+0016010000000000101600
+0016100000000000051600
+0016160600000008161600
+0016161616001616161600
+0016160000000000161600
+0016000200030005001600
+0016080300020004061600
+0016160400010003161600
+0016161616161616161600

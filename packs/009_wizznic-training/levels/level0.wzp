@@ -1,0 +1,33 @@
+#Level Author
+author=DusteD
+
+#Level Name
+levelname=Things are moving?!
+
+#Seconds to complete
+seconds=190
+
+#Name of background to use
+board=oldskool/boards/cyberpunk
+
+#Name of tileset to use
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects
+sounddir=oldskool/snd
+
+#Name of music to play.
+music=music/Sean Hawk - Wizz 2.ogg
+
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000016161616160000
+0000000016000001160000
+0016161616001616160000
+0016020000111600000000
+0016011616021600000000
+0016161616161600000000
+0000000000000000000000

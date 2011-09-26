@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Linux" />
+	<File name="credits.c" open="0" top="0" tabpos="0">
+		<Cursor position="5033" topLine="202" />
+	</File>
+	<File name="credits.h" open="0" top="0" tabpos="0">
+		<Cursor position="74" topLine="0" />
+	</File>
+	<File name="defs.h" open="0" top="0" tabpos="0">
+		<Cursor position="951" topLine="24" />
+	</File>
+	<File name="doc/changelog.txt" open="0" top="0" tabpos="0">
+		<Cursor position="962" topLine="12" />
+	</File>
+	<File name="doc/credits.txt" open="0" top="0" tabpos="0">
+		<Cursor position="152" topLine="0" />
+	</File>
+	<File name="doc/ports.txt" open="0" top="0" tabpos="0">
+		<Cursor position="524" topLine="9" />
+	</File>
+	<File name="draw.c" open="0" top="0" tabpos="0">
+		<Cursor position="8876" topLine="322" />
+	</File>
+	<File name="game.c" open="0" top="0" tabpos="0">
+		<Cursor position="14524" topLine="557" />
+	</File>
+	<File name="input.c" open="0" top="0" tabpos="2">
+		<Cursor position="5647" topLine="207" />
+	</File>
+	<File name="input.h" open="0" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="leveleditor.c" open="0" top="0" tabpos="0">
+		<Cursor position="6204" topLine="275" />
+	</File>
+	<File name="levels.h" open="0" top="0" tabpos="0">
+		<Cursor position="682" topLine="17" />
+	</File>
+	<File name="levelselector.c" open="0" top="0" tabpos="0">
+		<Cursor position="1843" topLine="62" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="4">
+		<Cursor position="1023" topLine="24" />
+	</File>
+	<File name="menu.c" open="1" top="1" tabpos="1">
+		<Cursor position="35776" topLine="1233" />
+	</File>
+	<File name="pack.c" open="0" top="0" tabpos="0">
+		<Cursor position="888" topLine="42" />
+	</File>
+	<File name="stats.c" open="0" top="0" tabpos="0">
+		<Cursor position="8568" topLine="334" />
+	</File>
+	<File name="strings.h" open="1" top="0" tabpos="2">
+		<Cursor position="5621" topLine="108" />
+	</File>
+</CodeBlocks_layout_file>

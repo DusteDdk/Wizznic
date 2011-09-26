@@ -1,0 +1,36 @@
+OPEN2X = /opt/openwiz/toolchain
+
+CC = $(OPEN2X)/bin/arm-openwiz-linux-gnu-gcc
+LD = $(CC)
+STRIP = $(OPEN2X)/bin/arm-openwiz-linux-gnu-strip
+
+NAME=wizznic
+TARGET= $(NAME)-wiz
+
+DEFS = -DGP2X -DIS_LITTLE_ENDIAN -D_REENTRANT -DGP2X_ASM
+
+INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
+
+LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib
+LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
+
+OBJS = board.o cursor.o draw.o input.o main.o menu.o sprite.o text.o ticks.o\
+sound.o game.o player.o list.o levels.o platform/wiz.o pixel.o stars.o levelselector.o\
+leveleditor.o particle.o pack.o settings.o stats.o strings.o mbrowse.o\
+teleport.o credits.o waveimg.o userfiles.o
+
+MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
+
+########################################################################
+
+sdl: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+	$(STRIP) $@
+
+.c.o:
+	$(MYCC) -c $< -o $@
+
+clean:
+	rm -f *.o *-wiz platform/*.o

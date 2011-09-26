@@ -1,0 +1,65 @@
+# This is the template file used for creating new levels.
+# Change settings here so you don't have to write in your
+# name and other options each time you create a new level.
+# Comments won't be copied to new levels.
+
+# If the game does not find a file in PACKNAME/......
+# It will look in wizznic/...... instead.
+
+# The text in () tells the relative path to the name,
+# for instance, music is loaded relative to PACKNAME/ (the root of the pack)
+# so setting music=music/somesong.ogg will load the song from wizznic/packs/PACKNAME/music/somesong.ogg
+
+# The text in [] tells the default value, this works in all packs, always.
+# So if music=none no music will be played.
+# If cursor=cursor.png cursor will be loaded from wizznic/packs/PACKNAME/themes/cursors/cursor.png
+# but if that file does not exist, it will be from wizznic/packs/wizznic/themes/cursors/cursor.png where
+# one does exist.
+
+#Level Author [Your Name Here]
+author=Your Name Here
+
+#Level Name [Some Name]
+levelname=Level's got a name?
+
+#Seconds to complete
+seconds=999
+
+#Name of background to use ( PACKNAME/themes/ ) [ oldskool/boards/cyberpunk ]
+board=oldskool/boards/cyberpunk
+
+#Name of tileset to use ( PACKNAME/themes/ ) [ oldskool/tiles/cyberpunk ]
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects ( PACKNAME/themes/ ) [ oldskool/snd ]
+sounddir=oldskool/snd
+
+#Name of music to play ( PACKNAME/ ) [ none ]
+music=none
+
+#Characters to use ingame ( PACKNAME/themes/chars/ ) [ charmap ]
+charmap=charmap
+
+#Cursor image to use. ( PACKNAME/themes/cursors/ ) [ cursor.png ]
+cursor=cursor.png
+
+#Start image, shown when entering level.  ( PACKNAME/themes/ ) [ none ]
+startimage=none
+
+#Stop image, shown when level completed.  ( PACKNAME/themes/ ) [ none ]
+stopimage=none
+
+
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000

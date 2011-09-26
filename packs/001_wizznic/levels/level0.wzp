@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= First day in paper land
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=paper/boards/paper0
+
+#Tileset name
+tileset=paper/tiles/paper
+
+#cursor
+cursor=paper.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Ignorant.ogg
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000161616160000
+0000001616160402160000
+0000161600001116160000
+0000160401030016000000
+0000160316010216000000
+0000161616161616000000
+0000000000000000000000
+0000000000000000000000

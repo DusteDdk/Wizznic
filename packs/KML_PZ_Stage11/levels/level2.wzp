@@ -1,0 +1,33 @@
+#Level Author
+author=KML
+
+#Level Name
+levelname=Puzznic Conversion
+
+#Seconds to complete
+seconds=150
+
+#Name of background to use
+board=oldskool/boards/cyberpunk
+
+#Name of tileset to use
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects
+sounddir=oldskool/snd
+
+#Name of music to play.
+music=none
+
+[data]
+0000000000000000000000
+0000000000161600000000
+0000000016000516000000
+0000001600001600160000
+0000160405000000031600
+0000001604000003160000
+0000000016000416000000
+0000000016001600000000
+0000000016031600000000
+0000000016111600000000
+0000000016161600000000

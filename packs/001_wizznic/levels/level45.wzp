@@ -1,0 +1,44 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Imperia.ogg
+
+#Teleports
+teleport=3,6:3,2
+teleport=7,8:2,4
+teleport=5,4:2,4
+teleport=5,6:2,4
+teleport=4,8:2,2
+
+#The level-data block
+[data]
+0000000000000000000000
+0016161616161616161600
+0016070016000906001600
+0016161616161609001600
+0016001606001610001600
+0016001616161616001600
+0016000016000616001600
+0016001616161616001600
+0016001600071600101600
+0016161616161616161600
+0000000000000000000000

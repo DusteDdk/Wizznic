@@ -1,0 +1,35 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0016161616161616161600
+0016000000000000001600
+0016000000000000001600
+0016000200000000021600
+0016000102000000011600
+0016000204000004161600
+0016161616161616160000
+0000000000000000000000
+0000000000000000000000

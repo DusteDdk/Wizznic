@@ -1,0 +1,16 @@
+This is a binary package of the cURL libcurl
+and the cURL command line tool:
+http://curl.haxx.se/
+This package is build with MingW32 compiler,
+and the lib DLL can be used for your own projects.
+
+version  : 7.21.0 SSL SSPI LIBZ
+requires : OpenSSL 0.9.8o DLLs (included)
+license  : http://curl.haxx.se/docs/copyright.html 
+built by : G. Knauf <info@gknw.de>
+
+curl 7.21.0 (i386-pc-win32) libcurl/7.21.0 OpenSSL/0.9.8o zlib/1.2.5
+Protocols: dict file ftp ftps http https imap imaps ldap pop3 pop3s rtsp smtp smtps telnet tftp
+Features: AsynchDNS Largefile NTLM SSL SSPI libz
+
+

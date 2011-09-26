@@ -1,0 +1,31 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Your very first puzzle!
+
+#Seconds to complete level
+seconds=300
+
+board=oldskool/boards/cyberpunk
+tileset=oldskool/tiles/cyberpunk
+sounddir=oldskool/snd
+
+charmap=charmap
+cursor=cursor.png
+startimage=none
+stopimage=none
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0016161616161616161600
+0016000016161600001600
+0016020100000003041600
+0016160200040002161600
+0016161603020116161600
+0016161616161616161600
+0000000000000000000000
+0000000000000000000000

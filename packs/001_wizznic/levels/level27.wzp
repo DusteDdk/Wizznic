@@ -1,0 +1,40 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - Asterix.ogg
+
+#Teleports
+teleport=1,8:8,1
+
+#The level-data block
+[data]
+1616161616161616161616
+1600000000000901000716
+1601001616161616161616
+1616000000080910000016
+1600001616161616161616
+1607000000000400100016
+1615000016161600161616
+1600000416001000000016
+1600001616161616161616
+1616000000000308010316
+1616111616161616161616

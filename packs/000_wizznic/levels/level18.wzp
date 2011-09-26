@@ -1,0 +1,41 @@
+
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=paper/boards/paper0
+
+#Tileset name
+tileset=paper/tiles/paper
+
+#cursor
+cursor=paper.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+
+
+
+#Teleports
+teleport=1,5:8,7
+
+#The level-data block
+[data]
+0000000000000000000000
+1616161616161616161616
+1600000500020500000016
+1600131600161616140016
+1600001600161616160116
+1600161600161616161616
+1616160000001616161600
+0000160201021616001600
+0000161611161616161600
+0000001616160000000000
+0000000000000000000000

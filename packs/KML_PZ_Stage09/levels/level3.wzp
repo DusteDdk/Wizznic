@@ -1,0 +1,34 @@
+#Author of level
+author=KML
+
+#Name of the level
+levelname=Puzznic Conversion 9 - 4
+
+#Seconds to complete level
+seconds=150
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=none
+
+#The level-data block
+[data]
+0000160402000000001600
+0000001603000000001600
+0000000016040300001600
+0000000000160503001600
+0000000016161616001616
+0000000016120000000016
+0000000016161616001616
+0000000000001616001600
+0000000000001600001600
+0000000000160205001600
+0000000000161616161600

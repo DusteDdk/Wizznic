@@ -1,0 +1,65 @@
+#ifndef STATS_H_INCLUDED
+#define STATS_H_INCLUDED
+
+#include "list.h"
+#include "text.h"
+#include <SDL/SDL.h>
+
+//Highscore entries (also used for in-game stats)
+struct hsEntry_s
+{
+  //Player Name, only used in pack-wide higshcore
+  char name[12];
+
+  //packWide: level user entered highscore
+  int levelNum;
+
+  int score;
+
+  //PrPack: total playtime before score achieved (fails also counted)
+  //PrLevel:time used to solve level
+  int time;
+
+  //PrPack:Lives Spent
+  //PrLevel:Number of moves.
+  int moves;
+
+  //PrLevel: Combos
+  int combos;
+};
+typedef struct hsEntry_s hsEntry_t;
+
+
+//Stats for the package
+struct stats_s
+{
+  char* hsFn; //Stats file to read from
+  int progress; //Progress in this pack
+  listItem* levelStats; //list of hsEntries, one for each level, with "best" stats
+  listItem* packHsTable; //pack-wide highscores
+  hsEntry_t* cl; //ptr to current levelStats
+};
+typedef struct stats_s stats_t;
+
+struct statsFileHeader_s {
+  int hsFileVersion;  //Version of file
+  int progress;       //Highest level player has yet achieved
+  int numLevelEntries;//Number of level-best hsEntries to read
+  int numHsEntries;   //Number of packWide hsEntries to read
+};
+typedef struct statsFileHeader_s statsFileHeader_t;
+
+void statsSetLevel(int l); //Simply set the cl ptr.
+stats_t* stats(); //Return ptr to stats_t
+void statsInit(); //Sets some ptrs 0, that's all.
+void statsLoad(); //Tries to load stats from score/fn.bin
+void statsSubmitBest();
+void statsDrawHs( SDL_Surface* screen );
+int statsIsHighScore();
+void statsSaveHighScore();
+void statsSave();
+
+void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline);
+
+
+#endif // STATS_H_INCLUDED

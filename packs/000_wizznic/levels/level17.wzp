@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+stopimage=cybertech/starts/end0.png
+
+#Background image
+board=cybertech/boards/cybertech5
+
+#Tileset name
+tileset=cybertech/tiles/neon
+
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#The level-data block
+[data]
+0000040000020000040000
+0000010000010000020000
+0000020000040000010000
+0000160000160000160000
+0000160000160000160000
+0000000000000000000000
+0000000000000000000004
+0100000000040500000002
+1602000501160204000116
+1616041616161616021616
+0016161600000016161600

@@ -1,0 +1,33 @@
+#Level Author
+author=KML
+
+#Level Name
+levelname=No Comment
+
+#Seconds to complete
+seconds=240
+
+#Name of background to use
+board=oldskool/boards/cyberpunk
+
+#Name of tileset to use
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects
+sounddir=oldskool/snd
+
+#Name of music to play.
+music=music/Sean Hawk - Smack.ogg
+
+[data]
+0000000000000000000000
+0000000000000000000000
+0000161616161616161600
+0016160000000000001600
+0016000000000000001600
+0016000000030000001600
+0016000316020000021600
+0016000100010000041600
+0016160416020000161600
+0016161616161616160000
+0000000000000000000000

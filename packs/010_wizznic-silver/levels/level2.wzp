@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Order is important
+
+#Seconds to complete level
+seconds=25
+
+#start/stop images, with themes as root. (optional)
+startimage=starts/start2.png
+
+#Background image
+board=boards/bg2
+
+#Tileset name
+tileset=tiles/cyber
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=none
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000161616160000
+0000161616160005160000
+0000160504000004160000
+0000161616161616160000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000

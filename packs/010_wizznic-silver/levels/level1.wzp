@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Magnets are annoying
+
+#Seconds to complete level
+seconds=30
+
+#start/stop images, with themes as root. (optional)
+startimage=starts/start1.png
+
+#Background image
+board=boards/bg1
+
+#Tileset name
+tileset=tiles/cyber
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=none
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+1600000000000000000000
+0000000000000000000000
+0000000000000000030000
+0016161616161616150016
+0000000000000000000016
+0000000000000000000016
+0000000000000000000316
+1116161616161616161616

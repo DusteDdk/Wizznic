@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+#Background image
+board=oldskool/boards/cyberpunk
+
+#Tileset name
+tileset=oldskool/tiles/cyberpunk
+
+#cursor
+cursor=cursor.png
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=music/Sean Hawk - All U Can Eat.ogg
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000161616161616160000
+0016160000000105160000
+0016000001000604160000
+0016000012160406160000
+0016000200161616160000
+0016001600000005160000
+0016001600021516160000
+0016161616161616000000
+0000000000000000000000

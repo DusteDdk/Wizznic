@@ -1,0 +1,34 @@
+#Level Author
+author=DusteD
+
+#Level Name
+levelname=It's 03:08 on a thuesday
+
+#Seconds to complete
+seconds=90
+
+#Name of background to use
+board=oldskool/boards/cyberpunk2
+
+#Name of tileset to use
+tileset=oldskool/tiles/cyberpunk
+
+#Directory with soundeffects
+sounddir=oldskool/snd
+
+#Name of music to play.
+music=music/Sean Hawk - Wizz 3.ogg
+
+
+[data]
+0000000000000000000000
+0000000000000000000000
+0000161616161616160000
+0000161616021616160000
+0000161616031616160000
+0000161616021616160000
+0000160200030002160000
+0000161601020116160000
+0000161616011616160000
+0000161616161616160000
+0000000000000000000000

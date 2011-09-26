@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="wizznic" />
+		<Option pch_mode="2" />
+		<Option default_target="Linux" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Win32">
+				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-z 3" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DMAME_CTRL" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="SDL" />
+					<Add library="mingw32" />
+					<Add library="SDL.dll" />
+					<Add library="SDLmain" />
+					<Add library="C:/Programmer/CodeBlocks/MinGW/lib/SDL_mixer.lib" />
+					<Add library="C:/Programmer/CodeBlocks/MinGW/lib/SDL_image.lib" />
+				</Linker>
+			</Target>
+			<Target title="Linux">
+				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option parameters="-z 2" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O2" />
+					<Add option="-O1" />
+					<Add option="-O" />
+					<Add option="-Wmain" />
+					<Add option="-Wfatal-errors" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="SDL" />
+					<Add library="SDL_image" />
+					<Add library="SDL_mixer" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Makefile.linux">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="board.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="board.h" />
+		<Unit filename="credits.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="credits.h" />
+		<Unit filename="cursor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cursor.h" />
+		<Unit filename="defs.h" />
+		<Unit filename="doc/changelog.txt" />
+		<Unit filename="doc/credits.txt" />
+		<Unit filename="doc/install.txt" />
+		<Unit filename="doc/media-licenses.txt" />
+		<Unit filename="doc/ports.txt" />
+		<Unit filename="doc/readme.txt" />
+		<Unit filename="draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="draw.h" />
+		<Unit filename="dumplevelimages.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dumplevelimages.h" />
+		<Unit filename="game.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="game.h" />
+		<Unit filename="input.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="input.h" />
+		<Unit filename="leveleditor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="leveleditor.h" />
+		<Unit filename="levels.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="levels.h" />
+		<Unit filename="levelselector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="levelselector.h" />
+		<Unit filename="list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="list.h" />
+		<Unit filename="loader.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mbrowse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mbrowse.h" />
+		<Unit filename="menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menu.h" />
+		<Unit filename="pack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pack.h" />
+		<Unit filename="particle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="particles.h" />
+		<Unit filename="pixel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pixel.h" />
+		<Unit filename="player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="player.h" />
+		<Unit filename="settings.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="settings.h" />
+		<Unit filename="sound.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sound.h" />
+		<Unit filename="sprite.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sprite.h" />
+		<Unit filename="stars.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="stars.h" />
+		<Unit filename="states.h" />
+		<Unit filename="stats.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="stats.h" />
+		<Unit filename="strings.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="strings.h" />
+		<Unit filename="teleport.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="teleport.h" />
+		<Unit filename="text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="text.h" />
+		<Unit filename="ticks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ticks.h" />
+		<Unit filename="userfiles.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="userfiles.h" />
+		<Unit filename="waveimg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="waveimg.h" />
+		<Unit filename="wiz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="wiz.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

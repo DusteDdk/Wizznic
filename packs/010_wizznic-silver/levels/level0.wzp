@@ -1,0 +1,37 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Introduction
+
+#Seconds to complete level
+seconds=120
+
+#start/stop images, with themes as root. (optional)
+startimage=starts/start0.png
+
+#Background image
+board=boards/bg0
+
+#Tileset name
+tileset=tiles/cyber
+
+#Directory with sound effects
+sounddir=oldskool/snd
+
+#Music to play
+music=none
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0016010000000000011600
+0016161616161616161600
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
