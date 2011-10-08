@@ -330,18 +330,6 @@ void statsSaveHighScore()
   //Clear player.
   initPlayer();
 
-  //To debug, print out highscores:
- /* p=0;
-  printf("StatsSaveHighscores:\n");
-  it=st.packHsTable;
-  while( (it=it->next) )
-  {
-    p++;
-    hs=(hsEntry_t*)it->data;
-    printf("HsEntry num %i : [%s] Score: %i\n", p, hs->name, hs->score);
-  }*/
-
-
 }
 
 #ifndef GP2X

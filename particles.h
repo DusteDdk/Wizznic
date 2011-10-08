@@ -12,7 +12,7 @@
 
 struct particle_s
 {
-  uint16_t color; //Color
+  uint32_t color; //Color
   int life;       //Alive? Life left
   int velx,vely;  //Velocity
   int x,y;        //Position

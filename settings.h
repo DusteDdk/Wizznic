@@ -15,6 +15,9 @@ struct settings_s {
   int arcadeMode;
   int particles;
 
+  int bpp; //bit per pixel that the "screen" runs
+  int glHeight, glWidth, glEnable,glFilter;
+
   char* packDir; //
   char* playerName;
   char* musicDir;

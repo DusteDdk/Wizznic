@@ -393,9 +393,9 @@ void drawPath( SDL_Surface* screen, int sx, int sy, int dx, int dy, int animate 
         cidx--;
         if(cidx<0)
           cidx=TELEPATHNUMCOL-1;
-        plotPixelu(screen, x+10,y+10, graphics.teleColorTable[cidx]);
+        plotPixel(screen, x+10,y+10, graphics.teleColorTable[cidx]);
       } else if(num%3==0) {
-        plotPixelu(screen, x+10,y+10, graphics.teleColorTable[0]);
+        plotPixel(screen, x+10,y+10, graphics.teleColorTable[0]);
       }
       num++;
     }

@@ -770,3 +770,787 @@
 	"text.h"
 	"defs.h"
 
+1279383560 source:/home/dusted/Skrivebord/Wizznic/board.c
+	"board.h"
+	<stdio.h>
+	"ticks.h"
+	"strings.h"
+	"teleport.h"
+	"particles.h"
+	"draw.h"
+
+1274795988 /home/dusted/Skrivebord/Wizznic/board.h
+	"defs.h"
+	"cursor.h"
+	"list.h"
+	"sound.h"
+	"levels.h"
+	"teleport.h"
+
+1317059607 /home/dusted/Skrivebord/Wizznic/defs.h
+
+1265937162 /home/dusted/Skrivebord/Wizznic/cursor.h
+	"defs.h"
+
+1266505990 /home/dusted/Skrivebord/Wizznic/list.h
+
+1274369543 /home/dusted/Skrivebord/Wizznic/sound.h
+	<SDL/SDL.h>
+
+1290525075 /home/dusted/Skrivebord/Wizznic/levels.h
+	"list.h"
+	"stats.h"
+
+1283139899 /home/dusted/Skrivebord/Wizznic/stats.h
+	"list.h"
+	"text.h"
+	<SDL/SDL.h>
+
+1274796885 /home/dusted/Skrivebord/Wizznic/text.h
+	<SDL/SDL.h>
+	"ticks.h"
+
+1254563477 /home/dusted/Skrivebord/Wizznic/ticks.h
+	<SDL/SDL.h>
+
+1274294016 /home/dusted/Skrivebord/Wizznic/teleport.h
+	<SDL/SDL.h>
+	"list.h"
+
+1313424013 /home/dusted/Skrivebord/Wizznic/strings.h
+
+1274291411 /home/dusted/Skrivebord/Wizznic/particles.h
+	<SDL/SDL.h>
+	"defs.h"
+	"pixel.h"
+	"list.h"
+	"ticks.h"
+
+1274198518 /home/dusted/Skrivebord/Wizznic/pixel.h
+	<SDL/SDL.h>
+
+1274359965 /home/dusted/Skrivebord/Wizznic/draw.h
+	<SDL/SDL.h>
+	"defs.h"
+	"board.h"
+	"cursor.h"
+	"sprite.h"
+	"list.h"
+	"particles.h"
+	"levels.h"
+	"teleport.h"
+
+1274797805 /home/dusted/Skrivebord/Wizznic/sprite.h
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+
+1313537063 source:/home/dusted/Skrivebord/Wizznic/credits.c
+	"credits.h"
+	"waveimg.h"
+	"pixel.h"
+	"text.h"
+	"list.h"
+	"particles.h"
+	"defs.h"
+
+1274198518 /home/dusted/Skrivebord/Wizznic/credits.h
+	<SDL/SDL.h>
+
+1274198518 /home/dusted/Skrivebord/Wizznic/waveimg.h
+	<SDL/SDL.h>
+
+1313536766 source:/home/dusted/Skrivebord/Wizznic/cursor.c
+	"cursor.h"
+	"settings.h"
+
+1313536659 /home/dusted/Skrivebord/Wizznic/settings.h
+	<SDL/SDL.h>
+
+1313535800 source:/home/dusted/Skrivebord/Wizznic/draw.c
+	"draw.h"
+	"pack.h"
+	"defs.h"
+	"settings.h"
+
+1290564751 /home/dusted/Skrivebord/Wizznic/pack.h
+	<SDL/SDL.h>
+	"list.h"
+	"sprite.h"
+	"levels.h"
+
+1290801710 source:/home/dusted/Skrivebord/Wizznic/dumplevelimages.c
+	"dumplevelimages.h"
+	"levels.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"player.h"
+	"pack.h"
+
+1290801799 /home/dusted/Skrivebord/Wizznic/dumplevelimages.h
+	<SDL/SDL.h>
+
+1279630453 /home/dusted/Skrivebord/Wizznic/player.h
+	"stats.h"
+
+1313536098 source:/home/dusted/Skrivebord/Wizznic/game.c
+	"game.h"
+	"strings.h"
+	"settings.h"
+	"defs.h"
+
+1277029202 /home/dusted/Skrivebord/Wizznic/game.h
+	<SDL/SDL.h>
+	"ticks.h"
+	"input.h"
+	"defs.h"
+	"sound.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"sprite.h"
+	"text.h"
+	"states.h"
+	"player.h"
+	"menu.h"
+	"pack.h"
+
+1268010638 /home/dusted/Skrivebord/Wizznic/input.h
+
+1284740480 /home/dusted/Skrivebord/Wizznic/states.h
+
+1284511911 /home/dusted/Skrivebord/Wizznic/menu.h
+	<SDL/SDL.h>
+	"sprite.h"
+	"text.h"
+	"input.h"
+	"game.h"
+	"player.h"
+	"stars.h"
+	"leveleditor.h"
+	"particles.h"
+
+1254659222 /home/dusted/Skrivebord/Wizznic/stars.h
+	<SDL/SDL.h>
+	"list.h"
+
+1279148396 /home/dusted/Skrivebord/Wizznic/leveleditor.h
+	<SDL/SDL.h>
+
+1310512484 source:/home/dusted/Skrivebord/Wizznic/input.c
+	"input.h"
+	"ticks.h"
+	<SDL/SDL.h>
+	"platform/pspspec.h"
+	"platform/wiz.h"
+	"settings.h"
+
+1291897466 /home/dusted/Skrivebord/Wizznic/platform/pspspec.h
+	<pspkernel.h>
+	<pspdebug.h>
+	<pspdisplay.h>
+	<psptypes.h>
+	<pspctrl.h>
+	<psppower.h>
+	<pspmoduleinfo.h>
+
+1313423255 /home/dusted/Skrivebord/Wizznic/platform/wiz.h
+	"../text.h"
+
+1313537746 source:/home/dusted/Skrivebord/Wizznic/leveleditor.c
+	"leveleditor.h"
+	"cursor.h"
+	"board.h"
+	"draw.h"
+	"states.h"
+	"input.h"
+	"text.h"
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	"strings.h"
+	"teleport.h"
+	"defs.h"
+
+1290647436 source:/home/dusted/Skrivebord/Wizznic/levels.c
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	<stdlib.h>
+	"strings.h"
+	"teleport.h"
+	"pack.h"
+	"userfiles.h"
+
+1276964937 /home/dusted/Skrivebord/Wizznic/userfiles.h
+
+1297245695 source:/home/dusted/Skrivebord/Wizznic/levelselector.c
+	"levelselector.h"
+	<math.h>
+	"text.h"
+	"pixel.h"
+	"ticks.h"
+	"pack.h"
+	"defs.h"
+
+1264639163 /home/dusted/Skrivebord/Wizznic/levelselector.h
+	"sprite.h"
+	"levels.h"
+
+1274796719 source:/home/dusted/Skrivebord/Wizznic/list.c
+	"list.h"
+	<stdlib.h>
+
+1313536011 source:/home/dusted/Skrivebord/Wizznic/main.c
+	<stdio.h>
+	<stdlib.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	"board.h"
+	"cursor.h"
+	"draw.h"
+	"input.h"
+	"sprite.h"
+	"text.h"
+	"sound.h"
+	"states.h"
+	"game.h"
+	"levels.h"
+	"leveleditor.h"
+	"particles.h"
+	"settings.h"
+	"pack.h"
+	"stats.h"
+	"credits.h"
+	"userfiles.h"
+	"strings.h"
+	"dumplevelimages.h"
+
+1274796805 source:/home/dusted/Skrivebord/Wizznic/mbrowse.c
+	<dirent.h>
+	<stdio.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<string.h>
+	"mbrowse.h"
+	<direct.h>
+	<unistd.h>
+
+1266775005 /home/dusted/Skrivebord/Wizznic/mbrowse.h
+	"list.h"
+
+1313537404 source:/home/dusted/Skrivebord/Wizznic/menu.c
+	"menu.h"
+	"userfiles.h"
+	"sound.h"
+	"ticks.h"
+	"input.h"
+	"states.h"
+	"game.h"
+	"levelselector.h"
+	"pack.h"
+	"strings.h"
+	"settings.h"
+	"stats.h"
+	"mbrowse.h"
+	"credits.h"
+	"waveimg.h"
+	"stats.h"
+
+1297245397 source:/home/dusted/Skrivebord/Wizznic/pack.c
+	<dirent.h>
+	<stdio.h>
+	<stdlib.h>
+	<sys/stat.h>
+	"pack.h"
+	"strings.h"
+
+1310512850 source:/home/dusted/Skrivebord/Wizznic/particle.c
+	"particles.h"
+	"settings.h"
+
+1310512718 source:/home/dusted/Skrivebord/Wizznic/pixel.c
+	"pixel.h"
+	"math.h"
+	"defs.h"
+
+1284652647 source:/home/dusted/Skrivebord/Wizznic/player.c
+	"player.h"
+	"settings.h"
+
+1313535159 source:/home/dusted/Skrivebord/Wizznic/settings.c
+	<stdio.h>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"settings.h"
+	"strings.h"
+	"pack.h"
+	"platform/wiz.h"
+	"sound.h"
+	"defs.h"
+	"userfiles.h"
+
+1313533726 source:/home/dusted/Skrivebord/Wizznic/sound.c
+	"sound.h"
+	"pack.h"
+	"settings.h"
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"states.h"
+	"input.h"
+	"text.h"
+	"mbrowse.h"
+	"menu.h"
+	"defs.h"
+	"platform/wiz.h"
+
+1274797796 source:/home/dusted/Skrivebord/Wizznic/sprite.c
+	"sprite.h"
+
+1313534024 source:/home/dusted/Skrivebord/Wizznic/stars.c
+	"stars.h"
+	"pixel.h"
+	"sound.h"
+	"ticks.h"
+	"defs.h"
+
+1274786088 source:/home/dusted/Skrivebord/Wizznic/strings.c
+	"strings.h"
+	<string.h>
+
+1280345133 source:/home/dusted/Skrivebord/Wizznic/teleport.c
+	"teleport.h"
+	"pixel.h"
+	"defs.h"
+	"strings.h"
+
+1277037567 source:/home/dusted/Skrivebord/Wizznic/text.c
+	<math.h>
+	"text.h"
+	"sprite.h"
+	"pack.h"
+
+1310512631 source:/home/dusted/Skrivebord/Wizznic/ticks.c
+	"time.h"
+	"text.h"
+	"defs.h"
+
+1277041917 source:/home/dusted/Skrivebord/Wizznic/userfiles.c
+	"userfiles.h"
+	<sys/stat.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
+1280432264 source:/home/dusted/Skrivebord/Wizznic/waveimg.c
+	<math.h>
+	"waveimg.h"
+	"pixel.h"
+	"ticks.h"
+
+1317049130 source:/home/dusted/Skrivebord/Wizznic/stats.c
+	"strings.h"
+	"stats.h"
+	"pack.h"
+	"defs.h"
+	"player.h"
+	"list.h"
+	"settings.h"
+	"userfiles.h"
+	<SDL/SDL_thread.h>
+
+1279383560 source:/home/dusted/Skrivebord/Kode/Wizznic/board.c
+	"board.h"
+	<stdio.h>
+	"ticks.h"
+	"strings.h"
+	"teleport.h"
+	"particles.h"
+	"draw.h"
+
+1274795988 /home/dusted/Skrivebord/Kode/Wizznic/board.h
+	"defs.h"
+	"cursor.h"
+	"list.h"
+	"sound.h"
+	"levels.h"
+	"teleport.h"
+
+1317059721 /home/dusted/Skrivebord/Kode/Wizznic/defs.h
+
+1265937162 /home/dusted/Skrivebord/Kode/Wizznic/cursor.h
+	"defs.h"
+
+1266505990 /home/dusted/Skrivebord/Kode/Wizznic/list.h
+
+1274369543 /home/dusted/Skrivebord/Kode/Wizznic/sound.h
+	<SDL/SDL.h>
+
+1290525075 /home/dusted/Skrivebord/Kode/Wizznic/levels.h
+	"list.h"
+	"stats.h"
+
+1283139899 /home/dusted/Skrivebord/Kode/Wizznic/stats.h
+	"list.h"
+	"text.h"
+	<SDL/SDL.h>
+
+1274796885 /home/dusted/Skrivebord/Kode/Wizznic/text.h
+	<SDL/SDL.h>
+	"ticks.h"
+
+1254563477 /home/dusted/Skrivebord/Kode/Wizznic/ticks.h
+	<SDL/SDL.h>
+
+1274294016 /home/dusted/Skrivebord/Kode/Wizznic/teleport.h
+	<SDL/SDL.h>
+	"list.h"
+
+1317172188 /home/dusted/Skrivebord/Kode/Wizznic/strings.h
+
+1317170062 /home/dusted/Skrivebord/Kode/Wizznic/particles.h
+	<SDL/SDL.h>
+	"defs.h"
+	"pixel.h"
+	"list.h"
+	"ticks.h"
+
+1317169722 /home/dusted/Skrivebord/Kode/Wizznic/pixel.h
+	<SDL/SDL.h>
+
+1274359965 /home/dusted/Skrivebord/Kode/Wizznic/draw.h
+	<SDL/SDL.h>
+	"defs.h"
+	"board.h"
+	"cursor.h"
+	"sprite.h"
+	"list.h"
+	"particles.h"
+	"levels.h"
+	"teleport.h"
+
+1274797805 /home/dusted/Skrivebord/Kode/Wizznic/sprite.h
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+
+1317173080 source:/home/dusted/Skrivebord/Kode/Wizznic/credits.c
+	"credits.h"
+	"waveimg.h"
+	"pixel.h"
+	"text.h"
+	"list.h"
+	"particles.h"
+	"defs.h"
+	"settings.h"
+
+1274198518 /home/dusted/Skrivebord/Kode/Wizznic/credits.h
+	<SDL/SDL.h>
+
+1274198518 /home/dusted/Skrivebord/Kode/Wizznic/waveimg.h
+	<SDL/SDL.h>
+
+1313536766 source:/home/dusted/Skrivebord/Kode/Wizznic/cursor.c
+	"cursor.h"
+	"settings.h"
+
+1317167820 /home/dusted/Skrivebord/Kode/Wizznic/settings.h
+	<SDL/SDL.h>
+
+1317166446 source:/home/dusted/Skrivebord/Kode/Wizznic/draw.c
+	"draw.h"
+	"pack.h"
+	"defs.h"
+	"settings.h"
+
+1290564751 /home/dusted/Skrivebord/Kode/Wizznic/pack.h
+	<SDL/SDL.h>
+	"list.h"
+	"sprite.h"
+	"levels.h"
+
+1290801710 source:/home/dusted/Skrivebord/Kode/Wizznic/dumplevelimages.c
+	"dumplevelimages.h"
+	"levels.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"player.h"
+	"pack.h"
+
+1290801799 /home/dusted/Skrivebord/Kode/Wizznic/dumplevelimages.h
+	<SDL/SDL.h>
+
+1279630453 /home/dusted/Skrivebord/Kode/Wizznic/player.h
+	"stats.h"
+
+1313536098 source:/home/dusted/Skrivebord/Kode/Wizznic/game.c
+	"game.h"
+	"strings.h"
+	"settings.h"
+	"defs.h"
+
+1277029202 /home/dusted/Skrivebord/Kode/Wizznic/game.h
+	<SDL/SDL.h>
+	"ticks.h"
+	"input.h"
+	"defs.h"
+	"sound.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"sprite.h"
+	"text.h"
+	"states.h"
+	"player.h"
+	"menu.h"
+	"pack.h"
+
+1268010638 /home/dusted/Skrivebord/Kode/Wizznic/input.h
+
+1284740480 /home/dusted/Skrivebord/Kode/Wizznic/states.h
+
+1284511911 /home/dusted/Skrivebord/Kode/Wizznic/menu.h
+	<SDL/SDL.h>
+	"sprite.h"
+	"text.h"
+	"input.h"
+	"game.h"
+	"player.h"
+	"stars.h"
+	"leveleditor.h"
+	"particles.h"
+
+1254659222 /home/dusted/Skrivebord/Kode/Wizznic/stars.h
+	<SDL/SDL.h>
+	"list.h"
+
+1279148396 /home/dusted/Skrivebord/Kode/Wizznic/leveleditor.h
+	<SDL/SDL.h>
+
+1310512484 source:/home/dusted/Skrivebord/Kode/Wizznic/input.c
+	"input.h"
+	"ticks.h"
+	<SDL/SDL.h>
+	"platform/pspspec.h"
+	"platform/wiz.h"
+	"settings.h"
+
+1291897466 /home/dusted/Skrivebord/Kode/Wizznic/platform/pspspec.h
+	<pspkernel.h>
+	<pspdebug.h>
+	<pspdisplay.h>
+	<psptypes.h>
+	<pspctrl.h>
+	<psppower.h>
+	<pspmoduleinfo.h>
+
+1313423255 /home/dusted/Skrivebord/Kode/Wizznic/platform/wiz.h
+	"../text.h"
+
+1313537746 source:/home/dusted/Skrivebord/Kode/Wizznic/leveleditor.c
+	"leveleditor.h"
+	"cursor.h"
+	"board.h"
+	"draw.h"
+	"states.h"
+	"input.h"
+	"text.h"
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	"strings.h"
+	"teleport.h"
+	"defs.h"
+
+1290647436 source:/home/dusted/Skrivebord/Kode/Wizznic/levels.c
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	<stdlib.h>
+	"strings.h"
+	"teleport.h"
+	"pack.h"
+	"userfiles.h"
+
+1276964937 /home/dusted/Skrivebord/Kode/Wizznic/userfiles.h
+
+1317166366 source:/home/dusted/Skrivebord/Kode/Wizznic/levelselector.c
+	"levelselector.h"
+	<math.h>
+	"text.h"
+	"pixel.h"
+	"ticks.h"
+	"pack.h"
+	"defs.h"
+	"settings.h"
+
+1264639163 /home/dusted/Skrivebord/Kode/Wizznic/levelselector.h
+	"sprite.h"
+	"levels.h"
+
+1274796719 source:/home/dusted/Skrivebord/Kode/Wizznic/list.c
+	"list.h"
+	<stdlib.h>
+
+1317218765 source:/home/dusted/Skrivebord/Kode/Wizznic/main.c
+	<stdio.h>
+	<stdlib.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	"board.h"
+	"cursor.h"
+	"draw.h"
+	"input.h"
+	"sprite.h"
+	"text.h"
+	"sound.h"
+	"states.h"
+	"game.h"
+	"levels.h"
+	"leveleditor.h"
+	"particles.h"
+	"settings.h"
+	"pack.h"
+	"stats.h"
+	"credits.h"
+	"userfiles.h"
+	"strings.h"
+	"dumplevelimages.h"
+	<GL/gl.h>
+	<GL/glu.h>
+
+1274796805 source:/home/dusted/Skrivebord/Kode/Wizznic/mbrowse.c
+	<dirent.h>
+	<stdio.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<string.h>
+	"mbrowse.h"
+	<direct.h>
+	<unistd.h>
+
+1266775005 /home/dusted/Skrivebord/Kode/Wizznic/mbrowse.h
+	"list.h"
+
+1317170697 source:/home/dusted/Skrivebord/Kode/Wizznic/menu.c
+	"menu.h"
+	"userfiles.h"
+	"sound.h"
+	"ticks.h"
+	"input.h"
+	"states.h"
+	"game.h"
+	"levelselector.h"
+	"pack.h"
+	"strings.h"
+	"settings.h"
+	"stats.h"
+	"mbrowse.h"
+	"credits.h"
+	"waveimg.h"
+	"stats.h"
+
+1297245397 source:/home/dusted/Skrivebord/Kode/Wizznic/pack.c
+	<dirent.h>
+	<stdio.h>
+	<stdlib.h>
+	<sys/stat.h>
+	"pack.h"
+	"strings.h"
+
+1317169853 source:/home/dusted/Skrivebord/Kode/Wizznic/particle.c
+	"particles.h"
+	"settings.h"
+
+1317169736 source:/home/dusted/Skrivebord/Kode/Wizznic/pixel.c
+	"pixel.h"
+	"math.h"
+	"defs.h"
+	<GL/gl.h>
+
+1284652647 source:/home/dusted/Skrivebord/Kode/Wizznic/player.c
+	"player.h"
+	"settings.h"
+
+1317168952 source:/home/dusted/Skrivebord/Kode/Wizznic/settings.c
+	<stdio.h>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"settings.h"
+	"strings.h"
+	"pack.h"
+	"platform/wiz.h"
+	"sound.h"
+	"defs.h"
+	"userfiles.h"
+
+1313533726 source:/home/dusted/Skrivebord/Kode/Wizznic/sound.c
+	"sound.h"
+	"pack.h"
+	"settings.h"
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"states.h"
+	"input.h"
+	"text.h"
+	"mbrowse.h"
+	"menu.h"
+	"defs.h"
+	"platform/wiz.h"
+
+1274797796 source:/home/dusted/Skrivebord/Kode/Wizznic/sprite.c
+	"sprite.h"
+
+1313534024 source:/home/dusted/Skrivebord/Kode/Wizznic/stars.c
+	"stars.h"
+	"pixel.h"
+	"sound.h"
+	"ticks.h"
+	"defs.h"
+
+1317049130 source:/home/dusted/Skrivebord/Kode/Wizznic/stats.c
+	"strings.h"
+	"stats.h"
+	"pack.h"
+	"defs.h"
+	"player.h"
+	"list.h"
+	"settings.h"
+	"userfiles.h"
+	<SDL/SDL_thread.h>
+
+1274786088 source:/home/dusted/Skrivebord/Kode/Wizznic/strings.c
+	"strings.h"
+	<string.h>
+
+1280345133 source:/home/dusted/Skrivebord/Kode/Wizznic/teleport.c
+	"teleport.h"
+	"pixel.h"
+	"defs.h"
+	"strings.h"
+
+1277037567 source:/home/dusted/Skrivebord/Kode/Wizznic/text.c
+	<math.h>
+	"text.h"
+	"sprite.h"
+	"pack.h"
+
+1310512631 source:/home/dusted/Skrivebord/Kode/Wizznic/ticks.c
+	"time.h"
+	"text.h"
+	"defs.h"
+
+1277041917 source:/home/dusted/Skrivebord/Kode/Wizznic/userfiles.c
+	"userfiles.h"
+	<sys/stat.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
+1317166156 source:/home/dusted/Skrivebord/Kode/Wizznic/waveimg.c
+	<math.h>
+	"waveimg.h"
+	"pixel.h"
+	"ticks.h"
+	"settings.h"
+

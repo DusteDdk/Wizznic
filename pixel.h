@@ -3,9 +3,8 @@
 
 #include <SDL/SDL.h>
 
-inline void plotPixel(SDL_Surface* img, int x, int y, uint16_t col);
+inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
 inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col);
-inline uint16_t freadPixel(SDL_Surface* img, int x, int y);
-inline void readPixel(SDL_Surface* img, int x, int y, int* r, int* g, int* b);
+inline uint32_t freadPixel(SDL_Surface* img, int x, int y);
 
 #endif // PIXEL_H_INCLUDED

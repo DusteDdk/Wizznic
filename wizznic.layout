@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Linux" />
-	<File name="credits.c" open="0" top="0" tabpos="0">
-		<Cursor position="5033" topLine="202" />
+	<File name="Makefile.linux" open="0" top="0" tabpos="0">
+		<Cursor position="692" topLine="5" />
 	</File>
-	<File name="credits.h" open="0" top="0" tabpos="0">
+	<File name="board.c" open="0" top="0" tabpos="0">
+		<Cursor position="4068" topLine="327" />
+	</File>
+	<File name="credits.c" open="1" top="0" tabpos="3">
+		<Cursor position="1281" topLine="2" />
+	</File>
+	<File name="credits.h" open="1" top="0" tabpos="5">
 		<Cursor position="74" topLine="0" />
 	</File>
-	<File name="defs.h" open="0" top="0" tabpos="0">
-		<Cursor position="951" topLine="24" />
+	<File name="cursor.c" open="1" top="1" tabpos="13">
+		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="doc/changelog.txt" open="0" top="0" tabpos="0">
-		<Cursor position="962" topLine="12" />
+	<File name="cursor.h" open="1" top="0" tabpos="12">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="defs.h" open="1" top="0" tabpos="7">
+		<Cursor position="1106" topLine="1" />
+	</File>
+	<File name="doc/changelog.txt" open="1" top="0" tabpos="2">
+		<Cursor position="953" topLine="0" />
 	</File>
 	<File name="doc/credits.txt" open="0" top="0" tabpos="0">
 		<Cursor position="152" topLine="0" />
@@ -20,10 +32,16 @@
 		<Cursor position="524" topLine="9" />
 	</File>
 	<File name="draw.c" open="0" top="0" tabpos="0">
-		<Cursor position="8876" topLine="322" />
+		<Cursor position="3641" topLine="104" />
 	</File>
-	<File name="game.c" open="0" top="0" tabpos="0">
-		<Cursor position="14524" topLine="557" />
+	<File name="draw.h" open="0" top="0" tabpos="0">
+		<Cursor position="851" topLine="10" />
+	</File>
+	<File name="dumplevelimages.c" open="0" top="0" tabpos="0">
+		<Cursor position="3000" topLine="114" />
+	</File>
+	<File name="game.c" open="1" top="0" tabpos="11">
+		<Cursor position="7591" topLine="201" />
 	</File>
 	<File name="input.c" open="0" top="0" tabpos="2">
 		<Cursor position="5647" topLine="207" />
@@ -38,21 +56,48 @@
 		<Cursor position="682" topLine="17" />
 	</File>
 	<File name="levelselector.c" open="0" top="0" tabpos="0">
-		<Cursor position="1843" topLine="62" />
+		<Cursor position="2676" topLine="56" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="4">
-		<Cursor position="1023" topLine="24" />
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="7288" topLine="334" />
 	</File>
-	<File name="menu.c" open="1" top="1" tabpos="1">
-		<Cursor position="35776" topLine="1233" />
+	<File name="menu.c" open="0" top="0" tabpos="1">
+		<Cursor position="2021" topLine="66" />
 	</File>
 	<File name="pack.c" open="0" top="0" tabpos="0">
-		<Cursor position="888" topLine="42" />
+		<Cursor position="8736" topLine="377" />
+	</File>
+	<File name="particle.c" open="1" top="0" tabpos="10">
+		<Cursor position="1474" topLine="7" />
+	</File>
+	<File name="particles.h" open="0" top="0" tabpos="0">
+		<Cursor position="222" topLine="0" />
+	</File>
+	<File name="pixel.c" open="1" top="0" tabpos="8">
+		<Cursor position="1204" topLine="0" />
+	</File>
+	<File name="pixel.h" open="1" top="0" tabpos="9">
+		<Cursor position="145" topLine="0" />
+	</File>
+	<File name="settings.c" open="0" top="0" tabpos="0">
+		<Cursor position="657" topLine="10" />
+	</File>
+	<File name="settings.h" open="0" top="0" tabpos="0">
+		<Cursor position="437" topLine="0" />
 	</File>
 	<File name="stats.c" open="0" top="0" tabpos="0">
-		<Cursor position="8568" topLine="334" />
+		<Cursor position="7674" topLine="306" />
 	</File>
-	<File name="strings.h" open="1" top="0" tabpos="2">
-		<Cursor position="5621" topLine="108" />
+	<File name="strings.c" open="0" top="0" tabpos="0">
+		<Cursor position="20" topLine="0" />
+	</File>
+	<File name="strings.h" open="0" top="0" tabpos="2">
+		<Cursor position="2321" topLine="93" />
+	</File>
+	<File name="waveimg.c" open="1" top="0" tabpos="4">
+		<Cursor position="463" topLine="0" />
+	</File>
+	<File name="waveimg.h" open="1" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

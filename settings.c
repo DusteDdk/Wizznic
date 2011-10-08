@@ -28,7 +28,6 @@ void initSettings()
 
 void loadSettings()
 {
-  printf("loadSetting():\n");
   char* buf = malloc(sizeof(char)*2048);
   char* set = malloc(sizeof(char)*1024);
   char* val = malloc(sizeof(char)*1024);
@@ -46,6 +45,10 @@ void loadSettings()
   settings.userMusic=0;
   settings.disableMusic=0;
   settings.wizVol=52;
+  settings.glWidth=800;
+  settings.glHeight=600;
+  settings.glEnable=0;
+  settings.glFilter=0;
 
   settings.firstRun=1;
   settings.uploadStats=1;
@@ -141,7 +144,24 @@ void loadSettings()
           //Only if the option is in the file, are we sure they had the choice.
           settings.firstRun=0;
           settings.uploadStats=atoi(val);
+        } else
+        if( strcmp("glwidth",set)==0 )
+        {
+          settings.glWidth=atoi(val);
+        } else
+        if( strcmp("glheight",set)==0 )
+        {
+          settings.glHeight=atoi(val);
+        } else
+        if( strcmp("glenable",set)==0 )
+        {
+          settings.glEnable=atoi(val);
+        } else
+        if( strcmp("glfilter",set)==0 )
+        {
+          settings.glFilter=atoi(val);
         }
+
       }
     }
     //Close file
@@ -174,7 +194,11 @@ void saveSettings()
                "musicdir=%s\n"
                "usermusic=%i\n"
                "disablemusic=%i\n"
-               "uploadstats=%i\n",
+               "uploadstats=%i\n"
+               "glenable=%i\n"
+               "glfilter=%i\n"
+               "glwidth=%i\n"
+               "glheight=%i\n",
                settings.soundVol,
                settings.musicVol,
                settings.wizClock,
@@ -187,7 +211,11 @@ void saveSettings()
                settings.musicDir,
                settings.userMusic,
                settings.disableMusic,
-               settings.uploadStats);
+               settings.uploadStats,
+               settings.glEnable,
+               settings.glFilter,
+               settings.glWidth,
+               settings.glHeight);
     fclose( f );
   } else {
     printf("saveSettings(); Error: Couldn't open 'settings.ini' for writing.\n");

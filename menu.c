@@ -90,7 +90,7 @@ int initMenu(SDL_Surface* screen)
   helpSpr = cutSprite(menuBg[MENUGFXHELP],0,0,320,240);
   menuBg[MENUGFXBYE]=0;
 
-  menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42,16, screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
+  menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
 
   setWaving(&waving, screen, menuBg[MENUGFXINTRO], HSCREENW-149,HSCREENH-80,1,15,300);
 

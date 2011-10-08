@@ -7,8 +7,7 @@
 
 -- Won't fix --
   The menu-music might clip, this is a bug in an old SDL_Mixer version (I think, since I've not been able to reproduce since I upgraded SDL_Mixer)
-  Author name in level-files must be less than 32 characters.
-  Level-files must be named sequentially (level0,level1,2,3 etc.)
+  leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
   Get strings into strings.h
@@ -19,7 +18,15 @@
   Chain-reaction combo detection.
   Combo-message/text.
 
-  0.9.2
+  0.9.2-preview3
+  The software scaling is very heavy, and kills even modern CPU's at high resolutions, so OpenGL scaling
+  is now also available both for fullscreen and windowed modes (fullscreen then runs native resolution).
+  To enable OpenGL rendering, compile with -dWITH_OPENGL. The following options are added to settings.ini:
+  glwidth, glheight (window size in pixels when using opengl), glenable (1=enabled, 0=disabled), and
+  glfilter (1=enable smoothing, 0=make blocky and retro).
+  Start with ./wizznic -z -1 to check if it works on your system before changing.
+
+  0.9.2-preview2
   Made more changes to code to better allow for non-320x240 screensizes, fixed some related
   bugs. The highscore onscreen keyboard for one.
   Changed the "Please enable feedback" screen to be more obvious.
