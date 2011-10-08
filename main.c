@@ -40,6 +40,38 @@
   #define printf pspDebugScreenPrintf
 #endif
 
+
+#define WITH_OPENGL
+
+#if defined(WITH_OPENGL)
+  #include <GL/gl.h>
+  #include <GL/glu.h>
+  GLuint texture;
+  GLuint dlist;
+#endif
+
+uint32_t blur( SDL_Surface* screen, int x, int y, uint32_t dc, float alpha )
+{
+        uint8_t sr,sg,sb,dr,dg,db;
+
+        uint32_t sc = freadPixel(screen,x,y);
+        sr = ((sc & screen->format->Rmask) >> screen->format->Rshift);
+        sg = ((sc & screen->format->Gmask) >> screen->format->Gshift);
+        sb = ((sc & screen->format->Bmask) >> screen->format->Bshift);
+        dr = ((dc & screen->format->Rmask) >> screen->format->Rshift);
+        dg = ((dc & screen->format->Gmask) >> screen->format->Gshift);
+        db = ((dc & screen->format->Bmask) >> screen->format->Bshift);
+
+        dr -= (float)(dr-sr)*alpha;
+        dg -= (float)(dg-sg)*alpha;
+        db -= (float)(db-sb)*alpha;
+
+        return(SDL_MapRGB(screen->format,dr,dg,db ));
+
+
+}
+
+
 int main(int argc, char *argv[])
 {
   int doScale=0;
@@ -77,6 +109,7 @@ int main(int argc, char *argv[])
   //Read settings
   initSettings();
 
+
   atexit(SDL_Quit);
 
   //Init SDL
@@ -90,8 +123,8 @@ int main(int argc, char *argv[])
   #if defined (GP2X) || defined (PSP)
   SDL_Surface* screen = SDL_SetVideoMode(SCREENW,SCREENH,16, sdlVideoModeFlags);
   #else
-  SDL_Surface* scale;
-  SDL_Surface* screen;
+  SDL_Surface* scale=0;
+  SDL_Surface* screen=0;
 
   int sdlFullScrFlag=0;
   if(argc==2 || argc==3 || argc==4)
@@ -99,7 +132,7 @@ int main(int argc, char *argv[])
     if(strcmp(argv[1], "-z")==0)
     {
       doScale=2;
-      if( argc==3 && atoi(argv[2])>0 && atoi(argv[2]) < 20 )
+      if( argc==3 && atoi(argv[2]) !=0 && atoi(argv[2]) < 20 )
       {
         doScale = atoi(argv[2]);
       }
@@ -119,20 +152,104 @@ int main(int argc, char *argv[])
       sdlFullScrFlag=SDL_FULLSCREEN;
     } else if(!doScale)
     {
-      printf("Usage:\n wizznic -d PACKNAME Dumps levelimages for pack.\n wizznic -z [n] Zoom to 320*n x 240*n\nwizznic -f run 320x240 in fullscreen\n wizznic -thumbnailer LVLFILE OUTFILE\n");
+      printf("\n\nUsage:\n  wizznic -d PACKNAME Dumps levelimages for pack.\n  wizznic -z [n] Zoom to 320*n x 240*n or n=-1 for OpenGL\n  wizznic -f run 320x240 in fullscreen\n  wizznic -thumbnailer LVLFILE OUTFILE\n");
       return(-1);
     }
 
   }
 
+  #if defined(WITH_OPENGL)
+  if( setting()->glEnable )
+    doScale=-1;
+  #endif
+
   if(doScale)
   {
-    scale = SDL_SetVideoMode(SCREENW*doScale,SCREENH*doScale,16, sdlVideoModeFlags | sdlFullScrFlag);
-    screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,16, scale->format->Rmask,scale->format->Gmask,scale->format->Bmask,0xff000000);
+
+    //OpenGL scaling
+    if( doScale == -1 )
+    {
+    #if defined(WITH_OPENGL)
+      int w=setting()->glWidth,h=setting()->glHeight;
+      if(sdlFullScrFlag==SDL_FULLSCREEN)
+      {
+        const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
+        w = vidinfo->current_w;
+        h = vidinfo->current_h;
+      }
+      scale = SDL_SetVideoMode(w,h,32, SDL_OPENGL | sdlVideoModeFlags | sdlFullScrFlag);
+      screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,24, 0x00ff0000,0x0000ff00,0x000000ff,0xff000000);
+
+      int vW = (GLint)h*(320.0f/240.0f);
+
+      glViewport(w/2-vW/2, 0, vW, (GLint)h);
+
+      glClearColor(1,0,0,1);
+
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      glOrtho( 0, SCREENW, SCREENH, 0, 0,1);
+      glColor4f(1,1,1,1);
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+
+      glDisable(GL_DEPTH_TEST);
+      glDisable( GL_CULL_FACE );
+      glDisable(GL_LIGHTING);
+
+      glEnable(GL_BLEND);
+      glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+      glColor4f(1,1,1,1);
+
+
+      glEnable(GL_TEXTURE_2D);
+      glGenTextures( 1, &texture );
+      glBindTexture( GL_TEXTURE_2D, texture );
+
+      if( setting()->glFilter )
+      {
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+      } else {
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      }
+
+      dlist = glGenLists (1);
+      glNewList(dlist, GL_COMPILE);
+      glBegin( GL_QUADS );
+        glTexCoord2f(0,0);
+        glVertex2i(0,0);
+        glTexCoord2f(1,0);
+        glVertex2i(320,0);
+        glTexCoord2f(1,1);
+        glVertex2i(320,240);
+        glTexCoord2f(0,1);
+        glVertex2i(0,240);
+      glEnd();
+      glEndList();
+
+
+    #else
+      printf("\nError:\nNo OpenGL support, recompile with -dWITH_GL or change scale setting.\nExiting...\n");
+      return(-1);
+    #endif
+    } else if( doScale > 0 )
+    {
+      //Software scaling
+      scale = SDL_SetVideoMode(SCREENW*doScale,SCREENH*doScale,16, sdlVideoModeFlags | sdlFullScrFlag);
+      screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,16, scale->format->Rmask,scale->format->Gmask,scale->format->Bmask,0xff000000);
+    }
   } else {
+    //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
     scale = SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlFullScrFlag);
     screen=scale;
   }
+
+  setting()->bpp = screen->format->BytesPerPixel;
+  printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
+
 
   //Set window title
   SDL_WM_SetCaption("Wizznic!", "Wizznic!");
@@ -256,6 +373,16 @@ int main(int argc, char *argv[])
     SDL_Flip(screen);
 
     #else
+
+    //OpenGL scaling, scale is the screen and not used.
+    #if defined(WITH_OPENGL)
+    if( doScale==-1 )
+    {
+      glTexImage2D( GL_TEXTURE_2D, 0, screen->format->BytesPerPixel, screen->w, screen->h, 0, GL_BGR, GL_UNSIGNED_BYTE, screen->pixels );
+      glCallList(dlist);
+      SDL_GL_SwapBuffers();
+    } else
+    #endif
     //The pixel plotting seems to run faster than code usind SDL_Rect, so we still use that for 2x zoom.
     if(doScale==2)
     {
@@ -264,7 +391,6 @@ int main(int argc, char *argv[])
       {
         for(x=0; x < SCREENW; x++)
         {
-          //readPixel(screen, x,y, &r,&g,&b);
           uint16_t c = freadPixel(screen,x,y);/*SDL_MapRGB(scale->format,r,g,b);*/
           xx=x*2;
           yy=y*2;
@@ -291,7 +417,13 @@ int main(int argc, char *argv[])
       }
     }
 
-    SDL_Flip(scale);
+    if( doScale > -1 )
+    {
+      SDL_Flip(scale);
+    }
+
+
+
     int t=SDL_GetTicks()-lastTick;
     if(t < 20)
     {

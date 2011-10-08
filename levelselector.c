@@ -5,6 +5,7 @@
 #include "ticks.h"
 #include "pack.h"
 #include "defs.h"
+#include "settings.h"
 
 static int lastSelected = -1;
 static SDL_Surface* lvlPreviewImg=0;
@@ -92,19 +93,19 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
 
     for(x=0; x < 110; x++)
     {
-      col = *(uint16_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x );
+      col = *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x );
 
       //Do expensive colorkeying
       r = ((col & img->format->Rmask) >> img->format->Rshift);
       g = ((col & img->format->Gmask) >> img->format->Gshift);
       b = ((col & img->format->Bmask) >> img->format->Bshift);
-      if( !(r==0 && g==63 && b==31) )
+      if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==0xff && b==0xff) ) )
       {
         //Do b/w
         if(!stats)
         {
           grey = (r+g+b)/3;
-          col = (grey << img->format->Rshift) | (grey << img->format->Gshift)<<1 | (grey << img->format->Bshift);
+          col = (grey << img->format->Rshift) | (grey << img->format->Gshift)<<((setting()->bpp==2)?1:0) | (grey << img->format->Bshift);
         }
 
 

@@ -32,7 +32,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
-				<Option parameters="-z 2" />
+				<Option parameters="-z -1" />
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-O2" />
@@ -47,6 +47,7 @@
 					<Add library="SDL" />
 					<Add library="SDL_image" />
 					<Add library="SDL_mixer" />
+					<Add library="GL" />
 				</Linker>
 			</Target>
 		</Build>
@@ -180,9 +181,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="waveimg.h" />
-		<Unit filename="wiz.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="wiz.h" />
 		<Extensions>
 			<code_completion />

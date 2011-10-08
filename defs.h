@@ -3,9 +3,6 @@
 
 #define FIELDSIZE 11
 
-//Empty space
-#define TRANSBG 0     //if ptr = 0
-
 //Bricks
 #define BRICKSBEGIN 1 //The first brick
 #define BRICKSEND 10  //The last brick
@@ -33,29 +30,21 @@
 #define DIRUP -1
 #define DIRDOWN 1
 
-//Screen sizes and their halves.
+//Screen sizes
 #ifdef PSP
   #define SCREENW 480
   #define SCREENH 272
-  #define HSCREENW 240
-  #define HSCREENH 136
 #else
-  #define SCREENW /*640*/320
-  #define SCREENH /*480*/240
-  #define HSCREENW  /*320*/160
-  #define HSCREENH  /*240*/120
+  #define SCREENW 320
+  #define SCREENH 240
 #endif
+
+//Half the resolution is practical for centering content
+#define HSCREENW  SCREENW/2
+#define HSCREENH  SCREENH/2
 
 
 //Board offsets
-/*#ifdef PSP
-  #define boardOffsetX 170
-  #define boardOffsetY 26
-#else
-  #define boardOffsetX 90
-  #define boardOffsetY 10
-#endif
-*/
 #define boardOffsetX 90 + ( HSCREENW - 160 )
 #define boardOffsetY 10 + ( HSCREENH - 120 )
 
@@ -72,8 +61,6 @@
 #define FALLINGSPEED 2
 //Delays
 #define REPEATDELAY 200
-
-#define FRAMERATE 50
 
 //To avoid crashing a new version trying to read old highscore files (hmm, as if it's ever gonna happen)
 #define STATS_FILE_FORMAT_VERSION 1

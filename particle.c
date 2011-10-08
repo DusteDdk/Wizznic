@@ -21,7 +21,7 @@ void spawnParticleSystem(psysSet_t* settings)
 
 
   //Setup particles
-  uint16_t col;
+  uint32_t col;
   uint8_t r,g,b;
   SDL_Surface* img;
   //Should we use info's from a surface?
@@ -45,7 +45,7 @@ void spawnParticleSystem(psysSet_t* settings)
       r = ((col & img->format->Rmask) >> img->format->Rshift);
       g = ((col & img->format->Gmask) >> img->format->Gshift);
       b = ((col & img->format->Bmask) >> img->format->Bshift);
-      if( !(r==0 && g==63 && b==31) ) //These values... I don't get it.
+      if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==0xff && b==0xff) ) )
       {
         tSystem->particles[i].color = col;
       } else {
