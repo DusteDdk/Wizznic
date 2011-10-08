@@ -13,7 +13,7 @@
 	<File name="credits.h" open="1" top="0" tabpos="5">
 		<Cursor position="74" topLine="0" />
 	</File>
-	<File name="cursor.c" open="1" top="1" tabpos="13">
+	<File name="cursor.c" open="1" top="0" tabpos="13">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="cursor.h" open="1" top="0" tabpos="12">
@@ -27,6 +27,9 @@
 	</File>
 	<File name="doc/credits.txt" open="0" top="0" tabpos="0">
 		<Cursor position="152" topLine="0" />
+	</File>
+	<File name="doc/install.txt" open="1" top="1" tabpos="15">
+		<Cursor position="813" topLine="78" />
 	</File>
 	<File name="doc/ports.txt" open="0" top="0" tabpos="0">
 		<Cursor position="524" topLine="9" />
@@ -59,7 +62,7 @@
 		<Cursor position="2676" topLine="56" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="7288" topLine="334" />
+		<Cursor position="598" topLine="13" />
 	</File>
 	<File name="menu.c" open="0" top="0" tabpos="1">
 		<Cursor position="2021" topLine="66" />
@@ -84,6 +87,9 @@
 	</File>
 	<File name="settings.h" open="0" top="0" tabpos="0">
 		<Cursor position="437" topLine="0" />
+	</File>
+	<File name="stars.c" open="1" top="0" tabpos="14">
+		<Cursor position="1230" topLine="0" />
 	</File>
 	<File name="stats.c" open="0" top="0" tabpos="0">
 		<Cursor position="7674" topLine="306" />

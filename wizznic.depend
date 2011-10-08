@@ -1176,7 +1176,7 @@
 	"levels.h"
 	"teleport.h"
 
-1317059721 /home/dusted/Skrivebord/Kode/Wizznic/defs.h
+1318116183 /home/dusted/Skrivebord/Kode/Wizznic/defs.h
 
 1265937162 /home/dusted/Skrivebord/Kode/Wizznic/cursor.h
 	"defs.h"
@@ -1206,16 +1206,16 @@
 	<SDL/SDL.h>
 	"list.h"
 
-1317172188 /home/dusted/Skrivebord/Kode/Wizznic/strings.h
+1318116183 /home/dusted/Skrivebord/Kode/Wizznic/strings.h
 
-1317170062 /home/dusted/Skrivebord/Kode/Wizznic/particles.h
+1318116183 /home/dusted/Skrivebord/Kode/Wizznic/particles.h
 	<SDL/SDL.h>
 	"defs.h"
 	"pixel.h"
 	"list.h"
 	"ticks.h"
 
-1317169722 /home/dusted/Skrivebord/Kode/Wizznic/pixel.h
+1318116183 /home/dusted/Skrivebord/Kode/Wizznic/pixel.h
 	<SDL/SDL.h>
 
 1274359965 /home/dusted/Skrivebord/Kode/Wizznic/draw.h
@@ -1233,7 +1233,7 @@
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 
-1317173080 source:/home/dusted/Skrivebord/Kode/Wizznic/credits.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/credits.c
 	"credits.h"
 	"waveimg.h"
 	"pixel.h"
@@ -1253,10 +1253,10 @@
 	"cursor.h"
 	"settings.h"
 
-1317167820 /home/dusted/Skrivebord/Kode/Wizznic/settings.h
+1318116183 /home/dusted/Skrivebord/Kode/Wizznic/settings.h
 	<SDL/SDL.h>
 
-1317166446 source:/home/dusted/Skrivebord/Kode/Wizznic/draw.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/draw.c
 	"draw.h"
 	"pack.h"
 	"defs.h"
@@ -1374,7 +1374,7 @@
 
 1276964937 /home/dusted/Skrivebord/Kode/Wizznic/userfiles.h
 
-1317166366 source:/home/dusted/Skrivebord/Kode/Wizznic/levelselector.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/levelselector.c
 	"levelselector.h"
 	<math.h>
 	"text.h"
@@ -1392,7 +1392,7 @@
 	"list.h"
 	<stdlib.h>
 
-1317218765 source:/home/dusted/Skrivebord/Kode/Wizznic/main.c
+1318116601 source:/home/dusted/Skrivebord/Kode/Wizznic/main.c
 	<stdio.h>
 	<stdlib.h>
 	<SDL/SDL.h>
@@ -1432,7 +1432,7 @@
 1266775005 /home/dusted/Skrivebord/Kode/Wizznic/mbrowse.h
 	"list.h"
 
-1317170697 source:/home/dusted/Skrivebord/Kode/Wizznic/menu.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/menu.c
 	"menu.h"
 	"userfiles.h"
 	"sound.h"
@@ -1458,11 +1458,11 @@
 	"pack.h"
 	"strings.h"
 
-1317169853 source:/home/dusted/Skrivebord/Kode/Wizznic/particle.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/particle.c
 	"particles.h"
 	"settings.h"
 
-1317169736 source:/home/dusted/Skrivebord/Kode/Wizznic/pixel.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/pixel.c
 	"pixel.h"
 	"math.h"
 	"defs.h"
@@ -1472,7 +1472,7 @@
 	"player.h"
 	"settings.h"
 
-1317168952 source:/home/dusted/Skrivebord/Kode/Wizznic/settings.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/settings.c
 	<stdio.h>
 	<SDL/SDL.h>
 	<SDL/SDL_mixer.h>
@@ -1508,7 +1508,7 @@
 	"ticks.h"
 	"defs.h"
 
-1317049130 source:/home/dusted/Skrivebord/Kode/Wizznic/stats.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/stats.c
 	"strings.h"
 	"stats.h"
 	"pack.h"
@@ -1547,7 +1547,7 @@
 	<string.h>
 	<stdlib.h>
 
-1317166156 source:/home/dusted/Skrivebord/Kode/Wizznic/waveimg.c
+1318116183 source:/home/dusted/Skrivebord/Kode/Wizznic/waveimg.c
 	<math.h>
 	"waveimg.h"
 	"pixel.h"

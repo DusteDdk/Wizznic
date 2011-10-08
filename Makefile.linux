@@ -18,7 +18,7 @@ DEFS = $(PUF) -DDATADIR="\"$(DATADIR)\""
 INCS =  -I. -I/usr/include -I/usr/include/SDL
 
 LDFLAGS=$(CFLAGS)
-LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
+LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread -lGL
 
 OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
 text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
