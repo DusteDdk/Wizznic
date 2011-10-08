@@ -29,6 +29,7 @@
 
 #ifndef DATADIR
   #define DATADIR ""
+  #error "DATADIR not defined."
 #endif
 
 #ifdef PSP
