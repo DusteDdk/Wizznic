@@ -1,5 +1,6 @@
 #Makefile for wizznic.
 #To make a system-wide install add DATADIR=/dir/to/data/ and BINDIR=/dir/to/bin/ to the make command
+#To compile with OpenGL scaling support, add WITH_OPENGL=true to the make command.
 
 CC = gcc
 LD = $(CC)
@@ -19,6 +20,12 @@ INCS =  -I. -I/usr/include -I/usr/include/SDL
 
 LDFLAGS=$(CFLAGS)
 LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
+
+#Are we compiling with gl?
+ifeq ($(WITH_OPENGL),true)
+	LIBS += -lGL
+	DEFS += -DWITH_OPENGL
+endif
 
 OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
 text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\

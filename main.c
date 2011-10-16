@@ -41,36 +41,12 @@
   #define printf pspDebugScreenPrintf
 #endif
 
-
-#define WITH_OPENGL
-
 #if defined(WITH_OPENGL)
   #include <GL/gl.h>
   #include <GL/glu.h>
   GLuint texture;
   GLuint dlist;
 #endif
-
-uint32_t blur( SDL_Surface* screen, int x, int y, uint32_t dc, float alpha )
-{
-        uint8_t sr,sg,sb,dr,dg,db;
-
-        uint32_t sc = freadPixel(screen,x,y);
-        sr = ((sc & screen->format->Rmask) >> screen->format->Rshift);
-        sg = ((sc & screen->format->Gmask) >> screen->format->Gshift);
-        sb = ((sc & screen->format->Bmask) >> screen->format->Bshift);
-        dr = ((dc & screen->format->Rmask) >> screen->format->Rshift);
-        dg = ((dc & screen->format->Gmask) >> screen->format->Gshift);
-        db = ((dc & screen->format->Bmask) >> screen->format->Bshift);
-
-        dr -= (float)(dr-sr)*alpha;
-        dg -= (float)(dg-sg)*alpha;
-        db -= (float)(db-sb)*alpha;
-
-        return(SDL_MapRGB(screen->format,dr,dg,db ));
-
-
-}
 
 
 int main(int argc, char *argv[])
