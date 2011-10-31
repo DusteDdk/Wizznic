@@ -7,6 +7,7 @@
 1.0.1 Unofficial ports.
 1.0.2 How to install/compile
 1.0.3 Running Wizznic! Command line parameters
+1.0.4 How to use OpenGL scaling
 1.1 Objective
 1.2 Controls and Keys
 1.3 How do I clear the highscore?
@@ -63,7 +64,7 @@ parameters:
 wizznic -f -Run wizznic in 320*240 in fullscreen. Not all monitors/videodrivers
    support this anymore, but it's nice for an arcade cabinet, and my laptop.
 wizznic -z N -Zoom 320*240 N times, so 2=640*480 and 3=960*720 and so forth,
-   very CPU intensive at the moment.
+   very CPU intensive at the moment. -z -1 is special, read section 1.0.4.
 wizznic -d PACKNAME -This dumps tga screenshots of each level in that pack.
    Use the tools/updatelevelpreviews.sh script for this.
 wizznic -thumbnailer LEVELFILE OUTFILE -This creates a screenshot of
@@ -73,6 +74,28 @@ wizznic -thumbnailer LEVELFILE OUTFILE -This creates a screenshot of
 There are no command-line parameters for the Gp2X Wiz version, and if installed
 as described in section 1.0.2 it should be visible from the "SD card game"
 menu on the wiz.
+
+------------------------------------
+
+1.0.4 How to use OpenGL scaling
+If you wish to run Wizznic at a higher resolution (to get a bigger window,
+or because your monitor handles 320x240 native resolution badly), you might
+experience performance difficulty when using the zoom parameters.
+Wizznic also support OpenGL scaling, which is hardware accelerated and thus
+much much faster.
+You can enable OpenGL using -1 as the zoom factor:
+wizznic -z -1
+If you want to run fullscreen, do:
+wizznic -f -z -1
+This will run the game in your desktop resolution in fullscreen,
+it is especially handy if your monitor handles 320x240 badly, or if
+you have a wide-screen monitor that cannot handle 4:3 aspect.
+There are 4 GL options in the settings.ini file, which controls how
+OpenGL scaling behaves, these can only be edited in the file.
+glenable - 0=No gl unless -z -1 specified. 1=OpenGL on always, no need for -1.
+glfilter - 0 = No smoothing (sharp pixels). 1 = Smoothing (blurry).
+glwidth  - Width in pixels when running OpenGL in a window.
+glheight - Height in pixels when running OpenGL in a window.
 
 ------------------------------------
 

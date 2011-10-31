@@ -80,6 +80,11 @@ it to save players files in $XDG_CONFIG_HOME/wizznic or $HOME/.wizznic
 then you can compile it with this command:
 	make -f Makefile.linux DATADIR="./"
 
+If you want to enable the OpenGL scaling option, add WITH_OPENGL=true to
+the make parameters, for example:
+	make -f Makefile.linux WITH_OPENGL=true
+
+
 
 
 Additionally for PC versions.
