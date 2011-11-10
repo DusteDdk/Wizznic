@@ -19,6 +19,7 @@
   Combo-message/text.
 
   0.9.2-preview3
+  Clocked wiz up to 600 mhz since the pixel plotting function became a bit heavier.
   The software scaling is very heavy, and kills even modern CPU's at high resolutions, so OpenGL scaling
   is now also available both for fullscreen and windowed modes (fullscreen then runs native resolution).
   To enable OpenGL rendering, compile with make WITH_OPENG=true. The following options are added to settings.ini:

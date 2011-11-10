@@ -220,13 +220,9 @@ int main(int argc, char *argv[])
     }
   } else {
     //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
-    scale = SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlFullScrFlag);
+    scale = SDL_SetVideoMode(SCREENW,SCREENH,8, SDL_SWSURFACE | sdlFullScrFlag);
     screen=scale;
   }
-
-  setting()->bpp = screen->format->BytesPerPixel;
-  printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
-
 
   //Set window title
   SDL_WM_SetCaption("Wizznic!", "Wizznic!");
@@ -236,6 +232,10 @@ int main(int argc, char *argv[])
   SDL_FreeSurface(icon);
 
   #endif
+
+  setting()->bpp = screen->format->BytesPerPixel;
+  printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
+
   //Open Joysticks (for wiz)
   if (SDL_NumJoysticks() > 0) SDL_JoystickOpen(0);
 
