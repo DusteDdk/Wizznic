@@ -2,10 +2,6 @@
 #include "math.h"
 #include "defs.h"
 
-#include <GL/gl.h>
-
-
-
 void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
  int bpp = surface->format->BytesPerPixel;
