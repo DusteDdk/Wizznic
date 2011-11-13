@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
     }
   } else {
     //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
-    scale = SDL_SetVideoMode(SCREENW,SCREENH,8, SDL_SWSURFACE | sdlFullScrFlag);
+    scale = SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlFullScrFlag);
     screen=scale;
   }
 
