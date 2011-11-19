@@ -95,5 +95,16 @@
   #define CURLBIN "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
 #endif
 
+#ifndef PLATFORM
+  #define PLATFORM "Unknown"
+#endif
+
+#if defined(WIN32)
+  #define PLATFORM "Windows"
+#endif
+
+#if defined(linux) || defined(__linux)
+  #define PLATFORM "Linux"
+#endif
 
 #endif // DEFS_H_INCLUDED

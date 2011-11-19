@@ -351,16 +351,30 @@ void statsSaveHighScore()
 
 #ifndef GP2X
 #include <SDL/SDL_thread.h>
+static int session=-1;
+
 static int threadRunning=0;
 static char curlbuf[2048];
 int upStatsThread(void * d)
 {
-  if( system( (char*)d )==0 )
+  char pBuf[128];
+  memset(pBuf, 0, sizeof(pBuf));
+  FILE *pipe;
+
+  if( (pipe = popen( (char*)d, "r" )) != NULL )
   {
-    if(!setting()->online)
-    {
       setting()->online=1;
-    }
+
+      if( fgets( pBuf, 127, pipe)!= NULL )
+      {
+        if(session==-1)
+        {
+          session=atoi(pBuf);
+          printf("Got session id: %i\n", session);
+        }
+      }
+      pclose(pipe);
+
   } else {
     printf("Thread: system('%s') Failed.\n",(char*)d);
     setting()->online=0;
@@ -377,9 +391,9 @@ void statsUpload(int level, int time, int moves, int combos, int score, const ch
   {
     threadRunning=1; //Thread will set this 0 when returning.
 
-    int b = sprintf( curlbuf, "%s\"version=%s&pack=%s&level=%i&time=%i&moves=%i&combos=%i&score=%i&action=%s\"",\
+    int b = sprintf( curlbuf, "%s\"version=%s&pack=%s&level=%i&time=%i&moves=%i&combos=%i&score=%i&action=%s&session=%i&platform=%s\"",\
      CURLBIN, VERSION_STRING, packState()->cp->path,\
-    level,time,moves,combos,score,action );
+    level,time,moves,combos,score,action, session, PLATFORM );
     if(b > 0 && b < 2048)
     {
       if( SDL_CreateThread( upStatsThread, (void*)curlbuf ) == NULL )

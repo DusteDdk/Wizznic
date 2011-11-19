@@ -95,7 +95,7 @@
 
 
 ///General strings
-#define VERSION_STRING "v0.9.2-preview3"
+#define VERSION_STRING "v0.9.9"
 
 //Menu
 #define STR_MENU_NEW_GAME           "New Game!"
