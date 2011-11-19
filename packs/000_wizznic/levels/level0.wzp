@@ -16,6 +16,8 @@ cursor=cursor.png
 startimage=none
 stopimage=none
 
+brickdietime=1000
+
 #The level-data block
 [data]
 0000000000000000000000

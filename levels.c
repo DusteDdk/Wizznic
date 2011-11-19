@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "levels.h"
 #include "list.h"
 #include <stdio.h>
@@ -55,6 +72,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
     tl->startImg=0;
     tl->stopImg=0;
 
+    //Default brick die time
+    tl->brick_die_ticks=500;
+
+    tl->brickDieParticles=1;
 
     //Initiate teleList
     tl->teleList = initList();
@@ -146,6 +167,14 @@ levelInfo_t* mkLevelInfo(const char* fileName)
               tl->stopImg=malloc( sizeof(char)*( strlen(val)+1 ) );
               strcpy(tl->stopImg, val);
             }
+          } else
+          if(strcmp("brickdietime", set)==0)
+          {
+            tl->brick_die_ticks=atoi(val);
+          } else
+          if(strcmp("brickdieparticles", set)==0)
+          {
+            tl->brickDieParticles=atoi(val);
           } else
           if(strcmp("teleport", set)==0)
           {

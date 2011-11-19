@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "credits.h"
 #include "waveimg.h"
 #include "pixel.h"
@@ -80,6 +97,7 @@ void setCurrent()
   cm->nameWaving.speed=50;
 
   //Setup particle system
+  ps.layer=PSYS_LAYER_TOP;
   ps.vel=100;
   ps.life=200;
   ps.lifeVar=100;
@@ -106,6 +124,8 @@ void initCredits(SDL_Surface* screen)
   msgList=initList();
   listAddData(msgList, (void*)initMsg("Website","wizznic.sf.net", screen));
   listAddData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
+  listAddData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
+
   listAddData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
   listAddData(msgList, (void*)initMsg("Thx","bMan", screen));
   listAddData(msgList, (void*)initMsg("Thx","KML", screen));
@@ -142,8 +162,8 @@ void drawTitle(SDL_Surface* screen, msg_t* m)
   if(ticksToNextPs > 60)
   {
     ticksToNextPs=0;
+    ps.layer=PSYS_LAYER_TOP;
     ps.bounce=0;
-
     ps.x=m->rTitle.x;
     ps.y=m->rTitle.y;
     ps.srcImg=m->surfTitle;
@@ -235,6 +255,7 @@ void runCredits(SDL_Surface* screen)
       cm->stateTicks += getTicks();
       if(cm->stateTicks >= 500 && cm->stateTicks-getTicks() <= 500)
       {
+        ps.layer=PSYS_LAYER_TOP;
         ps.vel=200;
         ps.life=1000;
         ps.lifeVar=500;
@@ -245,6 +266,7 @@ void runCredits(SDL_Surface* screen)
         spawnParticleSystem( &ps );
       } else if(cm->stateTicks >= 1500 && cm->stateTicks-getTicks() <= 1500)
       {
+        ps.layer=PSYS_LAYER_TOP;
         ps.vel=400;
         ps.life=1500;
         ps.lifeVar=500;

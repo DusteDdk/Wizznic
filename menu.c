@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "menu.h"
 
 #include "userfiles.h"
@@ -237,6 +254,7 @@ int runMenu(SDL_Surface* screen)
       if( getButton( C_BTNY ) )
       {
         resetBtn( C_BTNY );
+        ps.layer=PSYS_LAYER_TOP;
         ps.x=HSCREENW-149;
         ps.y=HSCREENH;
         ps.vel=100; // +/- in each dir
@@ -527,6 +545,7 @@ int runMenu(SDL_Surface* screen)
       //Sprinkle particles
       if( !dir && countdown < 1 )
       {
+        ps.layer=PSYS_LAYER_TOP;
         ps.x=(rand()%109)+107;
         ps.y=(rand()%40)+78;
         ps.vel=50; // +/- in each dir

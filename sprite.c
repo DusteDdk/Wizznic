@@ -1,4 +1,22 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "sprite.h"
+#include "ticks.h"
 
 SDL_Surface* loadImg( const char* fileName )
 {
@@ -54,4 +72,73 @@ void drawSprite(SDL_Surface* scr, spriteType* spr, int x, int y)
   pos.x = x;
   pos.y = y;
   SDL_BlitSurface( spr->img, &spr->clip, scr, &pos );
+}
+
+aniType* mkAni(SDL_Surface*img, int w,int h, int ticksPerFrame)
+{
+  if(!img)
+  {
+    return(NULL);
+  }
+
+  int numFrames = img->w/w;
+  int i;
+  if(numFrames < 2)
+  {
+    printf("Stupidity warning: There's %i frames in the animation.\n",numFrames);
+  }
+
+  aniType* ani = malloc( sizeof(aniType) );
+  memset( ani, 0, sizeof(aniType) );
+
+
+  ani->numFrames=numFrames;
+  ani->numTicks=ticksPerFrame;
+  ani->spr = malloc( sizeof(spriteType*) * numFrames );
+
+  for(i=0;i<numFrames;i++)
+  {
+    ani->spr[i] = cutSprite(img, i*w,0, w,h);
+  }
+
+  return(ani);
+}
+
+void freeAni( aniType* ani )
+{
+  int i;
+  if(!ani) return;
+  for(i=0;i<ani->numFrames;i++)
+  {
+    free(ani->spr[i]);
+  }
+  free(ani);
+}
+
+
+void playAni(aniType* ani)
+{
+  if(!ani) return;
+  //Progress to next frame?
+  ani->tick += getTicks();
+  if( ani->tick >= ani->numTicks )
+  {
+    ani->tick=0;
+    ani->frame++;
+    if(ani->frame==ani->numFrames)
+    {
+      ani->frame=0;
+    }
+  }
+}
+void drawAni(SDL_Surface* screen, aniType* ani, int x, int y)
+{
+  if(!ani) return;
+  drawSprite(screen, ani->spr[ani->frame],x,y);
+}
+
+void drawAniFrame(SDL_Surface* screen, aniType* ani, int x, int y, int frame)
+{
+  if(!ani) return;
+  drawSprite(screen, ani->spr[frame],x,y);
 }

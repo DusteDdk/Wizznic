@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "draw.h"
 #include "pack.h"
 #include "defs.h"
@@ -7,7 +24,7 @@ struct boardGraphics_t graphics;
 
 int initDraw(levelInfo_t* li)
 {
-  char tempStr[64];
+  char tempStr[512];
   int i,x,y;
 
   //Background image
@@ -66,19 +83,21 @@ int initDraw(levelInfo_t* li)
     graphics.explImg[i] = loadImg( packGetFile("themes",tempStr) );
 
     if(!graphics.explImg[i] && i==0) printf("Couldn't open '%s'\n",packGetFile("themes",tempStr) );
-    else if(!graphics.explImg[i] && i==1)  printf("Optional explosion images not found.\n" );
-    //Cut
-    for(r=0; r < 16; r++)
-    {
-      x=r*30;
-      if(graphics.explImg[i])
-      {
-        graphics.expl[i][r] = cutSprite(graphics.explImg[i], x,0,30,30);
-      } else {
-        //default to expl0
-        graphics.expl[i][r] = cutSprite(graphics.explImg[0],x,0,30,30);
-      }
-    }
+
+    if(graphics.explImg[i])
+      graphics.brickExpl[i] = mkAni(graphics.explImg[i], 30,30, 0);
+    else
+      graphics.brickExpl[i] = mkAni(graphics.explImg[0], 30,30, 0);
+  }
+
+  //Per-Tile animations
+  for(i=0; i < NUMTILES; i++)
+  {
+    sprintf(tempStr, "%s-tile%i.png", li->tileFile, i);
+    graphics.aniImg[i] = loadImg( packGetFile("themes",tempStr) );
+
+    graphics.tileAni[i] = mkAni(graphics.aniImg[i], 30,30, 80);
+
   }
 
   //Cursor
@@ -133,7 +152,7 @@ int initDraw(levelInfo_t* li)
 
 void cleanUpDraw()
 {
-  int i,ii;
+  int i;
   //Board image
   if(graphics.boardImg) SDL_FreeSurface(graphics.boardImg);
   graphics.boardImg=0;
@@ -177,12 +196,7 @@ void cleanUpDraw()
     if( graphics.explImg[i] ) SDL_FreeSurface( graphics.explImg[i] );
     graphics.explImg[i]=0;
 
-    //sprites
-    for(ii=0; ii < 16; ii++)
-    {
-      if(graphics.expl[i][ii]) free(graphics.expl[i][ii]);
-      graphics.expl[i][ii]=0;
-    }
+    freeAni( graphics.brickExpl[i]);
   }
 
   //Countdown
@@ -216,6 +230,11 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
   SDL_BlitSurface(graphics.boardImg , NULL, screen, &(setting()->bgPos) );
 
+  for(x=0;x<NUMTILES;x++)
+  {
+    playAni(graphics.tileAni[x]);
+  }
+
   //Draw static bricks
   for(y=0; y < FIELDSIZE; y++)
   {
@@ -232,7 +251,12 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
           drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
         } else if(graphics.tiles[pf->board[x][y]->type-1])
         {
-          drawSprite(screen, graphics.tiles[pf->board[x][y]->type-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+          if(graphics.tileAni[pf->board[x][y]->type-1])
+          {
+            drawAni(screen, graphics.tileAni[pf->board[x][y]->type-1], pf->board[x][y]->pxx-5, pf->board[x][y]->pxy-5);
+          } else {
+            drawSprite(screen, graphics.tiles[pf->board[x][y]->type-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+          }
         }
       } /*else if( pf->board[x][y] && pf->board[x][y]->type == RESERVED )
       {
@@ -247,8 +271,18 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   while( (t = t->next) )
   {
     b=(brickType*)t->data;
-    drawSprite(screen, graphics.tiles[b->type-1], b->pxx, b->pxy);
+
+    if(graphics.tileAni[b->type-1])
+    {
+      drawAni(screen, graphics.tileAni[b->type-1], b->pxx-5, b->pxy-5);
+    } else {
+      drawSprite(screen, graphics.tiles[b->type-1], b->pxx, b->pxy);
+    }
   }
+
+  //Particle systems that are between bricks and die animantion
+  runParticlesLayer(screen, PSYS_LAYER_UNDERDEATHANIM);
+
 
   //Draw dying bricks, animation?
   t=pf->removeList;
@@ -256,14 +290,24 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   {
     b=(brickType*)t->data;
     //Draw base brick if time enough left
-    if(b->tl > 250)
+    if(b->tl > (pf->levelInfo->brick_die_ticks/2))
     {
-      drawSprite(screen, graphics.tiles[b->type-1], b->pxx, b->pxy);
+      if(graphics.tileAni[b->type-1])
+      {
+        drawAni(screen, graphics.tileAni[b->type-1], b->pxx-5, b->pxy-5);
+      } else {
+        drawSprite(screen, graphics.tiles[b->type-1], b->pxx, b->pxy);
+      }
     }
 
-    int explFrame = 16*(500-b->tl)/500;
-    if(explFrame==8)
+
+    int explFrame = 16*(pf->levelInfo->brick_die_ticks-b->tl)/pf->levelInfo->brick_die_ticks;
+    drawAniFrame(screen, graphics.brickExpl[b->type-1], b->pxx-5, b->pxy-5,explFrame);
+
+    //Spawn particles for brick death
+    if(explFrame==8 && pf->levelInfo->brickDieParticles)
     {
+      ps.layer=PSYS_LAYER_UNDERDEATHANIM;
       ps.x=b->pxx;
       ps.y=b->pxy;
       ps.vel=50;
@@ -275,10 +319,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       ps.srcRect=graphics.tiles[b->type-1]->clip;
       spawnParticleSystem(&ps);
     }
-    if( graphics.expl[b->type-1][explFrame] )
-    {
-      drawSprite(screen, graphics.expl[b->type-1][explFrame], b->pxx-5, b->pxy-5);
-    }
+
   }
 
   //Teleport overlay
@@ -287,7 +328,14 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   while( (t=t->next) )
   {
     tp = (telePort_t*)t->data;
-    drawSprite(screen, graphics.tiles[TELESRC-1], boardOffsetX+20*tp->sx, boardOffsetY+20*tp->sy);
+
+    if(graphics.tileAni[TELESRC-1])
+    {
+      drawAni(screen, graphics.tileAni[TELESRC-1], boardOffsetX+20*tp->sx-5, boardOffsetY+20*tp->sy-5);
+    } else {
+      drawSprite(screen, graphics.tiles[TELESRC-1], boardOffsetX+20*tp->sx, boardOffsetY+20*tp->sy);
+    }
+
 
     //if cursor is on it, draw the path too
     if(cur->x == tp->sx && cur->y == tp->sy)
@@ -308,6 +356,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
   if(graphics.curSpr[0] && cur->moving )
   {
+    ps.layer=PSYS_LAYER_TOP;
     ps.x=cur->px;
     ps.y=cur->py;
     ps.vel=50;
@@ -331,6 +380,7 @@ void drawShowCountDown(SDL_Surface* screen,int i)
 
   if(i!=lastShown)
   {
+    ps.layer=PSYS_LAYER_TOP;
     ps.x=HSCREENW-140/2;
     ps.y=HSCREENH-60/2;
     ps.vel=20; // +/- in each dir

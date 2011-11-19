@@ -3,6 +3,7 @@ Credits
 Here's a list of the people whom have helped me in some way or another, that might be directly, or indirectly.
 
 Thanks to:
+    ViperMD for the the rune theme.
     Riviera71 for porting to PSP (Playstation Portable) and Canoo.
     nobody/anon for informing me of a bug regarding to highscore entry.
     Mr.TwisT for his excellent Icon's.

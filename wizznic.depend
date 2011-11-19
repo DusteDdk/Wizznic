@@ -1554,3 +1554,398 @@
 	"ticks.h"
 	"settings.h"
 
+1321651852 source:/home/chrisji/Desktop/dst/Wizznic-/board.c
+	"board.h"
+	<stdio.h>
+	"ticks.h"
+	"strings.h"
+	"teleport.h"
+	"particles.h"
+	"draw.h"
+
+1321196830 /home/chrisji/Desktop/dst/Wizznic-/board.h
+	"defs.h"
+	"cursor.h"
+	"list.h"
+	"sound.h"
+	"levels.h"
+	"teleport.h"
+
+1321652001 /home/chrisji/Desktop/dst/Wizznic-/defs.h
+
+1321196830 /home/chrisji/Desktop/dst/Wizznic-/cursor.h
+	"defs.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/list.h
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/sound.h
+	<SDL/SDL.h>
+
+1321649922 /home/chrisji/Desktop/dst/Wizznic-/levels.h
+	"list.h"
+	"stats.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/stats.h
+	"list.h"
+	"text.h"
+	<SDL/SDL.h>
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/text.h
+	<SDL/SDL.h>
+	"ticks.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/ticks.h
+	<SDL/SDL.h>
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/teleport.h
+	<SDL/SDL.h>
+	"list.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/strings.h
+
+1321652494 /home/chrisji/Desktop/dst/Wizznic-/particles.h
+	<SDL/SDL.h>
+	"defs.h"
+	"pixel.h"
+	"list.h"
+	"ticks.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/pixel.h
+	<SDL/SDL.h>
+
+1321204605 /home/chrisji/Desktop/dst/Wizznic-/draw.h
+	<SDL/SDL.h>
+	"defs.h"
+	"board.h"
+	"cursor.h"
+	"sprite.h"
+	"list.h"
+	"particles.h"
+	"levels.h"
+	"teleport.h"
+
+1321203908 /home/chrisji/Desktop/dst/Wizznic-/sprite.h
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+
+1321651963 source:/home/chrisji/Desktop/dst/Wizznic-/credits.c
+	"credits.h"
+	"waveimg.h"
+	"pixel.h"
+	"text.h"
+	"list.h"
+	"particles.h"
+	"defs.h"
+	"settings.h"
+
+1321196830 /home/chrisji/Desktop/dst/Wizznic-/credits.h
+	<SDL/SDL.h>
+
+1321196827 /home/chrisji/Desktop/dst/Wizznic-/waveimg.h
+	<SDL/SDL.h>
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/settings.h
+	<SDL/SDL.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/cursor.c
+	"cursor.h"
+	"settings.h"
+
+1321652502 source:/home/chrisji/Desktop/dst/Wizznic-/draw.c
+	"draw.h"
+	"pack.h"
+	"defs.h"
+	"settings.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/pack.h
+	<SDL/SDL.h>
+	"list.h"
+	"sprite.h"
+	"levels.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/dumplevelimages.c
+	"dumplevelimages.h"
+	"levels.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"player.h"
+	"pack.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/dumplevelimages.h
+	<SDL/SDL.h>
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/player.h
+	"stats.h"
+
+1321652068 source:/home/chrisji/Desktop/dst/Wizznic-/game.c
+	"game.h"
+	"strings.h"
+	"settings.h"
+	"defs.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/game.h
+	<SDL/SDL.h>
+	"ticks.h"
+	"input.h"
+	"defs.h"
+	"sound.h"
+	"board.h"
+	"draw.h"
+	"cursor.h"
+	"sprite.h"
+	"text.h"
+	"states.h"
+	"player.h"
+	"menu.h"
+	"pack.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/input.h
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/states.h
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/menu.h
+	<SDL/SDL.h>
+	"sprite.h"
+	"text.h"
+	"input.h"
+	"game.h"
+	"player.h"
+	"stars.h"
+	"leveleditor.h"
+	"particles.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/stars.h
+	<SDL/SDL.h>
+	"list.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/leveleditor.h
+	<SDL/SDL.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/input.c
+	"input.h"
+	"ticks.h"
+	<SDL/SDL.h>
+	"platform/pspspec.h"
+	"platform/wiz.h"
+	"settings.h"
+
+1321185138 /home/chrisji/Desktop/dst/Wizznic-/platform/pspspec.h
+	<pspkernel.h>
+	<pspdebug.h>
+	<pspdisplay.h>
+	<psptypes.h>
+	<pspctrl.h>
+	<psppower.h>
+	<pspmoduleinfo.h>
+
+1321185138 /home/chrisji/Desktop/dst/Wizznic-/platform/wiz.h
+	"../text.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/leveleditor.c
+	"leveleditor.h"
+	"cursor.h"
+	"board.h"
+	"draw.h"
+	"states.h"
+	"input.h"
+	"text.h"
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	"strings.h"
+	"teleport.h"
+	"defs.h"
+
+1321649900 source:/home/chrisji/Desktop/dst/Wizznic-/levels.c
+	"levels.h"
+	"list.h"
+	<stdio.h>
+	<stdlib.h>
+	"strings.h"
+	"teleport.h"
+	"pack.h"
+	"userfiles.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/userfiles.h
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/levelselector.c
+	"levelselector.h"
+	<math.h>
+	"text.h"
+	"pixel.h"
+	"ticks.h"
+	"pack.h"
+	"defs.h"
+	"settings.h"
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/levelselector.h
+	"sprite.h"
+	"levels.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/list.c
+	"list.h"
+	<stdlib.h>
+
+1321196639 source:/home/chrisji/Desktop/dst/Wizznic-/main.c
+	<stdio.h>
+	<stdlib.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	"board.h"
+	"cursor.h"
+	"draw.h"
+	"input.h"
+	"sprite.h"
+	"text.h"
+	"sound.h"
+	"states.h"
+	"game.h"
+	"levels.h"
+	"leveleditor.h"
+	"particles.h"
+	"settings.h"
+	"pack.h"
+	"stats.h"
+	"credits.h"
+	"userfiles.h"
+	"strings.h"
+	"dumplevelimages.h"
+	<GL/gl.h>
+	<GL/glu.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/mbrowse.c
+	<dirent.h>
+	<stdio.h>
+	<sys/stat.h>
+	<stdlib.h>
+	<string.h>
+	"mbrowse.h"
+	<direct.h>
+	<unistd.h>
+
+1321196829 /home/chrisji/Desktop/dst/Wizznic-/mbrowse.h
+	"list.h"
+
+1321652509 source:/home/chrisji/Desktop/dst/Wizznic-/menu.c
+	"menu.h"
+	"userfiles.h"
+	"sound.h"
+	"ticks.h"
+	"input.h"
+	"states.h"
+	"game.h"
+	"levelselector.h"
+	"pack.h"
+	"strings.h"
+	"settings.h"
+	"stats.h"
+	"mbrowse.h"
+	"credits.h"
+	"waveimg.h"
+	"stats.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/pack.c
+	<dirent.h>
+	<stdio.h>
+	<stdlib.h>
+	<sys/stat.h>
+	"pack.h"
+	"strings.h"
+
+1321652599 source:/home/chrisji/Desktop/dst/Wizznic-/particle.c
+	"particles.h"
+	"settings.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/pixel.c
+	"pixel.h"
+	"math.h"
+	"defs.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/player.c
+	"player.h"
+	"settings.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/settings.c
+	<stdio.h>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"settings.h"
+	"strings.h"
+	"pack.h"
+	"platform/wiz.h"
+	"sound.h"
+	"defs.h"
+	"userfiles.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/sound.c
+	"sound.h"
+	"pack.h"
+	"settings.h"
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"states.h"
+	"input.h"
+	"text.h"
+	"mbrowse.h"
+	"menu.h"
+	"defs.h"
+	"platform/wiz.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/stars.c
+	"stars.h"
+	"pixel.h"
+	"sound.h"
+	"ticks.h"
+	"defs.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/stats.c
+	"strings.h"
+	"stats.h"
+	"pack.h"
+	"defs.h"
+	"player.h"
+	"list.h"
+	"settings.h"
+	"userfiles.h"
+	<SDL/SDL_thread.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/strings.c
+	"strings.h"
+	<string.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/teleport.c
+	"teleport.h"
+	"pixel.h"
+	"defs.h"
+	"strings.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/text.c
+	<math.h>
+	"text.h"
+	"sprite.h"
+	"pack.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/ticks.c
+	"time.h"
+	"text.h"
+	"defs.h"
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/userfiles.c
+	"userfiles.h"
+	<sys/stat.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
+1321196710 source:/home/chrisji/Desktop/dst/Wizznic-/waveimg.c
+	<math.h>
+	"waveimg.h"
+	"pixel.h"
+	"ticks.h"
+	"settings.h"
+
+1321206601 source:/home/chrisji/Desktop/dst/Wizznic-/sprite.c
+	"sprite.h"
+	"ticks.h"
+

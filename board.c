@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "board.h"
 
 #include <stdio.h>
@@ -296,6 +313,7 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
   brickType* b = pf->board[t->sx][t->sy];
 
   //Setup particle system
+  ps.layer=PSYS_LAYER_TOP;
   ps.fade=0;
   ps.gravity=0;
   ps.bounce=0;
@@ -303,6 +321,7 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
 
 
   //Spawn systems in source
+  ps.layer=PSYS_LAYER_TOP;
   ps.x=b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2;
   ps.y=b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2;
   ps.vel=100; // +/- in each dir
@@ -334,6 +353,7 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
   b->sy=b->dy;
 
   //Spawn system in dest
+  ps.layer=PSYS_LAYER_TOP;
   ps.x=b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2;
   ps.y=b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2;
   ps.vel=100; // +/- in each dir
@@ -832,9 +852,9 @@ int doRules(playField* pf)
     if(b->dir)
     {
       sndPlayOnce(SND_BRICKBREAK,b->pxx);
-//      sndPlay(SND_BRICKBREAK, b->pxx);
       b->dir=0;
-      b->tl=500;
+      //Set die time left
+      b->tl=pf->levelInfo->brick_die_ticks;
       //Reserve, to prevent bricks from falling into the animation
       pf->board[b->dx][b->dy]=pf->blocker;
     } else {

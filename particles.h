@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #ifndef PARTICLES_H_INCLUDED
 #define PARTICLES_H_INCLUDED
 
@@ -22,6 +39,7 @@ typedef struct particle_s particle_t;
 
 struct psysSet_s
 {
+  int layer; //Layer in which system is active
   int x;
   int y;
   int vel; // +/- in each dir
@@ -48,7 +66,8 @@ typedef struct pSystem_s pSystem_t;
 
 void initParticles(SDL_Surface* screen);
 void spawnParticleSystem(psysSet_t* settings); //Spawn particle system
-void runParticles(SDL_Surface* screen); //This runs/draws all particle systems, and emitters.
+void runParticles(SDL_Surface* screen); //Convenience function, draws all PSYS_LAYER_TOP systems
+void runParticlesLayer(SDL_Surface* screen, int layer); //This runs/draws all particle systems, and emitters on LAYER
 inline void clearParticles(); //Frees all resources and removes all systems and emitters.
 inline void clearSystem(pSystem_t* s); //Frees one system
 

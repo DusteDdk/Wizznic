@@ -9,22 +9,21 @@
 		<Build>
 			<Target title="Win32">
 				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-z 3" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="-DMAME_CTRL" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="SDL" />
 					<Add library="mingw32" />
-					<Add library="SDL.dll" />
 					<Add library="SDLmain" />
-					<Add library="C:/Programmer/CodeBlocks/MinGW/lib/SDL_mixer.lib" />
-					<Add library="C:/Programmer/CodeBlocks/MinGW/lib/SDL_image.lib" />
+					<Add library="SDL" />
+					<Add library="SDL.dll" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
 				</Linker>
 			</Target>
 			<Target title="Linux">
@@ -32,7 +31,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
-				<Option parameters="-z -1" />
 				<Compiler>
 					<Add option="-Os" />
 					<Add option="-O2" />
@@ -70,12 +68,12 @@
 		</Unit>
 		<Unit filename="cursor.h" />
 		<Unit filename="defs.h" />
-		<Unit filename="doc/changelog.txt" />
-		<Unit filename="doc/credits.txt" />
-		<Unit filename="doc/install.txt" />
-		<Unit filename="doc/media-licenses.txt" />
-		<Unit filename="doc/ports.txt" />
-		<Unit filename="doc/readme.txt" />
+		<Unit filename="doc\changelog.txt" />
+		<Unit filename="doc\credits.txt" />
+		<Unit filename="doc\install.txt" />
+		<Unit filename="doc\media-licenses.txt" />
+		<Unit filename="doc\ports.txt" />
+		<Unit filename="doc\readme.txt" />
 		<Unit filename="draw.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -181,7 +179,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="waveimg.h" />
-		<Unit filename="wiz.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

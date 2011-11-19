@@ -1,3 +1,20 @@
+/************************************************************************
+ * This file is part of Wizznic.                                        *
+ * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
+ * Wizznic is free software: you can redistribute it and/or modify      *
+ * it under the terms of the GNU General Public License as published by *
+ * the Free Software Foundation, either version 3 of the License, or    *
+ * (at your option) any later version.                                  *
+ *                                                                      *
+ * Wizznic is distributed in the hope that it will be useful,           *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of       *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        *
+ * GNU General Public License for more details.                         *
+ *                                                                      *
+ * You should have received a copy of the GNU General Public License    *
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
+ ************************************************************************/
+
 #include "particles.h"
 #include "settings.h"
 
@@ -137,6 +154,11 @@ inline void updateParticle(particle_t* p, SDL_Surface* screen,psysSet_t* s)
 //This runs/draws all particle systems, and emitters.
 void runParticles(SDL_Surface* screen)
 {
+  runParticlesLayer(screen, PSYS_LAYER_TOP);
+}
+
+void runParticlesLayer(SDL_Surface* screen, int layer)
+{
   if(!setting()->particles) return;
   listItem* it = pSystems;
   pSystem_t* p; //psystem
@@ -146,26 +168,30 @@ void runParticles(SDL_Surface* screen)
   while( (it=it->next) )
   {
     p=(pSystem_t*)it->data;
-    //Draw, then update
-    for( i=0; i < p->settings.numParticles; i++ )
+    if(p->settings.layer==layer)
     {
-      if( p->particles[i].life )
+
+      //Draw, then update
+      for( i=0; i < p->settings.numParticles; i++ )
       {
-        //Draw particle
-        plotPixel( screen, p->particles[i].x/100,p->particles[i].y/100, p->particles[i].color );
-        //Update particle
-        updateParticle(&p->particles[i], screen, &p->settings);
+        if( p->particles[i].life )
+        {
+          //Draw particle
+          plotPixel( screen, p->particles[i].x/100,p->particles[i].y/100, p->particles[i].color );
+          //Update particle
+          updateParticle(&p->particles[i], screen, &p->settings);
+        }
       }
-    }
-    //System life
-    p->settings.life -= getTicks();
-    if(p->settings.life<0)
-    {
-      //Remove system
-      clearSystem(p);
-      //Remove from list. (removeItem returns the item just before current, if any)
-      it=listRemoveItem(pSystems, it);
-    }
+      //System life
+      p->settings.life -= getTicks();
+      if(p->settings.life<0)
+      {
+        //Remove system
+        clearSystem(p);
+        //Remove from list. (removeItem returns the item just before current, if any)
+        it=listRemoveItem(pSystems, it);
+      }
+    } //System is on correct layer
   }
 }
 
