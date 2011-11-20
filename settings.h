@@ -46,6 +46,8 @@ struct settings_s {
   int firstRun; //Is 1 if there's no config file (only happens once, or if stuffs really buggy)
 
   SDL_Rect bgPos; //background position
+  int solvedWorldWide;
+  int session; //Session for uploadstats
 };
 typedef struct settings_s settings_t;
 

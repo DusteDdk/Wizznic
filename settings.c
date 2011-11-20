@@ -62,13 +62,16 @@ void loadSettings()
   settings.userMusic=0;
   settings.disableMusic=0;
   settings.wizVol=52;
-  settings.glWidth=800;
-  settings.glHeight=600;
-  settings.glEnable=0;
+  settings.glWidth=-1;
+  settings.glHeight=-1;
+  settings.glEnable=1;
   settings.glFilter=0;
 
+  //Not written to file
+  settings.session=0;
+  settings.solvedWorldWide=0;
   settings.firstRun=1;
-  settings.uploadStats=1;
+  settings.uploadStats=0;
   settings.online=0; //This is what will be checked for in the rest of the code
                      //regardless of "uploadStats", it will only be 1 if
                      //"uploadStats" is 1, because the check that can set it 1 is only

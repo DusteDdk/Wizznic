@@ -118,6 +118,7 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
       b = ((col & img->format->Bmask) >> img->format->Bshift);
       if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==0xff && b==0xff) ) )
       {
+
         //Do b/w
         if(!stats)
         {

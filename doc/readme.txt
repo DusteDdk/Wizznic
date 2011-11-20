@@ -78,15 +78,8 @@ menu on the wiz.
 ------------------------------------
 
 1.0.4 How to use OpenGL scaling
-If you wish to run Wizznic at a higher resolution (to get a bigger window,
-or because your monitor handles 320x240 native resolution badly), you might
-experience performance difficulty when using the zoom parameters.
-Wizznic also support OpenGL scaling, which is hardware accelerated and thus
-much much faster.
-You can enable OpenGL using -1 as the zoom factor:
-wizznic -z -1
-If you want to run fullscreen, do:
-wizznic -f -z -1
+To turn off OpenGL scaling, set glenable=0 in settings.ini
+
 This will run the game in your desktop resolution in fullscreen,
 it is especially handy if your monitor handles 320x240 badly, or if
 you have a wide-screen monitor that cannot handle 4:3 aspect.
@@ -94,8 +87,10 @@ There are 4 GL options in the settings.ini file, which controls how
 OpenGL scaling behaves, these can only be edited in the file.
 glenable - 0=No gl unless -z -1 specified. 1=OpenGL on always, no need for -1.
 glfilter - 0 = No smoothing (sharp pixels). 1 = Smoothing (blurry).
-glwidth  - Width in pixels when running OpenGL in a window.
-glheight - Height in pixels when running OpenGL in a window.
+glwidth  - -1 = Auto, or Width in pixels when running OpenGL in a window.
+glheight - -1 = Auto, or Height in pixels when running OpenGL in a window.
+If glwidth and glheight is set to -1 The game will chose the largest windowsize
+that still fits comfortably on the desktop.
 
 ------------------------------------
 

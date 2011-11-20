@@ -161,6 +161,18 @@
                                     "CTRL to choose, please help :)\n"\
                                     "----------------------------------\n"
 
+#define STR_MENU_UPDATE             "---- Wizznic has been updated ----\n"\
+                                    "Great news everyone!\n"\
+                                    "There's a new version available!\n"\
+                                    "Grab it at your leisure at:\n"\
+                                    "http://sf.net/projects/wizznic/\n"\
+                                    "I'm sure it's filled with some\n"\
+                                    "Pretty cool and awesome stuff! :)\n"\
+                                    "----------------------------------\n"
+
+
+
+
 
 #define STR_MENU_GAMEOVER           "Game Over!"
 #define STR_MENU_SCORE              "Score %i"

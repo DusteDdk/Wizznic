@@ -120,7 +120,7 @@ void cleanUpGame()
 
 static void setGameOver()
 {
-  statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "gameover",0);
+  statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "gameover",0, NULL);
   setMenu(menuStateGameOver);
 }
 
@@ -245,7 +245,7 @@ int runGame(SDL_Surface* screen)
           player()->hsEntry.time=spentTimeBeforeRestart;
 
           //Tell that we restarted
-          statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "reset-level",0);
+          statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "reset-level",0, NULL);
         }
       }
     }
@@ -484,7 +484,7 @@ int runGame(SDL_Surface* screen)
             setGameOver();
           } else {
             //Lost a life, but did not get gameover, upload the death
-            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-timeout",0);
+            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-timeout",0, NULL);
             setMenu(menuStateNextLevel);
           }
         }
@@ -526,7 +526,7 @@ int runGame(SDL_Surface* screen)
             setGameOver();
           } else {
             //Lost a life, but did not get gameover, upload the death
-            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-unsolvable",0);
+            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-unsolvable",0, NULL);
             setMenu(menuStateNextLevel);
           }
         }

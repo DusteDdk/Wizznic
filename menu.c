@@ -109,7 +109,7 @@ int initMenu(SDL_Surface* screen)
 
   menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
 
-  setWaving(&waving, screen, menuBg[MENUGFXINTRO], HSCREENW-149,HSCREENH-80,1,15,300);
+  setWaving(&waving, screen, menuBg[MENUGFXINTRO], HSCREENW-149,HSCREENH-90,1,15,300);
 
   return(1);
 }
@@ -136,7 +136,7 @@ void setMenuPosY(int Y)
 
 int runMenu(SDL_Surface* screen)
 {
-  char buf[64];
+  char buf[512];
   int scroll; //Generic scoll int (for scrolling lists)
   int ul=0;   //Userlevel (and used for scrolling)
   int menuChangeX=0,menuChangeY=0; //Is one if there's a change
@@ -231,7 +231,14 @@ int runMenu(SDL_Surface* screen)
       if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
 
       //Show version
-      txtWrite(screen, FONTSMALL, VERSION_STRING, HSCREENW-150,HSCREENH+100);
+      txtWrite(screen, FONTSMALL, VERSION_STRING, HSCREENW+160-((strlen(VERSION_STRING))*9),HSCREENH+100);
+
+      //Show games played world wide
+      if( setting()->solvedWorldWide )
+      {
+        sprintf(buf, "Puzzles worldwide: %i",setting()->solvedWorldWide);
+        txtWrite(screen, FONTSMALL, buf, HSCREENW-150, HSCREENH+100);
+      }
 
       //Wait for keypress
       if( getButton( C_BTNB ) )
@@ -248,6 +255,10 @@ int runMenu(SDL_Surface* screen)
         {
           setMenu(menuStateUploadDiag);
           menuPosX=1; //Default to "choose"
+        }
+        if(setting()->session == -1)
+        {
+          menuState=menuStateUpdate;
         }
         #endif
       } else
@@ -590,7 +601,7 @@ int runMenu(SDL_Surface* screen)
         txtWriteCenter(screen, FONTMEDIUM,STR_MENU_ABOUT_HEADLINE, HSCREENW, HSCREENH-105);
 
         txtWrite(screen, FONTSMALL, STR_MENU_ABOUT_TEXT, HSCREENW-155, HSCREENH-80);
-        txtWave(screen, FONTSMALL, STR_MENU_ABOUT_WEBSITE, HSCREENW, HSCREENH+108,&rot);
+        txtWave(screen, FONTSMALL, STR_MENU_ABOUT_WEBSITE, HSCREENW, HSCREENH+100,&rot);
 
         static int cheat=-1;
         if( getButton( C_BTNA ) )
@@ -697,6 +708,9 @@ int runMenu(SDL_Surface* screen)
             menuPosY = packState()->selected;
           } else {
             setMenu(menuStatePackList);
+            //Set to first pack in lst when we get there
+            menuPosY=0;
+
           }
 
           return(STATEMENU);
@@ -1052,7 +1066,7 @@ int runMenu(SDL_Surface* screen)
           {
             if(setting()->uploadStats && !setting()->online)
             {
-              statsUpload(0,0,0,0,0,"check",1);
+              statsUpload(0,0,0,0,0,"check",1, NULL);
             } else if(!setting()->uploadStats)
             {
               setting()->online=0;
@@ -1157,6 +1171,7 @@ int runMenu(SDL_Surface* screen)
           statsSaveHighScore();
          // printf("AddingHighscore: %i\n", player()->campStats.score);
           menuState=menuReturnHack;
+          menuPosY=0;
         } else if( getButton( C_BTNB ) )
         {
           resetBtn( C_BTNB );
@@ -1267,6 +1282,8 @@ int runMenu(SDL_Surface* screen)
         txtWrite(screen, FONTSMALL, STR_MENU_UPLOADNAG, HSCREENW-152, HSCREENH-100 );
 
         txtWriteCenter(screen, FONTSMALL, "< Help out? >", HSCREENW, HSCREENH+100);
+        if( menuPosX == 1 )
+      if(dir) txtWriteCenter(screen, FONTSMALL, "_____________", HSCREENW, HSCREENH+100 );
 
         txtWriteCenter(screen, FONTSMALL, "Yes", HSCREENW-(13*8), HSCREENH+100 );
         if( menuPosX == 0 )
@@ -1284,7 +1301,7 @@ int runMenu(SDL_Surface* screen)
           {
             setting()->firstRun=0;
             saveSettings();
-            statsUpload(0,0,0,0,0,"check",1);
+            statsUpload(0,0,0,0,0,"check",1,NULL);
             setMenu( menuStatePaused );
           }
 
@@ -1298,7 +1315,22 @@ int runMenu(SDL_Surface* screen)
           }
         }
       break;
+
+      case menuStateUpdate:
+        starField(screen,1);
+        fireWorks(screen);
+        menuMaxY=0;
+        menuMaxX=2;
+        txtWrite(screen, FONTSMALL, STR_MENU_UPDATE, HSCREENW-152, HSCREENH-50 );
+        if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
+        if( getButton( C_BTNB) )
+        {
+          resetBtn( C_BTNB );
+          menuState=menuStatePaused;
+        }
+      break;
       #endif
   }
+
   return(STATEMENU);
 }

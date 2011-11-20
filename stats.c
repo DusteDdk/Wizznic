@@ -224,7 +224,7 @@ void statsSubmitBest()
 
   player()->campStats.combos += lvlHs->combos;
 
-  statsUpload(player()->level, lvlHs->time, lvlHs->moves,lvlHs->combos,lvlHs->score, "complete",0);
+  statsUpload(player()->level, lvlHs->time, lvlHs->moves,lvlHs->combos,lvlHs->score, "complete",0, NULL);
 
   //Update progress, if any.
   if( lvlHs->levelNum > st.progress )
@@ -351,52 +351,58 @@ void statsSaveHighScore()
 
 #ifndef GP2X
 #include <SDL/SDL_thread.h>
-static int session=-1;
-
-static int threadRunning=0;
 static char curlbuf[2048];
+typedef struct thrDat
+{ char* cmd;
+int* ret;
+} thrDat_t;
+
 int upStatsThread(void * d)
 {
   char pBuf[128];
   memset(pBuf, 0, sizeof(pBuf));
   FILE *pipe;
+  thrDat_t* dat = (thrDat_t*)d;
+  char* cmd = dat->cmd;
+  int* ret = dat->ret;
 
-  if( (pipe = popen( (char*)d, "r" )) != NULL )
+  if( (pipe = popen( cmd, "r" )) != NULL )
   {
       setting()->online=1;
 
-      if( fgets( pBuf, 127, pipe)!= NULL )
+      if(ret)
       {
-        if(session==-1)
+        if( fgets( pBuf, 127, pipe)!= NULL )
         {
-          session=atoi(pBuf);
-          printf("Got session id: %i\n", session);
+          *ret=atoi(pBuf);
         }
       }
       pclose(pipe);
 
   } else {
-    printf("Thread: system('%s') Failed.\n",(char*)d);
     setting()->online=0;
   }
-  threadRunning=0;
+  free(dat->cmd);
+  free(dat);
   return(0);
 }
 #endif
 
-void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline)
+void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline, int* retVal)
 {
   #ifndef GP2X
-  if( !threadRunning && (setting()->online || ignoreIfOnline) )
+  if( (setting()->online || ignoreIfOnline) )
   {
-    threadRunning=1; //Thread will set this 0 when returning.
-
     int b = sprintf( curlbuf, "%s\"version=%s&pack=%s&level=%i&time=%i&moves=%i&combos=%i&score=%i&action=%s&session=%i&platform=%s\"",\
      CURLBIN, VERSION_STRING, packState()->cp->path,\
-    level,time,moves,combos,score,action, session, PLATFORM );
+    level,time,moves,combos,score,action, setting()->session, PLATFORM );
     if(b > 0 && b < 2048)
     {
-      if( SDL_CreateThread( upStatsThread, (void*)curlbuf ) == NULL )
+      thrDat_t* thrData=malloc(sizeof(thrDat_t));
+      thrData->cmd=malloc(strlen(curlbuf)+1);
+      strcpy(thrData->cmd,curlbuf);
+      thrData->ret=retVal;
+      if( SDL_CreateThread( upStatsThread, (void*)thrData ) == NULL )
       {
         printf("Warning: Coulnd't start thread: %s\n", SDL_GetError());
       }

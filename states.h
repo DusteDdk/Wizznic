@@ -46,4 +46,6 @@
 
 #define menuStateUploadDiag 17
 
+#define menuStateUpdate 18
+
 #endif // STATES_H_INCLUDED

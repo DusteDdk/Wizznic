@@ -59,7 +59,7 @@ spriteType* cutSprite(SDL_Surface* img, int x,int y, int w, int h)
     tspr->clip.w = w;
     tspr->clip.h = h;
   } else {
-    printf("Error, couldn't malloc %i bytes.\n",sizeof(spriteType));
+    printf("Error, couldn't malloc %lu bytes.\n",(long unsigned int)sizeof(spriteType));
   }
 
   return(tspr);

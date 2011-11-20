@@ -41,6 +41,7 @@
 #include "strings.h"
 
 #if !defined (GP2X) && !defined (PSP)
+  #include <math.h>
   #include "dumplevelimages.h"
 #endif
 
@@ -59,8 +60,16 @@
 #endif
 
 #if defined(WITH_OPENGL)
-  #include <GL/gl.h>
-  #include <GL/glu.h>
+  #ifdef WIN32
+    #define GLEW_STATIC
+    #define WINDOWS_LEAN_AND_MEAN
+    #define NOMINMAX
+    #include <windows.h>
+    #include <GL/glew.h>
+  #else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+  #endif
   GLuint texture;
   GLuint dlist;
 #endif
@@ -137,6 +146,7 @@ int main(int argc, char *argv[])
         printf("usage: -d PACKNAME\n");
         return(-1);
       }
+      setting()->glEnable=0;
       doDump=1;
     } else if(strcmp(argv[1], "-thumbnailer")==0 && argc==4)
     {
@@ -146,14 +156,14 @@ int main(int argc, char *argv[])
       sdlFullScrFlag=SDL_FULLSCREEN;
     } else if(!doScale)
     {
-      printf("\n\nUsage:\n  wizznic -d PACKNAME Dumps levelimages for pack.\n  wizznic -z [n] Zoom to 320*n x 240*n or n=-1 for OpenGL\n  wizznic -f run 320x240 in fullscreen\n  wizznic -thumbnailer LVLFILE OUTFILE\n");
+      printf("\n\nUsage:\n  wizznic -d PACKNAME Dumps levelimages for pack.\n  wizznic -z [n] Zoom to 320*n x 240*n\n  wizznic -f run 320x240 in fullscreen\n  wizznic -thumbnailer LVLFILE OUTFILE\n");
       return(-1);
     }
 
   }
 
   #if defined(WITH_OPENGL)
-  if( setting()->glEnable )
+  if( setting()->glEnable && doScale==0 )
     doScale=-1;
   #endif
 
@@ -164,12 +174,20 @@ int main(int argc, char *argv[])
     if( doScale == -1 )
     {
     #if defined(WITH_OPENGL)
+      const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
       int w=setting()->glWidth,h=setting()->glHeight;
       if(sdlFullScrFlag==SDL_FULLSCREEN)
       {
-        const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
         w = vidinfo->current_w;
         h = vidinfo->current_h;
+      } else {
+        //Find largest resolution within screen
+        if(w==-1||h==-1)
+        {
+          int factor=(int)floor( (float)(vidinfo->current_h-1)/240.0 );
+          w=320*factor;
+          h=240*factor;
+        }
       }
       scale = SDL_SetVideoMode(w,h,32, SDL_OPENGL | sdlVideoModeFlags | sdlFullScrFlag);
       screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,24, 0x00ff0000,0x0000ff00,0x000000ff,0xff000000);
@@ -313,11 +331,11 @@ int main(int argc, char *argv[])
   //Set Pack
   packSetByPath( setting()->packDir );
 
-
   #if !defined (GP2X) && !defined(PSP)
   if( (setting()->uploadStats) && !(setting()->firstRun) )
   {
-    statsUpload(0,0,0,0,0,"check",1);
+    statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
+    statsUpload(0,0,0,0,0,"q_solved",1, &(setting()->solvedWorldWide) );
   }
   #endif
 
@@ -333,6 +351,7 @@ int main(int argc, char *argv[])
   int lastTick;
   while(state!=STATEQUIT)
   {
+    //printf("Puzzles competed: %i\nSession:%i\n",solved, session);
     lastTick=SDL_GetTicks();
 
     frameStart();
