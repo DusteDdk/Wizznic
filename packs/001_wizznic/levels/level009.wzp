@@ -1,0 +1,34 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= First day in paper land
+
+#Seconds to complete level
+seconds=300
+
+board=oldskool/boards/cyberpunk1
+tileset=oldskool/tiles/cyberpunk
+sounddir=oldskool/snd
+
+charmap=green
+cursor=green.png
+startimage=none
+stopimage=none
+
+brickdieparticles=1
+brickdietime=750
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0000000000161616160000
+0000001616160402160000
+0000161600001116160000
+0000160401030016000000
+0000160316010216000000
+0000161616161616000000
+0000000000000000000000
+0000000000000000000000

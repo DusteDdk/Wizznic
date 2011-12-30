@@ -602,7 +602,7 @@ int runMenu(SDL_Surface* screen)
 
         txtWrite(screen, FONTSMALL, STR_MENU_ABOUT_TEXT, HSCREENW-155, HSCREENH-80);
         txtWave(screen, FONTSMALL, STR_MENU_ABOUT_WEBSITE, HSCREENW, HSCREENH+100,&rot);
-
+        //alt z x z x
         static int cheat=-1;
         if( getButton( C_BTNA ) )
         {
@@ -681,7 +681,7 @@ int runMenu(SDL_Surface* screen)
           fireWorks(screen);
 
           txtWave(screen, FONTMEDIUM, STR_MENU_BEAT_PACK_HEADLINE, HSCREENW, HSCREENH-108, &rot);
-          txtWrite(screen, FONTSMALL, STR_MENU_BEAT_PACK_RANT, HSCREENW-105, HSCREENH-50);
+          txtWrite(screen, FONTSMALL, STR_MENU_BEAT_PACK_RANT, HSCREENW-150, HSCREENH-50);
         }
 
         //Blit image to screen
@@ -793,7 +793,7 @@ int runMenu(SDL_Surface* screen)
             //Load empty, set name to something diffrent
             editorLoad( DATADIR"data/empty.wzp");
 
-            sprintf(buf, "%s/level%i.wzp", getUserLevelDir(), getNumUserLevels());
+            sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
             editorFileName(buf);
 
             return(STATEEDIT);
@@ -820,7 +820,7 @@ int runMenu(SDL_Surface* screen)
             editorLoad(userLevelFile(menuPosY-2));
 
             //Make new filename
-            sprintf(buf, "%s/level%i.wzp", getUserLevelDir(), getNumUserLevels());
+            sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
             editorFileName(buf);
 
             //Start editing state
@@ -1300,6 +1300,7 @@ int runMenu(SDL_Surface* screen)
           if( menuPosX == 0 )
           {
             setting()->firstRun=0;
+            setting()->uploadStats=1;
             saveSettings();
             statsUpload(0,0,0,0,0,"check",1,NULL);
             setMenu( menuStatePaused );

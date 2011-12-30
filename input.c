@@ -17,7 +17,6 @@
 
 #include "input.h"
 #include "ticks.h"
-#include <SDL/SDL.h>
 
 #ifdef PSP
   #include "platform/pspspec.h"
@@ -28,6 +27,13 @@
 #endif
 
 #include "settings.h"
+
+static inpPointerState_t inpPointer;
+const inpPointerState_t* getInpPointerState()
+{
+  return(&inpPointer);
+}
+
 
 static struct {
   int button;
@@ -79,11 +85,16 @@ int runControls()
     }
   }
 
+  //Update pointer-holddown time
+  if(inpPointer.isDown)
+  {
+    inpPointer.downTime += getTicks();
+  }
+
   while(SDL_PollEvent(&event))
   {
     switch(event.type)
     {
-
         #if defined (GP2X) || defined (PSP)
         case SDL_JOYBUTTONDOWN:
           for(i=0; i < C_NUM; i++)
@@ -195,6 +206,28 @@ int runControls()
           }
         break;
         #endif
+
+        //Handle pointer events
+        case SDL_MOUSEBUTTONDOWN:
+          inpPointer.startX = (event.button.x-boardOffsetX)/(20);
+          inpPointer.startY = (event.button.y-boardOffsetY)/(20);
+          printf("x: %i y: %i\n",inpPointer.startX,inpPointer.startY);
+          inpPointer.curX = inpPointer.startX;
+          inpPointer.curY = inpPointer.startY;
+          inpPointer.downTime=0;
+          inpPointer.isDown=1;
+        break;
+        case SDL_MOUSEBUTTONUP:
+          inpPointer.isDown=0;
+        break;
+        case SDL_MOUSEMOTION:
+          if(inpPointer.isDown)
+          {
+            inpPointer.curX = event.motion.x;
+            inpPointer.curY = event.motion.y;
+          }
+        break;
+
 
         case SDL_QUIT:
           return(1);

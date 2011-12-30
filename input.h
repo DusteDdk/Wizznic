@@ -18,6 +18,9 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
+#include <SDL/SDL.h>
+#include "board.h"
+
 #define C_UP 0
 #define C_DOWN 1
 #define C_LEFT 2
@@ -34,6 +37,13 @@
 #define C_BTNVOLDOWN 13
 #define C_NUM 14
 
+typedef struct {
+  int startX, startY;
+  int curX, curY;
+  int downTime;
+  int isDown;
+} inpPointerState_t;
+
 inline int getButton(int btn);
 inline int getBtnTime(int btn);
 inline void resetBtnTimer(int btn);
@@ -41,5 +51,7 @@ inline void resetBtn(int btn);
 void resetBtnAll();
 int runControls();
 void initControls();
+
+const inpPointerState_t* getInpPointerState();
 
 #endif // INPUT_H_INCLUDED

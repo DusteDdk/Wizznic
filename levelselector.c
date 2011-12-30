@@ -84,7 +84,6 @@ void levelSelector(SDL_Surface* screen, int l, int stats)
 }
 
 
-
 static float z=200.0;
 static float rot=0.0;
 void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
@@ -94,7 +93,7 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
   int offSetY=HSCREENH-(55*z/100);
   int nx, ny; //new x/y value for px
   uint32_t col; //Color of pixel
-  char r,g,b;
+  uint8_t r,g,b;
   uint32_t grey;
 
   float pxInc = 6.28318531/110.0;
@@ -116,7 +115,8 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
       r = ((col & img->format->Rmask) >> img->format->Rshift);
       g = ((col & img->format->Gmask) >> img->format->Gshift);
       b = ((col & img->format->Bmask) >> img->format->Bshift);
-      if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==0xff && b==0xff) ) )
+
+      if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==255 && b==255) ) )
       {
 
         //Do b/w
@@ -125,7 +125,6 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
           grey = (r+g+b)/3;
           col = (grey << img->format->Rshift) | (grey << img->format->Gshift)<<((setting()->bpp==2)?1:0) | (grey << img->format->Bshift);
         }
-
 
         nx = x*(int)z;
         ny = y*(int)z;
@@ -138,8 +137,3 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
     }
   }
 }
-
-
-
-
-

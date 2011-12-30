@@ -1,0 +1,35 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+board=thor/bg/BG01
+tileset=thor/tiles/thor
+sounddir=oldskool/snd
+
+charmap=thor
+cursor=thor.png
+startimage=none
+stopimage=none
+
+brickdieparticles=1
+brickdietime=750
+
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000161616000000000000
+0000160016160000000000
+0000160400161600000000
+0000160100041616000000
+0000160300020016160000
+0000160204030001160000
+0000161616161616160000
+0000000000000000000000
+0000000000000000000000

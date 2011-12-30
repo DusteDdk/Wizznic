@@ -221,7 +221,8 @@ void makeLevelList(listItem** list, const char* dir)
   //List all levels in dir.
   while(1)
   {
-    sprintf(buf, "%s/levels/level%i.wzp",dir, i);
+    sprintf(buf, "%s/levels/level%03i.wzp",dir, i);
+    printf("DebugLamer:%s\n",buf);
     tl=mkLevelInfo( buf );
     if(tl)
     {
@@ -257,7 +258,7 @@ void makeUserLevelList()
   char* buf = malloc(sizeof(char)*256);
   while(1)
   {
-    sprintf(buf, "%s/level%i.wzp", getUserLevelDir(), i);
+    sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), i);
 
     tl=mkLevelInfo( buf );
     if( tl )

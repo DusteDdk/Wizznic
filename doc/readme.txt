@@ -91,6 +91,7 @@ glwidth  - -1 = Auto, or Width in pixels when running OpenGL in a window.
 glheight - -1 = Auto, or Height in pixels when running OpenGL in a window.
 If glwidth and glheight is set to -1 The game will chose the largest windowsize
 that still fits comfortably on the desktop.
+See install.txt for information about compiling with or without OpenGL support.
 
 ------------------------------------
 

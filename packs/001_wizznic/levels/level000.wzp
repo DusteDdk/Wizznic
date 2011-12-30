@@ -1,0 +1,35 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname= 
+
+#Seconds to complete level
+seconds=300
+
+board=oldskool/boards/cyberpunk
+tileset=oldskool/tiles/cyberpunk
+sounddir=oldskool/snd
+
+charmap=green
+cursor=green.png
+startimage=none
+stopimage=none
+
+brickdieparticles=1
+brickdietime=750
+
+
+#The level-data block
+[data]
+0016161616161616161600
+0016160000000000161600
+0016040800000000051600
+0016160300000503161600
+0016161602000416161600
+0016161616001616161600
+0016160000000800161600
+0016000007000600001600
+0016010006000700021600
+0016160216051601161600
+0016161616161616161600

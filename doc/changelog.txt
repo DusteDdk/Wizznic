@@ -12,19 +12,24 @@
 -- Todo --
   Get strings into strings.h
   All text buffers should be 1 kb.
-  Split up main package into several 20 level packages, and
-    create a "Training" package.
+  Ceate a "Training" package.
   --Maybe sometime--
   Chain-reaction combo detection.
   Combo-message/text.
 
+1.0.0
+  Added thumbnails to wizznic-silver pack.
+
 0.9.9
+  Reordered levels
+  Corrected some misaligned text
+  Changed level file naming from levelX.wzp to levelXXX.wzp (level0.wzp is now level000.wzp and level10.wzp is level010.wzp).
   Time that it takes for a brick to "die" affects the framerate of the expl-animation, this value can now be set from each level.
   Particle systems have a layer associated, either PSYS_LAYER_TOP, PSYS_LAYER_UNDERDEATHANIM or PSYS_LAYER_UNDERBRICK.
   "Thor" theme by ViperMD.
-  Tiles 0-17 can be animated from files TILEBASE-tile#.png, animation runs at 12 fps, one row of images.
+  Tiles 0-17 can be animated from files TILEBASE-tile#.png, animation runs at 12 fps, one row of images, number of frames abritary.
   Clocked wiz up to 600 mhz since the pixel plotting function became a bit heavier.
-  OpenGL support is enabled by default, compile with WITH_OPENGL=true. See readme[1.0.4] for more information.
+  OpenGL support is enabled by default, compile with WITH_OPENGL=false to disable. See readme[1.0.4] for more information.
 
 0.9.2-preview2
   Made more changes to code to better allow for non-320x240 screensizes, fixed some related

@@ -77,10 +77,10 @@ void packAdd(const char* packDir)
   printf("Adding pack '%s'\n",packDir);
 
   //Any levels? (Packs are invalid without a levels folder and atleast one level)
-  sprintf(buf, "%s/levels/level0.wzp", packDir);
+  sprintf(buf, "%s/levels/level000.wzp", packDir);
   if( !isFile(buf) )
   {
-    printf("   Error: must contain level0.wzp\n");
+    printf("   Error: must contain level000.wzp\n");
     free(ti);
 
     free(buf);
@@ -322,7 +322,7 @@ void packInit()
 const char* packGetFile(const char* path,const char* fn)
 {
   //First, see if file exists in selected pack.
-  static char buf[256];
+  static char buf[4096];
   sprintf( buf, "%s/%s/%s", ps.cp->path, path, fn );
  // printf("packGetFile(): request for '%s'\n", buf);
 

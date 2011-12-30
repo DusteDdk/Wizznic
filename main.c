@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
   if (SDL_NumJoysticks() > 0) SDL_JoystickOpen(0);
 
   //Hide mousecursor (both PC and wiz needs this)
-  SDL_ShowCursor(SDL_DISABLE);
+ // SDL_ShowCursor(SDL_DISABLE);
 
   //Load fonts
   txtInit();

@@ -1,0 +1,35 @@
+#Author of level
+author=DusteD
+
+#Name of the level
+levelname=Your very first puzzle!
+
+#Seconds to complete level
+seconds=300
+
+board=thor/bg/BG02
+tileset=thor/tiles/thor
+sounddir=oldskool/snd
+
+charmap=thor
+cursor=thor.png
+startimage=none
+stopimage=none
+
+brickdieparticles=1
+brickdietime=750
+
+
+#The level-data block
+[data]
+0000000000000000000000
+0000000000000000000000
+0000000000000000000000
+0016161616161616161600
+0016000016161600001600
+0016020100000003041600
+0016160200040002161600
+0016161603020116161600
+0016161616161616161600
+0000000000000000000000
+0000000000000000000000
