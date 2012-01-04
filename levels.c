@@ -222,7 +222,6 @@ void makeLevelList(listItem** list, const char* dir)
   while(1)
   {
     sprintf(buf, "%s/levels/level%03i.wzp",dir, i);
-    printf("DebugLamer:%s\n",buf);
     tl=mkLevelInfo( buf );
     if(tl)
     {
