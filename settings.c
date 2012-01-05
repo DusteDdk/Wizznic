@@ -68,6 +68,7 @@ void loadSettings()
   settings.glFilter=0;
 
   //Not written to file
+  settings.scaleFactor=1.0;
   settings.session=0;
   settings.solvedWorldWide=0;
   settings.firstRun=1;

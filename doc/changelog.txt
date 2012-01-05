@@ -19,6 +19,7 @@
 
 1.0.0
   Added thumbnails to wizznic-silver pack.
+  Support for mouse/touch input in game (moving bricks around only).
 
 0.9.9
   Reordered levels

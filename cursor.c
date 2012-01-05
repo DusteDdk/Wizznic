@@ -18,6 +18,18 @@
 #include "cursor.h"
 #include "settings.h"
 
+void setCursor(cursorType* c, int x, int y)
+{
+  c->dx = x;
+  c->dy = y;
+  c->x = x;
+  c->y = y;
+  c->moving=0;
+  c->lock=0;
+  c->px = c->dx*brickSize+boardOffsetX-4;
+  c->py = c->dy*brickSize+boardOffsetY-4;
+}
+
 void updateCursor(cursorType* c)
 {
   //printf("Cur: (%i,%i) Dst: (%i,%i) Lock: %i\n",c->x,c->y,c->dx,c->dy, c->lock);

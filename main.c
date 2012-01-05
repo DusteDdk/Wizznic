@@ -259,6 +259,10 @@ int main(int argc, char *argv[])
     screen=scale;
   }
 
+  //Set scaling
+  setting()->scaleFactor= (float)scale->h/240.0;
+  printf("Scaling factor: %f\n", setting()->scaleFactor);
+
   //Set window title
   SDL_WM_SetCaption("Wizznic!", "Wizznic!");
   //Set window icon
@@ -266,7 +270,7 @@ int main(int argc, char *argv[])
   SDL_WM_SetIcon(icon, NULL);
   SDL_FreeSurface(icon);
 
-  #endif
+  #endif //< PC version
 
   setting()->bpp = screen->format->BytesPerPixel;
   printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
@@ -274,8 +278,8 @@ int main(int argc, char *argv[])
   //Open Joysticks (for wiz)
   if (SDL_NumJoysticks() > 0) SDL_JoystickOpen(0);
 
-  //Hide mousecursor (both PC and wiz needs this)
- // SDL_ShowCursor(SDL_DISABLE);
+  //Hide mousecursor
+  SDL_ShowCursor(SDL_DISABLE);
 
   //Load fonts
   txtInit();

@@ -1,3 +1,6 @@
+#ifndef HEADER_73579ED918D6B345
+#define HEADER_73579ED918D6B345
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -41,17 +44,22 @@ typedef struct {
   int startX, startY;
   int curX, curY;
   int downTime;
+  int justMoved;
   int isDown;
 } inpPointerState_t;
 
+inline int setButton(int btn); //Nasty
 inline int getButton(int btn);
 inline int getBtnTime(int btn);
 inline void resetBtnTimer(int btn);
 inline void resetBtn(int btn);
+inline void resetMouseBtn();
 void resetBtnAll();
 int runControls();
 void initControls();
 
-const inpPointerState_t* getInpPointerState();
+inline inpPointerState_t* getInpPointerState();
 
 #endif // INPUT_H_INCLUDED
+
+#endif // header guard

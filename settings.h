@@ -1,3 +1,6 @@
+#ifndef HEADER_4CE79D5CDBF1BCD7
+#define HEADER_4CE79D5CDBF1BCD7
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -48,6 +51,7 @@ struct settings_s {
   SDL_Rect bgPos; //background position
   int solvedWorldWide;
   int session; //Session for uploadstats
+  float scaleFactor; //Factor that a pixel is scaled
 };
 typedef struct settings_s settings_t;
 
@@ -58,3 +62,5 @@ void applySettings(); //Without loading first (as not to override unsaved settin
 void initSettings(); //Set ptrs to 0 and load
 
 #endif // SETTINGS_HPP_INCLUDED
+
+#endif // header guard 

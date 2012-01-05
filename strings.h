@@ -1,3 +1,6 @@
+#ifndef HEADER_7C0E49605EDAA885
+#define HEADER_7C0E49605EDAA885
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -95,7 +98,7 @@
 
 
 ///General strings
-#define VERSION_STRING "v0.9.9"
+#define VERSION_STRING "v1.0.0-dev"
 
 //Menu
 #define STR_MENU_NEW_GAME           "New Game!"
@@ -214,3 +217,5 @@ void stripNewLine(char* str);
 int splitVals(char ch,const char* buf, char* set, char* val); //Splits a setting=value line and returns true if it did. else returns 0
 int charrpos(const char* str, char c); //Return position of last instance of character c
 #endif // STRINGS_H_INCLUDED
+
+#endif // header guard 

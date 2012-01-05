@@ -45,6 +45,8 @@ static int spentTimeBeforeRestart=0;
 int debugNumInit=0;
 int debugNumCleanUp=0;
 
+int mouseGrab=0;
+
 int initGame()
 {
     if(player()->gameStarted)
@@ -250,8 +252,52 @@ int runGame(SDL_Surface* screen)
       }
     }
 
+    //Handle mouse input
+
+    if(!getInpPointerState()->isDown)
+    {
+      mouseGrab=0;
+      //Allow moving the cursor around with the input device when no button is below, just for effect
+      if( !cur.lock && getInpPointerState()->justMoved )
+      {
+        setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
+      }
+    } else {
+      brickType* b=brickUnderCursor(&pf, getInpPointerState()->curX,getInpPointerState()->curY);
+
+      //We're underneath a button, tell curser it's position, it will be locked later because we grab it now
+      if( b  && !cur.lock)
+      {
+        mouseGrab=1;
+        setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
+        getInpPointerState()->startX=getInpPointerState()->curX;
+        getInpPointerState()->startY=getInpPointerState()->curY;
+      }
+
+      //We are holding a brick, and trying to move it
+      if( cur.lock )
+      {
+        if( getInpPointerState()->startX > getInpPointerState()->curX )
+        {
+          //Drag Left
+          goLeft=1;
+        } else if( getInpPointerState()->startX < getInpPointerState()->curX )
+        {
+          //Drag Right
+          goRight=1;
+        }
+
+        if( goLeft || goRight)
+        {
+          getInpPointerState()->startX=getInpPointerState()->curX;
+          getInpPointerState()->startY=getInpPointerState()->curY;
+
+        }
+      }
+    }
+
       //Drag
-      if( getButton( C_BTNX ) || getButton( C_BTNB ) )
+      if( getButton( C_BTNX ) || getButton( C_BTNB ) || mouseGrab )
       {
         //Remove "Restart" question
         restartConfirm=0;
@@ -283,7 +329,6 @@ int runGame(SDL_Surface* screen)
             b->curLock=1;
             cur.lock=1;
           }
-
         }
 
         //Moved bric
@@ -427,7 +472,7 @@ int runGame(SDL_Surface* screen)
       countdown=0;
     }
 
-    if( (getButton( C_BTNX ) || getButton( C_BTNB )) && countdownSeconds )
+    if( (getButton( C_BTNX ) || getButton( C_BTNB ) || getInpPointerState()->isDown ) && countdownSeconds )
     {
       countdownSeconds=0;
       countdown=500;
@@ -514,7 +559,7 @@ int runGame(SDL_Surface* screen)
       sprintf(buf, STR_MENU_PRESS_B);
       txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH+12);
       //Wait for anykey
-      if(getButton(C_BTNB) || countdown < -6000)
+      if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
       {
         resetBtn(C_BTNB);
         //Subtract lives
@@ -553,7 +598,7 @@ int runGame(SDL_Surface* screen)
 
     startStopImgCounter+=getTicks();
 
-    if((startStopImgCounter > 500 &&getButton(C_BTNB))|| !startStopImg)
+    if((startStopImgCounter > 500 && getButton(C_BTNB) )|| !startStopImg)
     {
       if(startStopImg)
         SDL_FreeSurface(startStopImg);

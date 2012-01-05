@@ -56,7 +56,7 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
     }
 
     //Switch off cursor graphics
-    drawDisableCursor();
+    drawDisableCursor(1);
 
     //Show the "start image"
     si=0;

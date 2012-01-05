@@ -29,9 +29,14 @@
 #include "settings.h"
 
 static inpPointerState_t inpPointer;
-const inpPointerState_t* getInpPointerState()
+inline inpPointerState_t* getInpPointerState()
 {
   return(&inpPointer);
+}
+
+inline void resetMouseBtn()
+{
+  inpPointer.isDown=0;
 }
 
 
@@ -45,6 +50,13 @@ inline int getButton(int btn)
 {
   return(button[btn].state);
 }
+
+inline int setButton(int btn)
+{
+  button[btn].state=1;
+  button[btn].time=0;
+}
+
 
 inline void resetBtnTimer(int btn)
 {
@@ -90,6 +102,7 @@ int runControls()
   {
     inpPointer.downTime += getTicks();
   }
+  inpPointer.justMoved=0;
 
   while(SDL_PollEvent(&event))
   {
@@ -209,23 +222,28 @@ int runControls()
 
         //Handle pointer events
         case SDL_MOUSEBUTTONDOWN:
-          inpPointer.startX = (event.button.x-boardOffsetX)/(20);
-          inpPointer.startY = (event.button.y-boardOffsetY)/(20);
-          printf("x: %i y: %i\n",inpPointer.startX,inpPointer.startY);
-          inpPointer.curX = inpPointer.startX;
-          inpPointer.curY = inpPointer.startY;
-          inpPointer.downTime=0;
-          inpPointer.isDown=1;
+          inpPointer.startX = ((event.button.x/setting()->scaleFactor)-boardOffsetX)/(20);
+          inpPointer.startY = ((event.button.y/setting()->scaleFactor)-boardOffsetY)/(20);
+          if( inpPointer.startX > -1 && inpPointer.startX < 11 &&
+              inpPointer.startY > -1 && inpPointer.startY < 11 )
+          {
+            inpPointer.curX = inpPointer.startX;
+            inpPointer.curY = inpPointer.startY;
+            inpPointer.downTime=0;
+            inpPointer.isDown=1;
+          }
         break;
         case SDL_MOUSEBUTTONUP:
           inpPointer.isDown=0;
         break;
         case SDL_MOUSEMOTION:
-          if(inpPointer.isDown)
-          {
-            inpPointer.curX = event.motion.x;
-            inpPointer.curY = event.motion.y;
-          }
+          inpPointer.curX = ((event.motion.x/setting()->scaleFactor)-boardOffsetX)/(20);
+          inpPointer.curY = ((event.motion.y/setting()->scaleFactor)-boardOffsetY)/(20);
+          inpPointer.justMoved=1;
+          if( inpPointer.curX < 0 ) inpPointer.curX = 0;
+          if( inpPointer.curX > 10 ) inpPointer.curX = 10;
+          if( inpPointer.curY < 0 ) inpPointer.curY = 0;
+          if( inpPointer.curY > 10 ) inpPointer.curY = 10;
         break;
 
 
