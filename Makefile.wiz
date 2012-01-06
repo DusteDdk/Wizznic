@@ -1,4 +1,8 @@
-OPEN2X = /opt/openwiz/toolchain
+ifeq ($(TOOLCHAIN),)
+  OPEN2X = /opt/openwiz/toolchain
+else
+  OPEN2X = $(TOOLCHAIN)
+endif
 
 CC = $(OPEN2X)/bin/arm-openwiz-linux-gnu-gcc
 LD = $(CC)
