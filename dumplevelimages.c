@@ -49,7 +49,7 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
       return;
     }
 
-    if(!initDraw(pf.levelInfo))
+    if(!initDraw(pf.levelInfo,screen))
     {
       printf("Dump: Error: Couldn't init graphics.\n");
       return;
@@ -105,7 +105,7 @@ void thumblevelimage(SDL_Surface* screen,const char* lvlfile, const char* outimg
 
   pf.levelInfo = mkLevelInfo( lvlfile );
 
-  if(!initDraw(pf.levelInfo))
+  if(!initDraw(pf.levelInfo,screen))
   {
     printf("Error: Couldn't init graphics.\n");
     return;

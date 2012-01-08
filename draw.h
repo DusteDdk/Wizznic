@@ -1,3 +1,6 @@
+#ifndef HEADER_60B0840EE66BA139
+#define HEADER_60B0840EE66BA139
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -49,10 +52,11 @@ struct boardGraphics_t
 
   //Teleport path animation
   int teleColorIndex;
-  uint16_t teleColorTable[TELEPATHNUMCOL];
+  uint32_t teleColorTable[TELEPATHNUMCOL];
+  uint32_t colWhite;
 };
 
-int initDraw(levelInfo_t* li);
+int initDraw(levelInfo_t* li, SDL_Surface* screen);
 void cleanUpDraw();
 void draw(cursorType* cur, playField* pf, SDL_Surface* screen);
 void drawTelePath( SDL_Surface* screen, telePort_t* tp, int animate );
@@ -69,3 +73,5 @@ void drawDisableCursor();
 #endif
 
 #endif // DRAW_H_INCLUDED
+
+#endif // header guard

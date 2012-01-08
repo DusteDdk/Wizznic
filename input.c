@@ -237,9 +237,15 @@ int runControls()
           inpPointer.isDown=0;
         break;
         case SDL_MOUSEMOTION:
-          inpPointer.curX = ((event.motion.x/setting()->scaleFactor)-boardOffsetX)/(20);
-          inpPointer.curY = ((event.motion.y/setting()->scaleFactor)-boardOffsetY)/(20);
+
+          inpPointer.vpX = (event.motion.x/setting()->scaleFactor);
+          inpPointer.vpY = (event.motion.y/setting()->scaleFactor);
+
+          inpPointer.curX = (inpPointer.vpX-boardOffsetX)/(20);
+          inpPointer.curY = (inpPointer.vpY-boardOffsetY)/(20);
+
           inpPointer.justMoved=1;
+
           if( inpPointer.curX < 0 ) inpPointer.curX = 0;
           if( inpPointer.curX > 10 ) inpPointer.curX = 10;
           if( inpPointer.curY < 0 ) inpPointer.curY = 0;
@@ -321,4 +327,8 @@ void initControls()
     button[C_BTNVOLUP].button = SDLK_F1;
     button[C_BTNVOLDOWN].button = SDLK_F2;
   #endif
+
+  memset( &inpPointer, 0, sizeof(inpPointerState_t) );
+  inpPointer.vpX = -1;
+  inpPointer.vpY = -1;
 }

@@ -350,7 +350,7 @@ int runMenu(SDL_Surface* screen)
       {
         resetBtn(C_BTNB);
 
-        if(initGame())
+        if(initGame(screen))
         {
           if(player()->level == 0)
           {
@@ -791,7 +791,7 @@ int runMenu(SDL_Surface* screen)
           if(menuPosY==0) //Load empty, and create new levelname
           {
             //Load empty, set name to something diffrent
-            editorLoad( DATADIR"data/empty.wzp");
+            editorLoad( DATADIR"data/empty.wzp",screen);
 
             sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
             editorFileName(buf);
@@ -804,7 +804,7 @@ int runMenu(SDL_Surface* screen)
             menuPosY=0;
           } else {
             //Edit existing level
-            editorLoad(userLevelFile(menuPosY-2));
+            editorLoad(userLevelFile(menuPosY-2),screen);
             return(STATEEDIT);
           }
         }
@@ -817,7 +817,7 @@ int runMenu(SDL_Surface* screen)
           if(menuPosY > 1)
           {
             //Load the selected level
-            editorLoad(userLevelFile(menuPosY-2));
+            editorLoad(userLevelFile(menuPosY-2),screen);
 
             //Make new filename
             sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
@@ -839,7 +839,7 @@ int runMenu(SDL_Surface* screen)
             player()->level = 0;
             player()->inEditor=1;
 
-            if(initGame())
+            if(initGame(screen))
             {
               return(STATEPLAY);
             } else {

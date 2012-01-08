@@ -1,3 +1,6 @@
+#ifndef HEADER_95E937E2897AF2F
+#define HEADER_95E937E2897AF2F
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -33,9 +36,11 @@
 #include "menu.h"
 #include "pack.h"
 
-int initGame();
+int initGame(SDL_Surface* screen);
 void cleanUpGame();
 int runGame(SDL_Surface* screen);
 void setGameState(int state);
 
 #endif // GAME_H_INCLUDED
+
+#endif // header guard 

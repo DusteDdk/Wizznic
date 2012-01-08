@@ -41,4 +41,4 @@ void setCursor(cursorType* c, int x, int y);
 
 #endif // CONTROL_H_INCLUDED
 
-#endif // header guard 
+#endif // header guard

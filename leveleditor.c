@@ -40,7 +40,7 @@ static char buf[64];
 static int teleState=0; //Teleport placement iteration
 static int teleSrcPos[2];
 
-void editorLoad(const char* fn)
+void editorLoad(const char* fn, SDL_Surface* screen)
 {
   //Set filename
   editorFileName(fn);
@@ -52,7 +52,7 @@ void editorLoad(const char* fn)
   //Read info's for level.
   pf.levelInfo = mkLevelInfo( fn );
 
-  initDraw(pf.levelInfo);
+  initDraw(pf.levelInfo, screen);
   changed=0;
   selBrick=1;
 

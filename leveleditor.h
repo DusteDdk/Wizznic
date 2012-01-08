@@ -1,3 +1,6 @@
+#ifndef HEADER_47EFC508C43A8437
+#define HEADER_47EFC508C43A8437
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -22,8 +25,10 @@
 
 
 void editorCleanUp();
-void editorLoad(const char* fileName);
+void editorLoad(const char* fileName, SDL_Surface* screen);
 void editorFileName(const char* fileName);
 int runEditor(SDL_Surface* screen);
 
 #endif // LEVELEDITOR_H_INCLUDED
+
+#endif // header guard 

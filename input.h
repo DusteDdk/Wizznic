@@ -43,6 +43,7 @@
 typedef struct {
   int startX, startY;
   int curX, curY;
+  int vpX, vpY; // "virtual"/scaled pixel positions
   int downTime;
   int justMoved;
   int isDown;

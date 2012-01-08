@@ -19,10 +19,11 @@
 #include "pack.h"
 #include "defs.h"
 #include "settings.h"
+#include "input.h"
 
 struct boardGraphics_t graphics;
 
-int initDraw(levelInfo_t* li)
+int initDraw(levelInfo_t* li, SDL_Surface* screen)
 {
   char tempStr[512];
   int i,x,y;
@@ -143,8 +144,11 @@ int initDraw(levelInfo_t* li)
   float f=255/TELEPATHNUMCOL;
   for(i=0; i < TELEPATHNUMCOL; i++)
   {
-    graphics.teleColorTable[i] = SDL_MapRGB( graphics.tiles[0]->img->format, 0,(int)(255.0-(float)i*f),0  );
+    graphics.teleColorTable[i] = SDL_MapRGB( screen->format, 0,(int)(255.0-(float)i*f),0  );
   }
+
+  //The color white
+  graphics.colWhite = SDL_MapRGB( screen->format, 255,255,255 );
 
 
   return(1);
@@ -353,6 +357,16 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
     drawSprite(screen, graphics.curSpr[0], cur->px, cur->py);
   else
     drawSprite(screen, graphics.curSpr[1], cur->px, cur->py);
+
+  //Cursor "spot"
+  if( getInpPointerState()->vpX > -1 )
+  {
+    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY-2, graphics.colWhite );
+    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY+2, graphics.colWhite );
+
+    plotPixel(screen, getInpPointerState()->vpX-2, getInpPointerState()->vpY, graphics.colWhite );
+    plotPixel(screen, getInpPointerState()->vpX+2, getInpPointerState()->vpY, graphics.colWhite );
+  }
 
   if(graphics.curSpr[0] && cur->moving )
   {

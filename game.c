@@ -47,7 +47,7 @@ int debugNumCleanUp=0;
 
 int mouseGrab=0;
 
-int initGame()
+int initGame(SDL_Surface* screen)
 {
     if(player()->gameStarted)
     {
@@ -68,7 +68,7 @@ int initGame()
     pf.levelInfo = mkLevelInfo( player()->levelFile );
 
 
-    if(!initDraw(pf.levelInfo))
+    if(!initDraw(pf.levelInfo,screen))
     {
       printf("Error: Couldn't init graphics.\n");
       return(0);
@@ -239,7 +239,7 @@ int runGame(SDL_Surface* screen)
         timeBeforeRestart=pf.levelInfo->time;
         spentTimeBeforeRestart=player()->hsEntry.time;
         cleanUpGame();
-        initGame();
+        initGame(screen);
         if(!player()->inEditor)
         {
           //Set time back to what it was before restarting
