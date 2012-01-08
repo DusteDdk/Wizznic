@@ -7,12 +7,14 @@ levelname=
 #Seconds to complete level
 seconds=300
 
-board=thor/bg/BG07
-tileset=thor/tiles/thor
+bgfile=thor/bg/BG07.png
+tilebase=thor/tiles/thor
+explbase=thor/expl/tomb
+walldir=thor/walls/goldstone
 sounddir=oldskool/snd
 
-charmap=thor
-cursor=thor.png
+charbase=thor
+cursorfile=thor.png
 startimage=none
 stopimage=none
 

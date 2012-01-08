@@ -37,7 +37,8 @@ struct boardGraphics_t
   SDL_Surface* boardImg;
   SDL_Surface* tileImg;
   SDL_Surface* curImg;
-  SDL_Surface* wallImg; //If theme uses extra wall tiles.
+  SDL_Surface* wallImg;//Single wall
+  SDL_Surface* wallsImg;//If theme uses extra wall tiles.
   SDL_Surface* explImg[BRICKSEND]; //Brick destroy animations, either one pr tile, or all defaults to 0.
   SDL_Surface* aniImg[NUMTILES];
   SDL_Surface* countDownImg;

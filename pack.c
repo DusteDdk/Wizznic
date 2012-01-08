@@ -200,7 +200,6 @@ void packAdd(const char* packDir)
     {
       if(i >= pli->from && i <= pli->to)
       {
-        if( levelInfo(i)->musicFile ) free( levelInfo(i)->musicFile );
         levelInfo(i)->musicFile = malloc( sizeof(char)*strlen(pli->song)+1 );
         strcpy(levelInfo(i)->musicFile, pli->song);
       }

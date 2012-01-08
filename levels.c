@@ -65,8 +65,8 @@ levelInfo_t* mkLevelInfo(const char* fileName)
 
     //Default cursor
     strcpy( buf, "cursor.png" );
-    tl->cursorName=malloc( sizeof(char)*(strlen(buf)+1) );
-    strcpy( tl->cursorName, buf );
+    tl->cursorFile=malloc( sizeof(char)*(strlen(buf)+1) );
+    strcpy( tl->cursorFile, buf );
 
     //start/stop images
     tl->startImg=0;
@@ -79,10 +79,6 @@ levelInfo_t* mkLevelInfo(const char* fileName)
 
     //Initiate teleList
     tl->teleList = initList();
-
-
-    //Music
-    tl->musicFile=0;
 
     //Loop through file
     while(fgets(buf, 255, f))
@@ -104,15 +100,25 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           {
             tl->time=atoi(val);
           } else
-          if(strcmp("board",set)==0)
+          if(strcmp("bgfile",set)==0)
           {
             tl->bgFile=malloc( sizeof(char)*( strlen(val)+1 ) );
             strcpy(tl->bgFile, val);
           } else
-          if(strcmp("tileset",set)==0)
+          if(strcmp("tilebase",set)==0)
           {
-            tl->tileFile=malloc( sizeof(char)*( strlen(val)+1 ) );
-            strcpy(tl->tileFile, val);
+            tl->tileBase=malloc( sizeof(char)*( strlen(val)+1 ) );
+            strcpy(tl->tileBase, val);
+          } else
+          if(strcmp("explbase",set)==0)
+          {
+            tl->explBase=malloc( sizeof(char)*( strlen(val)+1 ) );
+            strcpy(tl->explBase, val);
+          } else
+          if(strcmp("walldir",set)==0)
+          {
+            tl->wallDir=malloc( sizeof(char)*( strlen(val)+1 ) );
+            strcpy(tl->wallDir, val);
           } else
           if(strcmp("author",set)==0)
           {
@@ -124,31 +130,22 @@ levelInfo_t* mkLevelInfo(const char* fileName)
             tl->levelName=malloc( sizeof(char)*( strlen(val)+1 ) );
             strcpy(tl->levelName, val);
           } else
-          if(strcmp("music",set)==0)
-          {
-            //Ignore none keyword for music
-            if( strcmp( "none", val) != 0)
-            {
-              tl->musicFile=malloc( sizeof(char)*( strlen(val)+1 ) );
-              strcpy(tl->musicFile, val);
-            }
-          } else
           if(strcmp("sounddir",set)==0)
           {
             tl->soundDir=malloc( sizeof(char)*( strlen(val)+1 ) );
             strcpy(tl->soundDir, val);
           } else
-          if(strcmp("charmap",set)==0)
+          if(strcmp("charbase",set)==0)
           {
             free(tl->fontName);
             tl->fontName=malloc( sizeof(char)*( strlen(val)+1 ) );
             strcpy(tl->fontName, val);
           } else
-          if(strcmp("cursor",set)==0)
+          if(strcmp("cursorfile",set)==0)
           {
-            free( tl->cursorName );
-            tl->cursorName=malloc( sizeof(char)*( strlen(val)+1 ) );
-            strcpy(tl->cursorName, val);
+            free( tl->cursorFile );
+            tl->cursorFile=malloc( sizeof(char)*( strlen(val)+1 ) );
+            strcpy(tl->cursorFile, val);
           } else
           if(strcmp("startimage",set)==0)
           {
@@ -325,12 +322,14 @@ void freeLevelInfo(levelInfo_t** p)
   if( (*p)->imgFile ) free( (*p)->imgFile );
   if( (*p)->author ) free( (*p)->author );
   if( (*p)->levelName ) free( (*p)->levelName );
-  if( (*p)->tileFile ) free( (*p)->tileFile );
+  if( (*p)->tileBase ) free( (*p)->tileBase );
+  if( (*p)->explBase ) free( (*p)->explBase );
+  if( (*p)->wallDir ) free( (*p)->wallDir );
   if( (*p)->bgFile ) free( (*p)->bgFile );
   if( (*p)->musicFile ) free( (*p)->musicFile );
   if( (*p)->soundDir ) free( (*p)->soundDir );
   if( (*p)->fontName ) free( (*p)->fontName );
-  if( (*p)->cursorName ) free( (*p)->cursorName );
+  if( (*p)->cursorFile ) free( (*p)->cursorFile );
   if( (*p)->startImg ) free( (*p)->startImg );
   if( (*p)->stopImg ) free( (*p)->stopImg );
 

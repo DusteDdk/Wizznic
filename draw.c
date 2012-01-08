@@ -29,59 +29,80 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
   int i,x,y;
 
   //Background image
-  sprintf(tempStr,"%s.png",li->bgFile);
-  graphics.boardImg = loadImg( packGetFile("themes",tempStr) );
+  graphics.boardImg = loadImg( packGetFile("themes",li->bgFile) );
 
   if(!graphics.boardImg)
   {
+    printf("Couldn't load board file:'%s'\n", packGetFile("themes",li->bgFile) );
     cleanUpDraw();
-    printf("Couldn't load board file:'%s'\n", packGetFile("themes",tempStr) );
     return(0);
   }
 
   //Tileset
-  sprintf(tempStr, "%s.png", li->tileFile);
+  sprintf(tempStr, "%s.png", li->tileBase);
   graphics.tileImg = loadImg( packGetFile("themes",tempStr) );
   if(!graphics.tileImg)
   {
-    cleanUpDraw();
     printf("Couldn't load tile file:'%s'\n", packGetFile("themes",tempStr) );
+    cleanUpDraw();
     return(0);
   }
 
-  //Extra walls, if they exist, if they don't, default to tile 6 (from 0) in tiles.
-  sprintf(tempStr, "%s-walls.png", li->tileFile);
+
+  //Cut tiles into sprites
+  for(i=0; i < NUMTILES; i++)
+  {
+    graphics.tiles[i] = cutSprite(graphics.tileImg, i*20, 0, 20,20);
+  }
+
+  //Wall (Override tile15 in graphics.tiles)
+  sprintf(tempStr, "%s/wall.png", li->wallDir);
   graphics.wallImg = loadImg( packGetFile("themes",tempStr) );
-  if(!graphics.wallImg) printf("Optional GFX missing: '%s'\n", packGetFile("themes",tempStr) );
+  if(!graphics.wallImg)
+  {
+    printf("Couldn't load wall file:'%s'\n", packGetFile("themes",tempStr) );
+    cleanUpDraw();
+    return(0);
+  }
+  //Override wall tile
+  free(graphics.tiles[15]);
+  graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
+
+  //Extra walls, if they exist, if they don't, default to tile 6 (from 0) in tiles.
+  sprintf(tempStr, "%s/walls.png", li->wallDir);
+  graphics.wallsImg = loadImg( packGetFile("themes",tempStr) );
+  if(!graphics.wallsImg) printf("Optional GFX missing: '%s'\n", packGetFile("themes",tempStr) );
   int r,c; //rows, column, sprite index
   i=0;
   for(r=0; r < 5; r++)
   {
     for(c=0; c < 3; c++)
     {
-      if(graphics.wallImg)
+      if(graphics.wallsImg)
       {
         //Cut out from sheet
         x=c*20;
         y=r*20;
-        graphics.walls[i] = cutSprite(graphics.wallImg, x,y, 20, 20);
+        graphics.walls[i] = cutSprite(graphics.wallsImg, x,y, 20, 20);
       } else {
         //Default to tile 15 in tileset
-        graphics.walls[i] = cutSprite(graphics.tileImg, 20*15, 0, 20, 20);
+        graphics.walls[i] = cutSprite(graphics.wallImg, 0, 0, 20, 20);
       }
       i++;
     }
   }
   //Above loop leaves when i==15.
   //Middle-free is 15 = default tile index in image is 15 (starting from 0).
-  graphics.walls[15] = cutSprite(graphics.tileImg, 20*15, 0, 20, 20);
+  graphics.walls[15] = cutSprite(graphics.wallImg, 0, 0, 20, 20);
 
   //Explosions, reuse R as frame number index
   for(i=0; i < BRICKSEND; i++)
   {
     //Open explosion
-    sprintf(tempStr, "%s-expl%i.png", li->tileFile, i);
+    sprintf(tempStr, "%s%02i.png", li->explBase, i);
     graphics.explImg[i] = loadImg( packGetFile("themes",tempStr) );
+
+    if( graphics.explImg[i]  ) printf("Loaded %s\n",packGetFile("themes",tempStr) );
 
     if(!graphics.explImg[i] && i==0) printf("Couldn't open '%s'\n",packGetFile("themes",tempStr) );
 
@@ -94,7 +115,7 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
   //Per-Tile animations
   for(i=0; i < NUMTILES; i++)
   {
-    sprintf(tempStr, "%s-tile%i.png", li->tileFile, i);
+    sprintf(tempStr, "%s-tile%02i.png", li->tileBase, i);
     graphics.aniImg[i] = loadImg( packGetFile("themes",tempStr) );
 
     graphics.tileAni[i] = mkAni(graphics.aniImg[i], 30,30, 80);
@@ -102,29 +123,14 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
   }
 
   //Cursor
-  graphics.curImg = loadImg( packGetFile( "themes/cursors",li->cursorName) );
+  graphics.curImg = loadImg( packGetFile( "themes/cursors",li->cursorFile) );
   if( !graphics.curImg )
   {
-      printf("Warning: Couldn't find cursor '%s'\n", packGetFile( "themes/cursors",li->cursorName));
-      printf("Warning: Using deprecated PACKNAME/cursor.png instead\nPlease move to PACKNAME/themes/cursors/cursor.png");
-      graphics.curImg = loadImg( packGetFile( ".","cursor.png") );
-      if( !graphics.curImg )
-      {
-        printf("Error: Couldn't load cursor '%s'\n", packGetFile( ".","cursor.png"));
-        cleanUpDraw();
-        return(0);
-      }
-
+      printf("Warning: Couldn't find cursor '%s'\n", packGetFile( "themes/cursors",li->cursorFile));
   }
   graphics.curSpr[0] = cutSprite(graphics.curImg, 0, 0, 28,28);
   graphics.curSpr[1] = cutSprite(graphics.curImg, 28, 0, 28,28);
 
-
-  //Cut sprites
-  for(i=0; i < NUMTILES; i++)
-  {
-    graphics.tiles[i] = cutSprite(graphics.tileImg, i*20, 0, 20,20);
-  }
 
   //Load countdown
   graphics.countDownImg = loadImg( packGetFile(".","countdown.png") );
@@ -184,7 +190,11 @@ void cleanUpDraw()
 
   //Wall image
   if(graphics.wallImg) SDL_FreeSurface(graphics.wallImg);
-  graphics.wallImg=0;
+    graphics.wallImg=0;
+
+  //Walls
+  if(graphics.wallsImg) SDL_FreeSurface(graphics.wallsImg);
+    graphics.wallsImg=0;
 
   //Wall sprites
   for(i=0; i < 16; i++)
@@ -247,7 +257,12 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       //Bricks-Walls
       if(pf->board[x][y] && pf->board[x][y]->type != RESERVED)
       {
-        //printf("X:%i Y:%i Type: %i\n",x,y,pf->board[x][y]->type);
+        //We tread glue/oneways as walls (they will have the walltile defined
+        if(pf->board[x][y]->type == GLUE || pf->board[x][y]->type == ONEWAYLEFT || pf->board[x][y]->type == ONEWAYRIGHT )
+        {
+          printf("walltype %i\n",pf->board[x][y]->wall);
+          drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+        }
         //Is it a wall?
         if(pf->board[x][y]->type == STDWALL)
         {
@@ -359,7 +374,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
     drawSprite(screen, graphics.curSpr[1], cur->px, cur->py);
 
   //Cursor "spot"
-  if( getInpPointerState()->vpX > -1 )
+  if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
   {
     plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY-2, graphics.colWhite );
     plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY+2, graphics.colWhite );

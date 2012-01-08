@@ -253,7 +253,7 @@ int runGame(SDL_Surface* screen)
     }
 
     //Handle mouse input
-    if( getInpPointerState()->justMoved && !cur.lock )
+    if( getInpPointerState()->timeSinceMoved==0 && !cur.lock )
     {
       setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
     }

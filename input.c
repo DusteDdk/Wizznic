@@ -102,7 +102,9 @@ int runControls()
   {
     inpPointer.downTime += getTicks();
   }
-  inpPointer.justMoved=0;
+
+  if( inpPointer.timeSinceMoved < POINTER_SHOW_TIMEOUT)
+  inpPointer.timeSinceMoved +=getTicks();
 
   while(SDL_PollEvent(&event))
   {
@@ -244,7 +246,7 @@ int runControls()
           inpPointer.curX = (inpPointer.vpX-boardOffsetX)/(20);
           inpPointer.curY = (inpPointer.vpY-boardOffsetY)/(20);
 
-          inpPointer.justMoved=1;
+          inpPointer.timeSinceMoved=0;
 
           if( inpPointer.curX < 0 ) inpPointer.curX = 0;
           if( inpPointer.curX > 10 ) inpPointer.curX = 10;
@@ -329,6 +331,5 @@ void initControls()
   #endif
 
   memset( &inpPointer, 0, sizeof(inpPointerState_t) );
-  inpPointer.vpX = -1;
-  inpPointer.vpY = -1;
+  inpPointer.timeSinceMoved=POINTER_SHOW_TIMEOUT;
 }

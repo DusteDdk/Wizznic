@@ -7,18 +7,20 @@ levelname=Heroic Ruuulez!
 #Seconds to complete
 seconds=200
 
-board=thor/bg/BG04
-tileset=thor/tiles/thor
+bgfile=thor/bg/BG04.png
+tilebase=thor/tiles/thor
+explbase=thor/expl/tomb
+walldir=thor/walls/silverstone
+
 sounddir=oldskool/snd
 
-charmap=thor
-cursor=thor.png
+charbase=thor
+cursorfile=thor.png
 startimage=none
 stopimage=none
 
 brickdieparticles=1
 brickdietime=750
-
 
 [data]
 1616161616161616161616

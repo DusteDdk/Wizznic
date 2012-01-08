@@ -159,7 +159,7 @@ int runEditor(SDL_Surface* screen)
         pf.board[cur.x][cur.y]=malloc(sizeof(brickType));
 
         pf.board[cur.x][cur.y]->type=selBrick;
-        if(selBrick==STDWALL)
+        if(selBrick==STDWALL || selBrick==GLUE || selBrick==ONEWAYLEFT || selBrick==ONEWAYRIGHT)
         {
           boardSetWalls(&pf);
         }
@@ -201,22 +201,25 @@ int runEditor(SDL_Surface* screen)
     sprintf(buf, "#Seconds to complete level\nseconds=%i\n\n", pf.levelInfo->time);
     fputs(buf,f);
 
-    sprintf(buf, "board=%s\n", pf.levelInfo->bgFile);
+    sprintf(buf, "bgfile=%s\n", pf.levelInfo->bgFile);
     fputs(buf,f);
 
-    sprintf(buf, "tileset=%s\n", pf.levelInfo->tileFile);
+    sprintf(buf, "tilebase=%s\n", pf.levelInfo->tileBase);
+    fputs(buf,f);
+
+    sprintf(buf, "explbase=%s\n", pf.levelInfo->explBase);
+    fputs(buf,f);
+
+    sprintf(buf, "walldir=%s\n", pf.levelInfo->wallDir);
     fputs(buf,f);
 
     sprintf(buf, "sounddir=%s\n", pf.levelInfo->soundDir);
     fputs(buf,f);
 
-    sprintf(buf, "music=%s\n", (pf.levelInfo->musicFile)?pf.levelInfo->musicFile:"none");
+    sprintf(buf, "charbase=%s\n", pf.levelInfo->fontName);
     fputs(buf,f);
 
-    sprintf(buf, "charmap=%s\n", pf.levelInfo->fontName);
-    fputs(buf,f);
-
-    sprintf(buf, "cursor=%s\n", pf.levelInfo->cursorName);
+    sprintf(buf, "cursorfile=%s\n", pf.levelInfo->cursorFile);
     fputs(buf,f);
 
     sprintf(buf, "startimage=%s\n", (pf.levelInfo->startImg)?pf.levelInfo->startImg:"none");

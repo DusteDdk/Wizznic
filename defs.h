@@ -1,3 +1,6 @@
+#ifndef HEADER_1353EF642D6D3CF
+#define HEADER_1353EF642D6D3CF
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -38,6 +41,8 @@
 
 #define MOVERCOUNTDOWN 500  //Ms pause before mover switch direction
 
+//Milliseconds we show the small pointer before hiding it again (in case people don't want to use mouse anyway)
+#define POINTER_SHOW_TIMEOUT 10000
 
 #define ONEWAYSPEED 10
 
@@ -110,3 +115,5 @@
 #endif
 
 #endif // DEFS_H_INCLUDED
+
+#endif // header guard

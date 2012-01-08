@@ -45,7 +45,7 @@ typedef struct {
   int curX, curY;
   int vpX, vpY; // "virtual"/scaled pixel positions
   int downTime;
-  int justMoved;
+  int timeSinceMoved;
   int isDown;
 } inpPointerState_t;
 

@@ -18,6 +18,8 @@
   Combo-message/text.
 
 1.0.0
+  Magnets and oneways are now overlaid on top of apropiate wall tile.
+  Changed level format to be more flexible and easier to use with much different graphics. (see data/empty.wzp in notepad or nano for info)
   Fixed long-standing bug where curser jumps around and grabs bricks falling into place of other bricks
   Added thumbnails to wizznic-silver pack.
   Support for mouse/touch input in game (moving bricks around only).

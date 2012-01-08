@@ -1,3 +1,6 @@
+#ifndef HEADER_55B388E9E8F4D08D
+#define HEADER_55B388E9E8F4D08D
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -27,12 +30,14 @@ struct levelInfo_s
   char* imgFile;   //Preview filename
   char* author;    //Author name
   char* levelName; //Level name
-  char* tileFile;  //tileFile
+  char* tileBase;  //tile base name
+  char* explBase;  //Base name for explotions
+  char* wallDir;  //dir with wall.png and (optional) walls.png
   char* bgFile;    //backgroundFile
-  char* musicFile; //Music file
+  char* musicFile; //Music file (set by pack.c)
   char* soundDir;  //Directory containing soundeffects
   char* fontName;  //Font
-  char* cursorName;//Cursor
+  char* cursorFile;//Cursor
   char* startImg; //img to show before game starts
   char* stopImg;  //img to show after level completed.
 
@@ -55,3 +60,5 @@ char* userLevelFile(int num);
 int getNumUserLevels();
 
 #endif // LEVELS_H_INCLUDED
+
+#endif // header guard

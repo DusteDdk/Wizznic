@@ -7,18 +7,19 @@ levelname=No Comment
 #Seconds to complete
 seconds=240
 
-board=thor/bg/BG09
-tileset=thor/tiles/thor
+bgfile=thor/bg/BG09.png
+tilebase=thor/tiles/thor
+explbase=thor/expl/tomb
+walldir=thor/walls/goldstone
 sounddir=oldskool/snd
 
-charmap=thor
-cursor=thor.png
+charbase=thor
+cursorfile=thor.png
 startimage=none
 stopimage=none
 
 brickdieparticles=1
 brickdietime=750
-
 
 [data]
 0000000000000000000000
