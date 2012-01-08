@@ -47,7 +47,7 @@
 
 #ifndef DATADIR
   #define DATADIR "."
-  #warning "DATADIR was not defined. Using ."
+  #warning "DATADIR was not defined. Using ./"
 #endif
 
 #ifdef PSP
@@ -355,7 +355,6 @@ int main(int argc, char *argv[])
   int lastTick;
   while(state!=STATEQUIT)
   {
-    //printf("Puzzles competed: %i\nSession:%i\n",solved, session);
     lastTick=SDL_GetTicks();
 
     frameStart();

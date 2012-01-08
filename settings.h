@@ -27,7 +27,7 @@
 #include <SDL/SDL.h>
 
 struct settings_s {
-  int wizVol; //Only used in wiz.
+  int wizVol; //Only used on wiz.
   int soundVol; //
   int musicVol;//
   int showFps;
@@ -63,4 +63,4 @@ void initSettings(); //Set ptrs to 0 and load
 
 #endif // SETTINGS_HPP_INCLUDED
 
-#endif // header guard 
+#endif // header guard

@@ -253,108 +253,111 @@ int runGame(SDL_Surface* screen)
     }
 
     //Handle mouse input
+    if( getInpPointerState()->justMoved && !cur.lock )
+    {
+      setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
+    }
 
     if(!getInpPointerState()->isDown)
     {
       mouseGrab=0;
-      //Allow moving the cursor around with the input device when no button is below, just for effect
-      if( !cur.lock && getInpPointerState()->justMoved )
-      {
-        setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
-      }
+      //Allow moving the cursor around with the input device when no brick is below, just for effect
     } else {
-      brickType* b=brickUnderCursor(&pf, getInpPointerState()->curX,getInpPointerState()->curY);
+      brickType* b=brickUnderCursor(&pf, cur.x,cur.y);
 
-      //We're underneath a button, tell curser it's position, it will be locked later because we grab it now
-      if( b  && !cur.lock)
+      //We're over a brick, tell curser it's position, it will be locked later because we grab it now
+
+      if( b )
       {
-        mouseGrab=1;
-        setCursor(&cur, getInpPointerState()->curX,getInpPointerState()->curY );
-        getInpPointerState()->startX=getInpPointerState()->curX;
-        getInpPointerState()->startY=getInpPointerState()->curY;
-      }
-
-      //We are holding a brick, and trying to move it
-      if( cur.lock )
-      {
-        if( getInpPointerState()->startX > getInpPointerState()->curX )
+        getInpPointerState()->startX=b->dx;
+        getInpPointerState()->startY=b->dy;
+        if( !cur.lock )
         {
-          //Drag Left
-          goLeft=1;
-        } else if( getInpPointerState()->startX < getInpPointerState()->curX )
-        {
-          //Drag Right
-          goRight=1;
-        }
-
-        if( goLeft || goRight)
-        {
+          mouseGrab=1;
           getInpPointerState()->startX=getInpPointerState()->curX;
           getInpPointerState()->startY=getInpPointerState()->curY;
-
-        }
-      }
-    }
-
-      //Drag
-      if( getButton( C_BTNX ) || getButton( C_BTNB ) || mouseGrab )
-      {
-        //Remove "Restart" question
-        restartConfirm=0;
-
-        //Magnet to brick if it's moving
-        brickType* b=brickUnderCursor(&pf, cur.dx, cur.dy);
-
-        if( !cur.lock && b )
+        } else
         {
-          //Attach cursor
-          cur.lock=1;
-          b->curLock=1;
-          cur.x=cur.dx;
-          cur.y=cur.dy;
-          cur.px = b->pxx-4;
-          cur.py = b->pxy-4;
-
-
-          sndPlay( SND_BRICKGRAB, cur.px );
-        }
-
-        int movedBrick=0;
-        //We're holding a brick, and it's not falling
-        if( b )
-        {
-          if( (goRight && curMoveBrick(&pf,b, DIRRIGHT)) || (goLeft && curMoveBrick(&pf,b, DIRLEFT)) )
+          if( b->dx > getInpPointerState()->curX )
           {
-            movedBrick=1;
-            b->curLock=1;
-            cur.lock=1;
+            //Drag Left
+            if( b->dx == b->sx  && getInpPointerState()->startX != getInpPointerState()->curX )
+            {
+              goLeft=1;
+            }
+          } else if(  b->dx < getInpPointerState()->curX )
+          {
+            //Drag Right
+            if( b->dx == b->sx && getInpPointerState()->startX != getInpPointerState()->curX )
+            {
+              goRight=1;
+            }
           }
         }
-
-        //Moved bric
-        if(movedBrick)
-        {
-          player()->hsEntry.moves++;
-          sndPlay(SND_BRICKMOVE, cur.px);
-          ps.layer=PSYS_LAYER_TOP;
-          ps.x=b->pxx;
-          ps.y=b->pxy+18;
-          ps.vel=50;
-          ps.life=500;
-          ps.lifeVar=250;
-          ps.gravity=1;
-          ps.srcImg=stealGfxPtr()->tiles[b->type-1]->img;
-          ps.srcRect=stealGfxPtr()->tiles[b->type-1]->clip;
-          ps.srcRect.y += 18;
-          ps.srcRect.h = 2;
-          spawnParticleSystem(&ps);
-        }
-
+      } else {
+        mouseGrab=0;
       }
-      else
+    }
+   //   printf("x:%i\n", getInpPointerState()->curX );
+      //Drag
+    if( getButton( C_BTNX ) || getButton( C_BTNB ) || mouseGrab )
+    {
+      //Remove "Restart" question
+      restartConfirm=0;
+
+      //Magnet to brick if it's moving
+      brickType* b=brickUnderCursor(&pf, cur.dx, cur.dy);
+
+      if( !cur.lock && b )
       {
-        cur.lock=0;
+        //Attach cursor
+        cur.lock=1;
+        b->curLock=1;
+        cur.x=cur.dx;
+        cur.y=cur.dy;
+        cur.px = b->pxx-4;
+        cur.py = b->pxy-4;
+
+
+        sndPlay( SND_BRICKGRAB, cur.px );
       }
+
+      int movedBrick=0;
+      //We're holding a brick, and it's not falling
+      if( b )
+      {
+        if( (goRight && curMoveBrick(&pf,b, DIRRIGHT)) || (goLeft && curMoveBrick(&pf,b, DIRLEFT)) )
+        {
+          movedBrick=1;
+          b->curLock=1;
+          cur.lock=1;
+        }
+      }
+
+      //Moved bric
+      if(movedBrick)
+      {
+        player()->hsEntry.moves++;
+        sndPlay(SND_BRICKMOVE, cur.px);
+        ps.layer=PSYS_LAYER_TOP;
+        ps.x=b->pxx;
+        ps.y=b->pxy+18;
+        ps.vel=50;
+        ps.life=500;
+        ps.lifeVar=250;
+        ps.gravity=1;
+        ps.srcImg=stealGfxPtr()->tiles[b->type-1]->img;
+        ps.srcRect=stealGfxPtr()->tiles[b->type-1]->clip;
+        ps.srcRect.y += 18;
+        ps.srcRect.h = 2;
+        spawnParticleSystem(&ps);
+      }
+
+    }
+    else
+    {
+      cur.lock=0;
+    }
 
       if(!cur.lock)
       {
@@ -370,8 +373,18 @@ int runGame(SDL_Surface* screen)
     //Do rules
     int ret=doRules(&pf);
 
+    //Hack hack hack
+//      cur.px = getInpPointerState()->curX*brickSize+boardOffsetX-4;
+   // }
+
     //Draw scene
     draw(&cur,&pf, screen);
+
+    //Draw a path to show where we are pulling the brick
+    if( mouseGrab )
+      drawPath( screen, getInpPointerState()->startX,getInpPointerState()->startY,getInpPointerState()->curX,getInpPointerState()->startY,1 );
+
+
 
     //If no more bricks, countdown time left.
     if(ret == NOBRICKSLEFT)

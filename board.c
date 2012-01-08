@@ -533,8 +533,6 @@ void simField(playField* pf, cursorType* cur)
         //Update cursor
         cur->px=b->pxx-4;
         cur->py=b->pxy-4;
-      } else {
-        b->curLock=0;
       }
     //  printf("Dx:%i X:%i Dy:%i Y:%i\n",deltaX,b->pxx, deltaY, b->pxy);
     } else { //Not moving anymore, put back down on board
@@ -546,8 +544,6 @@ void simField(playField* pf, cursorType* cur)
         cur->dx=b->dx;
         cur->dy=b->dy;
       }
-      if(!cur->lock)
-        b->curLock=0; //Release cursor from brick no matter what
 
       //Set moving speed 0
       b->moveXspeed=0;
@@ -591,6 +587,8 @@ void simField(playField* pf, cursorType* cur)
           if( cur->lock && cur->x == x && cur->y == y )
           {
             pf->board[x][y]->curLock=1;
+          } else {
+            pf->board[x][y]->curLock=0;
           }
 
           //Things that happens below it
@@ -763,7 +761,6 @@ void simField(playField* pf, cursorType* cur)
       }
     }
   }
-
 }
 
 inline int isBrick(brickType* b)

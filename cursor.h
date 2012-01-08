@@ -1,3 +1,6 @@
+#ifndef HEADER_52AF292CB23E32AB
+#define HEADER_52AF292CB23E32AB
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -34,5 +37,8 @@ typedef struct cursor_t cursorType;
 void updateCursor(cursorType* c); //Update cursor pixel pos if moving
 int moveCursor(cursorType* c,int dirX, int dirY, int limit);
 void initCursor(cursorType* c);
+void setCursor(cursorType* c, int x, int y);
 
 #endif // CONTROL_H_INCLUDED
+
+#endif // header guard 

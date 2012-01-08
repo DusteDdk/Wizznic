@@ -1066,7 +1066,7 @@ int runMenu(SDL_Surface* screen)
           {
             if(setting()->uploadStats && !setting()->online)
             {
-              statsUpload(0,0,0,0,0,"check",1, NULL);
+              statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
             } else if(!setting()->uploadStats)
             {
               setting()->online=0;
@@ -1302,7 +1302,7 @@ int runMenu(SDL_Surface* screen)
             setting()->firstRun=0;
             setting()->uploadStats=1;
             saveSettings();
-            statsUpload(0,0,0,0,0,"check",1,NULL);
+            statsUpload(0,0,0,0,0,"check",1, &(setting()->session));
             setMenu( menuStatePaused );
           }
 

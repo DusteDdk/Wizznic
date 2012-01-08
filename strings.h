@@ -98,7 +98,7 @@
 
 
 ///General strings
-#define VERSION_STRING "v1.0.0-dev"
+#define VERSION_STRING "v1.0.0"
 
 //Menu
 #define STR_MENU_NEW_GAME           "New Game!"
@@ -218,4 +218,4 @@ int splitVals(char ch,const char* buf, char* set, char* val); //Splits a setting
 int charrpos(const char* str, char c); //Return position of last instance of character c
 #endif // STRINGS_H_INCLUDED
 
-#endif // header guard 
+#endif // header guard

@@ -370,9 +370,10 @@ int upStatsThread(void * d)
   {
       setting()->online=1;
 
-      if(ret)
+      if( fgets( pBuf, 127, pipe)!= NULL )
       {
-        if( fgets( pBuf, 127, pipe)!= NULL )
+        printf("Server: (%p) ='%s'\n",ret,pBuf);
+        if(ret)
         {
           *ret=atoi(pBuf);
         }
@@ -393,6 +394,7 @@ void statsUpload(int level, int time, int moves, int combos, int score, const ch
   #ifndef GP2X
   if( (setting()->online || ignoreIfOnline) )
   {
+    printf("StatsUpload with session = %i\n",setting()->session );
     int b = sprintf( curlbuf, "%s\"version=%s&pack=%s&level=%i&time=%i&moves=%i&combos=%i&score=%i&action=%s&session=%i&platform=%s\"",\
      CURLBIN, VERSION_STRING, packState()->cp->path,\
     level,time,moves,combos,score,action, setting()->session, PLATFORM );

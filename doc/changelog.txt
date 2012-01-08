@@ -18,6 +18,7 @@
   Combo-message/text.
 
 1.0.0
+  Fixed long-standing bug where curser jumps around and grabs bricks falling into place of other bricks
   Added thumbnails to wizznic-silver pack.
   Support for mouse/touch input in game (moving bricks around only).
 

@@ -51,7 +51,7 @@ inline int getButton(int btn)
   return(button[btn].state);
 }
 
-inline int setButton(int btn)
+inline void setButton(int btn)
 {
   button[btn].state=1;
   button[btn].time=0;

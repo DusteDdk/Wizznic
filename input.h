@@ -48,7 +48,7 @@ typedef struct {
   int isDown;
 } inpPointerState_t;
 
-inline int setButton(int btn); //Nasty
+inline void setButton(int btn); //Nasty
 inline int getButton(int btn);
 inline int getBtnTime(int btn);
 inline void resetBtnTimer(int btn);
