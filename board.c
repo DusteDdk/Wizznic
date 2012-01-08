@@ -23,6 +23,7 @@
 #include "teleport.h"
 #include "particles.h"
 #include "draw.h"
+#include "input.h"
 
 static int isWall(playField* pf, int x, int y)
 {
@@ -312,7 +313,6 @@ int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int sp
 //Move a brick instantly to teleports dest
 void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
 {
-
   psysSet_t ps; //Particle system for particle effect
   brickType* b = pf->board[t->sx][t->sy];
 
@@ -373,7 +373,13 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
   ps.numParticles=30;
   spawnParticleSystem(&ps);
 
-  //Move cursor?
+  //We detach mouse because it makes no sense to have it locked on,
+  //since the destination might be too far away, and the user won't want
+  //the brick to move towards it's source again.
+  if( getInpPointerState()->isDown )
+  {
+    b->curLock=0;
+  } else   //Move cursor?
   if( cur->lock && cur->x == t->sx && cur->y == t->sy )
   {
     b->curLock=1;
