@@ -102,8 +102,6 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     sprintf(tempStr, "%s%02i.png", li->explBase, i);
     graphics.explImg[i] = loadImg( packGetFile("themes",tempStr) );
 
-    if( graphics.explImg[i]  ) printf("Loaded %s\n",packGetFile("themes",tempStr) );
-
     if(!graphics.explImg[i] && i==0) printf("Couldn't open '%s'\n",packGetFile("themes",tempStr) );
 
     if(graphics.explImg[i])
@@ -260,7 +258,6 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
         //We tread glue/oneways as walls (they will have the walltile defined
         if(pf->board[x][y]->type == GLUE || pf->board[x][y]->type == ONEWAYLEFT || pf->board[x][y]->type == ONEWAYRIGHT )
         {
-          printf("walltype %i\n",pf->board[x][y]->wall);
           drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
         }
         //Is it a wall?
