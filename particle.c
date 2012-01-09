@@ -62,7 +62,7 @@ void spawnParticleSystem(psysSet_t* settings)
       r = ((col & img->format->Rmask) >> img->format->Rshift);
       g = ((col & img->format->Gmask) >> img->format->Gshift);
       b = ((col & img->format->Bmask) >> img->format->Bshift);
-      if( (setting()->bpp==2 && !(r==0 && g==63 && b==31)) || (setting()->bpp==3 && !(r==0x0 && g==0xff && b==0xff) ) )
+      if( !isAlpha(r,g,b) )
       {
         tSystem->particles[i].color = col;
       } else {
@@ -157,6 +157,7 @@ void runParticles(SDL_Surface* screen)
   runParticlesLayer(screen, PSYS_LAYER_TOP);
 }
 
+//This will not enforce PSYS_LAYER_NODRAW (it should not, no particle systems should be created if they are not to be drawn).
 void runParticlesLayer(SDL_Surface* screen, int layer)
 {
   if(!setting()->particles) return;

@@ -32,7 +32,7 @@ struct levelInfo_s
   char* levelName; //Level name
   char* tileBase;  //tile base name
   char* explBase;  //Base name for explotions
-  char* wallDir;  //dir with wall.png and (optional) walls.png
+  char* wallBase;  //dir with wall.png and (optional) walls.png
   char* bgFile;    //backgroundFile
   char* musicFile; //Music file (set by pack.c)
   char* soundDir;  //Directory containing soundeffects

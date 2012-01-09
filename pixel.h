@@ -1,3 +1,6 @@
+#ifndef HEADER_C85983A772BA7658
+#define HEADER_C85983A772BA7658
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -24,4 +27,9 @@ inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
 inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col);
 inline uint32_t freadPixel(SDL_Surface* img, int x, int y);
 
+void setAlphaCol( int bpp );
+inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b);
+
 #endif // PIXEL_H_INCLUDED
+
+#endif // header guard

@@ -51,6 +51,29 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
  }
 }
 
+static int_fast8_t alphaR,alphaG,alphaB;
+
+void setAlphaCol( int bpp )
+{
+  if( bpp==2 )
+  {
+    alphaR=0x00;
+    alphaG=0x3f;
+    alphaB=0x1f;
+  } else if( bpp==3 )
+  {
+    alphaR=0x00;
+    alphaG=0xff;
+    alphaB=0xff;
+  } else {
+    printf("setAlphaCol: Error, bpp=%i we don't support that, we will now crash.\n",bpp);
+  }
+}
+
+inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b)
+{
+  return ( ( r==alphaR && g==alphaG && b==alphaB )?1:0);
+}
 
 
 //inline void plotPixel(SDL_Surface* img, int x, int y, uint16_t col)
@@ -67,6 +90,7 @@ inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col)
 //  *(uint16_t*)( (char*)(img->pixels)+img->pitch*y+2*x ) = col;*/
 }
 
+//This is only used by software-scaler.
 inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col)
 {
   *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+2*x ) = col;

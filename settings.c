@@ -55,7 +55,7 @@ void loadSettings()
   //Set defaults
   settings.soundVol=64;
   settings.musicVol=72;
-  settings.wizClock=600;
+  settings.wizClock=533;
   settings.showFps=0;
   settings.arcadeMode=0;
   settings.particles=1;

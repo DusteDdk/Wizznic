@@ -1,8 +1,11 @@
 #Author of level
 author=DusteD
 
+DusteD123456789
+
 #Name of the level
-levelname= 
+levelname=
+
 
 #Seconds to complete level
 seconds=300
@@ -10,7 +13,7 @@ seconds=300
 bgfile=thor/bg/BG01.png
 tilebase=thor/tiles/thor
 explbase=thor/expl/tomb
-walldir=thor/walls/lightstone
+wallbase=thor/walls/lightstone
 sounddir=oldskool/snd
 
 charbase=thor

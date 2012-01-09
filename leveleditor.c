@@ -210,7 +210,7 @@ int runEditor(SDL_Surface* screen)
     sprintf(buf, "explbase=%s\n", pf.levelInfo->explBase);
     fputs(buf,f);
 
-    sprintf(buf, "walldir=%s\n", pf.levelInfo->wallDir);
+    sprintf(buf, "wallbase=%s\n", pf.levelInfo->wallBase);
     fputs(buf,f);
 
     sprintf(buf, "sounddir=%s\n", pf.levelInfo->soundDir);

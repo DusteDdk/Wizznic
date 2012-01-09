@@ -115,10 +115,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
             tl->explBase=malloc( sizeof(char)*( strlen(val)+1 ) );
             strcpy(tl->explBase, val);
           } else
-          if(strcmp("walldir",set)==0)
+          if(strcmp("wallbase",set)==0)
           {
-            tl->wallDir=malloc( sizeof(char)*( strlen(val)+1 ) );
-            strcpy(tl->wallDir, val);
+            tl->wallBase=malloc( sizeof(char)*( strlen(val)+1 ) );
+            strcpy(tl->wallBase, val);
           } else
           if(strcmp("author",set)==0)
           {
@@ -324,7 +324,7 @@ void freeLevelInfo(levelInfo_t** p)
   if( (*p)->levelName ) free( (*p)->levelName );
   if( (*p)->tileBase ) free( (*p)->tileBase );
   if( (*p)->explBase ) free( (*p)->explBase );
-  if( (*p)->wallDir ) free( (*p)->wallDir );
+  if( (*p)->wallBase ) free( (*p)->wallBase );
   if( (*p)->bgFile ) free( (*p)->bgFile );
   if( (*p)->musicFile ) free( (*p)->musicFile );
   if( (*p)->soundDir ) free( (*p)->soundDir );

@@ -55,8 +55,8 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     graphics.tiles[i] = cutSprite(graphics.tileImg, i*20, 0, 20,20);
   }
 
-  //Wall (Override tile15 in graphics.tiles)
-  sprintf(tempStr, "%s/wall.png", li->wallDir);
+  //Single wall (Override tile15 in graphics.tiles)
+  sprintf(tempStr, "%s.png", li->wallBase);
   graphics.wallImg = loadImg( packGetFile("themes",tempStr) );
   if(!graphics.wallImg)
   {
@@ -69,7 +69,7 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
   graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
 
   //Extra walls, if they exist, if they don't, default to tile 6 (from 0) in tiles.
-  sprintf(tempStr, "%s/walls.png", li->wallDir);
+  sprintf(tempStr, "%s-extra.png", li->wallBase);
   graphics.wallsImg = loadImg( packGetFile("themes",tempStr) );
   if(!graphics.wallsImg) printf("Optional GFX missing: '%s'\n", packGetFile("themes",tempStr) );
   int r,c; //rows, column, sprite index
@@ -323,7 +323,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
     //Spawn particles for brick death
     if(explFrame==8 && pf->levelInfo->brickDieParticles)
     {
-      ps.layer=PSYS_LAYER_UNDERDEATHANIM;
+      ps.layer=pf->levelInfo->brickDieParticles;
       ps.x=b->pxx;
       ps.y=b->pxy;
       ps.vel=50;

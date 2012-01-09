@@ -273,6 +273,8 @@ int main(int argc, char *argv[])
   #endif //< PC version
 
   setting()->bpp = screen->format->BytesPerPixel;
+  setAlphaCol( setting()->bpp );
+
   printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
 
   //Open Joysticks (for wiz)

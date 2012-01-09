@@ -81,13 +81,15 @@
 #define VERTMOVERSPEED 1
 #define HORIZMOVERSPEED 1
 #define FALLINGSPEED 2
+
 //Delays
 #define REPEATDELAY 200
 
 //Particle system layer
-#define PSYS_LAYER_TOP 0
-#define PSYS_LAYER_UNDERBRICK 1
-#define PSYS_LAYER_UNDERDEATHANIM 2
+#define PSYS_LAYER_NODRAW 0
+#define PSYS_LAYER_TOP 1
+#define PSYS_LAYER_UNDERBRICK 2
+#define PSYS_LAYER_UNDERDEATHANIM 3
 
 //To avoid crashing a new version trying to read old highscore files (hmm, as if it's ever gonna happen)
 #define STATS_FILE_FORMAT_VERSION 1
