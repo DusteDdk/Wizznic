@@ -10,7 +10,7 @@ seconds=300
 bgfile=thor/bg/BG07.png
 tilebase=thor/tiles/thor
 explbase=thor/expl/tomb
-walldir=thor/walls/silverstone
+wallbase=thor/walls/silverstone
 sounddir=oldskool/snd
 
 charbase=thor
