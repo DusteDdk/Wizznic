@@ -854,6 +854,7 @@ int runMenu(SDL_Surface* screen)
         starField(screen, 1);
         fireWorks(screen);
         txtWriteCenter(screen, FONTMEDIUM, STR_MENU_SELECT_PACK, HSCREENW, HSCREENH-106);
+        if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_SELECT_PACK_PRESS_CTRL, HSCREENW, HSCREENH-84);
         menuMaxY= packState()->numPacks-1;
         ul=0;
         scroll=0;

@@ -22,7 +22,7 @@ LDFLAGS=$(CFLAGS)
 LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
 
 #Are we compiling with gl?
-ifeq ($(WITH_OPENGL),true)
+ifneq ($(WITH_OPENGL),false)
 	LIBS += -lGL
 	DEFS += -DWITH_OPENGL
 endif

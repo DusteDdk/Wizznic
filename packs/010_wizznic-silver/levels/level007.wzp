@@ -7,20 +7,14 @@ levelname=But how about this?!
 #Seconds to complete level
 seconds=40
 
-#start/stop images, with themes as root. (optional)
 startimage=starts/start7.png
-
-#Background image
-board=boards/bg7
-
-#Tileset name
-tileset=tiles/cyber
-
-#Directory with sound effects
+bgfile=bg/bg7.png
+tilebase=oldskool/tiles/cyberpunk
+explbase=oldskool/expl/melt
+wallbase=walls/invisible
 sounddir=oldskool/snd
-
-#Music to play
-music=none
+cursorfile=cyberpunk.png
+charbase=green
 
 #The level-data block
 [data]

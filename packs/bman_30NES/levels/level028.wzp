@@ -1,10 +1,16 @@
 author=bman
 levelname=NES Level
 seconds=90
-board=amiga/boards/amiga
-tileset=amiga/tiles/amiga
+
+bgfile=amiga/bg.png
+tilebase=amiga/tiles
+wallbase=amiga/wall
 sounddir=oldskool/snd
-music=none
+charbase=green
+cursorfile=amiga.png
+brickdieparticles=1
+brickdietime=40
+
 
 [data]
 1616161616161616161600

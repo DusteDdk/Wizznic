@@ -7,20 +7,14 @@ levelname=Order is important
 #Seconds to complete level
 seconds=25
 
-#start/stop images, with themes as root. (optional)
 startimage=starts/start2.png
-
-#Background image
-board=boards/bg2
-
-#Tileset name
-tileset=tiles/cyber
-
-#Directory with sound effects
+bgfile=bg/bg2.png
+tilebase=oldskool/tiles/cyberpunk
+explbase=oldskool/expl/melt
+wallbase=walls/invisible
 sounddir=oldskool/snd
-
-#Music to play
-music=none
+cursorfile=cyberpunk.png
+charbase=green
 
 #The level-data block
 [data]

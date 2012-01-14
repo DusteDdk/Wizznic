@@ -7,20 +7,14 @@ levelname=Magnets are annoying
 #Seconds to complete level
 seconds=30
 
-#start/stop images, with themes as root. (optional)
 startimage=starts/start1.png
-
-#Background image
-board=boards/bg1
-
-#Tileset name
-tileset=tiles/cyber
-
-#Directory with sound effects
+bgfile=bg/bg1.png
+tilebase=oldskool/tiles/cyberpunk
+explbase=oldskool/expl/melt
+wallbase=walls/invisible
 sounddir=oldskool/snd
-
-#Music to play
-music=none
+cursorfile=cyberpunk.png
+charbase=green
 
 #The level-data block
 [data]

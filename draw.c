@@ -318,6 +318,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
 
     int explFrame = 16*(pf->levelInfo->brick_die_ticks-b->tl)/pf->levelInfo->brick_die_ticks;
+
     drawAniFrame(screen, graphics.brickExpl[b->type-1], b->pxx-5, b->pxy-5,explFrame);
 
     //Spawn particles for brick death

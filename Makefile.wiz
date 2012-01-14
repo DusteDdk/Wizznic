@@ -1,5 +1,5 @@
 ifeq ($(TOOLCHAIN),)
-  OPEN2X = /opt/openwiz/toolchain
+  OPEN2X = ./tools/toolchains/wiz/arm-openwiz-linux-gnu/
 else
   OPEN2X = $(TOOLCHAIN)
 endif

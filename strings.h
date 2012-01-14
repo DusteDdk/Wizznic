@@ -203,6 +203,7 @@
 
 //Packs
 #define STR_MENU_SELECT_PACK        "Select pack"
+#define STR_MENU_SELECT_PACK_PRESS_CTRL STR_MENU_PRESS_B" to select"
 #define STR_MENU_PACKS_MORE         "[More]"
 
 //Game
