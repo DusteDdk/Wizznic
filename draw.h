@@ -1,5 +1,5 @@
-#ifndef HEADER_60B0840EE66BA139
-#define HEADER_60B0840EE66BA139
+#ifndef DRAW_H_INCLUDED
+#define DRAW_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef DRAW_H_INCLUDED
-#define DRAW_H_INCLUDED
 
 #include <SDL/SDL.h>
 #include "defs.h"
@@ -74,5 +71,3 @@ void drawDisableCursor();
 #endif
 
 #endif // DRAW_H_INCLUDED
-
-#endif // header guard

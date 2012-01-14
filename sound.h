@@ -1,3 +1,6 @@
+#ifndef SOUND_H_INCLUDED
+#define SOUND_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -14,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef SOUND_H_INCLUDED
-#define SOUND_H_INCLUDED
 
 #include <SDL/SDL.h>
 
@@ -53,4 +53,5 @@ void soundSetMusic(); //Sets music to either in-game or to user-selected.
 void soundRun(SDL_Surface* screen, int state);
 void soundPlayUserSongNum(int num, char* songName);
 void soundSetMusVol(int v);
+
 #endif // SOUND_H_INCLUDED

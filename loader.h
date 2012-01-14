@@ -1,3 +1,6 @@
+#ifndef LOADER_H_INCLUDED
+#define LOADER_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -15,9 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef LOADER_H_INCLUDED
-#define LOADER_H_INCLUDED
-
-
+//Wait.. WHAT?!
 
 #endif // LOADER_H_INCLUDED

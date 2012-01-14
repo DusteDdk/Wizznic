@@ -1,5 +1,5 @@
-#ifndef HEADER_73579ED918D6B345
-#define HEADER_73579ED918D6B345
+#ifndef INPUT_H_INCLUDED
+#define INPUT_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef INPUT_H_INCLUDED
-#define INPUT_H_INCLUDED
 
 #include <SDL/SDL.h>
 #include "board.h"
@@ -62,5 +59,3 @@ void initControls();
 inline inpPointerState_t* getInpPointerState();
 
 #endif // INPUT_H_INCLUDED
-
-#endif // header guard

@@ -1,5 +1,6 @@
-#ifndef HEADER_7C0E49605EDAA885
-#define HEADER_7C0E49605EDAA885
+#ifndef STRINGS_H_INCLUDED
+#define STRINGS_H_INCLUDED
+
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +18,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef STRINGS_H_INCLUDED
-#define STRINGS_H_INCLUDED
 
 //Specific for platform
 #ifdef GP2X ///Wiz version
@@ -216,6 +214,5 @@
 void stripNewLine(char* str);
 int splitVals(char ch,const char* buf, char* set, char* val); //Splits a setting=value line and returns true if it did. else returns 0
 int charrpos(const char* str, char c); //Return position of last instance of character c
-#endif // STRINGS_H_INCLUDED
 
-#endif // header guard
+#endif // STRINGS_H_INCLUDED

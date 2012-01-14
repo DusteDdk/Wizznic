@@ -1,3 +1,6 @@
+#ifndef TEXT_H_INCLUDED
+#define TEXT_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -15,8 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef TEXT_H_INCLUDED
-#define TEXT_H_INCLUDED
 #include <SDL/SDL.h>
 #include "ticks.h"
 

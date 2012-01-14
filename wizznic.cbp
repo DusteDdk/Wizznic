@@ -33,17 +33,14 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Os" />
-					<Add option="-O2" />
-					<Add option="-O1" />
-					<Add option="-O" />
+					<Add option="-O3" />
 					<Add option="-Wmain" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wall" />
-					<Add option="-g" />
 					<Add option="-DWITH_OPENGL" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add library="SDL" />
 					<Add library="SDL_image" />
 					<Add library="SDL_mixer" />

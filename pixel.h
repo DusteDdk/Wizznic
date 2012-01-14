@@ -1,5 +1,5 @@
-#ifndef HEADER_C85983A772BA7658
-#define HEADER_C85983A772BA7658
+#ifndef PIXEL_H_INCLUDED
+#define PIXEL_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -18,9 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef PIXEL_H_INCLUDED
-#define PIXEL_H_INCLUDED
-
 #include <SDL/SDL.h>
 
 inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
@@ -31,5 +28,3 @@ void setAlphaCol( int bpp );
 inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b);
 
 #endif // PIXEL_H_INCLUDED
-
-#endif // header guard

@@ -1,5 +1,5 @@
-#ifndef HEADER_95E937E2897AF2F
-#define HEADER_95E937E2897AF2F
+#ifndef GAME_H_INCLUDED
+#define GAME_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef GAME_H_INCLUDED
-#define GAME_H_INCLUDED
 
 #include <SDL/SDL.h>
 #include "ticks.h"
@@ -42,5 +39,3 @@ int runGame(SDL_Surface* screen);
 void setGameState(int state);
 
 #endif // GAME_H_INCLUDED
-
-#endif // header guard 

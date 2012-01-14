@@ -1,5 +1,5 @@
-#ifndef HEADER_47EFC508C43A8437
-#define HEADER_47EFC508C43A8437
+#ifndef LEVELEDITOR_H_INCLUDED
+#define LEVELEDITOR_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -18,9 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef LEVELEDITOR_H_INCLUDED
-#define LEVELEDITOR_H_INCLUDED
-
 #include <SDL/SDL.h>
 
 
@@ -30,5 +27,3 @@ void editorFileName(const char* fileName);
 int runEditor(SDL_Surface* screen);
 
 #endif // LEVELEDITOR_H_INCLUDED
-
-#endif // header guard 

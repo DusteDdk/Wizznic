@@ -1,3 +1,6 @@
+#ifndef STATS_H_INCLUDED
+#define STATS_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -14,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef STATS_H_INCLUDED
-#define STATS_H_INCLUDED
 
 #include "list.h"
 #include "text.h"
@@ -77,6 +77,5 @@ void statsSaveHighScore();
 void statsSave();
 
 void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline, int* retVal);
-
 
 #endif // STATS_H_INCLUDED

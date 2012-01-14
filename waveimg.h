@@ -1,3 +1,6 @@
+#ifndef WAVEIMG_H_INCLUDED
+#define WAVEIMG_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -15,9 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef WAVEIMG
-#define WAVEIMG
-
 #include <SDL/SDL.h>
 struct wavingImage_s
 {
@@ -31,4 +31,4 @@ void waveImg(wavingImage_t* wi);
 
 void setWaving(wavingImage_t* wi, SDL_Surface* screen, SDL_Surface* img, int x, int y, int rots, int amount, int speed);
 
-#endif
+#endif // WAVEIMG_H_INCLUDED

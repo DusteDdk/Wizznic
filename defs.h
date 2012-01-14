@@ -1,5 +1,5 @@
-#ifndef HEADER_1353EF642D6D3CF
-#define HEADER_1353EF642D6D3CF
+#ifndef DEFS_H_INCLUDED
+#define DEFS_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef DEFS_H_INCLUDED
-#define DEFS_H_INCLUDED
 
 #define FIELDSIZE 11
 
@@ -117,5 +114,3 @@
 #endif
 
 #endif // DEFS_H_INCLUDED
-
-#endif // header guard

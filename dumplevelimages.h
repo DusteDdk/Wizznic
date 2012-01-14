@@ -1,3 +1,6 @@
+#ifndef DUMPLEVELIMAGES_H_INCLUDED
+#define DUMPLEVELIMAGES_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -15,8 +18,6 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
-#ifndef DUMPLEVELIMAGES_H_INCLUDED
-#define DUMPLEVELIMAGES_H_INCLUDED
 #include <SDL/SDL.h>
 void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartImage);
 void tgaSave(SDL_Surface* screen, const char* fileName);

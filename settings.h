@@ -1,5 +1,5 @@
-#ifndef HEADER_4CE79D5CDBF1BCD7
-#define HEADER_4CE79D5CDBF1BCD7
+#ifndef SETTINGS_HPP_INCLUDED
+#define SETTINGS_HPP_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef SETTINGS_HPP_INCLUDED
-#define SETTINGS_HPP_INCLUDED
 
 #define SETMASK_UPLOAD_ONLINE 1
 #define SETMASK_UPLOAD_ENABLED 2
@@ -62,5 +59,3 @@ void applySettings(); //Without loading first (as not to override unsaved settin
 void initSettings(); //Set ptrs to 0 and load
 
 #endif // SETTINGS_HPP_INCLUDED
-
-#endif // header guard

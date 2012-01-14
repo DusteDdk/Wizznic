@@ -1,5 +1,5 @@
-#ifndef HEADER_55B388E9E8F4D08D
-#define HEADER_55B388E9E8F4D08D
+#ifndef LEVELS_H_INCLUDED
+#define LEVELS_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef LEVELS_H_INCLUDED
-#define LEVELS_H_INCLUDED
 
 #include "list.h"
 #include "stats.h"
@@ -60,5 +57,3 @@ char* userLevelFile(int num);
 int getNumUserLevels();
 
 #endif // LEVELS_H_INCLUDED
-
-#endif // header guard

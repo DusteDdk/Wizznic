@@ -1,6 +1,3 @@
--- Outstanding bugs --
-  The cursor sometimes jumps back and grabs another brick after current brick is destroyed.
-    This also happens with teleporting if you let go at the right time.
 -- Minor bugs --
   The user-music path code is idiotic. Path string keeps getting longer as the user browse around more.
   There is a small delay when shifting a brick off of a moving platform, it's coded that way because it was easier.

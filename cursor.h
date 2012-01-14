@@ -1,5 +1,5 @@
-#ifndef HEADER_52AF292CB23E32AB
-#define HEADER_52AF292CB23E32AB
+#ifndef CONTROL_H_INCLUDED
+#define CONTROL_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef CONTROL_H_INCLUDED
-#define CONTROL_H_INCLUDED
 
 #include "defs.h"
 
@@ -40,5 +37,3 @@ void initCursor(cursorType* c);
 void setCursor(cursorType* c, int x, int y);
 
 #endif // CONTROL_H_INCLUDED
-
-#endif // header guard

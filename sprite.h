@@ -1,3 +1,6 @@
+#ifndef SPRITE_H_INCLUDED
+#define SPRITE_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -14,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef SPRITE_H_INCLUDED
-#define SPRITE_H_INCLUDED
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -44,4 +44,5 @@ void freeAni( aniType* ani );
 void playAni(aniType* ani);
 void drawAni(SDL_Surface* screen, aniType* ani, int x, int y);
 void drawAniFrame(SDL_Surface* screen, aniType* ani, int x, int y, int frame);
+
 #endif // SPRITE_H_INCLUDED

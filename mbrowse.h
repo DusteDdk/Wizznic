@@ -1,3 +1,6 @@
+#ifndef MBROWSE_H_INCLUDED
+#define MBROWSE_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -29,3 +32,5 @@ typedef struct fileListItem_s fileListItem_t;
 void fileListFree();
 void fileListMake(const char* path);
 listItem* fileList();
+
+#endif // MBROWSE_H_INCLUDED

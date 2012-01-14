@@ -1,3 +1,6 @@
+#ifndef PLAYER_H_INCLUDED
+#define PLAYER_H_INCLUDED
+
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2011 Jimmy Christensen <dusted@dusted.dk>             *
@@ -14,9 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
-
-#ifndef PLAYER_H_INCLUDED
-#define PLAYER_H_INCLUDED
 
 #include "stats.h"
 

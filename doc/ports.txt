@@ -3,7 +3,13 @@ Please do not contact me with errors/questions about these ports of wizznic.
 If you're doing a port and it's not here, please contact me ( sf.net ) and tell
 me about it so I can add it!.
 
+Pandora:
+------
+http://farox.rbnet.it/ ( http://repo.openpandora.org/?page=detail&app=Wizznic )
+
 Playstation Portable:
+------
+http://sourceforge.net/projects/wizznic/files/
 
 Canoo:
 ------
