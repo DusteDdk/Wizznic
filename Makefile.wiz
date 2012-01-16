@@ -1,5 +1,5 @@
 ifeq ($(TOOLCHAIN),)
-  OPEN2X = ./tools/toolchains/wiz/arm-openwiz-linux-gnu/
+  OPEN2X = ./tools/toolchains/wiz/arm-openwiz-linux-gnu
 else
   OPEN2X = $(TOOLCHAIN)
 endif
@@ -11,7 +11,7 @@ STRIP = $(OPEN2X)/bin/arm-openwiz-linux-gnu-strip
 NAME=wizznic
 TARGET= $(NAME)-wiz
 
-DEFS = -DGP2X -DIS_LITTLE_ENDIAN -D_REENTRANT -DGP2X_ASM
+DEFS = -DWIZ -DIS_LITTLE_ENDIAN -D_REENTRANT -DGP2X_ASM
 
 INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
 

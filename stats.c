@@ -349,7 +349,7 @@ void statsSaveHighScore()
 
 }
 
-#ifndef GP2X
+#if !defined (GP2X) || !defined (WIZ)
 #include <SDL/SDL_thread.h>
 static char curlbuf[2048];
 typedef struct thrDat
@@ -391,7 +391,7 @@ int upStatsThread(void * d)
 
 void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline, int* retVal)
 {
-  #ifndef GP2X
+  #if !defined (GP2X) || !defined (WIZ)
   if( (setting()->online || ignoreIfOnline) )
   {
     printf("StatsUpload with session = %i\n",setting()->session );

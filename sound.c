@@ -28,7 +28,11 @@
 
 #include "defs.h"
 
+#ifdef WIZ
 #include "platform/wiz.h"
+#elif defined(GP2X)
+  #include "platform/gp2x.h"
+#endif
 
 #ifndef DATADIR
   #define DATADIR ""
@@ -49,10 +53,18 @@ static int lastPlayed[NUMSAMPLES];
 
 int initSound()
 {
+  //TODO: Move rates/buffers 'n stuff to be defined in platform, add "misc" or "pc" platform there too.
+  #ifdef GP2X
+  int audio_rate = 22050;
+  Uint16 audio_format = AUDIO_S16; //16 bit stereo
+  int audio_channels = 2;
+  int audio_buffers = 256;
+  #else
   int audio_rate = 44100;
   Uint16 audio_format = AUDIO_S16; //16 bit stereo
   int audio_channels = 2;
   int audio_buffers = 4096;
+  #endif
   if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
   {
     printf("Couldn't open audio: '%s'\n", Mix_GetError());
@@ -214,7 +226,7 @@ static int cmState = 0; //Current music state
 void soundRun(SDL_Surface* screen,int state)
 {
   //Wiz-Volume control
-  #ifdef GP2X
+  #if defined (GP2X) || defined (WIZ)
   if(getButton( C_BTNVOLUP ) )
   {
     resetBtn( C_BTNVOLUP );

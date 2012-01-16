@@ -223,7 +223,7 @@ void cleanUpDraw()
 }
 
 /* Permanently disables cursor, used for generating preview images */
-#ifndef GP2X
+#if !defined (GP2X) && !defined (WIZ) && !defined (PANDORA)
 void drawDisableCursor()
 {
   if(graphics.curSpr[0]) free(graphics.curSpr[0]);

@@ -18,11 +18,11 @@
 #include "input.h"
 #include "ticks.h"
 
-#ifdef PSP
+#if defined(PSP)
   #include "platform/pspspec.h"
-#endif
-
-#ifdef GP2X
+#elif defined(GP2X)
+  #include "platform/gp2x.h"
+#elif defined(WIZ)
   #include "platform/wiz.h"
 #endif
 
@@ -110,7 +110,7 @@ int runControls()
   {
     switch(event.type)
     {
-        #if defined (GP2X) || defined (PSP)
+        #if defined (GP2X) || defined (PSP) || defined (WIZ)
         case SDL_JOYBUTTONDOWN:
           for(i=0; i < C_NUM; i++)
           {
@@ -120,7 +120,7 @@ int runControls()
               button[i].time=0;
             }
           }
-          #ifdef GP2X
+          #if defined (GP2X) || defined (WIZ)
           switch( event.jbutton.button )
           {
            case GP2X_BUTTON_UPLEFT:
@@ -167,7 +167,7 @@ int runControls()
               button[i].time=0;
             }
           }
-          #ifdef GP2X
+          #if defined (GP2X) || defined (WIZ)
           switch( event.jbutton.button )
           {
             case GP2X_BUTTON_UPLEFT:
@@ -267,7 +267,7 @@ int runControls()
 void initControls()
 {
 
-  #ifdef GP2X
+  #if defined (GP2X) || defined (WIZ)
     button[C_UP].button = GP2X_BUTTON_UP;
     button[C_DOWN].button = GP2X_BUTTON_DOWN;
     button[C_LEFT].button =  GP2X_BUTTON_LEFT;
@@ -313,6 +313,21 @@ void initControls()
     button[C_BTNSELECT].button = SDLK_2;//p2start
     button[C_BTNVOLUP].button = SDLK_a;
     button[C_BTNVOLDOWN].button = SDLK_s;
+  // Added by farox for pandora port
+  #elif defined (PANDORA)
+    button[C_UP].button = SDLK_UP;
+    button[C_DOWN].button = SDLK_DOWN;
+    button[C_LEFT].button = SDLK_LEFT;
+    button[C_RIGHT].button = SDLK_RIGHT;
+    button[C_BTNX].button = SDLK_PAGEDOWN;      // button X
+    button[C_BTNY].button = SDLK_PAGEUP;        // button Y
+    button[C_BTNA].button = SDLK_HOME;          //button A
+    button[C_BTNB].button = SDLK_END;           //button B
+    button[C_SHOULDERA].button = SDLK_RSHIFT;   //L-Shoulder
+    button[C_SHOULDERB].button = SDLK_RCTRL;    //R-Shoulder
+    button[C_BTNMENU].button = SDLK_LALT;       //button START
+    button[C_BTNSELECT].button = SDLK_LCTRL;    //button SELECT
+    // vol button not used
   #else
     button[C_UP].button = SDLK_UP;
     button[C_DOWN].button = SDLK_DOWN;

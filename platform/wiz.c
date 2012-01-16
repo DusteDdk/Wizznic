@@ -4,7 +4,7 @@
 
 #include "wiz.h"
 
-#ifdef GP2X
+#ifdef WIZ
 
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>

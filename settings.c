@@ -22,7 +22,14 @@
 #include "settings.h"
 #include "strings.h"
 #include "pack.h"
-#include "platform/wiz.h"
+
+#ifdef WIZ
+  #include "platform/wiz.h"
+#endif
+#ifdef GP2X
+  #include "platform/gp2x.h"
+#endif
+
 #include "sound.h"
 #include "defs.h"
 #include "userfiles.h"
@@ -252,7 +259,11 @@ void applySettings()
   //Set music volume
   soundSetMusVol( setting()->musicVol );
 
-  #ifdef GP2X
+  //TODO: Rename gp2x functions to GP2X_*
+  #if defined (GP2X)
+  WIZ_SetVolume( settings.wizVol );
+  #endif
+  #if defined (WIZ)
   WIZ_SetVolume( settings.wizVol );
   WIZ_SetClock( setting()->wizClock );
   #endif

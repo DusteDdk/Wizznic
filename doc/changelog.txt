@@ -7,6 +7,8 @@
   leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
+  Make a "PC" define instead of having all these "if not PSP and not GP2X and not Wiz and not Pandora"
+  Make a platform/pc.h with defines for audio rates, define audio rates in platform/*.h
   Get strings into strings.h
   All text buffers should be 1 kb.
   Ceate a "Training" package.
@@ -15,6 +17,7 @@
   Combo-message/text.
 
 1.0.0
+  Added Pandora port, maintained by Farox, thanks, great work! :)
   Magnets and oneways are now overlaid on top of apropiate wall tile.
   Changed level format to be more flexible and easier to use with much different graphics. (see data/empty.wzp in notepad or nano for info)
   Fixed long-standing bug where curser jumps around and grabs bricks falling into place of other bricks

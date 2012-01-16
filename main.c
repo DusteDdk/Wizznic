@@ -40,7 +40,7 @@
 #include "userfiles.h"
 #include "strings.h"
 
-#if !defined (GP2X) && !defined (PSP)
+#if !defined (GP2X) && !defined (PSP) && !defined (WIZ)
   #include <math.h>
   #include "dumplevelimages.h"
 #endif
@@ -66,8 +66,13 @@
     #include <windows.h>
     #include <GL/glew.h>
   #else
-    #include <GL/gl.h>
-    #include <GL/glu.h>
+    #ifdef HAVE_GLES
+        #include <GLES/gl.h>
+        #include "eglport.h"
+    #else
+        #include <GL/gl.h>
+        #include <GL/glu.h>
+    #endif
   #endif
   GLuint texture;
   GLuint dlist;
@@ -81,6 +86,10 @@ int main(int argc, char *argv[])
   int doThumb=0;
   int state=1; //Game, Menu, Editor, Quit
   int sdlVideoModeFlags = SDL_SWSURFACE;
+
+  #ifdef PANDORA
+  doScale=2; //Turn on software scaling (This turns off opengl)
+  #endif
 
   #ifdef PSP
     //Note to PSP porter, please test if HW is actually faster, Wizznic does a lot of memory-manipulation in the screen-surface, each call might initiate a full copy back/forth from video memory. Remove comment when read. :)
@@ -122,7 +131,7 @@ int main(int argc, char *argv[])
   }
 
   //Setup display
-  #if defined (GP2X) || defined (PSP)
+  #if defined (GP2X) || defined (PSP) || defined (WIZ)
   SDL_Surface* screen = SDL_SetVideoMode(SCREENW,SCREENH,16, sdlVideoModeFlags);
   #else
   SDL_Surface* scale=0;
@@ -188,7 +197,11 @@ int main(int argc, char *argv[])
           h=240*factor;
         }
       }
+      #ifdef HAVE_GLES
+      scale = SDL_SetVideoMode(w,h,32, SDL_SWSURFACE | sdlVideoModeFlags | sdlFullScrFlag);
+      #else
       scale = SDL_SetVideoMode(w,h,32, SDL_OPENGL | sdlVideoModeFlags | sdlFullScrFlag);
+      #endif
       screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,24, 0x00ff0000,0x0000ff00,0x000000ff,0xff000000);
 
       int vW = (GLint)h*(320.0f/240.0f);
@@ -227,6 +240,9 @@ int main(int argc, char *argv[])
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       }
 
+      #ifdef HAVE_GLES
+      // to do
+      #else
       dlist = glGenLists (1);
       glNewList(dlist, GL_COMPILE);
       glBegin( GL_QUADS );
@@ -240,6 +256,7 @@ int main(int argc, char *argv[])
         glVertex2i(0,240);
       glEnd();
       glEndList();
+      #endif
 
 
     #else
@@ -269,7 +286,7 @@ int main(int argc, char *argv[])
   SDL_WM_SetIcon(icon, NULL);
   SDL_FreeSurface(icon);
 
-  #endif //< PC version
+  #endif
 
   setting()->bpp = screen->format->BytesPerPixel;
   setAlphaCol( setting()->bpp );
@@ -314,7 +331,7 @@ int main(int argc, char *argv[])
   //Init particles
   initParticles(screen);
 
-  #if !defined (GP2X) && !defined (PSP)
+  #if !defined (GP2X) && !defined (PSP) && !defined (WIZ)
   //Need to dump level-screenshots?
   if(doDump)
   {
@@ -336,7 +353,7 @@ int main(int argc, char *argv[])
   //Set Pack
   packSetByPath( setting()->packDir );
 
-  #if !defined (GP2X) && !defined(PSP)
+  #if !defined (GP2X) && !defined(PSP) && !defined (WIZ)
   if( (setting()->uploadStats) && !(setting()->firstRun) )
   {
     statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
@@ -381,12 +398,12 @@ int main(int argc, char *argv[])
     if(setting()->showFps)
       drawFPS(screen);
 
-    #if defined (GP2X) || defined (PSP)
+    #if defined (GP2X) || defined (PSP) || defined (WIZ)
+    //Oh how I loathe this, is there no better way?
     while(SDL_GetTicks()-lastTick < 20)
     {
 
     }
-
     SDL_Flip(screen);
 
     #else
@@ -395,9 +412,14 @@ int main(int argc, char *argv[])
     #if defined(WITH_OPENGL)
     if( doScale==-1 )
     {
+      #ifdef HAVE_GLES
+      glTexImage2D( GL_TEXTURE_2D, 0, screen->format->BytesPerPixel, screen->w, screen->h, 0, GL_RGB, GL_UNSIGNED_BYTE, screen->pixels );
+      glCallList(dlist);
+      #else
       glTexImage2D( GL_TEXTURE_2D, 0, screen->format->BytesPerPixel, screen->w, screen->h, 0, GL_BGR, GL_UNSIGNED_BYTE, screen->pixels );
       glCallList(dlist);
       SDL_GL_SwapBuffers();
+      #endif
     } else
     #endif
     //The pixel plotting seems to run faster than code usind SDL_Rect, so we still use that for 2x zoom.
@@ -452,7 +474,7 @@ int main(int argc, char *argv[])
 
   SDL_Quit();
 
-  #ifdef GP2X
+  #ifdef WIZ
   WIZ_SetClock(533);
   #endif
 

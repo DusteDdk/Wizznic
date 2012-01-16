@@ -303,6 +303,9 @@ int runEditor(SDL_Surface* screen)
   #elif defined (PSP)
   txtWrite(screen, FONTSMALL,"X", 100,54);
   txtWrite(screen, FONTSMALL,"O", 140,54);
+  #elif defined (PANDORA)
+  txtWrite(screen, FONTSMALL,"B>", HSCREENW-160,HSCREENH-82);
+  txtWrite(screen, FONTSMALL,"<A", HSCREENW-102,HSCREENH-82);
   #else
   txtWrite(screen, FONTSMALL,"Ctrl", HSCREENW-160,HSCREENH-82);
   txtWrite(screen, FONTSMALL,"Alt", HSCREENW-102,HSCREENH-82);

@@ -95,11 +95,15 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
 
   #ifdef GP2X
+    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helpwiz.png" ); // to do for gp2x
+  #elif defined WIZ
     menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helpwiz.png" );
   #elif defined (MAME_CTRL)
     menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc-mame.png" );
   #elif defined (PSP)
      menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppsp.png" );
+  #elif defined PANDORA
+    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc.png" ); // to do for Pandora
   #else
     menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc.png" );
   #endif
@@ -250,7 +254,7 @@ int runMenu(SDL_Surface* screen)
         menuPosY=0;
         clearParticles();
         clearCredits();
-        #if !defined (GP2X) && !defined(PSP)
+        #if !defined (GP2X) && !defined(PSP) && !defined(WIZ)
         if(setting()->firstRun)
         {
           setMenu(menuStateUploadDiag);
@@ -552,7 +556,7 @@ int runMenu(SDL_Surface* screen)
       case menuStateHowto:
       starField(screen,1);
 
-      #if defined (GP2X) || defined (PSP)
+      #if defined (GP2X) || defined (PSP) || defined (WIZ)
       //Sprinkle particles
       if( !dir && countdown < 1 )
       {
@@ -1028,7 +1032,7 @@ int runMenu(SDL_Surface* screen)
           setting()->disableMusic = menuPosX;
         }
 
-        #ifdef GP2X
+        #ifdef WIZ // to do for GP2X
         sprintf(buf, "Wiz Clock: < %i >", setting()->wizClock);
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
         //Set posY
@@ -1052,6 +1056,9 @@ int runMenu(SDL_Surface* screen)
           }
         }
         #else
+        #ifdef GP2X
+        // to do ?
+        #else
         sprintf(buf, (setting()->uploadStats)?"Upload Stats: <Enabled>":"Upload Stats: <Disabled>");
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
         //Set posY
@@ -1074,6 +1081,7 @@ int runMenu(SDL_Surface* screen)
             }
           }
         }
+        #endif // gp2x
         #endif
 
         //Save and exit Options menu
@@ -1275,7 +1283,7 @@ int runMenu(SDL_Surface* screen)
 
       break;
 
-      #ifndef GP2X
+      #if !defined (GP2X) || !defined (WIZ)
       case menuStateUploadDiag:
         starField(screen,1);
         menuMaxY=0;

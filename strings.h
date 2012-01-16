@@ -20,7 +20,7 @@
  ************************************************************************/
 
 //Specific for platform
-#ifdef GP2X ///Wiz version
+#if defined (GP2X) || defined (WIZ) ///gp2x and Wiz version
   //Menu
   #define STR_MENU_PRESS_B            "Press B"
   #define STR_MENU_PRESS_B_PLAY       "Press B to Play"
@@ -74,7 +74,26 @@
     #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
     #define STR_GAME_PRESSB             "Press B1 to Play"
 
-  #else ///Normal
+  #else
+    /// added by farox for pandora port
+    #ifdef PANDORA
+    //Menu
+    #define STR_MENU_PRESS_B            "Press B"
+    #define STR_MENU_PRESS_B_PLAY       "Press B to Play"
+
+    #define STR_MENU_LVLEDIT_USAGE      "Edit: B. Play: A. Clone: Y"
+
+    //Editor
+    #define STR_EDIT_CONTROLS "X:Put Y:Del START:Exit SELECT:Save"
+
+    //Entering highscores
+    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B:Type  A:Delete"
+
+    //Game
+    #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
+    #define STR_GAME_PRESSB             "Press B to Play"
+    ///////////////////////////////////////////////////////////////
+    #else ///Normal
     //Menu
     #define STR_MENU_PRESS_B            "Press Ctrl"
     #define STR_MENU_PRESS_B_PLAY       "Press Ctrl to Play"
@@ -90,6 +109,7 @@
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press Alt to confirm"
     #define STR_GAME_PRESSB             "Press Ctrl to Play"
+    #endif
   #endif
 
 #endif
@@ -190,8 +210,15 @@
 #define STR_EDIT_UNSAVED            "Not saved"
 #define STR_EDIT_STATUS             "Status:"
 #define STR_EDIT_NOT_SAVED_WARNING  "Not Saved!"
+
+#ifdef PANDORA /// added by farox for pandora port
+#define STR_EDIT_PRESS_EXIT_TO_EXIT "Press START to exit without saving."
+#define STR_EDIT_PRESS_SAVE_TO_SAVE "Press SELECT to save the level."
+#else
 #define STR_EDIT_PRESS_EXIT_TO_EXIT "Press Exit to exit without saving."
 #define STR_EDIT_PRESS_SAVE_TO_SAVE "Press Save to save the level."
+#endif
+
 #define STR_EDIT_BRICK              "Brick"
 
 //Options
