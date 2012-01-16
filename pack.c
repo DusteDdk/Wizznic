@@ -160,7 +160,7 @@ void packAdd(const char* packDir)
   ti->icon = loadImg(buf);
   if(!ti->icon)
   {
-    printf("   Warning: '%s' not found.\n", buf);
+//    printf("   Warning: '%s' not found.\n", buf);
     ti->icon = loadImg( DATADIR"data/noicon.png" );
   }
 
@@ -169,7 +169,7 @@ void packAdd(const char* packDir)
   if( !isFile( buf ) )
   {
     ti->hasFinishedImg=0;
-    printf("   Warning: '%s' not found.\n", buf);
+//    printf("   Warning: '%s' not found.\n", buf);
   } else {
     ti->hasFinishedImg=1;
   }
