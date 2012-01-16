@@ -127,6 +127,7 @@ void initCredits(SDL_Surface* screen)
   listAddData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
 
   listAddData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
+  listAddData(msgList, (void*)initMsg("Thx","Farox", screen));
   listAddData(msgList, (void*)initMsg("Thx","bMan", screen));
   listAddData(msgList, (void*)initMsg("Thx","KML", screen));
   listAddData(msgList, (void*)initMsg("Thx","Neil L", screen));
