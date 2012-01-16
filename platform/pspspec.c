@@ -36,3 +36,7 @@ int SetupCallbacks(void)
 	return thid;
 }
 
+void platformExit()
+{
+  sceKernelExitGame();
+}

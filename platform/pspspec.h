@@ -41,5 +41,8 @@ int SetupCallbacks(void);
 int exit_callback(int arg1, int arg2, void *common);
 int CallbackThread(SceSize args, void *argp);
 
+#define PLATFORM_NEEDS_EXIT
+void platformExit();
+
 #endif // PSPSPEC_H
 

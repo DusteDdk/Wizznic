@@ -112,4 +112,9 @@ int WIZ_SetClock(int mhz)
 	close(memfd);
   return(1);
 }
+
+void platformExit()
+{
+    WIZ_SetClock(533);
+}
 #endif

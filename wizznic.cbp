@@ -32,13 +32,13 @@
 				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="-z 2" />
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-Wmain" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add option="-DWITH_OPENGL" />
 					<Add option="-DPC" />
 				</Compiler>
 				<Linker>
@@ -181,6 +181,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="strings.h" />
+		<Unit filename="swscale.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="swscale.h" />
 		<Unit filename="teleport.c">
 			<Option compilerVar="CC" />
 		</Unit>

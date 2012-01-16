@@ -40,6 +40,7 @@
 #include "credits.h"
 #include "userfiles.h"
 #include "strings.h"
+#include "swscale.h"
 
 #ifdef PC
   #include "dumplevelimages.h"
@@ -102,10 +103,8 @@ int main(int argc, char *argv[])
   #if defined (GP2X) || defined (PSP) || defined (WIZ)
   SDL_Surface* screen = SDL_SetVideoMode(SCREENW,SCREENH,16, sdlVideoModeFlags);
   #else
-  SDL_Surface* scale=0;
-  SDL_Surface* screen=0;
+  SDL_Surface* screen=NULL;
 
-  int sdlFullScrFlag=0;
   if(argc==2 || argc==3 || argc==4)
   {
     if(strcmp(argv[1], "-z")==0)
@@ -129,7 +128,7 @@ int main(int argc, char *argv[])
       doThumb=1;
     } else if(strcmp(argv[1], "-f")==0)
     {
-      sdlFullScrFlag=SDL_FULLSCREEN;
+      sdlVideoModeFlags |= SDL_FULLSCREEN;
     } else if(!doScale)
     {
       printf("\n\nUsage:\n  wizznic -d PACKNAME Dumps levelimages for pack.\n  wizznic -z [n] Zoom to 320*n x 240*n\n  wizznic -f run 320x240 in fullscreen\n  wizznic -thumbnailer LVLFILE OUTFILE\n");
@@ -145,7 +144,6 @@ int main(int argc, char *argv[])
 
   if(doScale)
   {
-
     //Hardware accelerated scaling
     if( doScale == -1 )
     {
@@ -157,14 +155,12 @@ int main(int argc, char *argv[])
     #endif
     } else if( doScale > 0 )
     {
-      //Software scaling
-      scale = SDL_SetVideoMode(SCREENW*doScale,SCREENH*doScale,16, sdlVideoModeFlags | sdlFullScrFlag);
-      screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,16, scale->format->Rmask,scale->format->Gmask,scale->format->Bmask,0xff000000);
+      //Set up software scaling
+      screen = swScaleInit(sdlVideoModeFlags,doScale);
     }
   } else {
     //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
-    scale = SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlFullScrFlag);
-    screen=scale;
+    screen=SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlVideoModeFlags);
   }
 
   printf("Scaling factor: %f\n", setting()->scaleFactor);
@@ -289,82 +285,44 @@ int main(int argc, char *argv[])
     if(setting()->showFps)
       drawFPS(screen);
 
-    #if defined (GP2X) || defined (PSP) || defined (WIZ)
+    switch( doScale )
+    {
+      #if defined(HAVE_ACCELERATION)
+      case -1:
+        platformDrawScaled(screen);
+        break;
+      #endif
+      case 0:
+        SDL_Flip(screen);
+        break;
+      #if defined(WANT_SWSCALE)
+      default:
+        swScale(screen,doScale);
+        break;
+      #endif
+    }
+
+    #if defined(CRUDE_TIMING)
     //Oh how I loathe this, is there no better way?
     while(SDL_GetTicks()-lastTick < 20)
     {
 
     }
-    SDL_Flip(screen);
-
     #else
-
-    //OpenGL scaling, scale is the screen and not used.
-    #if defined(HAVE_ACCELERATION)
-    if( doScale==-1 )
-    {
-      platformDrawScaled(screen);
-    } else
-    #endif
-    //The pixel plotting seems to run faster than code usind SDL_Rect, so we still use that for 2x zoom.
-    if(doScale==2)
-    {
-      int x,xx,y,yy;
-      for(y=0; y< SCREENH; y++)
-      {
-        for(x=0; x < SCREENW; x++)
-        {
-          uint16_t c = freadPixel(screen,x,y);/*SDL_MapRGB(scale->format,r,g,b);*/
-          xx=x*2;
-          yy=y*2;
-          plotPixelu(scale, xx,yy, c);
-          plotPixelu(scale, xx+1,yy, c);
-          plotPixelu(scale, xx,yy+1, c);
-          plotPixelu(scale, xx+1,yy+1, c);
-        }
-      }
-    } else if(doScale>2)
-    {
-      int x,y;
-      SDL_Rect r;
-      for(y=0; y< SCREENH; y++)
-      {
-        for(x=0; x < SCREENW; x++)
-        {
-          r.x=x*doScale;
-          r.y=y*doScale;
-          r.w=doScale;
-          r.h=doScale;
-          SDL_FillRect(scale, &r, freadPixel(screen,x,y));
-        }
-      }
-    }
-
-    if( doScale > -1 )
-    {
-      SDL_Flip(scale);
-    }
-
-
-
     int t=SDL_GetTicks()-lastTick;
     if(t < 20)
     {
       SDL_Delay( 20 -t);
     }
     #endif
-
   }
 
+
+  #if defined(PLATFORM_NEEDS_EXIT)
+  platformExit();
+  #endif
+
   SDL_Quit();
-
-  #ifdef WIZ
-  WIZ_SetClock(533);
-  #endif
-
-  #ifdef PSP
-  sceKernelExitGame();
-  #endif
 
   //Not even trying to clean up, OS should do that anyway..
   return(0);

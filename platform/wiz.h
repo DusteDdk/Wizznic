@@ -47,4 +47,7 @@ int WIZ_GetVolume();
 void WIZ_AdjustVolume( int direction );
 int WIZ_SetClock(int mhz);
 
+#define PLATFORM_NEEDS_EXIT
+void platformExit();
+
 #endif
