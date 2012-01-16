@@ -18,13 +18,13 @@
 #include "input.h"
 #include "ticks.h"
 
-#if defined(PSP)
-  #include "platform/pspspec.h"
-#elif defined(GP2X)
-  #include "platform/gp2x.h"
-#elif defined(WIZ)
-  #include "platform/wiz.h"
-#endif
+//#if defined(PSP)
+//  #include "platform/pspspec.h"
+//#elif defined(GP2X)
+//  #include "platform/gp2x.h"
+//#elif defined(WIZ)
+//  #include "platform/wiz.h"
+//#endif
 
 #include "settings.h"
 

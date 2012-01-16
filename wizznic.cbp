@@ -37,10 +37,11 @@
 					<Add option="-Wmain" />
 					<Add option="-Wfatal-errors" />
 					<Add option="-Wall" />
+					<Add option="-g" />
 					<Add option="-DWITH_OPENGL" />
+					<Add option="-DPC" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="SDL" />
 					<Add library="SDL_image" />
 					<Add library="SDL_mixer" />
@@ -129,6 +130,28 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pixel.h" />
+		<Unit filename="platform/gp2x.h">
+			<Option target="Win32" />
+		</Unit>
+		<Unit filename="platform/pandora.h">
+			<Option target="Win32" />
+		</Unit>
+		<Unit filename="platform/pc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="platform/pc.h">
+			<Option target="Win32" />
+		</Unit>
+		<Unit filename="platform/pspspec.c">
+			<Option compilerVar="CC" />
+			<Option target="Win32" />
+		</Unit>
+		<Unit filename="platform/pspspec.h">
+			<Option target="Win32" />
+		</Unit>
+		<Unit filename="platform/wiz.h">
+			<Option target="Win32" />
+		</Unit>
 		<Unit filename="player.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -28,16 +28,6 @@
 
 #include "defs.h"
 
-#ifdef WIZ
-#include "platform/wiz.h"
-#elif defined(GP2X)
-  #include "platform/gp2x.h"
-#endif
-
-#ifndef DATADIR
-  #define DATADIR ""
-#endif
-
 #define MUSIC_FADETIME 500
 
 
@@ -53,24 +43,18 @@ static int lastPlayed[NUMSAMPLES];
 
 int initSound()
 {
-  //TODO: Move rates/buffers 'n stuff to be defined in platform, add "misc" or "pc" platform there too.
-  #ifdef GP2X
-  int audio_rate = 22050;
-  Uint16 audio_format = AUDIO_S16; //16 bit stereo
+  int audio_rate = SOUND_RATE;
+  Uint16 audio_format = SOUND_FORMAT;
   int audio_channels = 2;
-  int audio_buffers = 256;
-  #else
-  int audio_rate = 44100;
-  Uint16 audio_format = AUDIO_S16; //16 bit stereo
-  int audio_channels = 2;
-  int audio_buffers = 4096;
-  #endif
+  int audio_buffers = SOUND_BUFFERS;
+
   if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
   {
     printf("Couldn't open audio: '%s'\n", Mix_GetError());
     return(0);
   }
-  Mix_AllocateChannels(16);
+
+  Mix_AllocateChannels(SOUND_MIX_CHANNELS);
 
   //Set arrays of pointers to null.
   memset(samples, 0, sizeof(Mix_Chunk*)*NUMSAMPLES);

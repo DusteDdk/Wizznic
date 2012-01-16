@@ -21,6 +21,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
+#include "defs.h"
 #include "board.h"
 #include "cursor.h"
 #include "draw.h"
@@ -40,44 +41,9 @@
 #include "userfiles.h"
 #include "strings.h"
 
-#if !defined (GP2X) && !defined (PSP) && !defined (WIZ)
-  #include <math.h>
+#ifdef PC
   #include "dumplevelimages.h"
 #endif
-
-#ifndef DATADIR
-  #define DATADIR "."
-#endif
-
-#ifdef PSP
-  #define MAJOR_VERSION  1
-  #define MINOR_VERSION  0
-  PSP_MODULE_INFO("Wizznic", 0, MAJOR_VERSION, MINOR_VERSION);
-  PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
-  PSP_HEAP_SIZE_KB(-256);
-  #define printf pspDebugScreenPrintf
-#endif
-
-#if defined(WITH_OPENGL)
-  #ifdef WIN32
-    #define GLEW_STATIC
-    #define WINDOWS_LEAN_AND_MEAN
-    #define NOMINMAX
-    #include <windows.h>
-    #include <GL/glew.h>
-  #else
-    #ifdef HAVE_GLES
-        #include <GLES/gl.h>
-        #include "eglport.h"
-    #else
-        #include <GL/gl.h>
-        #include <GL/glu.h>
-    #endif
-  #endif
-  GLuint texture;
-  GLuint dlist;
-#endif
-
 
 int main(int argc, char *argv[])
 {
@@ -120,6 +86,8 @@ int main(int argc, char *argv[])
   //Read settings
   initSettings();
 
+  //Set scaling
+  setting()->scaleFactor=1.0;
 
   atexit(SDL_Quit);
 
@@ -178,89 +146,13 @@ int main(int argc, char *argv[])
   if(doScale)
   {
 
-    //OpenGL scaling
+    //Hardware accelerated scaling
     if( doScale == -1 )
     {
-    #if defined(WITH_OPENGL)
-      const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
-      int w=setting()->glWidth,h=setting()->glHeight;
-      if(sdlFullScrFlag==SDL_FULLSCREEN)
-      {
-        w = vidinfo->current_w;
-        h = vidinfo->current_h;
-      } else {
-        //Find largest resolution within screen
-        if(w==-1||h==-1)
-        {
-          int factor=(int)floor( (float)(vidinfo->current_h-1)/240.0 );
-          w=320*factor;
-          h=240*factor;
-        }
-      }
-      #ifdef HAVE_GLES
-      scale = SDL_SetVideoMode(w,h,32, SDL_SWSURFACE | sdlVideoModeFlags | sdlFullScrFlag);
-      #else
-      scale = SDL_SetVideoMode(w,h,32, SDL_OPENGL | sdlVideoModeFlags | sdlFullScrFlag);
-      #endif
-      screen = SDL_CreateRGBSurface(SDL_SWSURFACE, 320,240,24, 0x00ff0000,0x0000ff00,0x000000ff,0xff000000);
-
-      int vW = (GLint)h*(320.0f/240.0f);
-
-      glViewport(w/2-vW/2, 0, vW, (GLint)h);
-
-      glClearColor(1,0,0,1);
-
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      glOrtho( 0, SCREENW, SCREENH, 0, 0,1);
-      glColor4f(1,1,1,1);
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-
-      glDisable(GL_DEPTH_TEST);
-      glDisable( GL_CULL_FACE );
-      glDisable(GL_LIGHTING);
-
-      glEnable(GL_BLEND);
-      glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-      glColor4f(1,1,1,1);
-
-
-      glEnable(GL_TEXTURE_2D);
-      glGenTextures( 1, &texture );
-      glBindTexture( GL_TEXTURE_2D, texture );
-
-      if( setting()->glFilter )
-      {
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-      } else {
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      }
-
-      #ifdef HAVE_GLES
-      // to do
-      #else
-      dlist = glGenLists (1);
-      glNewList(dlist, GL_COMPILE);
-      glBegin( GL_QUADS );
-        glTexCoord2f(0,0);
-        glVertex2i(0,0);
-        glTexCoord2f(1,0);
-        glVertex2i(320,0);
-        glTexCoord2f(1,1);
-        glVertex2i(320,240);
-        glTexCoord2f(0,1);
-        glVertex2i(0,240);
-      glEnd();
-      glEndList();
-      #endif
-
-
+      #ifdef HAVE_ACCELERATION
+      screen = platformInitAccel(sdlVideoModeFlags);
     #else
-      printf("\nError:\nNo OpenGL support, recompile with -dWITH_GL or change scale setting.\nExiting...\n");
+      printf("\nError:\nNo Accelerated scaling support.\nDisable hwscale in settings. Exiting...\n");
       return(-1);
     #endif
     } else if( doScale > 0 )
@@ -275,9 +167,8 @@ int main(int argc, char *argv[])
     screen=scale;
   }
 
-  //Set scaling
-  setting()->scaleFactor= (float)scale->h/240.0;
   printf("Scaling factor: %f\n", setting()->scaleFactor);
+
 
   //Set window title
   SDL_WM_SetCaption("Wizznic!", "Wizznic!");
@@ -353,7 +244,7 @@ int main(int argc, char *argv[])
   //Set Pack
   packSetByPath( setting()->packDir );
 
-  #if !defined (GP2X) && !defined(PSP) && !defined (WIZ)
+  #if defined(PC)
   if( (setting()->uploadStats) && !(setting()->firstRun) )
   {
     statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
@@ -409,17 +300,10 @@ int main(int argc, char *argv[])
     #else
 
     //OpenGL scaling, scale is the screen and not used.
-    #if defined(WITH_OPENGL)
+    #if defined(HAVE_ACCELERATION)
     if( doScale==-1 )
     {
-      #ifdef HAVE_GLES
-      glTexImage2D( GL_TEXTURE_2D, 0, screen->format->BytesPerPixel, screen->w, screen->h, 0, GL_RGB, GL_UNSIGNED_BYTE, screen->pixels );
-      glCallList(dlist);
-      #else
-      glTexImage2D( GL_TEXTURE_2D, 0, screen->format->BytesPerPixel, screen->w, screen->h, 0, GL_BGR, GL_UNSIGNED_BYTE, screen->pixels );
-      glCallList(dlist);
-      SDL_GL_SwapBuffers();
-      #endif
+      platformDrawScaled(screen);
     } else
     #endif
     //The pixel plotting seems to run faster than code usind SDL_Rect, so we still use that for 2x zoom.

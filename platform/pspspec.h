@@ -1,7 +1,10 @@
-// Sony PSP specific values and combatibility functions
-
 #ifndef PSPSPEC_H
 #define PSPSPEC_H
+
+// Sony PSP specific values and combatibility functions
+
+#define SCREENW 480
+#define SCREENH 272
 
 #include <pspkernel.h>
 #include <pspdebug.h>
@@ -25,6 +28,14 @@
 #define PSP_BUTTON_START    11
 #define PSP_BUTTON_HOME     12
 #define PSP_BUTTON_HOLD     13
+
+//DusteD: Might not work
+#define MAJOR_VERSION  1
+#define MINOR_VERSION  0
+PSP_MODULE_INFO("Wizznic", 0, MAJOR_VERSION, MINOR_VERSION);
+PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
+PSP_HEAP_SIZE_KB(-256);
+#define printf pspDebugScreenPrintf
 
 int SetupCallbacks(void);
 int exit_callback(int arg1, int arg2, void *common);

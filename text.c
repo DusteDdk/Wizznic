@@ -16,14 +16,11 @@
  ************************************************************************/
 
 #include <math.h>
+#include "defs.h"
 
 #include "text.h"
 #include "sprite.h"
 #include "pack.h"
-
-#ifndef DATADIR
-  #define DATADIR ""
-#endif
 
 static SDL_Surface* txtSurf[NUMFONTS];
 static spriteType* txtSprites[NUMFONTS][91];

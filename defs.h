@@ -49,14 +49,24 @@
 #define DIRUP -1
 #define DIRDOWN 1
 
-//Screen sizes
-#ifdef PSP
-  #define SCREENW 480
-  #define SCREENH 272
-#else
-  #define SCREENW 320
-  #define SCREENH 240
+//Data directory
+#ifndef DATADIR
+  #define DATADIR "./"
 #endif
+
+//Get defines from platform .h file
+#if defined(PANDORA)  //Pandora
+  #include "platform/pandora.h"
+#elif defined(PSP)    //PSP
+  #include "platform/pspspec.h"
+#elif defined(GP2X)   //GP2X
+  #include "platform/gp2x.h"
+#elif defined(WIZ)    //GP2X Wiz
+  #include "platform/wiz.h"
+#else                 //Linux, Windows, Default
+  #include "platform/pc.h"
+#endif
+
 
 //Half the resolution is practical for centering content
 #define HSCREENW  SCREENW/2
@@ -93,23 +103,10 @@
 
 //Url where stats are
 #define STATS_SERVER_URL "http://dusted.dk/wizznic"
-#ifdef WIN32
-  #define CURLBIN "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"/commit.php --data-ascii "
-#else
-  #define CURLBIN "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
-#endif
 
-#ifndef PLATFORM
-  #if defined(WIN32)
-    #define PLATFORM "Windows"
-  #endif
-
-  #if defined(linux) || defined(__linux)
-    #define PLATFORM "Linux"
-  #endif
-
-  #ifndef PLATFORM
-    #define PLATFORM "Unknown"
+#ifndef STR_PLATFORM
+  #ifndef STR_PLATFORM
+    #define STR_PLATFORM "Unknown"
   #endif
 #endif
 

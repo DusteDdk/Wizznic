@@ -1,7 +1,17 @@
-/* This file was copied with little or no modification from the WizPort of OpenJazz */
-
 #ifndef _WIZ_H
 #define _WIZ_H
+
+/* This file was copied with little or no modification from the WizPort of OpenJazz */
+
+//Video
+#define SCREENW 320
+#define SCREENH 240
+
+//Audio
+#define SOUND_RATE  22050
+#define SOUND_FORMAT  AUDIO_S16
+#define SOUND_BUFFERS 256
+#define SOUND_MIX_CHANNELS 16
 
 #define VOLUME_MIN 0
 #define VOLUME_MAX 100

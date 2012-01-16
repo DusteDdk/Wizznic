@@ -1,7 +1,19 @@
-/* This file was copied with little or no modification from the WizPort of OpenJazz */
-
 #ifndef _GP2X_H
 #define _GP2X_H
+
+/* This file was copied with little or no modification from the WizPort of OpenJazz */
+
+
+//Video
+#define SCREENW 320
+#define SCREENH 240
+
+//Sound
+#define SOUND_RATE  22050
+#define SOUND_FORMAT  AUDIO_S16
+#define SOUND_BUFFERS 256
+#define SOUND_MIX_CHANNELS 8
+
 
 #define VOLUME_MIN 0
 #define VOLUME_MAX 100
@@ -35,6 +47,5 @@ void WIZ_ShowVolume(SDL_Surface* screen);
 void WIZ_SetVolume( int volumePercent );
 int WIZ_GetVolume();
 void WIZ_AdjustVolume( int direction );
-//int WIZ_SetClock(int mhz);
 
 #endif
