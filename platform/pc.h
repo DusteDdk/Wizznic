@@ -1,8 +1,8 @@
 #ifndef PC_H_INCLUDED
 #define PC_H_INCLUDED
 
-#define SCREENW 600
-#define SCREENH 400
+#define SCREENW 320
+#define SCREENH 240
 
 #include <math.h>
 
