@@ -31,6 +31,7 @@ void setWaving(wavingImage_t* wi, SDL_Surface* screen, SDL_Surface* img, int x, 
   wi->rotations=rots;
   wi->amount=amount;
   wi->speed=speed;
+  wi->privRotAmount=0;
 }
 
 //void waveImg(SDL_Surface* screen, SDL_Surface* img, int xx, int yy, int rots, int amount, int speed)

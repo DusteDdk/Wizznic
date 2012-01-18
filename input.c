@@ -18,13 +18,7 @@
 #include "input.h"
 #include "ticks.h"
 
-//#if defined(PSP)
-//  #include "platform/pspspec.h"
-//#elif defined(GP2X)
-//  #include "platform/gp2x.h"
-//#elif defined(WIZ)
-//  #include "platform/wiz.h"
-//#endif
+#include "defs.h"
 
 #include "settings.h"
 
@@ -110,7 +104,7 @@ int runControls()
   {
     switch(event.type)
     {
-        #if defined (GP2X) || defined (PSP) || defined (WIZ)
+        #if defined (GP2X) || defined (WIZ)
         case SDL_JOYBUTTONDOWN:
           for(i=0; i < C_NUM; i++)
           {
@@ -120,7 +114,7 @@ int runControls()
               button[i].time=0;
             }
           }
-          #if defined (GP2X) || defined (WIZ)
+
           switch( event.jbutton.button )
           {
            case GP2X_BUTTON_UPLEFT:
@@ -157,7 +151,7 @@ int runControls()
             break;
           }
         break;
-        #endif
+
         case SDL_JOYBUTTONUP:
           for(i=0; i < C_NUM; i++)
           {
@@ -167,7 +161,6 @@ int runControls()
               button[i].time=0;
             }
           }
-          #if defined (GP2X) || defined (WIZ)
           switch( event.jbutton.button )
           {
             case GP2X_BUTTON_UPLEFT:
@@ -196,7 +189,6 @@ int runControls()
             break;
           }
         break;
-        #endif
 
         //Keyboard
         #else
@@ -266,84 +258,21 @@ int runControls()
 
 void initControls()
 {
+  button[C_UP].button = PLATFORM_BUTTON_UP;
+  button[C_DOWN].button = PLATFORM_BUTTON_DOWN;
+  button[C_LEFT].button = PLATFORM_BUTTON_LEFT;
+  button[C_RIGHT].button = PLATFORM_BUTTON_RIGHT;
+  button[C_BTNX].button = PLATFORM_BUTTON_X;
+  button[C_BTNY].button = PLATFORM_BUTTON_Y;
+  button[C_BTNA].button = PLATFORM_BUTTON_A;
+  button[C_BTNB].button = PLATFORM_BUTTON_B;
+  button[C_SHOULDERA].button = PLATFORM_SHOULDER_LEFT;
+  button[C_SHOULDERB].button = PLATFORM_SHOULLER_RIGHT;
+  button[C_BTNMENU].button = PLATFORM_BUTTON_MENU;
+  button[C_BTNSELECT].button = PLATFORM_BUTTON_SELECT;
+  button[C_BTNVOLUP].button = PLATFORM_BUTTON_VOLUP;
+  button[C_BTNVOLDOWN].button = PLATFORM_BUTTON_VOLDOWN;
 
-  #if defined (GP2X) || defined (WIZ)
-    button[C_UP].button = GP2X_BUTTON_UP;
-    button[C_DOWN].button = GP2X_BUTTON_DOWN;
-    button[C_LEFT].button =  GP2X_BUTTON_LEFT;
-    button[C_RIGHT].button = GP2X_BUTTON_RIGHT;
-    button[C_BTNY].button = GP2X_BUTTON_Y;
-    button[C_BTNX].button = GP2X_BUTTON_X;
-    button[C_BTNA].button = GP2X_BUTTON_A;
-    button[C_BTNB].button = GP2X_BUTTON_B;
-    button[C_SHOULDERA].button = GP2X_BUTTON_L;
-    button[C_SHOULDERB].button = GP2X_BUTTON_R;
-    button[C_BTNMENU].button = GP2X_BUTTON_START;
-    button[C_BTNSELECT].button = GP2X_BUTTON_SELECT;
-    button[C_BTNVOLUP].button = GP2X_BUTTON_VOLUP;
-    button[C_BTNVOLDOWN].button = GP2X_BUTTON_VOLDOWN;
-  #elif defined (PSP)
-    button[C_UP].button = PSP_BUTTON_UP;
-    button[C_DOWN].button = PSP_BUTTON_DOWN;
-    button[C_LEFT].button =  PSP_BUTTON_LEFT;
-    button[C_RIGHT].button = PSP_BUTTON_RIGHT;
-    button[C_BTNY].button = PSP_BUTTON_TRIANGLE;
-    button[C_BTNX].button = PSP_BUTTON_SQUARE;
-    button[C_BTNA].button = PSP_BUTTON_CIRCLE;
-    button[C_BTNB].button = PSP_BUTTON_CROSS;
-    button[C_SHOULDERA].button = PSP_BUTTON_LTRIGGER;
-    button[C_SHOULDERB].button = PSP_BUTTON_RTRIGGER;
-    button[C_BTNMENU].button = PSP_BUTTON_START;
-    button[C_BTNSELECT].button = PSP_BUTTON_SELECT;
-    button[C_BTNVOLUP].button = GP2X_BUTTON_VOLUP;
-    button[C_BTNVOLDOWN].button = GP2X_BUTTON_VOLDOWN;
-  #elif defined (MAME_CTRL)
-    #warning "Compiling with MAME keys"
-    button[C_UP].button = SDLK_UP;
-    button[C_DOWN].button = SDLK_DOWN;
-    button[C_LEFT].button = SDLK_LEFT;
-    button[C_RIGHT].button = SDLK_RIGHT;
-    button[C_BTNX].button = SDLK_SPACE; //b4
-    button[C_BTNY].button = SDLK_LSHIFT;//b3
-    button[C_BTNA].button = SDLK_LALT;  //b2
-    button[C_BTNB].button = SDLK_LCTRL; //b1
-    button[C_SHOULDERA].button = SDLK_8;
-    button[C_SHOULDERB].button = SDLK_9;
-    button[C_BTNMENU].button = SDLK_1;  //p1start
-    button[C_BTNSELECT].button = SDLK_2;//p2start
-    button[C_BTNVOLUP].button = SDLK_a;
-    button[C_BTNVOLDOWN].button = SDLK_s;
-  // Added by farox for pandora port
-  #elif defined (PANDORA)
-    button[C_UP].button = SDLK_UP;
-    button[C_DOWN].button = SDLK_DOWN;
-    button[C_LEFT].button = SDLK_LEFT;
-    button[C_RIGHT].button = SDLK_RIGHT;
-    button[C_BTNX].button = SDLK_PAGEDOWN;      // button X
-    button[C_BTNY].button = SDLK_PAGEUP;        // button Y
-    button[C_BTNA].button = SDLK_HOME;          //button A
-    button[C_BTNB].button = SDLK_END;           //button B
-    button[C_SHOULDERA].button = SDLK_RSHIFT;   //L-Shoulder
-    button[C_SHOULDERB].button = SDLK_RCTRL;    //R-Shoulder
-    button[C_BTNMENU].button = SDLK_LALT;       //button START
-    button[C_BTNSELECT].button = SDLK_LCTRL;    //button SELECT
-    // vol button not used
-  #else
-    button[C_UP].button = SDLK_UP;
-    button[C_DOWN].button = SDLK_DOWN;
-    button[C_LEFT].button = SDLK_LEFT;
-    button[C_RIGHT].button = SDLK_RIGHT;
-    button[C_BTNY].button = SDLK_z;
-    button[C_BTNX].button = SDLK_x;
-    button[C_BTNA].button = SDLK_LALT;
-    button[C_BTNB].button = SDLK_LCTRL;
-    button[C_SHOULDERA].button = SDLK_1;
-    button[C_SHOULDERB].button = SDLK_2;
-    button[C_BTNMENU].button = SDLK_ESCAPE;
-    button[C_BTNSELECT].button = SDLK_SPACE;
-    button[C_BTNVOLUP].button = SDLK_F1;
-    button[C_BTNVOLDOWN].button = SDLK_F2;
-  #endif
 
   memset( &inpPointer, 0, sizeof(inpPointerState_t) );
   inpPointer.timeSinceMoved=POINTER_SHOW_TIMEOUT;

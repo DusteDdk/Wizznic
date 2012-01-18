@@ -147,10 +147,10 @@ int main(int argc, char *argv[])
     //Hardware accelerated scaling
     if( doScale == -1 )
     {
-      #ifdef HAVE_ACCELERATION
+    #ifdef HAVE_ACCELERATION
       screen = platformInitAccel(sdlVideoModeFlags);
     #else
-      printf("\nError:\nNo Accelerated scaling support.\nDisable hwscale in settings. Exiting...\n");
+      printf("\nError:\n  I only compiled with software scaling support.\n  Disable hardware scaling!\n  Exiting...\n");
       return(-1);
     #endif
     } else if( doScale > 0 )
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
   //Init particles
   initParticles(screen);
 
-  #if !defined (GP2X) && !defined (PSP) && !defined (WIZ)
+  #if defined(PC)
   //Need to dump level-screenshots?
   if(doDump)
   {
@@ -252,7 +252,6 @@ int main(int argc, char *argv[])
   //Start playing music (has to be done after readong settings)
   soundSetMusic();
 
-  printf("Initializing Credits...\n");
   //Initialize credits
   initCredits(screen);
 
@@ -306,7 +305,7 @@ int main(int argc, char *argv[])
     //Oh how I loathe this, is there no better way?
     while(SDL_GetTicks()-lastTick < 20)
     {
-
+      //Burn, burn baby burn!
     }
     #else
     int t=SDL_GetTicks()-lastTick;

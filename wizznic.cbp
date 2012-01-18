@@ -32,7 +32,6 @@
 				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-z 2" />
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-Wmain" />

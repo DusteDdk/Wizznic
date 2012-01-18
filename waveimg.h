@@ -23,7 +23,7 @@ struct wavingImage_s
 {
   SDL_Surface *screen, *img;
   int x,y,rotations,amount,speed;
-  float privRotAmount;
+  float privRotAmount; //Note: If this is not initialized properly it might be nan, in which case nothing will be shown.
 };
 typedef struct wavingImage_s wavingImage_t;
 //void waveImg(SDL_Surface* screen, SDL_Surface* img, int x, int y,int rots, int amount, int speed);

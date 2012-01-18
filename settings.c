@@ -259,7 +259,7 @@ void applySettings()
   //Set music volume
   soundSetMusVol( setting()->musicVol );
 
-  //TODO: Rename gp2x functions to GP2X_*
+  ///TODO: These should be "Platform_*"
   #if defined (GP2X)
   WIZ_SetVolume( settings.wizVol );
   #endif

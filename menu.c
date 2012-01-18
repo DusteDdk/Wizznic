@@ -93,20 +93,7 @@ int initMenu(SDL_Surface* screen)
 {
   kb=&kbl;
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
-
-  #ifdef GP2X
-    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helpwiz.png" ); // to do for gp2x
-  #elif defined WIZ
-    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helpwiz.png" );
-  #elif defined (MAME_CTRL)
-    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc-mame.png" );
-  #elif defined (PSP)
-     menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppsp.png" );
-  #elif defined PANDORA
-    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc.png" ); // to do for Pandora
-  #else
-    menuBg[MENUGFXHELP] = loadImg( DATADIR"data/menu/helppc.png" );
-  #endif
+  menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
   helpSpr = cutSprite(menuBg[MENUGFXHELP],0,0,320,240);
   menuBg[MENUGFXBYE]=0;
@@ -211,16 +198,17 @@ int runMenu(SDL_Surface* screen)
   {
     case menuStateIntro:
 
-      //Intr not working on PSP.. Skip it untill its fixed.
-      #if defined (PSP) && !defined (PSP_DEBUG_INTRO)
-        menuState=menuStatePaused;
-        SDL_FreeSurface( menuBg[MENUGFXINTRO] );
-        menuBg[MENUGFXINTRO]=0;
-        menuPosY=0;
-        clearParticles();
-        clearCredits();
-        break;
-      #endif
+//Intro should no longer crash PSP, will porter please get back to me on this?
+//Intr not working on PSP.. Skip it untill its fixed.
+//      #if defined (PSP) && !defined (PSP_DEBUG_INTRO)
+//        menuState=menuStatePaused;
+//        SDL_FreeSurface( menuBg[MENUGFXINTRO] );
+//        menuBg[MENUGFXINTRO]=0;
+//        menuPosY=0;
+//        clearParticles();
+//        clearCredits();
+//        break;
+//      #endif
 
       //Show background image
       starField(screen,1);

@@ -40,6 +40,25 @@
 #define GP2X_BUTTON_VOLUP           (16)
 #define GP2X_BUTTON_VOLDOWN         (17)
 
+//Help file for this platform (appended to DATADIR)
+#define PLATFORM_HELP_FILE        "data/menu/helpwiz.png"
+
+//Button definitions
+#define PLATFORM_BUTTON_UP        GP2X_BUTTON_UP
+#define PLATFORM_BUTTON_DOWN      GP2X_BUTTON_DOWN
+#define PLATFORM_BUTTON_LEFT      GP2X_BUTTON_LEFT
+#define PLATFORM_BUTTON_RIGHT     GP2X_BUTTON_RIGHT
+#define PLATFORM_BUTTON_X         GP2X_BUTTON_X
+#define PLATFORM_BUTTON_Y         GP2X_BUTTON_Y
+#define PLATFORM_BUTTON_A         GP2X_BUTTON_A
+#define PLATFORM_BUTTON_B         GP2X_BUTTON_B
+#define PLATFORM_SHOULDER_LEFT    GP2X_BUTTON_L
+#define PLATFORM_SHOULLER_RIGHT   GP2X_BUTTON_R
+#define PLATFORM_BUTTON_MENU      GP2X_BUTTON_START
+#define PLATFORM_BUTTON_SELECT    GP2X_BUTTON_SELECT
+#define PLATFORM_BUTTON_VOLUP     GP2X_BUTTON_VOLUP
+#define PLATFORM_BUTTON_VOLDOWN   GP2X_BUTTON_VOLDOWN
+
 #include "../text.h"
 void WIZ_ShowVolume(SDL_Surface* screen);
 void WIZ_SetVolume( int volumePercent );

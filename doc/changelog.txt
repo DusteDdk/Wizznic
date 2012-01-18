@@ -1,13 +1,14 @@
 -- Minor bugs --
   The user-music path code is idiotic. Path string keeps getting longer as the user browse around more.
-  There is a small delay when shifting a brick off of a moving platform, it's coded that way because it was easier.
+  There is a small delay when shifting a brick off of a moving platform, it's a tile based game, the game
+    has to wait until the brick is within a tile before it can move it away from the moving platform.
 
 -- Won't fix --
   The menu-music might clip, this is a bug in an old SDL_Mixer version (I think, since I've not been able to reproduce since I upgraded SDL_Mixer)
   leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
-  Make a "PC" define instead of having all these "if not PSP and not GP2X and not Wiz and not Pandora"
+  Use the theme bigfont to display ingame messages (like restart, unsolvable)
   Make a platform/pc.h with defines for audio rates, define audio rates in platform/*.h
   Get strings into strings.h
   All text buffers should be 1 kb.
@@ -17,6 +18,8 @@
   Combo-message/text.
 
 1.0.0
+  Fixed bug in the credits that crashed PSP and caused the "sinus" text to sometimes not show up.
+  Code is more portable and easier to port.
   Added Pandora port, maintained by Farox, thanks, great work! :)
   Magnets and oneways are now overlaid on top of apropiate wall tile.
   Changed level format to be more flexible and easier to use with much different graphics. (see data/empty.wzp in notepad or nano for info)

@@ -76,7 +76,6 @@ msg_t* initMsg(const char* strTitle, const char* strName,SDL_Surface* screen)
   SDL_SetColorKey( tempSurf, SDL_SRCCOLORKEY, SDL_MapRGB( tempSurf->format, 0, 0xFF, 0xFF ) );
   t->nameWaving.img=tempSurf;
 
-  t->stateTicks=0;
   return(t);
 }
 
@@ -84,17 +83,18 @@ void setCurrent()
 {
   cm=(msg_t*)listGetItemData(msgList,currentMsgIndex);
 
-
+  cm->stateTicks=0;
   cm->state=MSGSTATE_TITLE_SLIDING_IN;
   cm->rTitle.w=0;
   cm->rTitle.h=0;
-  cm->rTitle.x=321;
+  cm->rTitle.x=SCREENW+1;
   cm->rTitle.y=HSCREENH+15;
-  cm->nameWaving.x= -(cm->nameWaving.img->w);
+  cm->nameWaving.x=-(cm->nameWaving.img->w);
   cm->nameWaving.y=HSCREENH+35;
   cm->nameWaving.rotations=2+(cm->nameWaving.img->w/100);
   cm->nameWaving.amount=35;
   cm->nameWaving.speed=50;
+  cm->nameWaving.privRotAmount=0;
 
   //Setup particle system
   ps.layer=PSYS_LAYER_TOP;
@@ -201,6 +201,7 @@ void runCredits(SDL_Surface* screen)
     break;
 
     case MSGSTATE_NAME_SLIDING_IN:
+
       //Draw title
       drawTitle(screen, cm);
       //Slide in name
@@ -210,6 +211,7 @@ void runCredits(SDL_Surface* screen)
         cm->nameWaving.x = ( HSCREENW-cm->nameWaving.img->w/2 );
         cm->state=MSGSTATE_NAME_DECREASE_WAVE;
       }
+
       waveImg( &cm->nameWaving );
     break;
 

@@ -428,7 +428,7 @@ int runGame(SDL_Surface* screen)
     {
       if(ret > 2) //Check for combo's
       {
-        //TODO: Some nice text effect? How about dissolving an image into a particle system.
+        ///TODO: Some nice text effect? How about dissolving an image into a particle system?
         printf("%i Combo!\n",ret);
         player()->hsEntry.combos++;
       }
