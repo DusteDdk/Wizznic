@@ -4,9 +4,9 @@
 #define SCREENW 320
 #define SCREENH 240
 
-#include <math.h>
-
 //For Uploading stats
+#define PLATFORM_SUPPORTS_STATSUPLOAD
+
 #if defined(WIN32)
   #if defined(WITH_OPENGL)
     #define GLEW_STATIC

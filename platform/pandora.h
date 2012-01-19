@@ -1,6 +1,11 @@
 #ifndef PANDORA_H_INCLUDED
 #define PANDORA_H_INCLUDED
 
+//Stats uploading for pandora, using wget ?
+#define PLATFORM_SUPPORTS_STATSUPLOAD
+#define STR_PLATFORM "Pandora"
+#define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicPandora --timeout=10 --tries=1 --post-data="
+
 //Video
 #define SCREENW 320
 #define SCREENH 240

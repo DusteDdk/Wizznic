@@ -3,6 +3,8 @@
 
 // Sony PSP specific values and combatibility functions
 
+// LCD Native size is only a tiny amount larger than wizznic-native
+// screen, so we offset eveything to the middle instead.
 #define SCREENW 480
 #define SCREENH 272
 

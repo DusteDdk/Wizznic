@@ -138,6 +138,7 @@ int main(int argc, char *argv[])
   }
 
   #if defined(WITH_OPENGL)
+  //If we were started with no -z option, we check to see if gl scaling was enabled in settings.ini
   if( setting()->glEnable && doScale==0 )
     doScale=-1;
   #endif
@@ -150,13 +151,18 @@ int main(int argc, char *argv[])
     #ifdef HAVE_ACCELERATION
       screen = platformInitAccel(sdlVideoModeFlags);
     #else
-      printf("\nError:\n  I only compiled with software scaling support.\n  Disable hardware scaling!\n  Exiting...\n");
+      printf("\nError:\n  Not compiled with hardware-scaling support, don't give me -z -1\n  Exiting...\n");
       return(-1);
     #endif
     } else if( doScale > 0 )
     {
+    #ifdef WANT_SWSCALE
       //Set up software scaling
       screen = swScaleInit(sdlVideoModeFlags,doScale);
+    #else
+      printf("\nError:\n  I don't support software scaling, don't give me any -z options\n  Exiting...\n");
+      return(-1);
+    #endif
     }
   } else {
     //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
@@ -240,7 +246,7 @@ int main(int argc, char *argv[])
   //Set Pack
   packSetByPath( setting()->packDir );
 
-  #if defined(PC)
+  #if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
   if( (setting()->uploadStats) && !(setting()->firstRun) )
   {
     statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );

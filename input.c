@@ -216,13 +216,9 @@ int runControls()
 
         //Handle pointer events
         case SDL_MOUSEBUTTONDOWN:
-          inpPointer.startX = ((event.button.x/setting()->scaleFactor)-boardOffsetX)/(20);
-          inpPointer.startY = ((event.button.y/setting()->scaleFactor)-boardOffsetY)/(20);
-          if( inpPointer.startX > -1 && inpPointer.startX < 11 &&
-              inpPointer.startY > -1 && inpPointer.startY < 11 )
+          if( inpPointer.curX > -1 && inpPointer.curX< 11 &&
+              inpPointer.curY > -1 && inpPointer.curY < 11 )
           {
-            inpPointer.curX = inpPointer.startX;
-            inpPointer.curY = inpPointer.startY;
             inpPointer.downTime=0;
             inpPointer.isDown=1;
           }
@@ -235,8 +231,8 @@ int runControls()
           inpPointer.vpX = (event.motion.x/setting()->scaleFactor);
           inpPointer.vpY = (event.motion.y/setting()->scaleFactor);
 
-          inpPointer.curX = (inpPointer.vpX-boardOffsetX)/(20);
-          inpPointer.curY = (inpPointer.vpY-boardOffsetY)/(20);
+          inpPointer.curX = (inpPointer.vpX-(boardOffsetX*setting()->scaleFactor))/(20);
+          inpPointer.curY = (inpPointer.vpY-(boardOffsetY*setting()->scaleFactor))/(20);
 
           inpPointer.timeSinceMoved=0;
 

@@ -101,6 +101,7 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
 
   setWaving(&waving, screen, menuBg[MENUGFXINTRO], HSCREENW-149,HSCREENH-90,1,15,300);
+  waving.privRotAmount=0; //In case it was nan
 
   return(1);
 }
@@ -242,7 +243,7 @@ int runMenu(SDL_Surface* screen)
         menuPosY=0;
         clearParticles();
         clearCredits();
-        #if !defined (GP2X) && !defined(PSP) && !defined(WIZ)
+        #if defined (PLATFORM_SUPPORTS_STATSUPLOAD)
         if(setting()->firstRun)
         {
           setMenu(menuStateUploadDiag);
