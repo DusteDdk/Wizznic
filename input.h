@@ -56,6 +56,10 @@ void resetBtnAll();
 int runControls();
 void initControls();
 
+
+int_fast8_t isPointerClicked();
+int_fast8_t isBoxClicked( SDL_Rect* r );
+
 inline inpPointerState_t* getInpPointerState();
 
 #endif // INPUT_H_INCLUDED

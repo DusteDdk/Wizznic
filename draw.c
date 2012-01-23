@@ -151,10 +151,6 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     graphics.teleColorTable[i] = SDL_MapRGB( screen->format, 0,(int)(255.0-(float)i*f),0  );
   }
 
-  //The color white
-  graphics.colWhite = SDL_MapRGB( screen->format, 255,255,255 );
-
-
   return(1);
 }
 
@@ -371,15 +367,6 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   else
     drawSprite(screen, graphics.curSpr[1], cur->px, cur->py);
 
-  //Cursor "spot"
-  if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
-  {
-    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY-2, graphics.colWhite );
-    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY+2, graphics.colWhite );
-
-    plotPixel(screen, getInpPointerState()->vpX-2, getInpPointerState()->vpY, graphics.colWhite );
-    plotPixel(screen, getInpPointerState()->vpX+2, getInpPointerState()->vpY, graphics.colWhite );
-  }
 
   if(graphics.curSpr[0] && cur->moving )
   {
@@ -494,5 +481,23 @@ void drawAllTelePaths( SDL_Surface* screen, listItem* l )
     t = (telePort_t*)it->data;
     drawTelePath(screen, t, 0);
 
+  }
+}
+
+void initPointer(SDL_Surface* screen)
+{
+  //The color white
+  graphics.colWhite = SDL_MapRGBA( screen->format, 255,255,255,255 );
+}
+
+inline void drawPointer(SDL_Surface* screen)
+{
+  if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
+  {
+    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY-2, graphics.colWhite );
+    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY+2, graphics.colWhite );
+
+    plotPixel(screen, getInpPointerState()->vpX-2, getInpPointerState()->vpY, graphics.colWhite );
+    plotPixel(screen, getInpPointerState()->vpX+2, getInpPointerState()->vpY, graphics.colWhite );
   }
 }

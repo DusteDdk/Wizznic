@@ -26,6 +26,8 @@ static SDL_Surface* txtSurf[NUMFONTS];
 static spriteType* txtSprites[NUMFONTS][91];
 static int txtSize[NUMFONTS][2];
 
+static SDL_Rect txtBox; //Is valid after each txtWrite
+
 //Small is 9x12
 //Large is 18x24
 
@@ -95,6 +97,9 @@ void txtWrite( SDL_Surface* scr,int fontNum, const char* txt, int x, int y)
   char c;
   c = txt[pos];
 
+  txtBox.x=x;
+  txtBox.y=y;
+
   while( c != '\0')
   {
     pos++;
@@ -110,6 +115,8 @@ void txtWrite( SDL_Surface* scr,int fontNum, const char* txt, int x, int y)
     c = txt[pos];
     px+=txtSize[fontNum][0];
   }
+  txtBox.w=px;
+  txtBox.h=py+txtSize[fontNum][1];
 }
 
 void txtWriteCenter( SDL_Surface* scr,int fontNum, const char* txt, int x, int y)
@@ -155,4 +162,9 @@ void txtWave( SDL_Surface* scr, int fontNum, const char* txt, int x, int y, floa
 int* getCharSize(int font)
 {
   return(txtSize[font]);
+}
+
+inline SDL_Rect* getTxtBox()
+{
+  return(&txtBox);
 }

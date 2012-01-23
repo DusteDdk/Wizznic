@@ -240,6 +240,9 @@ int main(int argc, char *argv[])
   //init starfield
   initStars(screen);
 
+  //Init pointer
+  initPointer(screen);
+
   printf("Applying settings..\n");
   //Apply settings (has to be done after packs are inited)
   applySettings();
@@ -284,6 +287,8 @@ int main(int argc, char *argv[])
         state=runEditor(screen);
       break;
     }
+
+    drawPointer(screen);
 
     soundRun(screen,state);
 

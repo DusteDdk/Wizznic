@@ -273,3 +273,24 @@ void initControls()
   memset( &inpPointer, 0, sizeof(inpPointerState_t) );
   inpPointer.timeSinceMoved=POINTER_SHOW_TIMEOUT;
 }
+
+int_fast8_t isPointerClicked()
+{
+  if( inpPointer.isDown && inpPointer.downTime==0 )
+  {
+    return(1);
+  }
+  return(0);
+}
+
+int_fast8_t isBoxClicked( SDL_Rect* r )
+{
+  if( isPointerClicked() )
+  {
+    if( r->x < inpPointer.vpX && r->w > inpPointer.vpX && r->y < inpPointer.vpY && r->h > inpPointer.vpY )
+    {
+      return(1);
+    }
+  }
+  return(0);
+}

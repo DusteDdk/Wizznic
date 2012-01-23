@@ -65,6 +65,11 @@ struct boardGraphics_t* stealGfxPtr();
 //For editor
 void drawBrick(SDL_Surface* screen, int brickNum, int x, int y);
 
+//The pointer spot
+void initPointer(SDL_Surface* screen);
+inline void drawPointer(SDL_Surface* screen);
+
+
 //For image dumper
 #ifndef GP2X
 void drawDisableCursor();

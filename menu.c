@@ -58,6 +58,7 @@ static int menuState=menuStateIntro;
 
 static int menuPosX=0, menuPosY=0;
 static int menuMaxX, menuMaxY;
+static int menuChangeX=0,menuChangeY=0; //Is one if there's a change
 
 static int dir=0;
 static int countdown=0;
@@ -126,12 +127,52 @@ void setMenuPosY(int Y)
   menuPosX=Y;
 }
 
+void decPosX()
+{
+  menuChangeX=1;
+  sndPlay(SND_MENUMOVE, 160);
+
+  menuPosX--;
+  if(menuPosX < 0)
+    menuPosX=menuMaxX;
+}
+
+void incPosX()
+{
+  menuChangeX=1;
+  sndPlay(SND_MENUMOVE, 160);
+  menuPosX++;
+  if(menuPosX > menuMaxX)
+    menuPosX=0;
+}
+
+void decPosY()
+{
+  menuChangeY=1;
+  sndPlay(SND_MENUMOVE, 160);
+  countdown=0;
+  dir=0;
+  menuPosY--;
+  if(menuPosY < 0)
+    menuPosY=menuMaxY;
+}
+
+void incPosY()
+{
+  menuChangeY=1;
+  sndPlay(SND_MENUMOVE, 160);
+  countdown=0;
+  dir=0;
+  menuPosY++;
+  if(menuPosY > menuMaxY)
+    menuPosY=0;
+}
+
 int runMenu(SDL_Surface* screen)
 {
   char buf[512];
   int scroll; //Generic scoll int (for scrolling lists)
   int ul=0;   //Userlevel (and used for scrolling)
-  int menuChangeX=0,menuChangeY=0; //Is one if there's a change
   psysSet_t ps; //Particle system for particle effects in menu
   listItem* it;
   fileListItem_t* fItem;
@@ -154,45 +195,23 @@ int runMenu(SDL_Surface* screen)
   if(getButton(C_UP) )
   {
     resetBtn(C_UP);
-    menuChangeY=1;
-    sndPlay(SND_MENUMOVE, 160);
-    countdown=0;
-    dir=0;
-    menuPosY--;
-    if(menuPosY < 0)
-      menuPosY=menuMaxY;
+    decPosY();
   }
   if(getButton(C_DOWN))
   {
     resetBtn(C_DOWN);
-    menuChangeY=1;
-    sndPlay(SND_MENUMOVE, 160);
-    countdown=0;
-    dir=0;
-    menuPosY++;
-    if(menuPosY > menuMaxY)
-      menuPosY=0;
+    incPosY();
   }
 
   if(getButton(C_LEFT) )
   {
     resetBtn(C_LEFT);
-    menuChangeX=1;
-    sndPlay(SND_MENUMOVE, 160);
-
-    menuPosX--;
-    if(menuPosX < 0)
-      menuPosX=menuMaxX;
+    decPosX();
   }
   if(getButton(C_RIGHT))
   {
     resetBtn(C_RIGHT);
-    menuChangeX=1;
-    sndPlay(SND_MENUMOVE, 160);
-
-    menuPosX++;
-    if(menuPosX > menuMaxX)
-      menuPosX=0;
+    incPosX();
   }
 
   switch(menuState)
@@ -234,7 +253,7 @@ int runMenu(SDL_Surface* screen)
       }
 
       //Wait for keypress
-      if( getButton( C_BTNB ) )
+      if( getButton( C_BTNB ) || isPointerClicked() )
       {
         resetBtn( C_BTNB );
         menuState=menuStatePaused;
@@ -294,6 +313,33 @@ int runMenu(SDL_Surface* screen)
         menuPosX = getNumLevels();
       }
 
+      if(getButton(C_BTNMENU))
+      {
+        resetBtn(C_BTNMENU);
+        menuPosY=0;
+        setMenu(menuStatePaused);
+      }
+
+      //We use menuchange to detect if it was the arrows or the rest of the screen that was clicked
+      menuChangeX=0;
+
+      if(menuPosX-1 < stats()->progress &&  menuPosX!=getNumLevels())
+      {
+        txtWrite(screen, FONTMEDIUM, ">>", HSCREENW+120,HSCREENH-12);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          incPosX();
+        }
+      }
+
+      if(menuPosX > 0)
+      {
+        txtWrite(screen, FONTMEDIUM, "<<", HSCREENW-155, HSCREENH-12);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          decPosX();
+        }
+      }
       //The "Finished" image..
       if(menuPosX == menuMaxX)
       {
@@ -303,7 +349,7 @@ int runMenu(SDL_Surface* screen)
         txtWriteCenter(screen, FONTMEDIUM, STR_MENU_NEW_GAME, HSCREENW, HSCREENH-100);
         txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
-        if(getButton(C_BTNB) && menuPosX!=getNumLevels())
+        if( ( (isPointerClicked() && !menuChangeX) || getButton(C_BTNB) ) && menuPosX!=getNumLevels())
         {
           resetBtn(C_BTNB);
 
@@ -316,19 +362,6 @@ int runMenu(SDL_Surface* screen)
         }
       }
 
-      if(getButton(C_BTNMENU))
-      {
-        resetBtn(C_BTNMENU);
-        menuPosY=0;
-        setMenu(menuStatePaused);
-      }
-
-      if(menuPosX-1 < stats()->progress &&  menuPosX!=getNumLevels())
-        txtWrite(screen, FONTMEDIUM, ">>", HSCREENW+120,HSCREENH-12);
-
-      if(menuPosX > 0)
-        txtWrite(screen, FONTMEDIUM, "<<", HSCREENW-155, HSCREENH-12);
-
     break; // New game
 
     case menuStateNextLevel:
@@ -339,7 +372,7 @@ int runMenu(SDL_Surface* screen)
 
       if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
-      if(getButton(C_BTNB))
+      if(getButton(C_BTNB) || isPointerClicked() )
       {
         resetBtn(C_BTNB);
 
@@ -424,7 +457,7 @@ int runMenu(SDL_Surface* screen)
 
       txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+108);
 
-      if(getButton(C_BTNB))
+      if(getButton(C_BTNB) || isPointerClicked() )
       {
         resetBtn(C_BTNB);
 
@@ -462,20 +495,75 @@ int runMenu(SDL_Surface* screen)
         txtWave(screen, FONTMEDIUM, STR_MENU_WIZZNIC_HEADLINE, HSCREENW, HSCREENH-105, &rot);
       }
 
-      if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_MENU_NEW_GAME_CHOICE, HSCREENW, HSCREENH-70);
-      if( player()->gameStarted && (dir || menuPosY!= 1)) txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-50);
-      if(dir || menuPosY!= 2) txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORES_CHOICE, HSCREENW, HSCREENH-30);
-      if(dir || menuPosY!= 3) txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_CHOICE, HSCREENW, HSCREENH-10);
-      if(dir || menuPosY!= 4) txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+10);
-      if(dir || menuPosY!= 5) txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+30);
-      if(dir || menuPosY!= 6) txtWriteCenter(screen, FONTSMALL, STR_MENU_HELP_CHOICE, HSCREENW, HSCREENH+50);
-      if(dir || menuPosY!= 7) txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+70);
+      if(dir || menuPosY!= 0)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_NEW_GAME_CHOICE, HSCREENW, HSCREENH-70);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=0;
+      }
 
-      sprintf(buf, STR_MENU_PACK_CHOICE, packState()->cp->name);
-      if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+100);
+      if( player()->gameStarted )
+      {
+        if(dir || menuPosY!= 1)
+        {
+          txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-50);
+          if( isBoxClicked( getTxtBox() ) )
+            menuPosY=1;
+        }
+      }
+
+      if(dir || menuPosY!= 2)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORES_CHOICE, HSCREENW, HSCREENH-30);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=2;
+      }
+
+      if(dir || menuPosY!= 3)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_CHOICE, HSCREENW, HSCREENH-10);
+      //  if( isBoxClicked( getTxtBox() ) )
+      //    menuPosY=3;
+      }
+
+      if(dir || menuPosY!= 4)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+10);
+       // if( isBoxClicked( getTxtBox() ) )
+       //   menuPosY=4;
+      }
+
+      if(dir || menuPosY!= 5)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+30);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=5;
+      }
+
+      if(dir || menuPosY!= 6)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_HELP_CHOICE, HSCREENW, HSCREENH+50);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=6;
+      }
+
+      if(dir || menuPosY!= 7)
+      {
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+70);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=7;
+      }
+
+      if(dir || menuPosY!= 8)
+      {
+        sprintf(buf, STR_MENU_PACK_CHOICE, packState()->cp->name);
+        txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+100);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=8;
+      }
 
 
-      if( getButton( C_BTNB ) )
+      if( getButton( C_BTNB ) || isPointerClicked() )
       {
         resetBtn( C_BTNB );
         switch(menuPosY)
@@ -573,7 +661,7 @@ int runMenu(SDL_Surface* screen)
 
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
-        if( getButton( C_BTNB ) )
+        if( getButton( C_BTNB ) || isPointerClicked() )
         {
           resetBtn( C_BTNB );
           clearParticles();
@@ -724,7 +812,7 @@ int runMenu(SDL_Surface* screen)
         //Blink "Press B"
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+60);
 
-        if(getButton(C_BTNB))
+        if(getButton(C_BTNB) || isPointerClicked() )
         {
           resetBtn(C_BTNB);
           cleanUpGame();
@@ -744,6 +832,7 @@ int runMenu(SDL_Surface* screen)
         //Show Create and Exit menu-points.
         if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_CREATE_CHOICE,HSCREENW,HSCREENH-70);
         if(dir || menuPosY!= 1) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-60);
+
 
         //Show usage
         txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_USAGE, HSCREENW, HSCREENH+108);
@@ -1094,7 +1183,7 @@ int runMenu(SDL_Surface* screen)
 
       txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B,HSCREENW,HSCREENH+100);
 
-      if( getButton( C_BTNB ) )
+      if( getButton( C_BTNB ) || isPointerClicked() )
       {
         resetBtn( C_BTNB );
 
@@ -1284,15 +1373,21 @@ int runMenu(SDL_Surface* screen)
       if(dir) txtWriteCenter(screen, FONTSMALL, "_____________", HSCREENW, HSCREENH+100 );
 
         txtWriteCenter(screen, FONTSMALL, "Yes", HSCREENW-(13*8), HSCREENH+100 );
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosX=0;
+
         if( menuPosX == 0 )
           if(dir) txtWriteCenter(screen, FONTSMALL, "___", HSCREENW-(13*8), HSCREENH+100 );
 
         txtWriteCenter(screen, FONTSMALL, "No", HSCREENW+(13*8), HSCREENH+100 );
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosX=2;
         if( menuPosX == 2 )
           if(dir) txtWriteCenter(screen, FONTSMALL, "__", HSCREENW+(13*8), HSCREENH+100 );
 
-        if( getButton( C_BTNB) )
+        if( getButton( C_BTNB) || isPointerClicked() )
         {
+          printf("Some debug message\n");
           resetBtn( C_BTNB );
           //Enabled
           if( menuPosX == 0 )
