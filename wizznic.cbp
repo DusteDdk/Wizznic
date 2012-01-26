@@ -155,6 +155,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="player.h" />
+		<Unit filename="pointer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pointer.h" />
 		<Unit filename="settings.c">
 			<Option compilerVar="CC" />
 		</Unit>

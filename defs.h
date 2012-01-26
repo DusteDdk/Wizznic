@@ -39,7 +39,7 @@
 #define MOVERCOUNTDOWN 500  //Ms pause before mover switch direction
 
 //Milliseconds we show the small pointer before hiding it again (in case people don't want to use mouse anyway)
-#define POINTER_SHOW_TIMEOUT 10000
+#define POINTER_SHOW_TIMEOUT 4000
 
 #define ONEWAYSPEED 10
 

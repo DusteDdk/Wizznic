@@ -22,17 +22,10 @@
 
 #include "settings.h"
 
-static inpPointerState_t inpPointer;
-inline inpPointerState_t* getInpPointerState()
-{
-  return(&inpPointer);
-}
-
 inline void resetMouseBtn()
 {
-  inpPointer.isDown=0;
+  getInpPointerState()->isDown=0;
 }
-
 
 static struct {
   int button;
@@ -91,14 +84,8 @@ int runControls()
     }
   }
 
-  //Update pointer-holddown time
-  if(inpPointer.isDown)
-  {
-    inpPointer.downTime += getTicks();
-  }
-
-  if( inpPointer.timeSinceMoved < POINTER_SHOW_TIMEOUT)
-  inpPointer.timeSinceMoved +=getTicks();
+  if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT)
+    getInpPointerState()->timeSinceMoved +=getTicks();
 
   while(SDL_PollEvent(&event))
   {
@@ -216,30 +203,32 @@ int runControls()
 
         //Handle pointer events
         case SDL_MOUSEBUTTONDOWN:
-          if( inpPointer.curX > -1 && inpPointer.curX< 11 &&
-              inpPointer.curY > -1 && inpPointer.curY < 11 )
+          if( getInpPointerState()->curX > -1 && getInpPointerState()->curX< 11 &&
+              getInpPointerState()->curY > -1 && getInpPointerState()->curY < 11 )
           {
-            inpPointer.downTime=0;
-            inpPointer.isDown=1;
+            getInpPointerState()->downTime=0;
+            getInpPointerState()->isDown=1;
+            getInpPointerState()->hitABox=0; //Clear precvious state.
           }
         break;
         case SDL_MOUSEBUTTONUP:
-          inpPointer.isDown=0;
+          getInpPointerState()->isDown=0;
+          getInpPointerState()->timeSinceMoved=1;
         break;
         case SDL_MOUSEMOTION:
 
-          inpPointer.vpX = (event.motion.x/setting()->scaleFactor);
-          inpPointer.vpY = (event.motion.y/setting()->scaleFactor);
+          getInpPointerState()->vpX = (event.motion.x/setting()->scaleFactor);
+          getInpPointerState()->vpY = (event.motion.y/setting()->scaleFactor);
 
-          inpPointer.curX = (inpPointer.vpX-(boardOffsetX*setting()->scaleFactor))/(20);
-          inpPointer.curY = (inpPointer.vpY-(boardOffsetY*setting()->scaleFactor))/(20);
+          getInpPointerState()->curX = (getInpPointerState()->vpX-(boardOffsetX*setting()->scaleFactor))/(20);
+          getInpPointerState()->curY = (getInpPointerState()->vpY-(boardOffsetY*setting()->scaleFactor))/(20);
 
-          inpPointer.timeSinceMoved=0;
+          getInpPointerState()->timeSinceMoved=0;
 
-          if( inpPointer.curX < 0 ) inpPointer.curX = 0;
-          if( inpPointer.curX > 10 ) inpPointer.curX = 10;
-          if( inpPointer.curY < 0 ) inpPointer.curY = 0;
-          if( inpPointer.curY > 10 ) inpPointer.curY = 10;
+          if( getInpPointerState()->curX < 0 ) getInpPointerState()->curX = 0;
+          if( getInpPointerState()->curX > 10 ) getInpPointerState()->curX = 10;
+          if( getInpPointerState()->curY < 0 ) getInpPointerState()->curY = 0;
+          if( getInpPointerState()->curY > 10 ) getInpPointerState()->curY = 10;
         break;
 
 
@@ -268,29 +257,6 @@ void initControls()
   button[C_BTNSELECT].button = PLATFORM_BUTTON_SELECT;
   button[C_BTNVOLUP].button = PLATFORM_BUTTON_VOLUP;
   button[C_BTNVOLDOWN].button = PLATFORM_BUTTON_VOLDOWN;
-
-
-  memset( &inpPointer, 0, sizeof(inpPointerState_t) );
-  inpPointer.timeSinceMoved=POINTER_SHOW_TIMEOUT;
 }
 
-int_fast8_t isPointerClicked()
-{
-  if( inpPointer.isDown && inpPointer.downTime==0 )
-  {
-    return(1);
-  }
-  return(0);
-}
 
-int_fast8_t isBoxClicked( SDL_Rect* r )
-{
-  if( isPointerClicked() )
-  {
-    if( r->x < inpPointer.vpX && r->w > inpPointer.vpX && r->y < inpPointer.vpY && r->h > inpPointer.vpY )
-    {
-      return(1);
-    }
-  }
-  return(0);
-}

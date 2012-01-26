@@ -41,6 +41,7 @@
 #include "userfiles.h"
 #include "strings.h"
 #include "swscale.h"
+#include "pointer.h"
 
 #ifdef PC
   #include "dumplevelimages.h"
@@ -263,7 +264,6 @@ int main(int argc, char *argv[])
 
   //Initialize credits
   initCredits(screen);
-
 
   int lastTick;
   while(state!=STATEQUIT)

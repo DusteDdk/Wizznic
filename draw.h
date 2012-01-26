@@ -51,7 +51,6 @@ struct boardGraphics_t
   //Teleport path animation
   int teleColorIndex;
   uint32_t teleColorTable[TELEPATHNUMCOL];
-  uint32_t colWhite;
 };
 
 int initDraw(levelInfo_t* li, SDL_Surface* screen);
@@ -64,11 +63,6 @@ void drawShowCountDown(SDL_Surface* screen, int i);
 struct boardGraphics_t* stealGfxPtr();
 //For editor
 void drawBrick(SDL_Surface* screen, int brickNum, int x, int y);
-
-//The pointer spot
-void initPointer(SDL_Surface* screen);
-inline void drawPointer(SDL_Surface* screen);
-
 
 //For image dumper
 #ifndef GP2X

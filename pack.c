@@ -20,12 +20,9 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-#ifndef DATADIR
-  #define DATADIR ""
-#endif
-
 #include "pack.h"
 #include "strings.h"
+#include "defs.h"
 
 static packStateType ps;
 

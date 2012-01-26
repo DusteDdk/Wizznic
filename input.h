@@ -19,6 +19,7 @@
  ************************************************************************/
 
 #include <SDL/SDL.h>
+#include "pointer.h"
 #include "board.h"
 
 #define C_UP 0
@@ -37,15 +38,6 @@
 #define C_BTNVOLDOWN 13
 #define C_NUM 14
 
-typedef struct {
-  int startX, startY;
-  int curX, curY;
-  int vpX, vpY; // "virtual"/scaled pixel positions
-  int downTime;
-  int timeSinceMoved;
-  int isDown;
-} inpPointerState_t;
-
 inline void setButton(int btn); //Nasty
 inline int getButton(int btn);
 inline int getBtnTime(int btn);
@@ -55,11 +47,5 @@ inline void resetMouseBtn();
 void resetBtnAll();
 int runControls();
 void initControls();
-
-
-int_fast8_t isPointerClicked();
-int_fast8_t isBoxClicked( SDL_Rect* r );
-
-inline inpPointerState_t* getInpPointerState();
 
 #endif // INPUT_H_INCLUDED

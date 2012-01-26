@@ -47,10 +47,6 @@ static float rot=0;
 #define MENUGFXPACKBOX 3
 #define MENUGFXNUM 4
 
-#ifndef DATADIR
-  #define DATADIR ""
-#endif
-
 static SDL_Surface* menuBg[MENUGFXNUM];
 static spriteType* helpSpr;
 
@@ -178,15 +174,21 @@ int runMenu(SDL_Surface* screen)
   fileListItem_t* fItem;
 
 
-  if(!dir)
+  if( !dir || getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT ) //Nasty little hack to prevent text from blinking when you try to click it
   {
     countdown+=getTicks();
     if(countdown > 250)
+    {
+      countdown=250;
       dir=1;
+    }
   } else {
     countdown-=getTicks();
     if(countdown < 1)
+    {
+      countdown=0;
       dir=0;
+    }
   }
 
   if(getButton(C_BTNB))
@@ -313,11 +315,12 @@ int runMenu(SDL_Surface* screen)
         menuPosX = getNumLevels();
       }
 
-      if(getButton(C_BTNMENU))
+      if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
       {
         resetBtn(C_BTNMENU);
         menuPosY=0;
         setMenu(menuStatePaused);
+        break;
       }
 
       //We use menuchange to detect if it was the arrows or the rest of the screen that was clicked
@@ -563,7 +566,7 @@ int runMenu(SDL_Surface* screen)
       }
 
 
-      if( getButton( C_BTNB ) || isPointerClicked() )
+      if( getButton( C_BTNB ) || isAnyBoxHit() )
       {
         resetBtn( C_BTNB );
         switch(menuPosY)

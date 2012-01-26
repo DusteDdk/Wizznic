@@ -25,6 +25,7 @@
 #include "draw.h"
 #include "input.h"
 
+
 static int isWall(playField* pf, int x, int y)
 {
   if(x < 0) return(0);

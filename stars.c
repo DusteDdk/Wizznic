@@ -212,5 +212,3 @@ void fireWorks(SDL_Surface* screen)
   } //iterate through rockets
 
 }
-
-

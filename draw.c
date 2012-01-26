@@ -480,24 +480,5 @@ void drawAllTelePaths( SDL_Surface* screen, listItem* l )
   {
     t = (telePort_t*)it->data;
     drawTelePath(screen, t, 0);
-
-  }
-}
-
-void initPointer(SDL_Surface* screen)
-{
-  //The color white
-  graphics.colWhite = SDL_MapRGBA( screen->format, 255,255,255,255 );
-}
-
-inline void drawPointer(SDL_Surface* screen)
-{
-  if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
-  {
-    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY-2, graphics.colWhite );
-    plotPixel(screen, getInpPointerState()->vpX, getInpPointerState()->vpY+2, graphics.colWhite );
-
-    plotPixel(screen, getInpPointerState()->vpX-2, getInpPointerState()->vpY, graphics.colWhite );
-    plotPixel(screen, getInpPointerState()->vpX+2, getInpPointerState()->vpY, graphics.colWhite );
   }
 }
