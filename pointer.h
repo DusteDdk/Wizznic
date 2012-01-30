@@ -24,6 +24,7 @@ int_fast8_t isBoxClicked( SDL_Rect* r );
 int_fast8_t isPointerEscapeClicked(); //Returns 1 if the "escbox" was hit and escEnable=1;
 
 void initPointer(SDL_Surface* screen);
+void enablePointerBack();
 inline void drawPointer(SDL_Surface* screen);
 
 #endif // POINTER_H_INCLUDED

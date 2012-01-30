@@ -302,6 +302,7 @@ int runMenu(SDL_Surface* screen)
 
     case menuStateNewGame: //Start new game (select starting level)
       starField(screen,1);
+      enablePointerBack();
 
       menuMaxX = stats()->progress+2;
 
@@ -369,12 +370,23 @@ int runMenu(SDL_Surface* screen)
 
     case menuStateNextLevel:
       starField(screen,0);
+      enablePointerBack();
 
       levelSelector(screen, player()->level,1);
 
 
       if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
+      if( getButton(C_BTNMENU) || isPointerEscapeClicked() )
+      {
+        resetBtn(C_BTNMENU);
+        menuState=menuStateNewGame;
+        if( statsIsHighScore() )
+        {
+          setMenu(menuStateEnterHighScore);
+          menuReturnHack=menuStateNewGame;
+        }
+      } else
       if(getButton(C_BTNB) || isPointerClicked() )
       {
         resetBtn(C_BTNB);
@@ -393,17 +405,6 @@ int runMenu(SDL_Surface* screen)
         }
       }
 
-      if(getButton(C_BTNMENU))
-      {
-        resetBtn(C_BTNMENU);
-        menuState=menuStateNewGame;
-        if( statsIsHighScore() )
-        {
-          setMenu(menuStateEnterHighScore);
-          menuReturnHack=menuStateNewGame;
-        }
-
-      }
     break;
 
     case menuStateFinishedLevel:
@@ -802,7 +803,8 @@ int runMenu(SDL_Surface* screen)
       break;
 
       case menuStateOutro:
-        starField(screen, 0);
+        enablePointerBack();
+
         //Show background image
         if(!menuBg[MENUGFXBYE])
         {
@@ -814,6 +816,11 @@ int runMenu(SDL_Surface* screen)
 
         //Blink "Press B"
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+60);
+
+        if( getButton(C_BTNMENU) || isPointerEscapeClicked() )
+        {
+
+        }
 
         if(getButton(C_BTNB) || isPointerClicked() )
         {

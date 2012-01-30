@@ -161,8 +161,11 @@ int runGame(SDL_Surface* screen)
 {
   if(gameState==GAMESTATEPLAYING)
   {
+
+    enablePointerBack();
+
     //Pause ?
-    if( getButton( C_BTNMENU ) )
+    if( getButton( C_BTNMENU ) || isPointerEscapeClicked() )
     {
       restartConfirm=0;
       resetBtn( C_BTNMENU );

@@ -31,8 +31,6 @@ void initPointer(SDL_Surface* screen)
   //The color white
   inpPointer.colWhite = SDL_MapRGBA( screen->format, 255,255,255,255 );
 
-  inpPointer.escEnable=1;
-
 }
 
 inline void drawPointer(SDL_Surface* screen)
@@ -43,7 +41,11 @@ inline void drawPointer(SDL_Surface* screen)
     if(inpPointer.isDown)
       inpPointer.downTime += getTicks();
 
-    SDL_BlitSurface( ptrBackImg, NULL, screen,NULL);
+    if( inpPointer.escEnable )
+    {
+      inpPointer.escEnable=0;
+      SDL_BlitSurface( ptrBackImg, NULL, screen,NULL);
+    }
 
     plotPixel(screen, inpPointer.vpX, inpPointer.vpY-2, inpPointer.colWhite );
     plotPixel(screen, inpPointer.vpX, inpPointer.vpY+2, inpPointer.colWhite );
@@ -91,4 +93,9 @@ int_fast8_t isPointerEscapeClicked()
 int_fast8_t isAnyBoxHit()
 {
   return(inpPointer.hitABox);
+}
+
+void enablePointerBack()
+{
+  inpPointer.escEnable=1;
 }
