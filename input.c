@@ -25,6 +25,8 @@
 inline void resetMouseBtn()
 {
   getInpPointerState()->isDown=0;
+  getInpPointerState()->downTime=1;
+  getInpPointerState()->hitABox=0;
 }
 
 static struct {

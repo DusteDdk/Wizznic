@@ -173,7 +173,6 @@ int runMenu(SDL_Surface* screen)
   listItem* it;
   fileListItem_t* fItem;
 
-
   if( !dir || getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT ) //Nasty little hack to prevent text from blinking when you try to click it
   {
     countdown+=getTicks();
@@ -302,7 +301,7 @@ int runMenu(SDL_Surface* screen)
 
     case menuStateNewGame: //Start new game (select starting level)
       starField(screen,1);
-      enablePointerBack();
+      getInpPointerState()->escEnable=1;
 
       menuMaxX = stats()->progress+2;
 
@@ -318,14 +317,13 @@ int runMenu(SDL_Surface* screen)
 
       if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
       {
+        resetMouseBtn();
         resetBtn(C_BTNMENU);
         menuPosY=0;
         setMenu(menuStatePaused);
         break;
       }
 
-      //We use menuchange to detect if it was the arrows or the rest of the screen that was clicked
-      menuChangeX=0;
 
       if(menuPosX-1 < stats()->progress &&  menuPosX!=getNumLevels())
       {
@@ -353,7 +351,7 @@ int runMenu(SDL_Surface* screen)
         txtWriteCenter(screen, FONTMEDIUM, STR_MENU_NEW_GAME, HSCREENW, HSCREENH-100);
         txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
-        if( ( (isPointerClicked() && !menuChangeX) || getButton(C_BTNB) ) && menuPosX!=getNumLevels())
+        if( ( (isPointerClicked() && !isAnyBoxHit()) || getButton(C_BTNB) ) && menuPosX!=getNumLevels())
         {
           resetBtn(C_BTNB);
 
@@ -370,7 +368,6 @@ int runMenu(SDL_Surface* screen)
 
     case menuStateNextLevel:
       starField(screen,0);
-      enablePointerBack();
 
       levelSelector(screen, player()->level,1);
 
@@ -712,8 +709,9 @@ int runMenu(SDL_Surface* screen)
           stats()->progress = getNumLevels();
         }
 
-        if( getButton(C_BTNB) )
+        if( getButton(C_BTNB) || isPointerClicked() )
         {
+          resetMouseBtn();
           resetBtn( C_BTNB );
           menuState=menuStatePaused;
         }
@@ -803,7 +801,7 @@ int runMenu(SDL_Surface* screen)
       break;
 
       case menuStateOutro:
-        enablePointerBack();
+        getInpPointerState()->escEnable=1;
 
         //Show background image
         if(!menuBg[MENUGFXBYE])
@@ -819,7 +817,7 @@ int runMenu(SDL_Surface* screen)
 
         if( getButton(C_BTNMENU) || isPointerEscapeClicked() )
         {
-
+          setMenu(menuStatePaused);
         }
 
         if(getButton(C_BTNB) || isPointerClicked() )
@@ -956,18 +954,34 @@ int runMenu(SDL_Surface* screen)
           scroll=ul;
         }
 
+
         //Clear box
         SDL_FillRect(menuBg[MENUGFXPACKBOX],0, SDL_MapRGB(screen->format, 0,255,255));
         while(ul < packState()->numPacks && ul-scroll <  4)
         {
+          //The selected box waves
           if(menuPosY== ul)
           {
-            showPackBox(menuBg[MENUGFXPACKBOX], 0,0, ul );
+            drawPackBox(menuBg[MENUGFXPACKBOX], 0,0, ul );
             setWaving(&waving, screen, menuBg[MENUGFXPACKBOX], HSCREENW-130,HSCREENH-70+(48*(ul-scroll)),2,4,150);
             waveImg(&waving);
+          } else {
+            drawPackBox(screen, HSCREENW-130,HSCREENH-70+(48*(ul-scroll)), ul );
           }
-          else
-            showPackBox(screen, HSCREENW-130,HSCREENH-70+(48*(ul-scroll)), ul );
+
+          //Check if this box was clicked
+          SDL_Rect r;
+          r.x = HSCREENW-130;
+          r.y = HSCREENH-70+(48*(ul-scroll));
+          r.w = r.x+260; // Size of graphics + position I know-, that
+          r.h = r.y+42;  // is not how SDL_Rect was intended to be used.
+
+          if( isBoxClicked( &r ) )
+          {
+            menuPosY=ul;
+          }
+
+          //Increase counter (doh, most obvious comment to date)
           ul++;
         }
         if( ul < packState()->numPacks )
@@ -975,11 +989,11 @@ int runMenu(SDL_Surface* screen)
           if(dir) txtWrite(screen, FONTSMALL, STR_MENU_PACKS_MORE, HSCREENW+100, HSCREENH+108);
         }
 
-        if( getButton(C_BTNB) )
+        if( getButton(C_BTNB) || (!isAnyBoxHit() && isPointerClicked()) )
         {
           resetBtn(C_BTNB);
           packFreeGfx();
-          //If it's a diffrent pack
+          //If it's a different pack
           if(menuPosY != packState()->selected)
           {
             //If there's a game started
@@ -1435,6 +1449,8 @@ int runMenu(SDL_Surface* screen)
       break;
       #endif
   }
+  menuChangeX=0;
+  menuChangeY=0;
 
   return(STATEMENU);
 }

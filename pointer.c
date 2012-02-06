@@ -56,11 +56,13 @@ inline void drawPointer(SDL_Surface* screen)
   }
 }
 
+//The mousepointer is only "clicked" the first iteration that it is held down (when downTime is still 0)
+//So, if the downtime is 0, then there is a chance that it is being hold down.
 int_fast8_t isPointerClicked()
 {
-  if( inpPointer.isDown && inpPointer.downTime==0 )
+  if( inpPointer.downTime==0 )
   {
-    return(1);
+    return(inpPointer.isDown);
   }
   return(0);
 }
@@ -95,7 +97,3 @@ int_fast8_t isAnyBoxHit()
   return(inpPointer.hitABox);
 }
 
-void enablePointerBack()
-{
-  inpPointer.escEnable=1;
-}

@@ -396,7 +396,7 @@ void packFreeGfx()
   ps.packBoxSpr[1]=0;
 }
 
-void showPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
+void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
 {
   char buf[128];
   SDL_Rect r;

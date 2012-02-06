@@ -63,7 +63,7 @@ int getNumLevels();
 
 void packFreeGfx(); //Free the images and sprites used to show packs.
 
-void showPackBox(SDL_Surface* screen, int posx, int posy, int packNum);
+void drawPackBox(SDL_Surface* screen, int posx, int posy, int packNum);
 
 int isFile(const char* fileName);
 int isDir(const char* dirName);
