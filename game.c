@@ -614,12 +614,13 @@ int runGame(SDL_Surface* screen)
 
     startStopImgCounter+=getTicks();
 
-    if((startStopImgCounter > 500 && getButton(C_BTNB) )|| !startStopImg)
+    if((startStopImgCounter > 500 && ( getButton(C_BTNB) || isPointerClicked() ) ) || !startStopImg)
     {
       if(startStopImg)
         SDL_FreeSurface(startStopImg);
       startStopImg=0;
       resetBtn(C_BTNB);
+      resetMouseBtn();
       gameState=GAMESTATECOUNTDOWN;
     }
 
@@ -642,12 +643,13 @@ int runGame(SDL_Surface* screen)
 
     startStopImgCounter+=getTicks();
 
-    if((startStopImgCounter > 500 &&getButton(C_BTNB)) || !startStopImg)
+    if((startStopImgCounter > 500 && (getButton(C_BTNB) || isPointerClicked() ) ) || !startStopImg)
     {
       if(startStopImg)
         SDL_FreeSurface(startStopImg);
       startStopImg=0;
       resetBtn(C_BTNB);
+      resetMouseBtn();
       cleanUpGame();
       return(STATEMENU);
     }
