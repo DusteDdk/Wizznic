@@ -395,10 +395,11 @@ int runGame(SDL_Surface* screen)
       pf.levelInfo->time -= 1000;
       player()->hsEntry.score +=1;
 
-      if(getButton(C_BTNX) || getButton(C_BTNB))
+      if(getButton(C_BTNX) || getButton(C_BTNB) || isPointerClicked() )
       {
         resetBtn(C_BTNX);
         resetBtn(C_BTNB);
+        resetMouseBtn();
         while(pf.levelInfo->time > 0)
         {
           player()->hsEntry.score +=1;
@@ -533,9 +534,10 @@ int runGame(SDL_Surface* screen)
       sprintf(buf, STR_MENU_PRESS_B);
       txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH+12);
       //Wait for anykey
-      if(getButton(C_BTNB) || countdown < -6000)
+      if(getButton(C_BTNB) || isPointerClicked() || countdown < -6000)
       {
         resetBtn(C_BTNB);
+        resetMouseBtn();
         //Subtract lives
         if(!player()->inEditor)
         {
@@ -578,6 +580,7 @@ int runGame(SDL_Surface* screen)
       if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
       {
         resetBtn(C_BTNB);
+        resetMouseBtn();
         //Subtract lives
         if(!player()->inEditor)
         {

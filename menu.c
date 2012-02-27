@@ -523,8 +523,8 @@ int runMenu(SDL_Surface* screen)
       if(dir || menuPosY!= 3)
       {
         txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_CHOICE, HSCREENW, HSCREENH-10);
-      //  if( isBoxClicked( getTxtBox() ) )
-      //    menuPosY=3;
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=3;
       }
 
       if(dir || menuPosY!= 4)
@@ -1413,6 +1413,7 @@ int runMenu(SDL_Surface* screen)
         {
           printf("Some debug message\n");
           resetBtn( C_BTNB );
+          resetMouseBtn();
           //Enabled
           if( menuPosX == 0 )
           {
@@ -1441,9 +1442,10 @@ int runMenu(SDL_Surface* screen)
         menuMaxX=2;
         txtWrite(screen, FONTSMALL, STR_MENU_UPDATE, HSCREENW-152, HSCREENH-50 );
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
-        if( getButton( C_BTNB) )
+        if( getButton( C_BTNB) || isPointerClicked() )
         {
           resetBtn( C_BTNB );
+          resetMouseBtn();
           menuState=menuStatePaused;
         }
       break;
