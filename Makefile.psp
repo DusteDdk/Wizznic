@@ -4,7 +4,7 @@ TARGET	= wizznic
 OBJS = board.o cursor.o draw.o platform/pspspec.o input.o main.o menu.o sprite.o\
 text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
 levelselector.o leveleditor.o particle.o pack.o settings.o stats.o strings.o\
-mbrowse.o teleport.o credits.o waveimg.o userfiles.o
+mbrowse.o teleport.o credits.o waveimg.o userfiles.o pointer.o
 
 CFLAGS = -g -G4 -Wall -O3 -funroll-loops -ffast-math
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
