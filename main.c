@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
 
   //Print welcome message
-  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010\n\n");
+  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010-2012\n\n");
 
   //initialize path strings
   initUserPaths();
