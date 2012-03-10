@@ -163,7 +163,7 @@ int runGame(SDL_Surface* screen)
 {
   if(gameState==GAMESTATEPLAYING)
   {
-
+    getInpPointerState()->escEnable=1;
     //Pause ?
     if( getButton( C_BTNMENU ) || isPointerEscapeClicked() )
     {
