@@ -530,8 +530,8 @@ int runMenu(SDL_Surface* screen)
       if(dir || menuPosY!= 4)
       {
         txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+10);
-       // if( isBoxClicked( getTxtBox() ) )
-       //   menuPosY=4;
+       if( isBoxClicked( getTxtBox() ) )
+          menuPosY=1000;
       }
 
       if(dir || menuPosY!= 5)
@@ -626,6 +626,10 @@ int runMenu(SDL_Surface* screen)
           case 8: //Pack selection
             setMenu(menuStatePackList);
             menuPosY = packState()->selected;
+          break;
+          case 1000:
+            menuReturnHack=menuStateUserLevels;
+            setMenu(menuStateNoPointerSupport);
           break;
         }
       }
@@ -1070,6 +1074,12 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->userMusic)?"Music: <User selected>":"Music: <Game Music>");
         if(dir || menuPosY!=3) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH-30);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuReturnHack=menuStateOptions;
+          setMenu(menuStateNoPointerSupport);
+        }
+
         if(menuPosY==3)
         {
           if(menuChangeX||getButton(C_BTNB))
@@ -1411,7 +1421,6 @@ int runMenu(SDL_Surface* screen)
 
         if( getButton( C_BTNB) || isPointerClicked() )
         {
-          printf("Some debug message\n");
           resetBtn( C_BTNB );
           resetMouseBtn();
           //Enabled
@@ -1450,6 +1459,23 @@ int runMenu(SDL_Surface* screen)
         }
       break;
       #endif
+
+      case menuStateNoPointerSupport:
+        starField(screen,0);
+        menuMaxY=0;
+        menuMaxX=0;
+        txtWrite(screen, FONTSMALL, STR_MENU_NOPTRSUPPORT, HSCREENW-152, HSCREENH-50 );
+        if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
+        if( isPointerClicked() )
+        {
+          resetMouseBtn();
+          menuState=menuStatePaused;
+        } else if( getButton( C_BTNB) )
+        {
+          resetBtn( C_BTNB );
+          menuState=menuReturnHack;
+        }
+      break;
   }
   menuChangeX=0;
   menuChangeY=0;

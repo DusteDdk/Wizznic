@@ -191,7 +191,14 @@
                                     "Pretty cool and awesome stuff! :)\n"\
                                     "----------------------------------\n"
 
-
+#define STR_MENU_NOPTRSUPPORT       "You need to use the cursor keys\n"\
+                                    "for to do this, because I am\n"\
+                                    "too lazy to make the pointer work\n"\
+                                    "here.. Press key to continue,\n"\
+                                    "or click to return to the menu.\n"\
+                                    "Consider donating a local\n"\
+                                    "beer, and I will consider making\n"\
+                                    "the pointer work here.. - Jimmy."
 
 
 

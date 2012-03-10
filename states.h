@@ -48,4 +48,6 @@
 
 #define menuStateUpdate 18
 
+#define menuStateNoPointerSupport 19
+
 #endif // STATES_H_INCLUDED
