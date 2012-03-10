@@ -15,6 +15,7 @@
 				<Option parameters="-z 3" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DPC" />
 					<Add option="-DWITH_OPENGL" />
 				</Compiler>
 				<Linker>
@@ -39,6 +40,7 @@
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-DPC" />
+					<Add option="-DWITH_OPENGL" />
 				</Compiler>
 				<Linker>
 					<Add library="SDL" />
