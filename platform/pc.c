@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "pc.h"
 #include "../settings.h"
 
