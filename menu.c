@@ -1034,9 +1034,28 @@ int runMenu(SDL_Surface* screen)
         menuMaxY = 8;
 
         if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_EXIT, HSCREENW, HSCREENH-70);
+        //Save and exit Options menu
+        if( ( getButton( C_BTNMENU ) || (getButton( C_BTNB ) && menuPosY==0) ) || isBoxClicked( getTxtBox() ) )
+        {
+          resetBtn( C_BTNMENU );
+          resetBtn( C_BTNB );
+          resetMouseBtn();
+
+          saveSettings();
+          setMenu(menuStatePaused);
+        }
 
         sprintf(buf, STR_MENU_OPTIONS_SOUNDVOL, setting()->soundVol);
         if(dir || menuPosY!= 1) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-50);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          resetMouseBtn();
+          menuPosY=1;
+          menuMaxX=16;
+          menuPosX = setting()->soundVol/8;
+          incPosX();
+        }
+
         //Set posY
         if(menuPosY==1)
         {
@@ -1056,6 +1075,15 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, STR_MENU_OPTIONS_MUSICVOL, setting()->musicVol);
         if(dir || menuPosY!= 2) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-40);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=2;
+          menuMaxX=16;
+          menuPosX = setting()->musicVol/8;
+          incPosX();
+        }
+
+
         //Set posY
         if(menuPosY==2)
         {
@@ -1093,6 +1121,14 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->arcadeMode)?"Game mode: < Arcade >":"Game mode: < Career >");
         if(dir || menuPosY!= 4) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-10);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=4;
+          menuMaxX=1;
+          menuPosX = setting()->arcadeMode;
+          incPosX();
+        }
+
         //Set posy
         if(menuPosY==4)
         {
@@ -1106,6 +1142,14 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->showFps)?"Show FPS: < On >":"Show FPS: < Off >");
         if(dir || menuPosY!= 5) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+10);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=5;
+          menuMaxX=1;
+          menuPosX = setting()->showFps;
+          incPosX();
+        }
+
         //Set posy
         if(menuPosY==5)
         {
@@ -1119,6 +1163,13 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->particles)?"Particles: < On >":"Particles: < Off >");
         if(dir || menuPosY!= 6) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+20);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=6;
+          menuMaxX=1;
+          menuPosX = setting()->particles;
+          incPosX();
+        }
         //Set posy
         if(menuPosY==6)
         {
@@ -1132,6 +1183,13 @@ int runMenu(SDL_Surface* screen)
         //Disable music (requires restart)
         sprintf(buf, (setting()->disableMusic)?"Load Music: < Disabled >":"Load Music: < Enabled >");
         if(dir || menuPosY!= 7) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+30);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=7;
+          menuMaxX=1;
+          menuPosX = setting()->disableMusic;
+          incPosX();
+        }
         //Set posy
         if(menuPosY==7)
         {
@@ -1147,6 +1205,12 @@ int runMenu(SDL_Surface* screen)
         #ifdef WIZ // to do for GP2X
         sprintf(buf, "Wiz Clock: < %i >", setting()->wizClock);
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuReturnHack=menuStateOptions;
+          setMenu(menuStateNoPointerSupport);
+        }
+
         //Set posY
         if(menuPosY==8)
         {
@@ -1173,6 +1237,14 @@ int runMenu(SDL_Surface* screen)
         #else
         sprintf(buf, (setting()->uploadStats)?"Upload Stats: <Enabled>":"Upload Stats: <Disabled>");
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosY=8;
+          menuMaxX=1;
+          menuPosX = setting()->uploadStats;
+          incPosX();
+        }
+
         //Set posY
         if(menuPosY==8)
         {
@@ -1196,14 +1268,6 @@ int runMenu(SDL_Surface* screen)
         #endif // gp2x
         #endif
 
-        //Save and exit Options menu
-        if( getButton( C_BTNMENU ) || (getButton( C_BTNB ) && menuPosY==0) )
-        {
-          resetBtn( C_BTNMENU );
-          resetBtn( C_BTNB );
-          saveSettings();
-          setMenu(menuStatePaused);
-        }
       break;
 
       //Highscore list
@@ -1244,14 +1308,20 @@ int runMenu(SDL_Surface* screen)
           for(cx=0; cx < kbCols; cx++)
           {
 
-            if( (menuPosX==cx && menuPosY==cy) && !dir )
+            if( (menuPosX==cx && menuPosY==cy) && !dir && !( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  ) )
             {
               txtWrite(screen, FONTSMALL, "[_]", (HSCREENW-70)+(cx)*16-8, (HSCREENH-9)+cy*15);
             }
 
             hack[0]=(*kb)[cy][cx];
             txtWrite(screen, FONTSMALL, hack, (HSCREENW-70)+cx*16, (HSCREENH-10)+cy*15);
-
+            hack[0]=0;
+            if( isBoxClicked( getTxtBox() ) )
+            {
+              hack[0]=1;
+              menuPosX=cx;
+              menuPosY=cy;
+            }
           }
         }
         //Blink "Save" button if selected
@@ -1272,7 +1342,7 @@ int runMenu(SDL_Surface* screen)
         //Save if we're at row 4
         if( menuPosX == 10 )
         {
-          if( getButton( C_BTNB ) )
+          if( getButton( C_BTNB ) || hack[0] )
           {
             resetBtn( C_BTNB );
             kbCase=!kbCase;
@@ -1283,7 +1353,7 @@ int runMenu(SDL_Surface* screen)
               kb=&kbl;
             }
           }
-        } else if( menuPosY==4 && getButton( C_BTNB ) )
+        } else if( menuPosY==4 && (getButton( C_BTNB ) || hack[0]) )
         {
           resetBtn( C_BTNB );
           saveSettings();
@@ -1293,7 +1363,7 @@ int runMenu(SDL_Surface* screen)
          // printf("AddingHighscore: %i\n", player()->campStats.score);
           menuState=menuReturnHack;
           menuPosY=0;
-        } else if( getButton( C_BTNB ) )
+        } else if( (getButton( C_BTNB ) || hack[0] ) )
         {
           resetBtn( C_BTNB );
           if(strlen( setting()->playerName ) < 11)
@@ -1301,7 +1371,7 @@ int runMenu(SDL_Surface* screen)
             setting()->playerName[ strlen(setting()->playerName) ] = (*kb)[menuPosY][menuPosX];
             setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
           }
-        } else if( getButton( C_BTNA ) )
+        } else if( getButton( C_BTNA ) || isPointerEscapeClicked() )
         {
           resetBtn( C_BTNA);
           if(strlen(setting()->playerName) > 0)
