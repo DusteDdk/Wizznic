@@ -18,6 +18,7 @@
   Combo-message/text.
 
 1.0.0
+  Fixed bug where bricks could be moved and were evaluated even if they were on top of exploding bricks.
   Added mouse/trouchscreen control.
   Fixed bug in the credits that crashed PSP and caused the "sinus" text to sometimes not show up.
   Code is more portable and easier to port.
