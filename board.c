@@ -780,6 +780,11 @@ inline int isBrick(brickType* b)
   return(1);
 }
 
+inline int onTopOfReserved(playField* pf, int x, int y)
+{
+  return( (y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == RESERVED) );
+}
+
 int doRules(playField* pf)
 {
   int x,y;
@@ -812,8 +817,8 @@ int doRules(playField* pf)
         typeLeft[pf->board[x][y]->type-1]++;
 
 
-        //Is brick, it will only remove itself, this avoids multiple entries of the same brick.
-        if(!isBrickFalling(pf,pf->board[x][y]))
+        //Check a brick, only if it is NOT falling and if the brick below it is NOT a reserved brick type (reserved meaning that the brick below is exploding)
+        if(!isBrickFalling(pf,pf->board[x][y]) && !onTopOfReserved(pf, x,y ) )
         {
           //Detect touching bricks.
 
@@ -980,6 +985,9 @@ int curMoveBrick(playField *pf, brickType *b, int dir)
 {
   //We can't move the brick, if it is falling.
   if( isBrickFalling(pf, b) ) return(0);
+
+  //We can't move it if it is on top of brick that is exploding (makes "glitch" solving possible).
+  if( onTopOfReserved(pf, b->dx, b->dy) ) return(0);
 
   //Move brick that is not moving<.
   if(b->moveXspeed==0 && b->moveYspeed==0)
