@@ -368,6 +368,7 @@ int runMenu(SDL_Surface* screen)
 
     case menuStateNextLevel:
       starField(screen,0);
+      getInpPointerState()->escEnable=1;
 
       levelSelector(screen, player()->level,1);
 
@@ -737,10 +738,12 @@ int runMenu(SDL_Surface* screen)
         }
 
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+60);
-        if( getButton( C_BTNB ) )
+
+        if( getButton(C_BTNB) || isPointerClicked() )
         {
-          setMenu(menuStatePaused);
+          resetMouseBtn();
           resetBtn( C_BTNB );
+          setMenu(menuStatePaused);
 
           if( statsIsHighScore() )
           {
