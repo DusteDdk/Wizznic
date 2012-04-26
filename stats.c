@@ -115,24 +115,29 @@ void statsLoad()
   if(f)
   {
     //Read the int and check that it's the version we expect.
-    fread( &i, sizeof(int),1,f);
-    if(i == STATS_FILE_FORMAT_VERSION )
+    size_t elementsRead = fread( &i, sizeof(int),1,f);
+
+    if( elementsRead == 1 && i == STATS_FILE_FORMAT_VERSION )
     {
       //Jump to start of file again
       rewind(f);
       //Read the header
-      fread( (void*)(&sfh), sizeof(statsFileHeader_t), 1, f);
+      size_t elementsRead = fread( (void*)(&sfh), sizeof(statsFileHeader_t), 1, f);
+      if( elementsRead != 1 )
+      {
+        printf("Something went wrong while trying to read '%s'\n",st.hsFn);
+      }
       //Set progress
       st.progress = sfh.progress;
 
       //Override defaults for levels found in file
       for(i=0; i < sfh.numLevelEntries; i++)
       {
-        fread( (void*)(&ths), sizeof(hsEntry_t), 1, f );
+        elementsRead = fread( (void*)(&ths), sizeof(hsEntry_t), 1, f );
         //Find the list to put it in
         hs = (hsEntry_t*)listGetItemData(st.levelStats,ths.levelNum);
         //If it was found, copy it
-        if(hs)
+        if(elementsRead==1 && hs)
         {
           memcpy( hs, &ths, sizeof(hsEntry_t) );
         }
@@ -141,8 +146,11 @@ void statsLoad()
       for(i=0; i < sfh.numHsEntries; i++)
       {
         hs=malloc(sizeof(hsEntry_t));
-        fread(hs,sizeof(hsEntry_t),1,f);
-        listAddData(st.packHsTable, (void*)hs);
+        elementsRead = fread(hs,sizeof(hsEntry_t),1,f);
+        if( elementsRead == 1 )
+        {
+          listAddData(st.packHsTable, (void*)hs);
+        }
       }
     } else {
       printf("File '%s' is version %i but current version is %i, delete the file.\n", st.hsFn, i, STATS_FILE_FORMAT_VERSION);
