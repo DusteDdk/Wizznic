@@ -8,12 +8,12 @@
   leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
+  Switch around level 1 and 3
   Use the theme bigfont to display ingame messages (like restart, unsolvable)
   Make a platform/pc.h with defines for audio rates, define audio rates in platform/*.h
   Get strings into strings.h
   All text buffers should be 1 kb.
   Ceate a "Training" package.
-  --Maybe sometime--
   Chain-reaction combo detection.
   Combo-message/text.
 
