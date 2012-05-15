@@ -196,22 +196,26 @@ int runMenu(SDL_Surface* screen)
   if(getButton(C_UP) )
   {
     resetBtn(C_UP);
+    getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     decPosY();
   }
   if(getButton(C_DOWN))
   {
     resetBtn(C_DOWN);
+    getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     incPosY();
   }
 
   if(getButton(C_LEFT) )
   {
     resetBtn(C_LEFT);
+    getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     decPosX();
   }
   if(getButton(C_RIGHT))
   {
     resetBtn(C_RIGHT);
+    getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     incPosX();
   }
 
@@ -1306,6 +1310,8 @@ int runMenu(SDL_Surface* screen)
         txtWriteCenter(screen, FONTSMALL,STR_MENU_HIGHSCORE_NAME_CONTROLS, HSCREENW,HSCREENH+108);
         int cy,cx;
         char hack[2]={ ' ',0x00 };
+        int hsKeyboardWasClicked=0;
+
         for(cy=0; cy < kbRows; cy++)
         {
           for(cx=0; cx < kbCols; cx++)
@@ -1321,9 +1327,9 @@ int runMenu(SDL_Surface* screen)
             hack[0]=0;
             if( isBoxClicked( getTxtBox() ) )
             {
-              hack[0]=1;
               menuPosX=cx;
               menuPosY=cy;
+              hsKeyboardWasClicked=1;
             }
           }
         }
@@ -1334,6 +1340,11 @@ int runMenu(SDL_Surface* screen)
           txtWriteCenter(screen, FONTSMALL, " ____ ", HSCREENW, HSCREENH+50);
         }
         txtWriteCenter(screen, FONTSMALL, "[Save]", HSCREENW, HSCREENH+50);
+        if( isBoxClicked( getTxtBox() ))
+        {
+          menuPosY=4;
+          hsKeyboardWasClicked=1;
+        }
 
         if( menuPosX==10 && dir)
         {
@@ -1341,22 +1352,27 @@ int runMenu(SDL_Surface* screen)
           txtWrite( screen, FONTSMALL, " ____", HSCREENW-130, HSCREENH+10 );
         }
         txtWrite( screen, FONTSMALL, "[Caps]", HSCREENW-130, HSCREENH+10 );
-
-        //Save if we're at row 4
-        if( menuPosX == 10 )
+        if( isBoxClicked( getTxtBox() ))
         {
-          if( getButton( C_BTNB ) || hack[0] )
+          menuPosX=10;
+          hsKeyboardWasClicked=1;
+        }
+
+
+        //Switch layouts if we're at posX 10
+        if( menuPosX == 10 && (getButton( C_BTNB ) || hsKeyboardWasClicked) )
+        {
+
+          resetBtn( C_BTNB );
+          kbCase=!kbCase;
+          if(kbCase)
           {
-            resetBtn( C_BTNB );
-            kbCase=!kbCase;
-            if(kbCase)
-            {
-              kb=&kbh;
-            } else {
-              kb=&kbl;
-            }
+            kb=&kbh;
+          } else {
+            kb=&kbl;
           }
-        } else if( menuPosY==4 && (getButton( C_BTNB ) || hack[0]) )
+
+        } else if( menuPosY==4 && ( getButton( C_BTNB ) || hsKeyboardWasClicked ) ) //Save if we're at row 4
         {
           resetBtn( C_BTNB );
           saveSettings();
@@ -1366,15 +1382,16 @@ int runMenu(SDL_Surface* screen)
          // printf("AddingHighscore: %i\n", player()->campStats.score);
           menuState=menuReturnHack;
           menuPosY=0;
-        } else if( (getButton( C_BTNB ) || hack[0] ) )
+        } else if( getButton( C_BTNB ) || hsKeyboardWasClicked )
         {
           resetBtn( C_BTNB );
+          resetMouseBtn();
           if(strlen( setting()->playerName ) < 11)
           {
             setting()->playerName[ strlen(setting()->playerName) ] = (*kb)[menuPosY][menuPosX];
             setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
           }
-        } else if( getButton( C_BTNA ) || isPointerEscapeClicked() )
+        } else if( getButton( C_BTNA ) || hsKeyboardWasClicked==2 )
         {
           resetBtn( C_BTNA);
           if(strlen(setting()->playerName) > 0)
