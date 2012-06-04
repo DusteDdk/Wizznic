@@ -1333,7 +1333,7 @@ int runMenu(SDL_Surface* screen)
             }
           }
         }
-        //Blink "Save" button if selected
+        //Blink "Save" underline if selected
         if( menuPosY==4 && dir)
         {
           if(menuPosX > 9) menuPosX=0;
@@ -1346,6 +1346,7 @@ int runMenu(SDL_Surface* screen)
           hsKeyboardWasClicked=1;
         }
 
+        //Blink "Caps" underline if selected
         if( menuPosX==10 && dir)
         {
           if(menuPosY >3) menuPosY =1;
@@ -1358,6 +1359,16 @@ int runMenu(SDL_Surface* screen)
           hsKeyboardWasClicked=1;
         }
 
+        //If the cursor is being used, show "delete" button, this is only usable with pointer.
+        if(  getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
+        {
+          txtWrite(screen, FONTSMALL, "[DEL]", (HSCREENW+38), (HSCREENH-25) );
+          if( isBoxClicked( getTxtBox() ))
+          {
+            menuPosY=5;
+            hsKeyboardWasClicked=1;
+          }
+        }
 
         //Switch layouts if we're at posX 10
         if( menuPosX == 10 && (getButton( C_BTNB ) || hsKeyboardWasClicked) )
@@ -1382,7 +1393,7 @@ int runMenu(SDL_Surface* screen)
          // printf("AddingHighscore: %i\n", player()->campStats.score);
           menuState=menuReturnHack;
           menuPosY=0;
-        } else if( getButton( C_BTNB ) || hsKeyboardWasClicked )
+        } else if( getButton( C_BTNB ) || (hsKeyboardWasClicked && menuPosY < 5) )
         {
           resetBtn( C_BTNB );
           resetMouseBtn();
@@ -1391,7 +1402,7 @@ int runMenu(SDL_Surface* screen)
             setting()->playerName[ strlen(setting()->playerName) ] = (*kb)[menuPosY][menuPosX];
             setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
           }
-        } else if( getButton( C_BTNA ) || hsKeyboardWasClicked==2 )
+        } else if( getButton( C_BTNA ) || (hsKeyboardWasClicked && menuPosY == 5) )
         {
           resetBtn( C_BTNA);
           if(strlen(setting()->playerName) > 0)
@@ -1554,7 +1565,7 @@ int runMenu(SDL_Surface* screen)
         starField(screen,0);
         menuMaxY=0;
         menuMaxX=0;
-        txtWrite(screen, FONTSMALL, STR_MENU_NOPTRSUPPORT, HSCREENW-152, HSCREENH-50 );
+        txtWrite(screen, FONTSMALL, STR_MENU_NOPTRSUPPORT, HSCREENW-152, HSCREENH-58 );
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
         if( isPointerClicked() )
         {
