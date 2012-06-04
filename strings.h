@@ -191,13 +191,14 @@
                                     "Pretty cool and awesome stuff! :)\n"\
                                     "----------------------------------\n"
 
-#define STR_MENU_NOPTRSUPPORT       "You need to use the cursor keys\n"\
+#define STR_MENU_NOPTRSUPPORT       "-- Pointer not supported here --\n"\
+                                    "You need to use the cursor keys\n"\
                                     "to do this, because I am\n"\
                                     "too lazy to make the pointer work\n"\
                                     "here.. Press key to continue,\n"\
                                     "or click to return to the menu.\n"\
                                     "If you consider donating a local\n"\
-                                    "beer, and I will consider making\n"\
+                                    "beer, I will consider making\n"\
                                     "the pointer work here.. - Jimmy."
 
 
@@ -217,6 +218,7 @@
 #define STR_EDIT_UNSAVED            "Not saved"
 #define STR_EDIT_STATUS             "Status:"
 #define STR_EDIT_NOT_SAVED_WARNING  "Not Saved!"
+static const char* str_brick_names[] = { "Nobrick", "Brick", "Brick","Brick","Brick","Brick","Brick","Brick","Brick","Brick","Brick","Vert Lift", "Hori Lift", "Left Oneway", "Right Oneway", "Glue", "Unused", "Reserved", "Teleporter" };
 
 #ifdef PANDORA /// added by farox for pandora port
 #define STR_EDIT_PRESS_EXIT_TO_EXIT "Press START to exit without saving."

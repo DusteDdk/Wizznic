@@ -295,6 +295,9 @@ int runEditor(SDL_Surface* screen)
   txtWriteCenter(screen, FONTSMALL,STR_EDIT_CONTROLS, HSCREENW,HSCREENH-120);
 
 
+  ///TODO: Draw text at appropiate place
+  txtWrite(screen, FONTSMALL, str_brick_names[selBrick], 100, 100 );
+
   drawBrick(screen, selBrick,HSCREENW-125,HSCREENH-85);
   txtWriteCenter(screen, FONTSMALL, STR_EDIT_BRICK,HSCREENW-115,HSCREENH-100);
   #ifdef GP2X
