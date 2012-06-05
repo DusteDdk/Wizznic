@@ -9,7 +9,7 @@
 		<Build>
 			<Target title="Win32">
 				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-z 3" />
@@ -69,12 +69,12 @@
 		</Unit>
 		<Unit filename="cursor.h" />
 		<Unit filename="defs.h" />
-		<Unit filename="doc/changelog.txt" />
-		<Unit filename="doc/credits.txt" />
-		<Unit filename="doc/install.txt" />
-		<Unit filename="doc/media-licenses.txt" />
-		<Unit filename="doc/ports.txt" />
-		<Unit filename="doc/readme.txt" />
+		<Unit filename="doc\changelog.txt" />
+		<Unit filename="doc\credits.txt" />
+		<Unit filename="doc\install.txt" />
+		<Unit filename="doc\media-licenses.txt" />
+		<Unit filename="doc\ports.txt" />
+		<Unit filename="doc\readme.txt" />
 		<Unit filename="draw.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -131,27 +131,27 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pixel.h" />
-		<Unit filename="platform/gp2x.h">
-			<Option target="Win32" />
+		<Unit filename="platform\gp2x.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="platform/pandora.h">
-			<Option target="Win32" />
+		<Unit filename="platform\pandora.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="platform/pc.c">
+		<Unit filename="platform\pc.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="platform/pc.h">
+		<Unit filename="platform\pc.h">
 			<Option target="Win32" />
 		</Unit>
-		<Unit filename="platform/pspspec.c">
+		<Unit filename="platform\pspspec.c">
 			<Option compilerVar="CC" />
-			<Option target="Win32" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="platform/pspspec.h">
-			<Option target="Win32" />
+		<Unit filename="platform\pspspec.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="platform/wiz.h">
-			<Option target="Win32" />
+		<Unit filename="platform\wiz.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="player.c">
 			<Option compilerVar="CC" />
