@@ -86,6 +86,22 @@ void editorFileName(const char* fn)
   strcpy(fileName,fn);
 }
 
+void editorRemoveBrickUnderCursor()
+{
+  if(pf.board[cur.x][cur.y])
+  {
+    free(pf.board[cur.x][cur.y]);
+    pf.board[cur.x][cur.y]=0;
+    changed=1;
+  }
+
+  //teleport?
+  teleRemoveFromList(pf.levelInfo->teleList,cur.x,cur.y);
+
+  boardSetWalls(&pf);
+}
+
+
 int runEditor(SDL_Surface* screen)
 {
 
@@ -141,52 +157,42 @@ int runEditor(SDL_Surface* screen)
   if(getButton(C_BTNX))
   {
     resetBtn(C_BTNX);
-    if(!pf.board[cur.x][cur.y])
-    {
-      if(selBrick==TELESRC)
-      {
-        if(teleState==0)
-        {
-          //Save source pos
-          teleSrcPos[0] = cur.x;
-          teleSrcPos[1] = cur.y;
-          teleState++;
-        } else {
-          //Add to list
-          teleAddToList( pf.levelInfo->teleList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
-          //Reset state
-          teleState=0;
-        }
-      } else {
-        pf.board[cur.x][cur.y]=malloc(sizeof(brickType));
 
-        pf.board[cur.x][cur.y]->type=selBrick;
-        if(selBrick==STDWALL || selBrick==GLUE || selBrick==ONEWAYLEFT || selBrick==ONEWAYRIGHT)
-        {
-          boardSetWalls(&pf);
-        }
-        pf.board[cur.x][cur.y]->pxx=cur.x*20+boardOffsetX;
-        pf.board[cur.x][cur.y]->pxy=cur.y*20+boardOffsetY;
-      } //Not a teleport
-    } //Empty brick
+    //If it's empty and we are not placing a teledestination, remove brick at cursor
+    if(pf.board[cur.x][cur.y] && !(selBrick==TELESRC && teleState!=0) )
+    {
+      editorRemoveBrickUnderCursor();
+    }
+
+    if(selBrick==TELESRC)
+    {
+      if(teleState==0)
+      {
+        //Save source pos
+        teleSrcPos[0] = cur.x;
+        teleSrcPos[1] = cur.y;
+        teleState++;
+      } else {
+        //Add to list
+        teleAddToList( pf.levelInfo->teleList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
+        //Reset state
+        teleState=0;
+      }
+    } else {
+      pf.board[cur.x][cur.y]=malloc(sizeof(brickType));
+
+      pf.board[cur.x][cur.y]->type=selBrick;
+      boardSetWalls(&pf);
+      pf.board[cur.x][cur.y]->pxx=cur.x*20+boardOffsetX;
+      pf.board[cur.x][cur.y]->pxy=cur.y*20+boardOffsetY;
+    } //Not a teleport
     changed=1;
   }
 
   if(getButton(C_BTNY))
   {
     resetBtn(C_BTNY);
-    if(pf.board[cur.x][cur.y])
-    {
-      free(pf.board[cur.x][cur.y]);
-      pf.board[cur.x][cur.y]=0;
-      changed=1;
-    }
-
-    //teleport?
-    teleRemoveFromList(pf.levelInfo->teleList,cur.x,cur.y);
-
-    boardSetWalls(&pf);
-
+    editorRemoveBrickUnderCursor();
   }
 
   if(getButton(C_BTNSELECT))

@@ -842,6 +842,8 @@ int runMenu(SDL_Surface* screen)
       case menuStateUserLevels:
         starField(screen, 1);
         fireWorks(screen);
+        resetMouseBtn();
+
         txtWave(screen, FONTMEDIUM, STR_MENU_LVLEDIT_HEADLINE, HSCREENW, HSCREENH-105, &rot);
         menuMaxY=getNumUserLevels()+1;
 
