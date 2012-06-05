@@ -218,7 +218,7 @@
 #define STR_EDIT_UNSAVED            "Not saved"
 #define STR_EDIT_STATUS             "Status:"
 #define STR_EDIT_NOT_SAVED_WARNING  "Not Saved!"
-static const char* str_brick_names[] = { "Nobrick", "Brick", "Brick","Brick","Brick","Brick","Brick","Brick","Brick","Brick","Brick","Vert Lift", "Hori Lift", "Left Oneway", "Right Oneway", "Glue", "Unused", "Reserved", "Teleporter" };
+static const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Reserved", "Teleport" };
 
 #ifdef PANDORA /// added by farox for pandora port
 #define STR_EDIT_PRESS_EXIT_TO_EXIT "Press START to exit without saving."

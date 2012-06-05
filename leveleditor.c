@@ -53,6 +53,8 @@ void editorLoad(const char* fn, SDL_Surface* screen)
   pf.levelInfo = mkLevelInfo( fn );
 
   initDraw(pf.levelInfo, screen);
+  SDL_FreeSurface(stealGfxPtr()->boardImg);
+  stealGfxPtr()->boardImg = loadImg( DATADIR"data/editbg.png" );
   changed=0;
   selBrick=1;
 
@@ -287,31 +289,31 @@ int runEditor(SDL_Surface* screen)
   }
 
 
-  txtWrite(screen, FONTSMALL,STR_EDIT_STATUS, HSCREENW-160,HSCREENH+80);
-  txtWrite(screen, FONTSMALL, (changed)?STR_EDIT_UNSAVED:STR_EDIT_SAVED, HSCREENW-160,HSCREENH+90);
+  txtWriteCenter(screen, FONTSMALL,STR_EDIT_STATUS, HSCREENW-115,HSCREENH+80);
+  txtWriteCenter(screen, FONTSMALL, (changed)?STR_EDIT_UNSAVED:STR_EDIT_SAVED, HSCREENW-115,HSCREENH+89);
 
   txtWriteCenter(screen, FONTSMALL,fileName, HSCREENW,HSCREENH+110);
 
   txtWriteCenter(screen, FONTSMALL,STR_EDIT_CONTROLS, HSCREENW,HSCREENH-120);
 
 
-  ///TODO: Draw text at appropiate place
-  txtWrite(screen, FONTSMALL, str_brick_names[selBrick], 100, 100 );
+  //Write brick name.
+  txtWriteCenter(screen, FONTSMALL, str_brick_names[selBrick], HSCREENW-116,HSCREENH-65+9 );
 
   drawBrick(screen, selBrick,HSCREENW-125,HSCREENH-85);
   txtWriteCenter(screen, FONTSMALL, STR_EDIT_BRICK,HSCREENW-115,HSCREENH-100);
   #ifdef GP2X
-  txtWrite(screen, FONTSMALL,"<A", 35-18-3,38);
-  txtWrite(screen, FONTSMALL,"B>", 55+3,38);
+  txtWrite(screen, FONTSMALL,"<A", 35-18-3,40);
+  txtWrite(screen, FONTSMALL,"B>", 55+3,40);
   #elif defined (PSP)
-  txtWrite(screen, FONTSMALL,"X", 100,54);
-  txtWrite(screen, FONTSMALL,"O", 140,54);
+  txtWrite(screen, FONTSMALL,"X", 100,56);
+  txtWrite(screen, FONTSMALL,"O", 140,56);
   #elif defined (PANDORA)
-  txtWrite(screen, FONTSMALL,"B>", HSCREENW-160,HSCREENH-82);
-  txtWrite(screen, FONTSMALL,"<A", HSCREENW-102,HSCREENH-82);
+  txtWrite(screen, FONTSMALL,"B>", HSCREENW-160,HSCREENH-80);
+  txtWrite(screen, FONTSMALL,"<A", HSCREENW-102,HSCREENH-80);
   #else
-  txtWrite(screen, FONTSMALL,"Ctrl", HSCREENW-160,HSCREENH-82);
-  txtWrite(screen, FONTSMALL,"Alt", HSCREENW-102,HSCREENH-82);
+  txtWrite(screen, FONTSMALL,"Ctrl", HSCREENW-160,HSCREENH-80);
+  txtWrite(screen, FONTSMALL,"Alt", HSCREENW-102,HSCREENH-80);
   #endif
 
   if(teleState)
