@@ -15,6 +15,7 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.      *
  ************************************************************************/
 
+#include "settings.h"
 #include "leveleditor.h"
 #include "cursor.h"
 #include "board.h"
@@ -364,7 +365,8 @@ int runEditor(SDL_Surface* screen)
   if( editorState == EDITOR_BRICKS_SELECTION )
   {
     //Draw box for the bricks "24 px"
-    drawSprite( screen, selBrickBgSprite, HSCREENW-78, HSCREENH-42 );
+//    drawSprite( screen, selBrickBgSprite, HSCREENW-78, HSCREENH-42 );
+    SDL_BlitSurface(selBrickBG , NULL, screen, &(setting()->bgPos) );
 
     //Draw a 3*6 grid
     int px,py,bnum=BRICKSBEGIN;
