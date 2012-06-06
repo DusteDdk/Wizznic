@@ -8,8 +8,6 @@
   leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
-  Use the theme bigfont to display ingame messages (like restart, unsolvable)
-  Make a platform/pc.h with defines for audio rates, define audio rates in platform/*.h
   Get strings into strings.h
   All text buffers should be 1 kb.
   Ceate a "Training" package.
@@ -17,9 +15,12 @@
   Combo-message/text.
 
 1.0.0
+  Audio rates are set from platform/* headers to make porting easier and less intrusive.
+
+  Level editor got a dedicated background image, and a menu for selecting bricks with mouse/touchscreen.
   Switched around level1 and 3 since 3 was way easier than 1.
   Fixed bug where bricks could be moved and were evaluated even if they were on top of exploding bricks.
-  Added mouse/trouchscreen control.
+  Added mouse/trouchscreen control for all parts of the game (except music player, and parts of the editor).
   Fixed bug in the credits that crashed PSP and caused the "sinus" text to sometimes not show up.
   Code is more portable and easier to port.
   Added Pandora port, maintained by Farox, thanks, great work! :)

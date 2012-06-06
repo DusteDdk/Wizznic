@@ -469,9 +469,9 @@ int runGame(SDL_Surface* screen)
     if(restartConfirm)
     {
       sprintf(buf,STR_GAME_RESTARTWARNING);
-      txtWriteCenter(screen, FONTMEDIUM, buf, HSCREENW, 100);
+      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW, 100);
       sprintf(buf,STR_GAME_RESTARTCONFIRM);
-      txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH);
+      txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW, HSCREENH);
     }
 
 
@@ -527,12 +527,12 @@ int runGame(SDL_Surface* screen)
 
     countdown-=getTicks();
 
-    txtWriteCenter(screen, FONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24);
+    txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24);
 
     if(countdown < 1000)
     {
       sprintf(buf, STR_MENU_PRESS_B);
-      txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH+12);
+      txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
       //Wait for anykey
       if(getButton(C_BTNB) || isPointerClicked() || countdown < -6000)
       {
@@ -570,12 +570,12 @@ int runGame(SDL_Surface* screen)
 
     sprintf(buf, STR_GAME_UNSOLVABLE);
 
-    txtWriteCenter(screen, FONTMEDIUM, buf, HSCREENW,HSCREENH-24);
+    txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
 
     if(countdown < 1000)
     {
       sprintf(buf, STR_MENU_PRESS_B);
-      txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH+12);
+      txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
       //Wait for anykey
       if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
       {

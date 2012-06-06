@@ -218,7 +218,24 @@
 #define STR_EDIT_UNSAVED            "Not saved"
 #define STR_EDIT_STATUS             "Status:"
 #define STR_EDIT_NOT_SAVED_WARNING  "Not Saved!"
-static const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Reserved", "Teleport" };
+
+
+#ifdef GP2X
+  #define STR_EDIT_NEXTBRICK_KEY      "B>"
+  #define STR_EDIT_PREVBRICK_KEY      "<A"
+#elif defined (PSP)
+  #define STR_EDIT_NEXTBRICK_KEY      "X>"
+  #define STR_EDIT_PREVBRICK_KEY      "<Y"
+#elif defined (PANDORA)
+  #define STR_EDIT_NEXTBRICK_KEY      "B>"
+  #define STR_EDIT_PREVBRICK_KEY      "<A"
+#else
+  #define STR_EDIT_NEXTBRICK_KEY      "Alt"
+  #define STR_EDIT_PREVBRICK_KEY      "Ctrl"
+#endif
+
+//We reuse the "Reserved/blocker" brick as a "Remove" icon in the mousedriven editor.
+static const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Remove", "Teleport" };
 
 #ifdef PANDORA /// added by farox for pandora port
 #define STR_EDIT_PRESS_EXIT_TO_EXIT "Press START to exit without saving."

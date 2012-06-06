@@ -64,6 +64,7 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     cleanUpDraw();
     return(0);
   }
+
   //Override wall tile
   free(graphics.tiles[15]);
   graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
@@ -85,7 +86,7 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
         y=r*20;
         graphics.walls[i] = cutSprite(graphics.wallsImg, x,y, 20, 20);
       } else {
-        //Default to tile 15 in tileset
+        //Default to the freestanding wall
         graphics.walls[i] = cutSprite(graphics.wallImg, 0, 0, 20, 20);
       }
       i++;
