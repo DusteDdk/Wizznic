@@ -234,8 +234,8 @@
   #define STR_EDIT_PREVBRICK_KEY      "Ctrl"
 #endif
 
-//We reuse the "Reserved/blocker" brick as a "Remove" icon in the mousedriven editor.
-static const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Remove", "Teleport" };
+//This is defined in strings.c
+extern const char* str_brick_names[];
 
 #ifdef PANDORA /// added by farox for pandora port
 #define STR_EDIT_PRESS_EXIT_TO_EXIT "Press START to exit without saving."

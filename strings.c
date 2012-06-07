@@ -18,6 +18,9 @@
 #include "strings.h"
 #include <string.h>
 
+// We reuse the "Reserved/blocker" brick as a "Remove" icon in the mousedriven editor.
+const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Remove", "Teleport" };
+
 void stripNewLine(char* str)
 {
   int i;
