@@ -117,20 +117,22 @@ void editorRemoveBrickUnderCursor()
 
 int runEditor(SDL_Surface* screen)
 {
-  //We detect if the "preview" brick on the left is clicked, we do this now so we can reset the click so that it does not hit the board
   SDL_Rect selBrickRect;
-  selBrickRect.x = HSCREENW-125;
-  selBrickRect.y = HSCREENH-85;
-  selBrickRect.w = selBrickRect.x+20;
-  selBrickRect.h = selBrickRect.y+20;
-  if( isBoxClicked(&selBrickRect) && teleState==0 )
-  {
-    editorState=EDITOR_BRICKS_SELECTION;
-    resetMouseBtn();
-  }
 
   if( editorState == EDITOR_MAIN )
   {
+    //We detect if the "preview" brick on the left is clicked, we do this now so we can reset the click so that it does not hit the board
+    selBrickRect.x = HSCREENW-125;
+    selBrickRect.y = HSCREENH-85;
+    selBrickRect.w = selBrickRect.x+20;
+    selBrickRect.h = selBrickRect.y+20;
+    //Also, we can only click it if a teleport destination is not being placed.
+    if( isBoxClicked(&selBrickRect) && teleState==0 )
+    {
+      editorState=EDITOR_BRICKS_SELECTION;
+      resetMouseBtn();
+    }
+
     //Handle movement
     if(getButton(C_UP))
     {
@@ -381,10 +383,17 @@ int runEditor(SDL_Surface* screen)
         selBrickRect.w = selBrickRect.x+20;
         selBrickRect.h = selBrickRect.y+20;
 
-        if( isBoxClicked(&selBrickRect) )
+
+        //We set bricks on mouseover, this way we get the description too (maybe punch a hole in the dots where the text is?)
+        if( isPointerInBox(&selBrickRect) )
+        {
+          selBrick=bnum;
+        }
+
+        //We continue back to the main editor
+        if( isPointerClicked() )
         {
           resetMouseBtn();
-          selBrick=bnum;
           editorState=EDITOR_MAIN;
         }
 
