@@ -84,7 +84,7 @@ int_fast8_t isPointerClicked()
   return(0);
 }
 
-int_fast8_t isPointerInBox( SDL_Rect& r )
+int_fast8_t isPointerInBox( SDL_Rect* r )
 {
   if( r->x < inpPointer.vpX && r->w > inpPointer.vpX && r->y < inpPointer.vpY && r->h > inpPointer.vpY )
   {
@@ -93,6 +93,7 @@ int_fast8_t isPointerInBox( SDL_Rect& r )
     inpPointer.hitABox=1;
     return(1);
   }
+  return(0);
 }
 
 int_fast8_t isBoxClicked( SDL_Rect* r )
