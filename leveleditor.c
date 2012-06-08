@@ -99,6 +99,14 @@ void editorFileName(const char* fn)
   strcpy(fileName,fn);
 }
 
+void editorPickBrickUnderCursor()
+{
+  if(pf.board[cur.x][cur.y])
+  {
+    selBrick=pf.board[cur.x][cur.y]->type;
+  }
+}
+
 void editorRemoveBrickUnderCursor()
 {
   if(pf.board[cur.x][cur.y])
@@ -224,11 +232,24 @@ int runEditor(SDL_Surface* screen)
       changed=1;
     }
 
-    if( getButton(C_BTNY) || ( isPointerClicked() && selBrick == RESERVED) )
+    if( getButton(C_BTNY) )
     {
       resetBtn(C_BTNY);
-      resetMouseBtn();
+
+      if(selBrick!=RESERVED)
+      {
+        editorPickBrickUnderCursor();
+      }
       editorRemoveBrickUnderCursor();
+    }
+
+    if( isPointerClicked() )
+    {
+      resetMouseBtn();
+      if(selBrick==RESERVED)
+      {
+        editorRemoveBrickUnderCursor();
+      }
     }
 
     if(getButton(C_BTNSELECT))
