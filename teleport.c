@@ -107,3 +107,18 @@ char* teleMkStrings(listItem* l)
 
   return(str);
 }
+
+int_fast8_t telePresent( listItem* l, int sx,int sy)
+{
+  listItem* it = l;
+  telePort_t* t;
+  while( (it=it->next) )
+  {
+    t = (telePort_t*)it->data;
+    if( t->sx==sx && t->sy==sy)
+    {
+      return(1);
+    }
+  }
+  return(0);
+}

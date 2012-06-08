@@ -32,5 +32,6 @@ void teleAddToList( listItem* l, int sx, int sy, int dx, int dy );
 void teleRemoveFromList( listItem* l, int sx, int sy );
 void teleAddFromString(listItem* l, const char* str); //Expects a string in the format sx,sy:dx,dy
 char* teleMkStrings(listItem* l);
+int_fast8_t telePresent( listItem* l, int sx,int sy);
 
 #endif // TELEPORT_H_INCLUDED

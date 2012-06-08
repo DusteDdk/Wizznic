@@ -113,13 +113,13 @@ void editorRemoveBrickUnderCursor()
   {
     free(pf.board[cur.x][cur.y]);
     pf.board[cur.x][cur.y]=0;
-    changed=1;
   }
 
   //teleport?
   teleRemoveFromList(pf.levelInfo->teleList,cur.x,cur.y);
 
   boardSetWalls(&pf);
+  changed=1;
 }
 
 
@@ -196,19 +196,22 @@ int runEditor(SDL_Surface* screen)
         selBrick=NUMTILES;
     }
 
-    if( (getButton(C_BTNX) || isPointerClicked() ) && selBrick != RESERVED )
+    if( (getButton(C_BTNX) || getInpPointerState()->isDown ) && selBrick != RESERVED )
     {
-      resetBtn(C_BTNX);
-      resetMouseBtn();
+      //resetBtn(C_BTNX);
+      //resetMouseBtn();
 
-      //If it's empty and we are not placing a teledestination, remove brick at cursor
-      if(pf.board[cur.x][cur.y] && !(selBrick==TELESRC && teleState!=0) )
+      //We remove the brick under the cursor if it's not a teleport, or if it is and we are placing a teleport source.
+      if( (!telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && selBrick!=TELESRC) || (selBrick==TELESRC && telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && teleState==0 ) )
       {
         editorRemoveBrickUnderCursor();
       }
 
       if(selBrick==TELESRC)
       {
+        resetMouseBtn();
+        resetBtn(C_BTNX);
+
         if(teleState==0)
         {
           //Save source pos
@@ -234,22 +237,23 @@ int runEditor(SDL_Surface* screen)
 
     if( getButton(C_BTNY) )
     {
-      resetBtn(C_BTNY);
-
-      if(selBrick!=RESERVED)
+      //If we are trying to remove an empty teleport
+      if(telePresent(pf.levelInfo->teleList, cur.x, cur.y) && selBrick!=TELESRC)
       {
-        editorPickBrickUnderCursor();
-      }
-      editorRemoveBrickUnderCursor();
-    }
-
-    if( isPointerClicked() )
-    {
-      resetMouseBtn();
-      if(selBrick==RESERVED)
-      {
+        resetBtn(C_BTNY);
+        selBrick=TELESRC;
+      } else {
+        if(selBrick!=RESERVED)
+        {
+          editorPickBrickUnderCursor();
+        }
         editorRemoveBrickUnderCursor();
       }
+    }
+
+    if( getInpPointerState()->isDown && selBrick==RESERVED )
+    {
+      editorRemoveBrickUnderCursor();
     }
 
     if(getButton(C_BTNSELECT))

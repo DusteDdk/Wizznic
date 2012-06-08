@@ -36,6 +36,7 @@ inline inpPointerState_t* getInpPointerState();
 
 int_fast8_t isPointerClicked(); //This does not take into account if the pointer actually hit anything
 int_fast8_t isAnyBoxHit(); //This will return true if any of the calls to isBoxClicked did this tick.
+int_fast8_t isPointerInBox( SDL_Rect* r );
 int_fast8_t isBoxClicked( SDL_Rect* r );
 
 int_fast8_t isPointerEscapeClicked(); //Returns 1 if the "escbox" was hit and escEnable=1;
