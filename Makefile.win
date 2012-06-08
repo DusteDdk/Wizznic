@@ -1,0 +1,55 @@
+# Makefile to compile Wizznic.exe from windows.
+# Required libs that are not included in a standard Debian mingw32:
+#   SDL-devel-1.2.15-mingw32
+#   SDL_image-1.2.12
+#   SDL_mixer-1.2.12
+#   glew-1.7.0-win32
+
+CC = i586-mingw32msvc-gcc
+LD = $(CC)
+STRIP = i586-mingw32msvc-strip
+
+NAME=wizznic.exe
+TARGET= $(NAME)
+
+DEFS = -DDATADIR="\"./\"" -DWIN32 -DWIN32_CROSS
+
+INCS =  -I.
+
+LDFLAGS=$(CFLAGS)
+LIBS = -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lm
+
+#Are we compiling with gl?
+ifneq ($(WITH_OPENGL),false)
+	LIBS += -lopengl32
+	DEFS += -DWITH_OPENGL
+endif
+
+OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
+text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
+levelselector.o leveleditor.o particle.o pack.o settings.o stats.o strings.o\
+mbrowse.o teleport.o credits.o waveimg.o userfiles.o swscale.o platform/pc.o pointer.o
+
+MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
+
+########################################################################
+
+sdl: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+	$(STRIP) $@
+
+.c.o:
+	$(MYCC) -c $< -o $@
+
+install:
+	install -d -D -m 755 "$(DESTDIR)$(BINDIR)"
+	install -D -m 755 "$(TARGET)" "$(DESTDIR)$(BINDIR)"
+	install -d -D -m 755 "$(DESTDIR)$(DATADIR)"
+	cp -R data "$(DESTDIR)$(DATADIR)"
+	cp -R packs "$(DESTDIR)$(DATADIR)"
+	chmod -R 755 "$(DESTIR)$(DATADIR)"
+
+clean:
+	rm -f *.o $(NAME) platform/*.o

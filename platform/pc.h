@@ -29,7 +29,9 @@
     #define GLEW_STATIC
     #define WINDOWS_LEAN_AND_MEAN
     #define NOMINMAX
-    #include <windows.h>
+    #ifndef WIN32_CROSS
+      #include <windows.h> //Seems like windows.h is not needed for mingw32-cross compiling.
+    #endif
     #include <GL/glew.h>
   #endif
 
