@@ -20,6 +20,7 @@
 #include "defs.h"
 #include "sprite.h"
 #include "pixel.h"
+#include "input.h"
 
 static inpPointerState_t inpPointer;
 static SDL_Surface* ptrBackImg;
@@ -108,6 +109,7 @@ int_fast8_t isPointerEscapeClicked()
   if( inpPointer.escEnable && isBoxClicked( &ptrBackRect ) )
   {
     inpPointer.hitABox=0;
+    resetMouseBtn();
     return(1);
   }
   return(0);

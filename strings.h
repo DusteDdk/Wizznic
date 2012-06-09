@@ -33,7 +33,6 @@
   //Entering highscores
   #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B:Type  A:Delete "
 
-
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
   #define STR_GAME_PRESSB             "Press B to Play"
@@ -116,18 +115,16 @@
 
 
 ///General strings
+
 #ifdef BUILD_NUMBER
-  #define VERSION_STRING_BUILD_NUMBER " (b"BUILD_NUMBER")"
+  #define VERSION_STRING "v1.0-dev (build "BUILD_NUMBER")"
 #else
-  #define VERSION_STRING_BUILD_NUMBER ""
+  #define VERSION_STRING "v1.0-dev"
 #endif
 
-#define VERSION_STRING "v1.0.0-dev"VERSION_STRING_BUILD_NUMBER
-
 //Menu
+#define STR_MENU_PUZZLES_WORLDWIDE  "Puzzles worldwide: %i"
 #define STR_MENU_NEW_GAME           "New Game!"
-
-
 
 #define STR_MENU_PAUSE_HEADLINE     "Pause!"
 #define STR_MENU_WIZZNIC_HEADLINE   "Wizznic!"

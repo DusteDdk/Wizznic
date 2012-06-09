@@ -198,12 +198,20 @@ int runMenu(SDL_Surface* screen)
     resetBtn(C_UP);
     getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     decPosY();
+    if( menuState==menuStatePaused && menuPosY==1 && !player()->gameStarted )
+    {
+      decPosY();
+    }
   }
   if(getButton(C_DOWN))
   {
     resetBtn(C_DOWN);
     getInpPointerState()->timeSinceMoved=POINTER_SHOW_TIMEOUT;
     incPosY();
+    if( menuState==menuStatePaused && menuPosY==1 && !player()->gameStarted )
+    {
+      incPosY();
+    }
   }
 
   if(getButton(C_LEFT) )
@@ -244,17 +252,17 @@ int runMenu(SDL_Surface* screen)
 
       waveImg(&waving);
 
-      //Blink "Press B"
-      if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
+      //Blink "Press B" (NOT dir, it will disappear when mouse is moved)
+      if(!dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+70);
 
       //Show version
-      txtWrite(screen, FONTSMALL, VERSION_STRING, HSCREENW+160-((strlen(VERSION_STRING))*9),HSCREENH+100);
+      txtWrite(screen, FONTSMALL, VERSION_STRING, HSCREENW+160-((strlen(VERSION_STRING))*9),HSCREENH+106);
 
       //Show games played world wide
       if( setting()->solvedWorldWide )
       {
-        sprintf(buf, "Puzzles worldwide: %i",setting()->solvedWorldWide);
-        txtWrite(screen, FONTSMALL, buf, HSCREENW-150, HSCREENH+100);
+        sprintf(buf, STR_MENU_PUZZLES_WORLDWIDE,setting()->solvedWorldWide);
+        txtWrite(screen, FONTSMALL, buf, HSCREENW-158, HSCREENH+95);
       }
 
       //Wait for keypress
@@ -321,7 +329,6 @@ int runMenu(SDL_Surface* screen)
 
       if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
       {
-        resetMouseBtn();
         resetBtn(C_BTNMENU);
         menuPosY=0;
         setMenu(menuStatePaused);
@@ -508,14 +515,11 @@ int runMenu(SDL_Surface* screen)
           menuPosY=0;
       }
 
-      if( player()->gameStarted )
+      if( player()->gameStarted && (dir || menuPosY!= 1 ) )
       {
-        if(dir || menuPosY!= 1)
-        {
-          txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-50);
-          if( isBoxClicked( getTxtBox() ) )
-            menuPosY=1;
-        }
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-50);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=1;
       }
 
       if(dir || menuPosY!= 2)
@@ -1006,7 +1010,6 @@ int runMenu(SDL_Surface* screen)
         if( getButton(C_BTNB) || isPointerEscapeClicked() )
         {
           resetBtn(C_BTNB);
-          resetMouseBtn();
           packFreeGfx();
           //If it's a different pack
           if(menuPosY != packState()->selected)

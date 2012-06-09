@@ -1,1 +1,4 @@
-Look in docs the wizard whispers.
+Automatically (thus, untested and bleeding edge) builds are available for Linux, Windows and Wiz here:
+http://jenkins.cyberstalker.dk/job/Wizznic/
+
+As for the rest of the documentation, have a look in the docs directory.

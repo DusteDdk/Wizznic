@@ -43,7 +43,6 @@ static int timeBeforeRestart=0;
 static int spentTimeBeforeRestart=0;
 
 int debugNumInit=0;
-int debugNumCleanUp=0;
 
 int mouseGrab=0;
 
@@ -108,8 +107,7 @@ int initGame(SDL_Surface* screen)
 
 void cleanUpGame()
 {
-    if(!player()->gameStarted) { printf("ERROR: Called cleanup when no game was running\n"); return; }
-    debugNumCleanUp++;
+    if(!player()->gameStarted) return;
 
     resetBtnAll();
     cleanUpDraw();
