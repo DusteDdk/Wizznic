@@ -380,7 +380,7 @@ int upStatsThread(void * d)
 
       if( fgets( pBuf, 127, pipe)!= NULL )
       {
-        printf("Server: (%p) ='%s'\n",ret,pBuf);
+        //printf("Server: (%p) ='%s'\n",ret,pBuf);
         if(ret)
         {
           *ret=atoi(pBuf);

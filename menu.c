@@ -1513,16 +1513,20 @@ int runMenu(SDL_Surface* screen)
 
         txtWriteCenter(screen, FONTSMALL, "Yes", HSCREENW-(13*8), HSCREENH+100 );
         if( isBoxClicked( getTxtBox() ) )
+        {
           menuPosX=0;
+        }
 
-        if( menuPosX == 0 )
-          if(dir) txtWriteCenter(screen, FONTSMALL, "___", HSCREENW-(13*8), HSCREENH+100 );
+        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, "___", HSCREENW-(13*8), HSCREENH+100 );
+
 
         txtWriteCenter(screen, FONTSMALL, "No", HSCREENW+(13*8), HSCREENH+100 );
         if( isBoxClicked( getTxtBox() ) )
+        {
           menuPosX=2;
-        if( menuPosX == 2 )
-          if(dir) txtWriteCenter(screen, FONTSMALL, "__", HSCREENW+(13*8), HSCREENH+100 );
+        }
+
+        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, "__", HSCREENW+(13*8), HSCREENH+100 );
 
         if( getButton( C_BTNB) || isPointerClicked() )
         {

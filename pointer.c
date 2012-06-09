@@ -88,8 +88,6 @@ int_fast8_t isPointerInBox( SDL_Rect* r )
 {
   if( r->x < inpPointer.vpX && r->w > inpPointer.vpX && r->y < inpPointer.vpY && r->h > inpPointer.vpY )
   {
-    inpPointer.isDown=0;
-    inpPointer.downTime=1;
     inpPointer.hitABox=1;
     return(1);
   }
