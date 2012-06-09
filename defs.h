@@ -49,11 +49,6 @@
 #define DIRUP -1
 #define DIRDOWN 1
 
-//Data directory
-#ifndef DATADIR
-  #define DATADIR "./"
-#endif
-
 //Get defines from platform .h file
 #if defined(PANDORA)  //Pandora
   #include "platform/pandora.h"

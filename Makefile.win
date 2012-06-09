@@ -14,6 +14,10 @@ TARGET= $(NAME)
 
 DEFS = -DDATADIR="\"./\"" -DWIN32 -DWIN32_CROSS
 
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
+
 INCS =  -I.
 
 LDFLAGS=$(CFLAGS)

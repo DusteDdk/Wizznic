@@ -9,12 +9,20 @@ STRIP = strip
 NAME=wizznic
 TARGET= $(NAME)
 
+ifeq ($(DATADIR),)
+  DATADIR="./"
+endif 
+
+DEFS = -DDATADIR="\"$(DATADIR)\""
+
 #Add the PER_USER_FILES define if the DATADIR is set
 ifneq ($(DATADIR),)
-	PUF=-DPER_USER_FILES
+        DEFS +=-DPER_USER_FILES
 endif
 
-DEFS = $(PUF) -DDATADIR="\"$(DATADIR)\""
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
 
 INCS =  -I. -I/usr/include -I/usr/include/SDL
 

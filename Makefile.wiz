@@ -13,6 +13,10 @@ TARGET= $(NAME)-wiz
 
 DEFS = -DWIZ -DIS_LITTLE_ENDIAN -D_REENTRANT -DGP2X_ASM
 
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
+
 INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
 
 LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib

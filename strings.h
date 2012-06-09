@@ -116,7 +116,13 @@
 
 
 ///General strings
-#define VERSION_STRING "v1.0.0-dev"
+#ifdef BUILD_NUMBER
+  #define VERSION_STRING_BUILD_NUMBER " (b"BUILD_NUMBER")"
+#else
+  #define VERSION_STRING_BUILD_NUMBER ""
+#endif
+
+#define VERSION_STRING "v1.0.0-dev"VERSION_STRING_BUILD_NUMBER
 
 //Menu
 #define STR_MENU_NEW_GAME           "New Game!"

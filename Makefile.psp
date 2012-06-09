@@ -1,3 +1,12 @@
+ifeq ($(DATADIR),)
+  DATADIR="./"
+endif 
+
+DEFS = -DDATADIR="\"$(DATADIR)\""
+
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
 
 TARGET	= wizznic
 
