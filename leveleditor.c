@@ -34,6 +34,7 @@
 
 #define EDITOR_MAIN 0
 #define EDITOR_BRICKS_SELECTION 1
+#define EDITOR_SAVEBTN_CLICKED 3 /*Has to be 3 */
 
 static playField pf;
 static cursorType cur;
@@ -45,7 +46,9 @@ static int teleState=0; //Teleport placement iteration
 static int teleSrcPos[2];
 static int editorState;
 SDL_Surface* selBrickBG;
-spriteType* selBrickBgSprite;
+
+SDL_Surface* saveBtnBG;
+spriteType* saveBtnSprite;
 
 void editorLoad(const char* fn, SDL_Surface* screen)
 {
@@ -62,8 +65,12 @@ void editorLoad(const char* fn, SDL_Surface* screen)
   initDraw(pf.levelInfo, screen);
   SDL_FreeSurface(stealGfxPtr()->boardImg);
   stealGfxPtr()->boardImg = loadImg( DATADIR"data/editbg.png" );
+
   selBrickBG = loadImg( DATADIR"data/editselbrick.png" );
-  selBrickBgSprite = cutSprite( selBrickBG, 0,0, selBrickBG->w, selBrickBG->h );
+
+  saveBtnBG = loadImg( DATADIR"data/edit-save.png" );
+  saveBtnSprite = cutSprite( saveBtnBG, 0,0, saveBtnBG->w, saveBtnBG->h );
+
   changed=0;
   selBrick=BRICKSBEGIN;
 
@@ -90,7 +97,9 @@ void editorCleanUp()
 
   //Free graphics
   SDL_FreeSurface(selBrickBG);
-  free(selBrickBgSprite);
+
+  SDL_FreeSurface(saveBtnBG);
+  free(saveBtnSprite);
 }
 
 void editorFileName(const char* fn)
@@ -126,9 +135,25 @@ void editorRemoveBrickUnderCursor()
 int runEditor(SDL_Surface* screen)
 {
   SDL_Rect selBrickRect;
+  getInpPointerState()->escEnable=1;
 
   if( editorState == EDITOR_MAIN )
   {
+
+    if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
+    {
+      resetBtn( C_BTNMENU );
+      resetMouseBtn();
+
+      changed++; //If it was 0 then it will become 1 (saved) exit. If it was 1 it becomes 2 (not saved).
+      if( changed != 2 )
+      {
+        resetMouseBtn();
+        editorCleanUp();
+        return(STATEMENU);
+      }
+    }
+
     //We detect if the "preview" brick on the left is clicked, we do this now so we can reset the click so that it does not hit the board
     selBrickRect.x = HSCREENW-125;
     selBrickRect.y = HSCREENH-85;
@@ -138,6 +163,17 @@ int runEditor(SDL_Surface* screen)
     if( isBoxClicked(&selBrickRect) && teleState==0 )
     {
       editorState=EDITOR_BRICKS_SELECTION;
+      resetMouseBtn();
+    }
+
+    //We detect mouse-save input here so it won't hit the board.
+    selBrickRect.x = HSCREENW-145;
+    selBrickRect.y = HSCREENH+42;
+    selBrickRect.w = selBrickRect.x+59;
+    selBrickRect.h = selBrickRect.y+24;
+    if( isBoxClicked(&selBrickRect) && changed>0)
+    {
+      changed=EDITOR_SAVEBTN_CLICKED;
       resetMouseBtn();
     }
 
@@ -232,6 +268,7 @@ int runEditor(SDL_Surface* screen)
         pf.board[cur.x][cur.y]->pxx=cur.x*20+boardOffsetX;
         pf.board[cur.x][cur.y]->pxy=cur.y*20+boardOffsetY;
       } //Not a teleport
+
       changed=1;
     }
 
@@ -256,7 +293,7 @@ int runEditor(SDL_Surface* screen)
       editorRemoveBrickUnderCursor();
     }
 
-    if(getButton(C_BTNSELECT))
+    if(getButton(C_BTNSELECT) || changed==EDITOR_SAVEBTN_CLICKED)
     {
       resetBtn(C_BTNSELECT);
       FILE *f = fopen(fileName, "w");
@@ -334,18 +371,7 @@ int runEditor(SDL_Surface* screen)
 
     }
 
-    if(getButton(C_BTNMENU))
-    {
-      resetBtn( C_BTNMENU );
-      changed++; //If it was 0 then it will become 1 (saved) exit. If it was 1 it becomes 2 (not saved).
-      if( changed != 2 )
-      {
-        editorCleanUp();
-        return(STATEMENU);
-      }
-    }
-
-  } //Editor in main state, don't ignore imput
+  } //Editor in main state, don't ignore input
 
 
   draw(&cur, &pf, screen);
@@ -388,11 +414,14 @@ int runEditor(SDL_Surface* screen)
   }
   drawAllTelePaths(screen, pf.levelInfo->teleList);
 
+  if( (getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT) && (changed > 0) )
+  {
+    drawSprite(screen, saveBtnSprite, HSCREENW-145, HSCREENH+42 );
+  }
+
   //Draw brick-selection
   if( editorState == EDITOR_BRICKS_SELECTION )
   {
-    //Draw box for the bricks "24 px"
-//    drawSprite( screen, selBrickBgSprite, HSCREENW-78, HSCREENH-42 );
     SDL_BlitSurface(selBrickBG , NULL, screen, &(setting()->bgPos) );
 
     //Draw a 3*6 grid

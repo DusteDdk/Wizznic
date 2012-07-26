@@ -24,6 +24,9 @@ struct wavingImage_s
   SDL_Surface *screen, *img;
   int x,y,rotations,amount,speed;
   float privRotAmount; //Note: If this is not initialized properly it might be nan, in which case nothing will be shown.
+
+  int useOverlay, overlayPos, overlaySpeed;
+  SDL_Surface *overlay,*mask;
 };
 typedef struct wavingImage_s wavingImage_t;
 //void waveImg(SDL_Surface* screen, SDL_Surface* img, int x, int y,int rots, int amount, int speed);

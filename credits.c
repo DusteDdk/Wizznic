@@ -66,14 +66,15 @@ msg_t* initMsg(const char* strTitle, const char* strName,SDL_Surface* screen)
 
   SDL_Surface* tempSurf;
 
+
+  SDL_SetColorKey( t->surfTitle, SDL_SRCCOLORKEY, SDL_MapRGB( t->surfTitle->format, 0, 0xFF, 0xFF ) );
   tempSurf=SDL_DisplayFormat(t->surfTitle);
   SDL_FreeSurface(t->surfTitle);
-  SDL_SetColorKey( tempSurf, SDL_SRCCOLORKEY, SDL_MapRGB( tempSurf->format, 0, 0xFF, 0xFF ) );
   t->surfTitle=tempSurf;
 
+  SDL_SetColorKey( t->nameWaving.img, SDL_SRCCOLORKEY, SDL_MapRGB( t->nameWaving.img->format, 0, 0xFF, 0xFF ) );
   tempSurf=SDL_DisplayFormat(t->nameWaving.img);
   SDL_FreeSurface(t->nameWaving.img);
-  SDL_SetColorKey( tempSurf, SDL_SRCCOLORKEY, SDL_MapRGB( tempSurf->format, 0, 0xFF, 0xFF ) );
   t->nameWaving.img=tempSurf;
 
   return(t);
@@ -95,6 +96,7 @@ void setCurrent()
   cm->nameWaving.amount=35;
   cm->nameWaving.speed=50;
   cm->nameWaving.privRotAmount=0;
+  cm->nameWaving.useOverlay=0;
 
   //Setup particle system
   ps.layer=PSYS_LAYER_TOP;

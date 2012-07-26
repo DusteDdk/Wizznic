@@ -116,6 +116,7 @@
 
 ///General strings
 
+
 #ifdef BUILD_NUMBER
   #define VERSION_STRING "v1.0-dev (build "BUILD_NUMBER")"
 #else
@@ -216,6 +217,11 @@
 #define STR_LVLEDIT_CREATE_CHOICE   "Create"
 #define STR_LVLEDIT_EXIT_CHOICE     "Exit"
 #define STR_MENU_LVLEDIT_USRLVL     "Level %i"
+#define STR_MENU_LVLEDIT_USRLVL_SEL "--> Level %i <--"
+
+#define STR_MENU_LVLEDIT_PLAY       "Play"
+#define STR_MENU_LVLEDIT_CLONE      "Clone"
+#define STR_MENU_LVLEDIT_EDIT         "Edit"
 
 #define STR_EDIT_SAVED              "Saved"
 #define STR_EDIT_UNSAVED            "Not saved"

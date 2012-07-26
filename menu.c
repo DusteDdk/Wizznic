@@ -99,6 +99,11 @@ int initMenu(SDL_Surface* screen)
 
   setWaving(&waving, screen, menuBg[MENUGFXINTRO], HSCREENW-149,HSCREENH-90,1,15,300);
   waving.privRotAmount=0; //In case it was nan
+  waving.useOverlay=1;
+  waving.overlaySpeed=1;
+  waving.overlay = loadImg( DATADIR"data/menu/introoverlay.png" );
+  waving.overlayPos=waving.overlay->w+1;
+  waving.mask = loadImg( DATADIR"data/menu/intromask.png") ;
 
   return(1);
 }
@@ -271,6 +276,9 @@ int runMenu(SDL_Surface* screen)
         resetBtn( C_BTNB );
         menuState=menuStatePaused;
         SDL_FreeSurface( menuBg[MENUGFXINTRO] );
+        SDL_FreeSurface( waving.overlay  );
+        SDL_FreeSurface( waving.mask ) ;
+
         menuBg[MENUGFXINTRO]=0;
         menuPosY=0;
         clearParticles();
@@ -540,7 +548,9 @@ int runMenu(SDL_Surface* screen)
       {
         txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+10);
        if( isBoxClicked( getTxtBox() ) )
-          menuPosY=1000;
+       {
+          menuPosY=4;
+       }
       }
 
       if(dir || menuPosY!= 5)
@@ -576,6 +586,8 @@ int runMenu(SDL_Surface* screen)
       if( getButton( C_BTNB ) || isAnyBoxHit() )
       {
         resetBtn( C_BTNB );
+        resetMouseBtn();
+
         switch(menuPosY)
         {
           case 0: //Newgame
@@ -843,24 +855,17 @@ int runMenu(SDL_Surface* screen)
         }
       break;
 
+      //The leveleditor submenu.
       case menuStateUserLevels:
+        getInpPointerState()->escEnable=1;
         starField(screen, 1);
         fireWorks(screen);
-        resetMouseBtn();
 
         txtWave(screen, FONTMEDIUM, STR_MENU_LVLEDIT_HEADLINE, HSCREENW, HSCREENH-105, &rot);
         menuMaxY=getNumUserLevels()+1;
 
         //Just keep it clean.
         if(player()->gameStarted) cleanUpGame();
-
-        //Show Create and Exit menu-points.
-        if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_CREATE_CHOICE,HSCREENW,HSCREENH-70);
-        if(dir || menuPosY!= 1) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-60);
-
-
-        //Show usage
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_USAGE, HSCREENW, HSCREENH+108);
 
         //List levels
         ul=0;   //Userlevel
@@ -875,8 +880,21 @@ int runMenu(SDL_Surface* screen)
         while(ul < getNumUserLevels())
         {
           i++;
-          sprintf(buf, STR_MENU_LVLEDIT_USRLVL, ul);
+
+          if( menuPosY < 0 && -menuPosY==ul+2)
+          {
+            sprintf(buf, STR_MENU_LVLEDIT_USRLVL_SEL, ul);
+          } else {
+            sprintf(buf, STR_MENU_LVLEDIT_USRLVL, ul);
+          }
+
           if(dir || menuPosY!= ul+2) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-50+(10*(ul-scroll)));
+
+          if( isBoxClicked( getTxtBox() ) )
+          {
+            menuPosY=-(ul+2); //hackity hack, if menuposy is negative, we click-selected a level
+          }
+
           ul++;
           if( i > 12 )
           {
@@ -889,72 +907,129 @@ int runMenu(SDL_Surface* screen)
           txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_MORE, HSCREENW, HSCREENH-50+(10*(ul-scroll+1)));
         }
 
-
-        //Edit levels/select
-        if(getButton(C_BTNB))
+        //Show keys only if cursor not active
+        if( !(getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT) )
         {
-          resetBtn(C_BTNB);
-
-          if(menuPosY==0) //Load empty, and create new levelname
+          txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_USAGE, HSCREENW, HSCREENH+106);
+        } else  {
+          //Show Play Clone Edit buttons for the mouse
+          if( menuPosY < 0)
           {
-            //Load empty, set name to something diffrent
-            editorLoad( DATADIR"data/empty.wzp",screen);
 
-            sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
-            editorFileName(buf);
-
-            return(STATEEDIT);
-          } else if(menuPosY==1)  //Exit from editor
-          {
-            player()->inEditor=0;
-            menuState=menuStatePaused;
-            menuPosY=0;
-          } else {
-            //Edit existing level
-            editorLoad(userLevelFile(menuPosY-2),screen);
-            return(STATEEDIT);
-          }
-        }
-
-        //Clone a level
-        if(getButton(C_BTNY))
-        {
-          resetBtn(C_BTNY);
-
-          if(menuPosY > 1)
-          {
-            //Load the selected level
-            editorLoad(userLevelFile(menuPosY-2),screen);
-
-            //Make new filename
-            sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
-            editorFileName(buf);
-
-            //Start editing state
-            return(STATEEDIT);
-          }
-        }
-
-        //Play levelfile
-        if(getButton(C_BTNA))
-        {
-          resetBtn(C_BTNA);
-          if(menuPosY > 1)
-          {
-            initPlayer(); //Reset player for editor.
-            player()->levelFile = userLevelFile(menuPosY-2);
-            player()->level = 0;
-            player()->inEditor=1;
-
-            if(initGame(screen))
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_PLAY, HSCREENW-60, HSCREENH+106 );
+            if( isBoxClicked( getTxtBox() ) )
             {
-              return(STATEPLAY);
-            } else {
-              printf("Editor couldn't init game for the editor.\n");
-              return(STATEQUIT);
+              ul=-1; //Decided that -1 means "play"
+              menuPosY=-menuPosY;
+            }
+
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_EDIT, HSCREENW, HSCREENH+106 );
+            if( isBoxClicked( getTxtBox() ) )
+            {
+              ul=-2; //Decided that -2 means "edit"
+              menuPosY=-menuPosY;
+            }
+
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_CLONE, HSCREENW+60, HSCREENH+106 );
+            if( isBoxClicked( getTxtBox() ) )
+            {
+              ul=-3; //Decided that -3 means "clone"
+              menuPosY=-menuPosY;
+            }
+
+          }
+        }
+
+
+        //Show Create and Exit menu-points.
+        if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_CREATE_CHOICE,HSCREENW,HSCREENH-70);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=0;
+
+        if( dir || menuPosY!= 1 ) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-60);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=1;
+
+        if( menuPosY > -1 )
+        {
+
+          //Edit levels/select
+          if(getButton(C_BTNB) || isAnyBoxHit() )
+          {
+            resetMouseBtn();
+            resetBtn(C_BTNB);
+
+            if(menuPosY==0) //Load empty, and create new levelname
+            {
+              //Load empty, set name to something diffrent
+              editorLoad( DATADIR"data/empty.wzp",screen);
+
+              sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
+              editorFileName(buf);
+
+              return(STATEEDIT);
+            } else if(menuPosY==1)  //Exit from editor
+            {
+              player()->inEditor=0;
+              menuState=menuStatePaused;
+              menuPosY=0;
+            } else if( ul==-2 || ul>0 )
+            {
+              editorLoad(userLevelFile(menuPosY-2),screen);
+              return(STATEEDIT);
             }
           }
+
+          //Clone a level
+          if( getButton(C_BTNY) || ul==-3 )
+          {
+            resetBtn(C_BTNY);
+            resetMouseBtn();
+
+            if(menuPosY > 1)
+            {
+              //Load the selected level
+              editorLoad(userLevelFile(menuPosY-2),screen);
+
+              //Make new filename
+              sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
+              editorFileName(buf);
+
+              //Start editing state
+              return(STATEEDIT);
+            }
+          }
+
+          //Play levelfile
+          if( getButton(C_BTNA) || ul==-1 )
+          {
+            resetBtn(C_BTNA);
+            resetMouseBtn();
+            if(menuPosY > 1)
+            {
+              initPlayer(); //Reset player for editor.
+              player()->levelFile = userLevelFile(menuPosY-2);
+              player()->level = 0;
+              player()->inEditor=1;
+
+              if(initGame(screen))
+              {
+                return(STATEPLAY);
+              } else {
+                printf("Editor couldn't init game for the editor.\n");
+                return(STATEQUIT);
+              }
+            }
+          }
+        } //Not a negative number
+
+
+        if(isPointerEscapeClicked())
+        {
+          menuState=menuStatePaused;
+          resetMouseBtn();
         }
+
       break; //< userlevels
 
       case menuStatePackList:
