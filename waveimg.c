@@ -32,6 +32,7 @@ void setWaving(wavingImage_t* wi, SDL_Surface* screen, SDL_Surface* img, int x, 
   wi->amount=amount;
   wi->speed=speed;
 
+  wi->useOverlay=0;
   wi->jumpPos=0;
 }
 
