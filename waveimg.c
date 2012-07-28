@@ -31,6 +31,8 @@ void setWaving(wavingImage_t* wi, SDL_Surface* screen, SDL_Surface* img, int x, 
   wi->rotations=rots;
   wi->amount=amount;
   wi->speed=speed;
+
+  wi->jumpPos=0;
 }
 
 //void waveImg(SDL_Surface* screen, SDL_Surface* img, int xx, int yy, int rots, int amount, int speed)
@@ -52,6 +54,8 @@ void waveImg(wavingImage_t* wi)
   if( wi->useOverlay )
   {
     wi->overlayPos += wi->overlaySpeed;
+    wi->jumpPos = wi->overlay->h/4 + cos(wi->privRotAmount/2)*wi->overlay->h/4;
+
   }
 
   for(x=0; x < wi->img->w; x++)
@@ -61,7 +65,6 @@ void waveImg(wavingImage_t* wi)
     if(wi->useOverlay)
     {
       ox=(wi->overlayPos-x)%wi->overlay->w;
-      if(ox < 0 ) { printf("Ox:%i\n",ox);}
     }
 
     for(y=0; y < wi->img->h; y++)
@@ -77,9 +80,11 @@ void waveImg(wavingImage_t* wi)
       {
         nx = x;
         ny = y+yInc;
-
-        if( wi->useOverlay && (freadPixel(wi->mask, x, y) == 0) )
-            col = freadPixel(wi->overlay, ox, y);
+        //Cheap colorkey, basically, if the green component of the mask is = then we use the pixel.
+        if( wi->useOverlay && ( (freadPixel(wi->mask, x, y) & wi->mask->format->Gmask) >> wi->mask->format->Gshift == 0 ) )
+        {
+            col = freadPixel(wi->overlay, ox, wi->jumpPos+y);
+        }
 
         plotPixel(wi->screen, nx+wi->x,ny+wi->y, col);
       }

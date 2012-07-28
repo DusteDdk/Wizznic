@@ -129,6 +129,7 @@ void initCredits(SDL_Surface* screen)
   listAddData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
 
   listAddData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
+  listAddData(msgList, (void*)initMsg("Thx","Qubodup", screen));
   listAddData(msgList, (void*)initMsg("Thx","Farox", screen));
   listAddData(msgList, (void*)initMsg("Thx","bMan", screen));
   listAddData(msgList, (void*)initMsg("Thx","KML", screen));
@@ -136,7 +137,6 @@ void initCredits(SDL_Surface* screen)
 
   listAddData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
   listAddData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
-  listAddData(msgList, (void*)initMsg("Greetings","Qubodup", screen));
 
   //Set current
   currentMsgIndex=0;

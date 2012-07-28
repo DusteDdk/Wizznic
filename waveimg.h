@@ -26,6 +26,7 @@ struct wavingImage_s
   float privRotAmount; //Note: If this is not initialized properly it might be nan, in which case nothing will be shown.
 
   int useOverlay, overlayPos, overlaySpeed;
+  int jumpPos;
   SDL_Surface *overlay,*mask;
 };
 typedef struct wavingImage_s wavingImage_t;
