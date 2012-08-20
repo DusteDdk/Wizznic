@@ -162,6 +162,7 @@ void runParticlesLayer(SDL_Surface* screen, int layer)
 {
   if(!setting()->particles) return;
   listItem* it = pSystems;
+  listItem* prev = pSystems; //For quick removal
   pSystem_t* p; //psystem
   int i;
 
@@ -190,9 +191,11 @@ void runParticlesLayer(SDL_Surface* screen, int layer)
         //Remove system
         clearSystem(p);
         //Remove from list. (removeItem returns the item just before current, if any)
-        it=listRemoveItem(pSystems, it);
+        cutItem(prev, it);
+        it=prev;
       }
     } //System is on correct layer
+    prev=it;
   }
 }
 

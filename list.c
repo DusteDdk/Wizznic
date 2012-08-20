@@ -17,6 +17,7 @@
 
 #include "list.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void listAddData(listItem* start, void* data)
 {
@@ -38,7 +39,21 @@ void listAddData(listItem* start, void* data)
 
 }
 
-//Inserts into the list at pos p. 0 = first
+listItem* listAppendData(listItem* item, void* data)
+{
+  listItem *tt;
+  if(item->next)
+  {
+    printf("listAppendData ERROR: item %p is not the last item in the list.\n", item);
+    return( (listItem*)0 );
+  }
+  tt=malloc(sizeof(listItem));
+  tt->data=data;
+  tt->next=0;
+  item->next=tt;
+  return(tt);
+}
+
 void listInsertData(listItem* start, void* data, int p)
 {
   int pos=0;
@@ -74,6 +89,7 @@ listItem* listRemoveItem(listItem* start, listItem* item)
       if(l->next)
       {
         prev->next=l->next;
+        free(item);
       } else {
         prev->next=0;
       }
@@ -82,6 +98,13 @@ listItem* listRemoveItem(listItem* start, listItem* item)
     prev=l;
   }
   return(0);
+}
+
+listItem* cutItem(listItem* previous, listItem* removeMe )
+{
+  previous->next=removeMe->next;
+  free(removeMe);
+  return(previous->next);
 }
 
 listItem* initList()

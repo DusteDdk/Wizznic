@@ -39,6 +39,8 @@
 #include "waveimg.h"
 #include "stats.h"
 
+#include "transition.h"
+
 static float rot=0;
 
 #define MENUGFXINTRO 0
@@ -279,9 +281,11 @@ int runMenu(SDL_Surface* screen)
         SDL_FreeSurface( waving.overlay  );
         SDL_FreeSurface( waving.mask ) ;
 
+        startTransition( screen, TRANSITION_TYPE_DISSOLVE, 450 );
+
         menuBg[MENUGFXINTRO]=0;
         menuPosY=0;
-        clearParticles();
+        //clearParticles();
         clearCredits();
         #if defined (PLATFORM_SUPPORTS_STATSUPLOAD)
         if(setting()->firstRun)
@@ -335,15 +339,6 @@ int runMenu(SDL_Surface* screen)
         menuPosX = getNumLevels();
       }
 
-      if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
-      {
-        resetBtn(C_BTNMENU);
-        menuPosY=0;
-        setMenu(menuStatePaused);
-        break;
-      }
-
-
       if(menuPosX-1 < stats()->progress &&  menuPosX!=getNumLevels())
       {
         txtWrite(screen, FONTMEDIUM, ">>", HSCREENW+120,HSCREENH-12);
@@ -361,6 +356,7 @@ int runMenu(SDL_Surface* screen)
           decPosX();
         }
       }
+
       //The "Finished" image..
       if(menuPosX == menuMaxX)
       {
@@ -381,6 +377,16 @@ int runMenu(SDL_Surface* screen)
           // Show help if it's the first level
           menuState=menuStateNextLevel;
         }
+      }
+
+      if(getButton(C_BTNMENU) || isPointerEscapeClicked() )
+      {
+        resetBtn(C_BTNMENU);
+        menuPosY=0;
+        startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+
+        setMenu(menuStatePaused);
+        break;
       }
 
     break; // New game
@@ -407,6 +413,7 @@ int runMenu(SDL_Surface* screen)
       if(getButton(C_BTNB) || isPointerClicked() )
       {
         resetBtn(C_BTNB);
+        resetMouseBtn();
 
         if(initGame(screen))
         {
@@ -414,6 +421,7 @@ int runMenu(SDL_Surface* screen)
           {
             setMenu(menuStateHowto);
           } else {
+            startTransition(screen, TRANSITION_TYPE_ROLL_OUT,500);
             return(STATEPLAY);
           }
         } else {
@@ -597,6 +605,7 @@ int runMenu(SDL_Surface* screen)
               stats()->progress=-1;
             }
 
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateNewGame);
 
             //Clean up.
@@ -616,26 +625,35 @@ int runMenu(SDL_Surface* screen)
           break;
           case 1: //Resume, unset paused, return to game
             if(player()->gameStarted)
+            {
+              startTransition(screen, TRANSITION_TYPE_ROLL_OUT,500);
               return(STATEPLAY);
+            }
           break;
           case 2: //Highscores
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateHighScores);
           break;
           case 3: //Options
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateOptions);
           break;
           case 4: //UserLevels
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateUserLevels);
             if(player()->gameStarted) cleanUpGame();
             return(STATEMENU);
           break;
           case 5: //Switch to about screen
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             menuState=menuStateAbout;
           break;
           case 6: //Switch to help screen
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateHowto);
           break;
           case 7: //Exit program
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             if( statsIsHighScore() )
             {
               setMenu(menuStateEnterHighScore);
@@ -645,6 +663,7 @@ int runMenu(SDL_Surface* screen)
             }
           break;
           case 8: //Pack selection
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStatePackList);
             menuPosY = packState()->selected;
           break;
@@ -690,11 +709,13 @@ int runMenu(SDL_Surface* screen)
         if( getButton( C_BTNB ) || isPointerClicked() )
         {
           resetBtn( C_BTNB );
-          clearParticles();
+
           if(player()->gameStarted) //Return to game if allready started
           {
+            startTransition(screen, TRANSITION_TYPE_ROLL_OUT,800);
             return(STATEPLAY);
           } else {
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
             setMenu(menuStatePaused);
           }
 
@@ -738,6 +759,7 @@ int runMenu(SDL_Surface* screen)
         {
           resetMouseBtn();
           resetBtn( C_BTNB );
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
           menuState=menuStatePaused;
         }
 
@@ -764,6 +786,7 @@ int runMenu(SDL_Surface* screen)
           resetMouseBtn();
           resetBtn( C_BTNB );
           setMenu(menuStatePaused);
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
 
           if( statsIsHighScore() )
           {
@@ -820,6 +843,7 @@ int runMenu(SDL_Surface* screen)
             setMenu(menuStatePackList);
             //Set to first pack in lst when we get there
             menuPosY=0;
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
 
           }
 
@@ -844,6 +868,7 @@ int runMenu(SDL_Surface* screen)
 
         if( getButton(C_BTNMENU) || isPointerEscapeClicked() )
         {
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500);
           setMenu(menuStatePaused);
         }
 
@@ -967,14 +992,17 @@ int runMenu(SDL_Surface* screen)
               sprintf(buf, "%s/level%03i.wzp", getUserLevelDir(), getNumUserLevels());
               editorFileName(buf);
 
+              startTransition(screen, TRANSITION_TYPE_ROLL_OUT, 500 );
               return(STATEEDIT);
             } else if(menuPosY==1)  //Exit from editor
             {
               player()->inEditor=0;
               menuState=menuStatePaused;
+              startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
               menuPosY=0;
             } else if( ul==-2 || ul>0 )
             {
+              startTransition(screen, TRANSITION_TYPE_ROLL_OUT, 500 );
               editorLoad(userLevelFile(menuPosY-2),screen);
               return(STATEEDIT);
             }
@@ -996,6 +1024,8 @@ int runMenu(SDL_Surface* screen)
               editorFileName(buf);
 
               //Start editing state
+              startTransition(screen, TRANSITION_TYPE_ROLL_OUT, 500 );
+
               return(STATEEDIT);
             }
           }
@@ -1014,6 +1044,7 @@ int runMenu(SDL_Surface* screen)
 
               if(initGame(screen))
               {
+                startTransition(screen, TRANSITION_TYPE_ROLL_OUT, 500 );
                 return(STATEPLAY);
               } else {
                 printf("Editor couldn't init game for the editor.\n");
@@ -1026,6 +1057,7 @@ int runMenu(SDL_Surface* screen)
 
         if(isPointerEscapeClicked())
         {
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
           menuState=menuStatePaused;
           resetMouseBtn();
         }
@@ -1109,6 +1141,7 @@ int runMenu(SDL_Surface* screen)
             saveSettings(); //Save
             //--
           }
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
           //Return to main menu
           setMenu(menuStatePaused);
         }
@@ -1131,6 +1164,8 @@ int runMenu(SDL_Surface* screen)
           resetMouseBtn();
 
           saveSettings();
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+
           setMenu(menuStatePaused);
         }
 
@@ -1373,7 +1408,7 @@ int runMenu(SDL_Surface* screen)
       if( getButton( C_BTNB ) || isPointerClicked() )
       {
         resetBtn( C_BTNB );
-
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500);
           setMenu(menuStatePaused);
       }
 
@@ -1473,6 +1508,7 @@ int runMenu(SDL_Surface* screen)
           strcpy(player()->campStats.name, setting()->playerName);
           statsSaveHighScore();
          // printf("AddingHighscore: %i\n", player()->campStats.score);
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500);
           menuState=menuReturnHack;
           menuPosY=0;
         } else if( getButton( C_BTNB ) || (hsKeyboardWasClicked && menuPosY < 5) )
@@ -1613,19 +1649,21 @@ int runMenu(SDL_Surface* screen)
           //Enabled
           if( menuPosX == 0 )
           {
-            setting()->firstRun=0;
             setting()->uploadStats=1;
-            saveSettings();
             statsUpload(0,0,0,0,0,"check",1, &(setting()->session));
-            setMenu( menuStatePaused );
           }
 
           //Disabled
           if( menuPosX == 2 )
           {
-            setting()->firstRun=0;
             setting()->uploadStats=0;
+          }
+
+          if( menuPosX == 0 || menuPosX == 2 )
+          {
+            setting()->firstRun=0;
             saveSettings();
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500);
             setMenu( menuStatePaused );
           }
         }

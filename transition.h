@@ -1,5 +1,5 @@
-#ifndef PIXEL_H_INCLUDED
-#define PIXEL_H_INCLUDED
+#ifndef TRANSITION_H_INCLUDED
+#define TRANSITION_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -20,14 +20,17 @@
 
 #include <SDL/SDL.h>
 
-inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
-inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col);
-inline uint32_t freadPixel(SDL_Surface* img, int x, int y);
+#define TRANSITION_TYPE_DISSOLVE 0
+#define TRANSITION_TYPE_CURTAIN_UP 1
+#define TRANSITION_TYPE_CURTAIN_DOWN 2
+#define TRANSITION_TYPE_ROLL_OUT 3
+#define TRANSITION_TYPE_ROLL_IN 4
+#define NUM_TRANSITIONS 5
 
-void setAlphaCol( int bpp );
-inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b);
+#define TRANSITION_TYPE_RANDOM 255
 
-void debugPrintSurfaceInfo( SDL_Surface* s);
-char* debugGetFlagInfo( Uint32 flags );
+void initTransition();
+void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time);
+void runTransition(SDL_Surface* scr);
 
-#endif // PIXEL_H_INCLUDED
+#endif

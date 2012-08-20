@@ -17,6 +17,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
@@ -42,6 +43,7 @@
 #include "strings.h"
 #include "swscale.h"
 #include "pointer.h"
+#include "transition.h"
 
 #ifdef PC
   #include "dumplevelimages.h"
@@ -225,6 +227,8 @@ int main(int argc, char *argv[])
   //Init particles
   initParticles(screen);
 
+  srand( (int)time(NULL) );
+
   #if defined(PC)
   //Need to dump level-screenshots?
   if(doDump)
@@ -265,6 +269,8 @@ int main(int argc, char *argv[])
   //Initialize credits
   initCredits(screen);
 
+  initTransition();
+
   int lastTick;
   while(state!=STATEQUIT)
   {
@@ -272,7 +278,6 @@ int main(int argc, char *argv[])
 
     frameStart();
     if(runControls()) state=STATEQUIT;
-
     switch(state)
     {
       case STATEPLAY:
@@ -291,6 +296,8 @@ int main(int argc, char *argv[])
     drawPointer(screen);
 
     soundRun(screen,state);
+
+    runTransition(screen);
 
     if(setting()->showFps)
       drawFPS(screen);
@@ -327,14 +334,12 @@ int main(int argc, char *argv[])
     #endif
   }
 
-
   #if defined(PLATFORM_NEEDS_EXIT)
   platformExit();
   #endif
 
   SDL_Quit();
 
-  //Not even trying to clean up, OS should do that anyway..
   return(0);
 }
 

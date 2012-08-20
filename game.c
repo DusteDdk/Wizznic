@@ -19,6 +19,7 @@
 #include "strings.h"
 #include "settings.h"
 #include "defs.h"
+#include "transition.h"
 
 static playField pf;
 static cursorType cur;
@@ -165,6 +166,9 @@ int runGame(SDL_Surface* screen)
     //Pause ?
     if( getButton( C_BTNMENU ) || isPointerEscapeClicked() )
     {
+
+      startTransition(screen, TRANSITION_TYPE_ROLL_IN,500);
+
       restartConfirm=0;
       resetBtn( C_BTNMENU );
       if(player()->inEditor)
@@ -240,6 +244,7 @@ int runGame(SDL_Surface* screen)
         timeBeforeRestart=pf.levelInfo->time;
         spentTimeBeforeRestart=player()->hsEntry.time;
         cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_DISSOLVE, 2500);
         initGame(screen);
         if(!player()->inEditor)
         {
@@ -424,6 +429,7 @@ int runGame(SDL_Surface* screen)
           }
         }
         cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
         return(STATEMENU);
       }
     } else if(ret > 0) //Player destroyed bricks.
@@ -554,6 +560,7 @@ int runGame(SDL_Surface* screen)
         player()->hsEntry.score=0;
         //Goto cleanup, then menu
         cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
         return(STATEMENU);
       }
     }
@@ -597,6 +604,7 @@ int runGame(SDL_Surface* screen)
           player()->hsEntry.score=0;
         //Goto cleanup, then menu
         cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
         return(STATEMENU);
       }
     }
@@ -652,6 +660,7 @@ int runGame(SDL_Surface* screen)
       resetBtn(C_BTNB);
       resetMouseBtn();
       cleanUpGame();
+      startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
       return(STATEMENU);
     }
 

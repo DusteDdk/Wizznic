@@ -17,7 +17,9 @@ DEFS = -DDATADIR="\"$(DATADIR)\""
 
 #Add the PER_USER_FILES define if the DATADIR is set
 ifneq ($(DATADIR),)
+  ifneq ($(DATADIR),"./")
         DEFS +=-DPER_USER_FILES
+  endif
 endif
 
 ifneq ($(BUILD_NUMBER),)
@@ -38,7 +40,8 @@ endif
 OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
 text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
 levelselector.o leveleditor.o particle.o pack.o settings.o stats.o strings.o\
-mbrowse.o teleport.o credits.o waveimg.o userfiles.o swscale.o platform/pc.o pointer.o
+mbrowse.o teleport.o credits.o waveimg.o userfiles.o swscale.o platform/pc.o\
+pointer.o transition.o
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 

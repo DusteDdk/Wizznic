@@ -30,6 +30,7 @@
 #include "strings.h"
 #include "teleport.h"
 
+#include "transition.h"
 #include "defs.h"
 
 #define EDITOR_MAIN 0
@@ -150,6 +151,7 @@ int runEditor(SDL_Surface* screen)
       {
         resetMouseBtn();
         editorCleanUp();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 500 );
         return(STATEMENU);
       }
     }

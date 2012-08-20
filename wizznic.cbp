@@ -204,6 +204,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ticks.h" />
+		<Unit filename="transition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="transition.h" />
 		<Unit filename="userfiles.c">
 			<Option compilerVar="CC" />
 		</Unit>

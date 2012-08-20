@@ -154,7 +154,6 @@ void clearCredits()
     freeMsg(cm);
   }
   freeList(msgList);
-  clearParticles();
 }
 
 

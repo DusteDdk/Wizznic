@@ -26,10 +26,19 @@ struct listItemStruct
 
 typedef struct listItemStruct listItem;
 
+//Add data to the end of a list
 void listAddData(listItem* start, void* data);
-void listInsertData(listItem* start, void* data, int p); //Inserts into the list at pos p. 0 = first
 
-listItem* listRemoveItem(listItem* start, listItem* item); //Removes item from list, returns item just before removed item.
+//Fast, appends a new item containing data to a listitem.
+listItem* listAppendData(listItem* item, void* data);
+
+
+//Inserts into the list at pos p. 0 = first
+void listInsertData(listItem* start, void* data, int p);
+
+listItem* listRemoveItem(listItem* start, listItem* item); //Removes item from list, returns item just before removed item. (or 0)
+listItem* cutItem(listItem* previous, listItem* removeMe ); //Given previous item, removes item, returns next item (or 0)
+
 listItem* initList();
 void freeList(listItem* start);
 int listSize(listItem* start);
