@@ -147,7 +147,7 @@ void debugPrintSurfaceInfo(SDL_Surface* s)
 
 char* debugGetFlagInfo( Uint32 flags )
 {
-  char flagsStr[4096];
+  static char flagsStr[4096];
   flagsStr[0]='\0';
 
   if(flags & SDL_ANYFORMAT) sprintf(flagsStr, "%s", "SDL_ANYFORMAT,");
