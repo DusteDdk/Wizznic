@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Wizznic!
+Exec=wizznic
+Icon=wizznic
+Type=Application
+Comment=A brick-matching puzzlegame.
+Categories=Game;ActionGame;ArcadeGame;
+Name[en_GB]=Wizznic!
