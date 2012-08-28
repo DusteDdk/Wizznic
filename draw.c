@@ -252,31 +252,51 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       //Bricks-Walls
       if(pf->board[x][y] && pf->board[x][y]->type != RESERVED)
       {
-        //We tread glue/oneways as walls (they will have the walltile defined
-        if(pf->board[x][y]->type == GLUE || pf->board[x][y]->type == ONEWAYLEFT || pf->board[x][y]->type == ONEWAYRIGHT )
+        //We treat walls/glue/oneways/switches as walls (they will have the walltile defined)
+        if( isWall(pf, x, y) )
         {
           drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
         }
-        //Is it a wall?
-        if(pf->board[x][y]->type == STDWALL)
+
+        if( pf->board[x][y]->type != STDWALL && graphics.tiles[pf->board[x][y]->type-1])
         {
-          //printf("I want to draw %i for(%i,%i) it has sprite: %i\n",pf->board[x][y]->wall,x,y,graphics.walls[pf->board[x][y]->wall]);
-          drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
-        } else if(graphics.tiles[pf->board[x][y]->type-1])
-        {
+          //We draw the animated extra-tiles if they exist.
           if(graphics.tileAni[pf->board[x][y]->type-1])
           {
-            drawAni(screen, graphics.tileAni[pf->board[x][y]->type-1], pf->board[x][y]->pxx-5, pf->board[x][y]->pxy-5);
+            if( !isSwitch( pf->board[x][y] ) )
+            {
+              drawAni(screen, graphics.tileAni[pf->board[x][y]->type-1], pf->board[x][y]->pxx-5, pf->board[x][y]->pxy-5);
+            } else {
+              //We only end here when it's a switch
+              if( (pf->board[x][y]->type==SWON)?pf->board[x][y]->isActive:!pf->board[x][y]->isActive)
+              {
+                drawAni(screen, graphics.tileAni[SWON-1], pf->board[x][y]->pxx-5, pf->board[x][y]->pxy-5);
+              } else {
+                drawAni(screen, graphics.tileAni[SWOFF-1], pf->board[x][y]->pxx-5, pf->board[x][y]->pxy-5);
+              }
+            }
+          //Fall back to the static non-moving tiles if no animation is found.
           } else {
-            drawSprite(screen, graphics.tiles[pf->board[x][y]->type-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            if( !isSwitch( pf->board[x][y] ) )
+            {
+              drawSprite(screen, graphics.tiles[pf->board[x][y]->type-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            } else {
+              if( (pf->board[x][y]->type==SWON)?pf->board[x][y]->isActive:!pf->board[x][y]->isActive)
+              {
+                drawSprite(screen, graphics.tiles[SWON-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+              } else {
+                drawSprite(screen, graphics.tiles[SWOFF-1], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+              }
+            }
           }
-        }
-      } /*else if( pf->board[x][y] && pf->board[x][y]->type == RESERVED )
+        } // not a wall.
+      } //Not a reserved brick.
+      /*else if( pf->board[x][y] && pf->board[x][y]->type == RESERVED )
       {
         drawSprite(screen, graphics.tiles[RESERVED-1], x*brickSize+boardOffsetX, y*brickSize+boardOffsetY);
       }*/
     }
-  }
+  } //xy loop
 
   //Draw moving bricks
   t=pf->movingList;
@@ -442,8 +462,6 @@ void drawPath( SDL_Surface* screen, int sx, int sy, int dx, int dy, int animate 
         graphics.teleColorIndex = 0;
     }
     cidx=graphics.teleColorIndex;
-
-
 
     while(x!=dx || y!=dy)
     {

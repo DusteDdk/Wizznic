@@ -77,8 +77,11 @@ levelInfo_t* mkLevelInfo(const char* fileName)
 
     tl->brickDieParticles=1;
 
-    //Initiate teleList
+    //Initialize teleList
     tl->teleList = initList();
+
+    //Initialize switchlist
+    tl->switchList = initList();
 
     //Loop through file
     while(fgets(buf, 255, f))
@@ -176,6 +179,12 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           if(strcmp("teleport", set)==0)
           {
             teleAddFromString(tl->teleList, val);
+          } else
+          if(strcmp("switch", set)==0)
+          {
+            //Yes, it's the same format, how neat.
+            printf("Adding switch: %s\n", val);
+            teleAddFromString(tl->switchList, val);
           }
         } //Got a = in the line
       } //Not [data]
@@ -334,6 +343,7 @@ void freeLevelInfo(levelInfo_t** p)
   if( (*p)->stopImg ) free( (*p)->stopImg );
 
   if( (*p)->teleList ) teleFreeList( (*p)->teleList );
+  if( (*p)->switchList) teleFreeList( (*p)->switchList );
 
   //Set everything 0 for good measure.
   memset( *p, 0, sizeof(levelInfo_t));

@@ -20,6 +20,7 @@
 #include "settings.h"
 #include "defs.h"
 #include "transition.h"
+#include "switch.h"
 
 static playField pf;
 static cursorType cur;
@@ -58,14 +59,15 @@ int initGame(SDL_Surface* screen)
     debugNumInit++;
     initCursor(&cur);
     restartConfirm=0;
+
+    //Read info's for level. (this is done instead of using the one in packInfo so it don't need resetting)
+    pf.levelInfo = mkLevelInfo( player()->levelFile );
+
     if(!loadField(&pf, player()->levelFile ))
     {
       printf("Error: Couldn't init playfield.\n");
       return(0);
     }
-
-    //Read info's for level. (this is done instead of using the one in packInfo so it don't need resetting)
-    pf.levelInfo = mkLevelInfo( player()->levelFile );
 
 
     if(!initDraw(pf.levelInfo,screen))
@@ -102,6 +104,8 @@ int initGame(SDL_Surface* screen)
 
     getInpPointerState()->escEnable=1;
 
+    //We also simulate the first switch tick here so all looks right at the countdown.
+    switchUpdateAll( &pf );
 
     return(1);
 }

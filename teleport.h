@@ -31,7 +31,7 @@ void teleFreeList( listItem* l );
 void teleAddToList( listItem* l, int sx, int sy, int dx, int dy );
 void teleRemoveFromList( listItem* l, int sx, int sy );
 void teleAddFromString(listItem* l, const char* str); //Expects a string in the format sx,sy:dx,dy
-char* teleMkStrings(listItem* l);
+char* teleMkStrings(listItem* l, const char* prefix);
 int_fast8_t telePresent( listItem* l, int sx,int sy);
 
 #endif // TELEPORT_H_INCLUDED

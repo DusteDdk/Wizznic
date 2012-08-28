@@ -39,6 +39,7 @@ struct levelInfo_s
   char* stopImg;  //img to show after level completed.
 
   listItem* teleList; //Initiated by mkLevelInfo
+  listItem* switchList; //Initiated by mkLevelInfo
 
   hsEntry_t* hsStats; ///hsEntry level stats. (TODO: Should this be freed by freeLevelInfo? Is it?)
 

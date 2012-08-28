@@ -21,12 +21,13 @@
 #include "ticks.h"
 #include "strings.h"
 #include "teleport.h"
+#include "switch.h"
 #include "particles.h"
 #include "draw.h"
 #include "input.h"
 
 
-static int isWall(playField* pf, int x, int y)
+int isWall(playField* pf, int x, int y)
 {
   if(x < 0) return(0);
   if(x+1 > FIELDSIZE) return(0);
@@ -38,6 +39,7 @@ static int isWall(playField* pf, int x, int y)
   if(pf->board[x][y]->type==GLUE) return(1);
   if(pf->board[x][y]->type==ONEWAYLEFT) return(1);
   if(pf->board[x][y]->type==ONEWAYRIGHT) return(1);
+  if( pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF ) return(1);
 
   return(0);
 }
@@ -135,7 +137,7 @@ void boardSetWalls(playField* pf)
   {
     for(y=0; y < FIELDSIZE; y++)
     {
-      if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT ) )
+      if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF) )
       {
         setWallType(pf,x,y);
       }
@@ -206,6 +208,8 @@ int loadField(playField* pf, const char* file)
         pf->board[x][y]->tl  = MOVERCOUNTDOWN;
         pf->board[x][y]->moveXspeed = 0;
         pf->board[x][y]->moveYspeed = 0;
+        pf->board[x][y]->isActive=1; //all bricks are born alive, except switches, these are updated in switchSetTarget
+        pf->board[x][y]->target=NULL;
 
         pf->board[x][y]->dmx = 0;
       } else {
@@ -221,12 +225,16 @@ int loadField(playField* pf, const char* file)
 
   pf->movingList = initList();
   pf->removeList = initList();
+  pf->deactivated = initList();
 
   pf->blocker = malloc(sizeof(brickType));
   pf->blocker->type=RESERVED;
 
   //Figure out which tile to use for each wall (int 6)
   boardSetWalls(pf);
+
+  //Set switch targets.
+  switchSetTargets(pf);
 
   return(1);
 }
@@ -253,7 +261,7 @@ void freeField(playField* pf)
   //Clear the lists
   freeList(pf->movingList);
   freeList(pf->removeList);
-
+  freeList(pf->deactivated);
 }
 
 int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int speed)
@@ -274,11 +282,11 @@ int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int sp
   //OneWay or glue below?
   if(y+1<FIELDSIZE)
   {
-    if(isOneWay(pf->board[x][y+1]))
+    if( isOneWay(pf->board[x][y+1]) && pf->board[x][y+1]->isActive )
     {
       if(pf->board[x][y+1]->type==ONEWAYLEFT && dirx==DIRRIGHT) return(0);
       if(pf->board[x][y+1]->type==ONEWAYRIGHT && dirx==DIRLEFT) return(0);
-    } else if(pf->board[x][y+1] &&pf->board[x][y+1]->type==GLUE)
+    } else if(pf->board[x][y+1] && pf->board[x][y+1]->type==GLUE && pf->board[x][y+1]->isActive)
     {
       return(0);
     }
@@ -406,6 +414,9 @@ void doTelePort(playField* pf,cursorType* cur)
   {
     telePort_t* t = (telePort_t*)li->data;
 
+    //Check if any switch points to this teleport, and if it does, if it is inactive
+    if( !switchAmIEnabled( pf, t->sx, t->sy ) ) return;
+
     //Check if theres something in src, and that dst is free
     if( pf->board[t->sx][t->sy] && !pf->board[t->dx][t->dy] )
     {
@@ -422,6 +433,10 @@ void doTelePort(playField* pf,cursorType* cur)
 //Don't have movers that can touch.
 static int vertMover(playField* pf,int x, int y, int dir)
 {
+
+	//Don't do anything if it's inactive.
+	if( !pf->board[x][y]->isActive ) return(0);
+
   //Outside bounds
   if(y+dir < 0 || y+dir == FIELDSIZE) return(0);
 
@@ -460,6 +475,10 @@ static int bricksOnTop(playField* pf, int x, int y)
 //Returns 0 if couldn't move. Returns 1 if could.
 static int horizMover(playField* pf, int x, int y, int dir)
 {
+
+	//Don't do anything if it's inactive.
+	if( !pf->board[x][y]->isActive ) return(0);
+
   //Out of bounds
   if(x+dir<FIELDSIZE && x+dir>-1)
   {
@@ -668,7 +687,7 @@ void simField(playField* pf, cursorType* cur)
         }
 
         //Is it a mover
-        if(isMover(pf->board[x][y]))
+        if(isMover(pf->board[x][y]) &&  pf->board[x][y] && pf->board[x][y]->isActive)
         {
           //Horiz mover?
           if(pf->board[x][y]->type == MOVERHORIZ)
@@ -725,7 +744,7 @@ void simField(playField* pf, cursorType* cur)
             }
           }
         }
-        else if(isOneWay(pf->board[x][y])) //One way floor
+        else if(isOneWay(pf->board[x][y]) && pf->board[x][y]->isActive) //One way floor
         {
           //Try to move the block on top of it, if it's a brick
           if(y>0 && pf->board[x][y-1] && isBrick(pf->board[x][y-1]))
@@ -747,10 +766,15 @@ void simField(playField* pf, cursorType* cur)
 
           }
         }
-
       }
     }
   }
+
+  //Make switches affect the board.
+  switchUpdateAll( pf );
+
+	//Put back any reactivated walls if there is space.
+  switchPutBack(pf);
 
   for(y=FIELDSIZE-1; y > -1; y--)
   {
@@ -932,15 +956,19 @@ int isBrickFalling(playField* pf, brickType* b)
 
 int isMover(brickType* b)
 {
-  if(!b) return(0);
-  if(b->type==MOVERHORIZ||b->type==MOVERVERT) return(1);
+  if( b && (b->type==MOVERHORIZ||b->type==MOVERVERT) ) return(1);
   return(0);
 }
 
 int isOneWay(brickType* b)
 {
-  if(!b) return(0);
-  if(b->type==ONEWAYLEFT||b->type==ONEWAYRIGHT) return(1);
+  if( b && (b->type==ONEWAYLEFT||b->type==ONEWAYRIGHT) ) return(1);
+  return(0);
+}
+
+int isSwitch(brickType* b)
+{
+  if( b && (b->type==SWON||b->type==SWOFF) ) return(1);
   return(0);
 }
 

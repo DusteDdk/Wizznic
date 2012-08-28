@@ -37,8 +37,10 @@
 #define STDWALL 16    //Standard issue free-standing wall-tile
 #define RESERVED 17   //Reserved for bricks that are moving/exploding.
 #define TELESRC 18    //Teleport source brick
+#define SWON 19       //Switch turns on target when brick on top
+#define SWOFF 20      //Switch turns off target when brick on top
+#define NUMTILES 20   //type 1 = index 0 in tile array
 
-#define NUMTILES 18 //type 1 = index 0 in tile array
 
 #define MOVERCOUNTDOWN 500  //Ms pause before mover switch direction
 

@@ -89,20 +89,21 @@ void teleRemoveFromList( listItem* l, int sx, int sy )
   }
 }
 
-char* teleMkStrings(listItem* l)
+char* teleMkStrings(listItem* l, const char* prefix)
 {
   if(!listSize(l)) return(0);
 
   listItem* it = l;
   telePort_t* t;
-  int bytes =  sizeof(char)*(listSize(l)*strlen("teleport=10,10:10,10\n"));
+  int bytes =  sizeof(char)*(listSize(l)*strlen("=10,10:10,10\n"));
+  bytes += sizeof(char)*listSize(l)*strlen(prefix);
   char* str = malloc( bytes );
   memset(str,0,bytes);
 
   while( (it=it->next) )
   {
     t = (telePort_t*)it->data;
-    sprintf(str, "%steleport=%i,%i:%i,%i\n",str, t->sx,t->sy,t->dx,t->dy);
+    sprintf(str, "%s%s=%i,%i:%i,%i\n",str,prefix, t->sx,t->sy,t->dx,t->dy);
   }
 
   return(str);

@@ -25,7 +25,7 @@ LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpt
 OBJS = board.o cursor.o draw.o input.o main.o menu.o sprite.o text.o ticks.o\
 sound.o game.o player.o list.o levels.o platform/wiz.o pixel.o stars.o levelselector.o\
 leveleditor.o particle.o pack.o settings.o stats.o strings.o mbrowse.o\
-teleport.o credits.o waveimg.o userfiles.o pointer.o transition.o
+teleport.o credits.o waveimg.o userfiles.o pointer.o transition.o switch.o
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 

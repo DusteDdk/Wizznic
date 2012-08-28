@@ -188,6 +188,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="strings.h" />
+		<Unit filename="switch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="switch.h" />
 		<Unit filename="swscale.c">
 			<Option compilerVar="CC" />
 		</Unit>

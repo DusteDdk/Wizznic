@@ -43,6 +43,9 @@ struct brick_t
 
   int checked; //Have this brick been checked in this loop ? (for bricks that moved)
   int wall; //Only used by walls, index in walls-sprite array.
+
+  int isActive; //Only used by switches, if 1, the switch have activated it's target (if 0, the target is in the deactivated list).
+  struct brick_t* target; //Only used by switched, target brick, is set upon init.
 };
 typedef struct brick_t brickType;
 
@@ -55,6 +58,8 @@ struct playField_t
   //lol
   brickType* blocker; //Universial, invisible, quite magic blocker, for reserving space when bricks are travelling.
   listItem* movingList; //Start of the linked list of moving bricks
+
+  listItem* deactivated;  //Bricks that are deactivated by a switch.
 
   listItem* removeList; //Start of the linked list of bricks that's going to die, tl counts down their lifespan
 };
@@ -70,10 +75,11 @@ int moveBrick(playField* pf, int x, int y, int dirx,int diry, int block, int spe
 
 void telePortBrick(playField* pf,telePort_t* t, cursorType* cur);
 
-
-
 int isBrickFalling(playField* pf, brickType* b);
 inline int isBrick(brickType* b);
+int isSwitch(brickType* b);
+
+int isWall(playField* pf, int x, int y);
 int isMover(brickType* b);
 int isOneWay(brickType* b);
 int curMoveBrick(playField *pf, brickType *b, int dir);

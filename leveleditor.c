@@ -58,10 +58,10 @@ void editorLoad(const char* fn, SDL_Surface* screen)
 
   //Init cursor
   initCursor(&cur);
-  //Load field
-  loadField(&pf, fileName);
   //Read info's for level.
   pf.levelInfo = mkLevelInfo( fn );
+  //Load field
+  loadField(&pf, fileName);
 
   initDraw(pf.levelInfo, screen);
   SDL_FreeSurface(stealGfxPtr()->boardImg);
@@ -76,7 +76,6 @@ void editorLoad(const char* fn, SDL_Surface* screen)
   selBrick=BRICKSBEGIN;
 
   teleState=0;
-
 }
 
 void editorCleanUp()
@@ -117,10 +116,20 @@ void editorPickBrickUnderCursor()
   }
 }
 
+int editIsSwitch(int s)
+{
+  return(s==SWON||s==SWOFF);
+}
+
 void editorRemoveBrickUnderCursor()
 {
   if(pf.board[cur.x][cur.y])
   {
+    //Switch?
+    if( editIsSwitch(pf.board[cur.x][cur.y]->type) )
+    {
+      teleRemoveFromList(pf.levelInfo->switchList,cur.x,cur.y);
+    }
     free(pf.board[cur.x][cur.y]);
     pf.board[cur.x][cur.y]=0;
   }
@@ -128,8 +137,20 @@ void editorRemoveBrickUnderCursor()
   //teleport?
   teleRemoveFromList(pf.levelInfo->teleList,cur.x,cur.y);
 
+
+
   boardSetWalls(&pf);
   changed=1;
+}
+
+void editAddToBoard(int s)
+{
+  pf.board[cur.x][cur.y]=malloc(sizeof(brickType));
+  pf.board[cur.x][cur.y]->type=s;
+  pf.board[cur.x][cur.y]->isActive=1;
+  pf.board[cur.x][cur.y]->pxx=cur.x*20+boardOffsetX;
+  pf.board[cur.x][cur.y]->pxy=cur.y*20+boardOffsetY;
+  boardSetWalls(&pf);
 }
 
 
@@ -234,18 +255,19 @@ int runEditor(SDL_Surface* screen)
         selBrick=NUMTILES;
     }
 
+    //Is pressed brick button being presesd?
     if( (getButton(C_BTNX) || getInpPointerState()->isDown ) && selBrick != RESERVED )
     {
-      //resetBtn(C_BTNX);
-      //resetMouseBtn();
 
       //We remove the brick under the cursor if it's not a teleport, or if it is and we are placing a teleport source.
-      if( (!telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && selBrick!=TELESRC) || (selBrick==TELESRC && telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && teleState==0 ) )
+//      if( (!telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && selBrick!=TELESRC) || (selBrick==TELESRC && telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && teleState==0 ) )
+      //We remove the brick before placing a new one if it's not a teleport or if it's a switch (not switch-target).
+      if( selBrick!=TELESRC && !((editIsSwitch(selBrick)&&teleState==1)  ) )
       {
         editorRemoveBrickUnderCursor();
       }
 
-      if(selBrick==TELESRC)
+      if(selBrick==TELESRC || editIsSwitch(selBrick) )
       {
         resetMouseBtn();
         resetBtn(C_BTNX);
@@ -258,17 +280,21 @@ int runEditor(SDL_Surface* screen)
           teleState++;
         } else {
           //Add to list
-          teleAddToList( pf.levelInfo->teleList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
+          if(editIsSwitch(selBrick))
+          {
+            teleAddToList( pf.levelInfo->switchList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
+            printf("Number of members in switchList: %i\n", listSize(pf.levelInfo->switchList) );
+            cur.x = teleSrcPos[0];
+            cur.y = teleSrcPos[1];
+            editAddToBoard(selBrick);
+          } else {
+            teleAddToList( pf.levelInfo->teleList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
+          }
           //Reset state
           teleState=0;
         }
       } else {
-        pf.board[cur.x][cur.y]=malloc(sizeof(brickType));
-
-        pf.board[cur.x][cur.y]->type=selBrick;
-        boardSetWalls(&pf);
-        pf.board[cur.x][cur.y]->pxx=cur.x*20+boardOffsetX;
-        pf.board[cur.x][cur.y]->pxy=cur.y*20+boardOffsetY;
+        editAddToBoard(selBrick);
       } //Not a teleport
 
       changed=1;
@@ -337,13 +363,23 @@ int runEditor(SDL_Surface* screen)
       fputs(buf,f);
 
       //Teleports
-      char* str = teleMkStrings(pf.levelInfo->teleList);
+      char* str = teleMkStrings(pf.levelInfo->teleList, "teleport");
       if(str) //Returns 0 if there's no teleports
       {
         fputs("\n#Teleports\n",f);
         fputs(str,f);
         free(str);
       }
+
+      //Switches
+      str = teleMkStrings(pf.levelInfo->switchList, "switch");
+      if(str) //Returns 0 if there's no teleports
+      {
+        fputs("\n#Switches\n",f);
+        fputs(str,f);
+        free(str);
+      }
+
 
 
       fputs("\n#The level-data block\n[data]",f);
@@ -378,6 +414,7 @@ int runEditor(SDL_Surface* screen)
 
   draw(&cur, &pf, screen);
 
+
   if(changed==2)
   {
     txtWriteCenter(screen, FONTMEDIUM, STR_EDIT_NOT_SAVED_WARNING, HSCREENW,HSCREENH-20);
@@ -411,10 +448,31 @@ int runEditor(SDL_Surface* screen)
     txtWriteCenter(screen, FONTSMALL, "(From)", HSCREENW-115,HSCREENH-41);
   } else if(teleState)
   {
-    txtWriteCenter(screen, FONTSMALL, "(To)", HSCREENW-115,HSCREENH-41);
+    if(selBrick==TELESRC)
+    {
+      txtWriteCenter(screen, FONTSMALL, "(To)", HSCREENW-115,HSCREENH-41);
+    } else {
+      txtWriteCenter(screen, FONTSMALL, "(Target)", HSCREENW-115,HSCREENH-41);
+    }
     drawPath(screen, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y, 1);
   }
+
+  //Draw all the telepaths.
   drawAllTelePaths(screen, pf.levelInfo->teleList);
+
+
+  //Draw switchpath we hover above
+  listItem* t = pf.levelInfo->switchList;
+  while( (t=t->next) )
+  {
+    telePort_t* tp=(telePort_t*)t->data;
+    if(cur.x == tp->sx && cur.y == tp->sy)
+    {
+      drawTelePath( screen, tp, 1 );
+    }
+  }
+  //Draw all switchpaths
+  drawAllTelePaths(screen, pf.levelInfo->switchList);
 
   if( (getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT) && (changed > 0) )
   {
@@ -426,14 +484,16 @@ int runEditor(SDL_Surface* screen)
   {
     SDL_BlitSurface(selBrickBG , NULL, screen, &(setting()->bgPos) );
 
-    //Draw a 3*6 grid
+    //Draw bricks in a 6*4 grid
     int px,py,bnum=BRICKSBEGIN;
     static int brickSelOfX = HSCREENW - 78 + 8;
     static int brickSelOfY = HSCREENH - 42 + 8;
-    for(py=0;py < 3; py++)
+    for(py=0;py < 4; py++)
     {
       for(px=0; px < 6; px++)
       {
+        if( bnum > NUMTILES )
+          break;
         selBrickRect.x = brickSelOfX+(24*px);
         selBrickRect.y = brickSelOfY+(24*py);
         selBrickRect.w = selBrickRect.x+20;
