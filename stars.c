@@ -206,7 +206,7 @@ void fireWorks(SDL_Surface* screen)
 
         //Remove rocket
         free(it->data);
-        listRemoveItem(rockets, it);
+        it=listRemoveItem(rockets, it);
       }
     } //Sim rocket stars
   } //iterate through rockets

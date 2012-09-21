@@ -89,14 +89,15 @@ listItem* listRemoveItem(listItem* start, listItem* item)
       if(l->next)
       {
         prev->next=l->next;
-        free(item);
       } else {
         prev->next=0;
       }
+      free(item);
       return(prev);
     }
     prev=l;
   }
+  printf("listRemoveItem ERROR: no item (%p) found in list (%p)!\n");
   return(0);
 }
 
