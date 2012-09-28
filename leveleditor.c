@@ -487,7 +487,7 @@ int runEditor(SDL_Surface* screen)
     //Draw bricks in a 6*4 grid
     int px,py,bnum=BRICKSBEGIN;
     static int brickSelOfX = HSCREENW - 78 + 8;
-    static int brickSelOfY = HSCREENH - 42 + 8;
+    static int brickSelOfY = HSCREENH - 54 + 8;
     for(py=0;py < 4; py++)
     {
       for(px=0; px < 6; px++)
