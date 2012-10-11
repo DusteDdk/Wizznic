@@ -1,12 +1,12 @@
 Here's how to compile/install wizznic for the 3 officially supported platforms.
 -------------------------------------------------------------------------------
-If your platform is not here, check readme, unofficial (but highly appreciated)
+If your platform is not here, check ports.txt, unofficial (but highly appreciated)
 ports exist for other other platforms, some of which are listed there.
 
-You can find the latest releases for on the sourceforce project page:
-https://sourceforge.net/projects/wizznic/ under "Files".
+The latest builds are available at http://jenkins.cyberstalker.dk/job/Wizznic/
+these are cutting edge, and might not work as expected.
 
-
+The latest official releases are available at http://sf.net/projects/wizznic/
 
 GP2X Wiz.
 ---------
@@ -25,8 +25,6 @@ my guess is by using cygwin.
 
 Windows.
 --------
-There should be a precompiled .exe for Windows. - Sometimes a day or two later
-because I'm not usally near a windows box.
 Simply extract the file (you did that allready, didn't you!;)
 and run one of the .bat files.
 If you want to compile it yourself, you'll need to configure Code::Blocks
@@ -37,13 +35,10 @@ project file.
 
 Linux.
 ------
-There is a precompiled .x86-32 bit binary in the source package, however
-this might not work with your distribution (either because you run 64 bit)
-or if you use another version of one of the libs that the program is compiled
-against. So theres a chance you'll have to compile it yourself which
-shouldn't be too hard.
+Precompiled 32 and 64 bit versions are available, Wizznic might also be in your
+distributions package system.
 
-You'll need SDL, SDL-mixer, SDL-image, a C compiler and Make or Code::Blocks.
+You'll need SDL, SDL-mixer, SDL-image, a gcc compiler and Make.
 To compile in Code::Blocks, open the project file, and build the Linux target.
 
 
@@ -95,25 +90,3 @@ To compile with mame keymapping, add -DMAME_CTRL to the make command, or
 add the define in codeblocks.
 To change controls further or see keymappings, see input.c.
 
-
-Using the thumbnail-function in gnome:
---------------------------------------
-Wizznic can generate thumbnail images of level-files (.wzp) if you wish.
-You need the source version of the game because the script
-wizznic/tools/wizznic-thumbnailwrapper.sh is needed.
-Edit that script:
-WIZZNICPATH= should be the full path to your wizznic directory.
-
-Open gconf-editor and go to: desktop > gnome > thumbnailers, rightclick
-below "disable all" and select "New Key"
-Name: text@wizznic/command
-Type: String
-Value: /full/path/to/wizznic/tools/wizznic-thumbnailwrapper.sh %i %o %s
-Now close the gconf-editor and open it again, navigate to:
-desktop > gnome > thumbnailers > text@wizznic and add a new key:
-Name: enable
-Type: Boolean
-Value: True
-
-Now, copy the wizznic/tools/mime/wizznic.xml to /usr/share/mime/packages
-and run: sudo update-mime-database

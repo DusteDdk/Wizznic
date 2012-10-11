@@ -97,7 +97,7 @@ listItem* listRemoveItem(listItem* start, listItem* item)
     }
     prev=l;
   }
-  printf("listRemoveItem ERROR: no item (%p) found in list (%p)!\n");
+  printf("listRemoveItem ERROR: no item (%p) found in list (%p)!\n", (void*)item, (void*)start);
   return(0);
 }
 

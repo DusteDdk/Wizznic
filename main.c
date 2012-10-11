@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
 {
   int doScale=0;
   int doDump=0;
-  int doThumb=0;
   int state=1; //Game, Menu, Editor, Quit
   int sdlVideoModeFlags = SDL_SWSURFACE;
 
@@ -126,9 +125,6 @@ int main(int argc, char *argv[])
       }
       setting()->glEnable=0;
       doDump=1;
-    } else if(strcmp(argv[1], "-thumbnailer")==0 && argc==4)
-    {
-      doThumb=1;
     } else if(strcmp(argv[1], "-f")==0)
     {
       sdlVideoModeFlags |= SDL_FULLSCREEN;
@@ -234,10 +230,6 @@ int main(int argc, char *argv[])
   if(doDump)
   {
     dumplevelimages(screen, argv[2], 0);
-    return(0);
-  } else if(doThumb)  //For the gnome-thumbnailing script
-  {
-    thumblevelimage(screen, argv[2], argv[3]);
     return(0);
   }
   #endif

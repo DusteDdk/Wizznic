@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-   <mime-type type="text/wizznic">
-     <comment>Wizznic Level File </comment>
-     <glob pattern="*.wzp"/>
-   </mime-type>
-</mime-info>

@@ -87,46 +87,6 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
   }
 }
 
-void thumblevelimage(SDL_Surface* screen,const char* lvlfile, const char* outimg)
-{
-  playField pf;
-  cursorType cur;
-
-  packSet(0);
-
-  printf("Thumbnailer.\nDoing: %s >> %s\n",lvlfile,outimg);
-  initCursor(&cur);
-
-  if(!loadField(&pf, lvlfile ))
-  {
-    printf("Error: Couldn't init board.\n");
-    return;
-  }
-
-  pf.levelInfo = mkLevelInfo( lvlfile );
-
-  if(!initDraw(pf.levelInfo,screen))
-  {
-    printf("Error: Couldn't init graphics.\n");
-    return;
-  }
-
-  //Switch off cursor graphics
-  drawDisableCursor();
-
-  //Draw the image
-  draw(&cur,&pf, screen);
-
-  //Save image
-  tgaSave(screen, outimg);
-
-  SDL_Flip(screen);
-
- // cleanUpDraw();
-  freeField(&pf);
-
-}
-
 void tgaSave(SDL_Surface* screen, const char* fileName)
 {
   SDL_LockSurface(screen);
