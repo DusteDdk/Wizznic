@@ -1534,9 +1534,8 @@ int runMenu(SDL_Surface* screen)
 
         starField(screen,0);
         txtWave(screen, FONTMEDIUM, "Select Music", 160,15, &rot);
-        if(dir || menuPosY!=0) txtWriteCenter(screen, FONTSMALL, "Play Game Music", HSCREENW, HSCREENH-70);
-        if(dir || menuPosY!=1) txtWriteCenter(screen, FONTSMALL, "Play From Directory", HSCREENW, HSCREENH-60);
-
+        if(dir || menuPosY!=0) txtWriteCenter(screen, FONTSMALL, "Play Music From Game", HSCREENW, HSCREENH-70);
+        if(dir || menuPosY!=1) txtWriteCenter(screen, FONTSMALL, "Play Music From Here", HSCREENW, HSCREENH-60);
 
         x=0;
         y=0;
@@ -1563,9 +1562,25 @@ int runMenu(SDL_Surface* screen)
                 if(getButton(C_BTNB))
                 {
                   resetBtn(C_BTNB);
-                  free(setting()->musicDir);
-                  setting()->musicDir=malloc(sizeof(char)*(strlen(fItem->fullName)+1));
-                  strcpy(setting()->musicDir, fItem->fullName);
+
+                  if( fItem->fullName == (char*)0 ) //The "Go back" entry.
+                  {
+                    char* nmd = malloc( sizeof(char)*(strlen(setting()->musicDir)+1) ); //New directory name.
+                    #ifdef WIN32
+                      #define DELIMCHAR '\\'
+                    #else
+                      #define DELIMCHAR '/'
+                    #endif
+                    nmd = strncpy( nmd, setting()->musicDir, charrpos( setting()->musicDir, DELIMCHAR ) );
+                    printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd); 
+                    free( setting()->musicDir );
+                    setting()->musicDir = nmd;
+                  } else {
+                    free(setting()->musicDir);
+                    setting()->musicDir=malloc(sizeof(char)*(strlen(fItem->fullName)+1));
+                    strcpy(setting()->musicDir, fItem->fullName);
+                  }
+
                   fileListMake(setting()->musicDir);
                   menuPosY=2;
                   return(STATEMENU);

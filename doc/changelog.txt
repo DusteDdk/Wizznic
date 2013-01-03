@@ -1,9 +1,4 @@
 -- Minor bugs --
-  The user-music path code is idiotic. Path string keeps getting longer as the user browse around more.
-  There is a small delay when shifting a brick off of a moving platform, it's a tile based game, the game
-    has to wait until the brick is within a tile before it can move it away from the moving platform.
-
--- Won't fix --
   The menu-music might clip, this is a bug in an old SDL_Mixer version (I think, since I've not been able to reproduce since I upgraded SDL_Mixer)
   leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
@@ -13,10 +8,14 @@
   Ceate a "Training" package.
   Chain-reaction combo detection.
   Combo-message/text.
+  Asia theme by ViperMD
+  Asia music theme by Sean Hawk
 
 1.0.0
+  There are switches which can activate/deactivate bricks. (for example for the player to put a brick
+    on top of a switch to enable a teleport/magnet/mover or remove/add a piece of wall).
+  Fixed the idiotic user-music path code.
   Audio rates are set from platform/* headers to make porting easier and less intrusive.
-
   Level editor got a dedicated background image, and a menu for selecting bricks with mouse/touchscreen.
   Switched around level1 and 3 since 3 was way easier than 1.
   Fixed bug where bricks could be moved and were evaluated even if they were on top of exploding bricks.

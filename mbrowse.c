@@ -127,9 +127,7 @@ void fileListMake(const char* path)
   fi->name=malloc(sizeof(char)*(strlen("[..]")+1));
   strcpy(fi->name, "[..]");
 
-  sprintf(buf, "%s/..", path);
-  fi->fullName=malloc(sizeof(char)*(strlen(buf)+1));
-  strcpy(fi->fullName, buf);
+  fi->fullName=(char*)0;
   fi->dir=1;
 
   listAddData(fl,(void*)fi);

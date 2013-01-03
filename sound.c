@@ -105,29 +105,19 @@ int loadSample(const char* fileName, int index)
 void loadSamples(const char* sndDir, const char* musicFile)
 {
   loadSample( packGetFile(sndDir,"click.ogg"), SND_CLICK );
-
   loadSample( packGetFile(sndDir,"brickmove.ogg"), SND_BRICKMOVE );
   loadSample( packGetFile(sndDir,"brickgrab.ogg"), SND_BRICKGRAB );
   loadSample( packGetFile(sndDir,"brickbreak.ogg"), SND_BRICKBREAK );
   loadSample( packGetFile(sndDir,"scoretick.ogg"), SND_SCORECOUNT );
-
   loadSample( packGetFile(sndDir,"rocketboom.ogg"), SND_ROCKETBOOM );
   loadSample( packGetFile(sndDir,"rocketlaunch.ogg"), SND_ROCKETLAUNCH );
-
   loadSample( packGetFile(sndDir,"countdown.ogg"), SND_COUNTDOWNTOSTART );
   loadSample( packGetFile(sndDir,"start.ogg"), SND_START );
-
   loadSample( packGetFile(sndDir,"timeout.ogg"), SND_TIMEOUT );
-
   loadSample( packGetFile(sndDir,"victory.ogg"), SND_VICTORY );
-
   loadSample( packGetFile(sndDir,"timeout.ogg"), SND_TIMEOUT );
-
   loadSample( packGetFile(sndDir,"onewaymove.ogg"), SND_ONEWAY_MOVE );
   loadSample( packGetFile(sndDir,"teleported.ogg"), SND_TELEPORTED );
-
-#define SND_ONEWAY_MOVE 14
-#define SND_TELEPORTED 15
 
   //Music load code
   if(setting()->disableMusic) return;

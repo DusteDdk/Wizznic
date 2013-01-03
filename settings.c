@@ -19,6 +19,14 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
+#ifdef WIN32
+  #include <direct.h>
+  #define cwd _getcwd
+#else
+  #include <unistd.h>
+  #define cwd getcwd
+#endif
+
 #include "settings.h"
 #include "strings.h"
 #include "pack.h"
@@ -99,8 +107,9 @@ void loadSettings()
   settings.playerName = malloc(sizeof(char)*11 );
   strcpy(settings.playerName, "player");
 
-  settings.musicDir = (char*)malloc(sizeof(char)*(strlen(".")+1) );
-  strcpy(settings.musicDir, ".");
+  settings.musicDir = cwd( NULL, 0 );
+  if( !settings.musicDir )
+    printf("Out of memory, will crash soon.\n");
 
   sprintf( buf, "%s/settings.ini", getConfigDir() );
   FILE *f = fopen(buf, "r");
@@ -155,9 +164,15 @@ void loadSettings()
         } else
         if( strcmp("musicdir", set)==0 )
         {
-          free(settings.musicDir);
-          settings.musicDir = malloc(sizeof(char)*(strlen(val)+1) );
-          strcpy(settings.musicDir, val);
+          //We check if it starts with . it now has to be a full path.
+          if( settings.musicDir[0] != '.' )
+          {
+            free(settings.musicDir);
+            settings.musicDir = malloc(sizeof(char)*(strlen(val)+1) );
+            strcpy(settings.musicDir, val);
+          } else {
+            printf("Using '%s' as music directory instead of '%s'.\n", settings.musicDir, val);
+          }
         } else
         if( strcmp("usermusic", set)==0 )
         {
