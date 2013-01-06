@@ -1572,6 +1572,7 @@ int runMenu(SDL_Surface* screen)
                       #define DELIMCHAR '/'
                     #endif
                     nmd = strncpy( nmd, setting()->musicDir, charrpos( setting()->musicDir, DELIMCHAR ) );
+                    nmd[charrpos( setting()->musicDir, DELIMCHAR )] = 0; 
                     printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd); 
                     free( setting()->musicDir );
                     setting()->musicDir = nmd;

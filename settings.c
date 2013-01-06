@@ -165,7 +165,7 @@ void loadSettings()
         if( strcmp("musicdir", set)==0 )
         {
           //We check if it starts with . it now has to be a full path.
-          if( settings.musicDir[0] != '.' )
+          if( val[0] != '.' )
           {
             free(settings.musicDir);
             settings.musicDir = malloc(sizeof(char)*(strlen(val)+1) );
