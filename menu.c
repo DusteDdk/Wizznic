@@ -667,10 +667,6 @@ int runMenu(SDL_Surface* screen)
             setMenu(menuStatePackList);
             menuPosY = packState()->selected;
           break;
-          case 1000:
-            menuReturnHack=menuStateUserLevels;
-            setMenu(menuStateNoPointerSupport);
-          break;
         }
       }
       break;
@@ -1226,21 +1222,12 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->userMusic)?"Music: <User selected>":"Music: <Game Music>");
         if(dir || menuPosY!=3) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH-30);
-        if( isBoxClicked( getTxtBox() ) )
+        if( (menuPosY==3 && menuChangeX||getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) ) 
         {
-          menuReturnHack=menuStateOptions;
-          setMenu(menuStateNoPointerSupport);
-        }
-
-        if(menuPosY==3)
-        {
-          if(menuChangeX||getButton(C_BTNB))
-          {
-              resetBtn(C_BTNB);
-              menuPosY=0;
-              fileListMake(setting()->musicDir);
-              setMenu(menuStateSelectMusicDir);
-          }
+          resetBtn(C_BTNB);
+          menuPosY=0;
+          fileListMake(setting()->musicDir);
+          setMenu(menuStateSelectMusicDir);
         }
 
         sprintf(buf, (setting()->arcadeMode)?"Game mode: < Arcade >":"Game mode: < Career >");
@@ -1535,7 +1522,37 @@ int runMenu(SDL_Surface* screen)
         starField(screen,0);
         txtWave(screen, FONTMEDIUM, "Select Music", 160,15, &rot);
         if(dir || menuPosY!=0) txtWriteCenter(screen, FONTSMALL, "Play Music From Game", HSCREENW, HSCREENH-70);
+        if( isBoxClicked( getTxtBox() ) || (menuPosY==0 && getButton(C_BTNB) ) )
+        {
+          resetBtn(C_BTNB);
+          setting()->userMusic=0; //Turn user-selected music off
+          free(setting()->musicDir);
+          setting()->musicDir=malloc(sizeof(char)*2 );
+          strcpy(setting()->musicDir, "."); //This forces musicdir to be set to pwd next load, which is fine if user-music is not used anyway.
+          saveSettings();
+          fileListFree();
+          soundSetMusic(); //Important to set after freeing file list, since this is using that list
+          setMenu(menuStateOptions);
+          menuPosX=3;
+          return(STATEMENU);
+        }
+
         if(dir || menuPosY!=1) txtWriteCenter(screen, FONTSMALL, "Play Music From Here", HSCREENW, HSCREENH-60);
+
+        if( isBoxClicked( getTxtBox() ) || (menuPosY==1 && getButton(C_BTNB)) )
+        {
+          resetBtn(C_BTNB);
+
+          {
+            setting()->userMusic=1; //Turn user-selected music on 
+            saveSettings();
+            fileListFree();
+            soundSetMusic(); //Important to set after freeing file list, since this is using that list
+            setMenu(menuStateOptions);
+            menuPosX=3;
+            return(STATEMENU);
+          }
+        }
 
         x=0;
         y=0;
@@ -1557,35 +1574,31 @@ int runMenu(SDL_Surface* screen)
             if(y>x)
             {
               if(dir || menuPosY!=x+2) txtWriteCenter(screen, FONTSMALL, fItem->name, HSCREENW, (HSCREENH-40)+((x-scroll)*10));
-              if(menuPosY-2==x)
+              if( (menuPosY-2==x && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
               {
-                if(getButton(C_BTNB))
+                resetBtn(C_BTNB);
+
+                if( fItem->fullName == (char*)0 ) //The "Go back" entry.
                 {
-                  resetBtn(C_BTNB);
-
-                  if( fItem->fullName == (char*)0 ) //The "Go back" entry.
-                  {
-                    char* nmd = malloc( sizeof(char)*(strlen(setting()->musicDir)+1) ); //New directory name.
-                    #ifdef WIN32
-                      #define DELIMCHAR '\\'
-                    #else
-                      #define DELIMCHAR '/'
-                    #endif
-                    nmd = strncpy( nmd, setting()->musicDir, charrpos( setting()->musicDir, DELIMCHAR ) );
-                    nmd[charrpos( setting()->musicDir, DELIMCHAR )] = 0; 
-                    printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd); 
-                    free( setting()->musicDir );
-                    setting()->musicDir = nmd;
-                  } else {
-                    free(setting()->musicDir);
-                    setting()->musicDir=malloc(sizeof(char)*(strlen(fItem->fullName)+1));
-                    strcpy(setting()->musicDir, fItem->fullName);
-                  }
-
-                  fileListMake(setting()->musicDir);
-                  menuPosY=2;
-                  return(STATEMENU);
+                  char* nmd = malloc( sizeof(char)*(strlen(setting()->musicDir)+1) ); //New directory name.
+                  #ifdef WIN32
+                    #define DELIMCHAR '\\'
+                  #else
+                    #define DELIMCHAR '/'
+                  #endif
+                  nmd = strncpy( nmd, setting()->musicDir, charrpos( setting()->musicDir, DELIMCHAR ) );
+                  nmd[charrpos( setting()->musicDir, DELIMCHAR )] = 0; 
+                  printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd); 
+                  free( setting()->musicDir );
+                  setting()->musicDir = nmd;
+                } else {
+                  free(setting()->musicDir);
+                  setting()->musicDir=malloc(sizeof(char)*(strlen(fItem->fullName)+1));
+                  strcpy(setting()->musicDir, fItem->fullName);
                 }
+                fileListMake(setting()->musicDir);
+                menuPosY=2;
+                return(STATEMENU);
               }
               x++;
             }
@@ -1604,27 +1617,6 @@ int runMenu(SDL_Surface* screen)
           {
             if(dir || menuPosY!=x+2) txtWriteCenter(screen, FONTSMALL, fItem->name, HSCREENW, (HSCREENH-40)+(x-scroll)*10);
             x++;
-          }
-        }
-
-        if(getButton(C_BTNB))
-        {
-          resetBtn(C_BTNB);
-
-          if(menuPosY < 2)
-          {
-            if(menuPosY==0)
-            {
-              free(setting()->musicDir);
-              setting()->musicDir=malloc(sizeof(char)*strlen("./"));
-              strcpy(setting()->musicDir, ".");
-            }
-            setting()->userMusic=menuPosY;
-            saveSettings();
-            fileListFree();
-            soundSetMusic(); //Important to set after freeing file list, since this is using that list
-            setMenu(menuStateOptions);
-            menuPosX=3;
           }
         }
 
