@@ -83,10 +83,6 @@ aniType* mkAni(SDL_Surface*img, int w,int h, int ticksPerFrame)
 
   int numFrames = img->w/w;
   int i;
-  if(numFrames < 2)
-  {
-    printf("Stupidity warning: There's %i frames in the animation.\n",numFrames);
-  }
 
   aniType* ani = malloc( sizeof(aniType) );
   memset( ani, 0, sizeof(aniType) );

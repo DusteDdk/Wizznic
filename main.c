@@ -49,16 +49,27 @@
   #include "dumplevelimages.h"
 #endif
 
+SDL_Surface* swScreen(int sdlVideoModeFlags)
+{
+  SDL_Surface* screen=SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlVideoModeFlags);
+
+  if( !screen )
+  {
+    printf("\nERROR: Couldn't create window, crashing...\n");   
+  } else {
+    setting()->glEnable=0;
+    printf("Videomode: Unscaled %ix%i@16 bits.\n",SCREENW, SCREENH);
+  }
+
+  return(screen);
+}
+
 int main(int argc, char *argv[])
 {
-  int doScale=0;
-  int doDump=0;
+  int doScale=0; // 0=Undefined, 1=320x240, -1=OpenGL, >1=SwScale
+  char* dumpPack=NULL;
   int state=1; //Game, Menu, Editor, Quit
   int sdlVideoModeFlags = SDL_SWSURFACE;
-
-  #ifdef PANDORA
-  doScale=2; //Turn on software scaling (This turns off opengl)
-  #endif
 
   #ifdef PSP
     //Note to PSP porter, please test if HW is actually faster, Wizznic does a lot of memory-manipulation in the screen-surface, each call might initiate a full copy back/forth from video memory. Remove comment when read. :)
@@ -73,10 +84,8 @@ int main(int argc, char *argv[])
   stream = freopen("CON", "w", stdout);
   #endif
 
-
-
   //Print welcome message
-  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010-2012\n\n");
+  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010-2013\n\n");
 
   //initialize path strings
   initUserPaths();
@@ -85,9 +94,25 @@ int main(int argc, char *argv[])
   printf("Directories:\n    Settings: %s\n    Highscores: %s\n    Editorlevels: %s\n    Datafiles: %s\n\n", \
                             getConfigDir(), getHighscoreDir(), getUserLevelDir(), (!strlen(DATADIR))?".":DATADIR);
 
+  printf("Video options available:\n"
+#ifdef WITH_OPENGL
+         "    -sw   # Turn off opengl.\n"
+         "    -glheight PX # Window width  (-1 for auto).\n"
+         "    -glwidth  PY # Window height (-1 for auto).\n"
+         "    -glfilter ST # 0=No filtering, 1=Smooth.\n"
+#endif
+         "    -f    # Turn on fullscreen.\n"
+         "    -z 2  # Software scale to 640x480.\n\n");
+
   printf("Loading settings...\n");
   //Read settings
   initSettings();
+
+  #if defined(WITH_OPENGL)
+  //We start by enabling glScaling if it was enabled in settings, it can then be overwritten by command line options.
+  if( setting()->glEnable && doScale==0 )
+    doScale=-1;
+  #endif
 
   //Set scaling
   setting()->scaleFactor=1.0;
@@ -107,40 +132,84 @@ int main(int argc, char *argv[])
   #else
   SDL_Surface* screen=NULL;
 
-  if(argc==2 || argc==3 || argc==4)
+  int i;
+  for( i=0; i < argc; i++ )
   {
-    if(strcmp(argv[1], "-z")==0)
+    if( strcmp( argv[i], "-sw" ) == 0 )
     {
-      doScale=2;
-      if( argc==3 && atoi(argv[2]) !=0 && atoi(argv[2]) < 20 )
-      {
-        doScale = atoi(argv[2]);
-      }
-    } else if(strcmp(argv[1], "-d")==0)
-    {
-      if(argc!=3)
-      {
-        printf("usage: -d PACKNAME\n");
-        return(-1);
-      }
       setting()->glEnable=0;
-      doDump=1;
-    } else if(strcmp(argv[1], "-f")==0)
+      doScale=0;
+      saveSettings();
+    } else
+    if( strcmp( argv[i], "-z" ) == 0 )
+    {
+      if( i+1 < argc )
+      {
+        doScale = atoi( argv[i+1] );
+        setting()->glEnable=0;
+        i++;
+        saveSettings();
+      } else {
+        printf(" -z requires zoom level ( -f 2 for example ).\n");
+        return(1);
+      }
+    } else
+    if( strcmp( argv[i], "-f" ) == 0 )
     {
       sdlVideoModeFlags |= SDL_FULLSCREEN;
-    } else if(!doScale)
+    } else if( strcmp( argv[i], "-glheight" ) == 0 )
     {
-      printf("\n\nUsage:\n  wizznic -d PACKNAME Dumps levelimages for pack.\n  wizznic -z [n] Zoom to 320*n x 240*n\n  wizznic -f run 320x240 in fullscreen\n  wizznic -thumbnailer LVLFILE OUTFILE\n");
-      return(-1);
+      if( i+1 < argc )
+      {
+        setting()->glHeight = atoi( argv[i+1] );
+        setting()->glEnable=1;
+        i++;
+        printf("Setting OpenGL window height to %i.\n", setting()->glHeight);
+        saveSettings();
+      } else {
+        printf(" -glheight requires an argument (-1 or size in pixels).\n");
+        return(1);
+      }
+    } else if( strcmp( argv[i], "-glwidth" ) == 0 )
+    {
+      if( i+1 < argc )
+      {
+        setting()->glWidth = atoi( argv[i+1] );
+        setting()->glEnable=1;
+        i++;
+        printf("Setting OpenGL window width to %i.\n", setting()->glWidth);
+        saveSettings();
+      } else {
+        printf(" -glwidth requires an argument (-1 or size in pixels).\n");
+        return(1);
+      }
+    } else if( strcmp( argv[i], "-glfilter" ) == 0 )
+    {
+      if( i+1 < argc )
+      {
+        setting()->glFilter=atoi(argv[i+1]);
+        printf("OpenGL texture filtering set to %s.\n", (setting()->glFilter)?"Smooth":"Off");
+        i++;
+        saveSettings();
+      } else {
+        printf("-glfilter requires 0 or 1 as argument.\n");
+        return(1);
+      }
+    } else if( strcmp( argv[i] , "-d" ) == 0 )
+    {
+      if( argc == 3 && i < argc+1 )
+      {
+        dumpPack = malloc( sizeof(char)*strlen(argv[i+1])+1 );
+        strcpy( dumpPack, argv[i+1] );
+        doScale=0;
+        setting()->glEnable=0;
+      } else {
+        printf("-d requires a packname, and must not be used with other parameters.\n");
+        return(1);
+      }
     }
 
   }
-
-  #if defined(WITH_OPENGL)
-  //If we were started with no -z option, we check to see if gl scaling was enabled in settings.ini
-  if( setting()->glEnable && doScale==0 )
-    doScale=-1;
-  #endif
 
   if(doScale)
   {
@@ -148,7 +217,14 @@ int main(int argc, char *argv[])
     if( doScale == -1 )
     {
     #ifdef HAVE_ACCELERATION
+      printf("Enabling platform specific accelerated scaling.\n");
       screen = platformInitAccel(sdlVideoModeFlags);
+      if( !screen )
+      {
+        printf("Failed to set platform accelerated scaling, falling back to software window.\n");
+        screen=swScreen(sdlVideoModeFlags);
+        doScale=0;
+      }
     #else
       printf("\nError:\n  Not compiled with hardware-scaling support, don't give me -z -1\n  Exiting...\n");
       return(-1);
@@ -157,6 +233,7 @@ int main(int argc, char *argv[])
     {
     #ifdef WANT_SWSCALE
       //Set up software scaling
+      printf("Enabling slow software-based scaling to %ix%i.\n",320*doScale, 240*doScale);
       screen = swScaleInit(sdlVideoModeFlags,doScale);
     #else
       printf("\nError:\n  I don't support software scaling, don't give me any -z options\n  Exiting...\n");
@@ -164,8 +241,8 @@ int main(int argc, char *argv[])
     #endif
     }
   } else {
-    //No scaling (scale is the buffer flipped to hardware so we simply make them the same)
-    screen=SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlVideoModeFlags);
+    screen=swScreen(sdlVideoModeFlags);
+    doScale=0;
   }
 
   printf("Scaling factor: %f\n", setting()->scaleFactor);
@@ -227,9 +304,9 @@ int main(int argc, char *argv[])
 
   #if defined(PC)
   //Need to dump level-screenshots?
-  if(doDump)
+  if(dumpPack)
   {
-    dumplevelimages(screen, argv[2], 0);
+    dumplevelimages(screen, dumpPack, 0);
     return(0);
   }
   #endif
@@ -308,6 +385,11 @@ int main(int argc, char *argv[])
       default:
         swScale(screen,doScale);
         break;
+      #else
+      default:
+        printf("Fatal: Should NEVER be here.\n");
+        state=STATEQUIT;
+      break;
       #endif
     }
 

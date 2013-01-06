@@ -71,7 +71,7 @@ void packAdd(const char* packDir)
   FILE* f=0;
   packInfoType* ti = malloc(sizeof(packInfoType));
 
-  printf("Adding pack '%s'\n",packDir);
+//  printf("Adding pack '%s'\n",packDir);
 
   //Any levels? (Packs are invalid without a levels folder and atleast one level)
   sprintf(buf, "%s/levels/level000.wzp", packDir);

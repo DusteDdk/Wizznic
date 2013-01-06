@@ -61,37 +61,25 @@ to compile and/or install wizznic.
 1.0.3 Running Wizznic! Command line parameters
 The Linux and Windows versions of wizznic takes the following command line
 parameters:
-wizznic -f -Run wizznic in 320*240 in fullscreen. Not all monitors/videodrivers
-   support this anymore, but it's nice for an arcade cabinet, and my laptop.
-wizznic -z N -Zoom 320*240 N times, so 2=640*480 and 3=960*720 and so forth,
-   very CPU intensive at the moment. -z -1 is special, read section 1.0.4.
-wizznic -d PACKNAME -This dumps tga screenshots of each level in that pack.
-   Use the tools/updatelevelpreviews.sh script for this.
-wizznic -thumbnailer LEVELFILE OUTFILE -This creates a screenshot of
-   LEVELFILE (which should be a full path to the levelfile) and dumps a file
-   with OUTFILE name. This is used by the thumbnailer for gnome.
 
-There are no command-line parameters for the Gp2X Wiz version, and if installed
-as described in section 1.0.2 it should be visible from the "SD card game"
-menu on the wiz.
+Wizznic saves -sw -glwidth/height and glfilter options when it is called with
+any of those parameters, if you happen to choose something that's not working,
+simply call wizznic again with some other options that you suspect will.
 
-------------------------------------
+  -f     Start in fullscreen. ( Must be used every time you want fullscreen )
+  -z 2   Software scale to 640x480 (320*2x240*2) (More CPU intensive than OpenGL).
 
-1.0.4 How to use OpenGL scaling
-To turn off OpenGL scaling, set glenable=0 in settings.ini
+If Wizznic is compiled with OpenGL scaling support, these parameters are available:
+  -sw Turn off opengl, in case it's not working.
+  -glwidth  W Enable OpenGL scaling and set width-resolution to W pixels, (use -1 for auto detection).
+  -glheight H Enable OpenGL scaling and set height-resolution to H pixels, (use -1 for auto detection).
+  -glfilter X (OpenGL Only) 0=Sharp/Pixelated, 1=Smooth/Soft.
 
-This will run the game in your desktop resolution in fullscreen,
-it is especially handy if your monitor handles 320x240 badly, or if
-you have a wide-screen monitor that cannot handle 4:3 aspect.
-There are 4 GL options in the settings.ini file, which controls how
-OpenGL scaling behaves, these can only be edited in the file.
-glenable - 0=No gl unless -z -1 specified. 1=OpenGL on always, no need for -1.
-glfilter - 0 = No smoothing (sharp pixels). 1 = Smoothing (blurry).
-glwidth  - -1 = Auto, or Width in pixels when running OpenGL in a window.
-glheight - -1 = Auto, or Height in pixels when running OpenGL in a window.
-If glwidth and glheight is set to -1 The game will chose the largest windowsize
-that still fits comfortably on the desktop.
-See install.txt for information about compiling with or without OpenGL support.
+This one is useful for level-creators:
+  -d PACKNAME Dumps tga screenshots of each level in that pack.
+     Use the tools/updatelevelpreviews.sh script for this, it will also cut
+     the screenshots to size. This parameter must stand alone with it's argument,
+     no other arguments are allowed at the same time.
 
 ------------------------------------
 

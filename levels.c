@@ -183,7 +183,6 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           if(strcmp("switch", set)==0)
           {
             //Yes, it's the same format, how neat.
-            printf("Adding switch: %s\n", val);
             teleAddFromString(tl->switchList, val);
           }
         } //Got a = in the line

@@ -1,0 +1,1 @@
+wizznic.exe -sw -f
