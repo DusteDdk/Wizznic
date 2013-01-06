@@ -1,0 +1,35 @@
+#Maintainer: Jimmy Christensen <dusted@dusted.dk>
+#vim:set ts=2 sw=2 et:
+
+pkgname=wizznic
+pkgver=<BUILDNUMBER>
+pkgrel=1
+pkgdesc="Wizznic is a puzzlegame where you have to match bricks of the same kind, this is not as easy as you'd think"
+arch=(i686 x86_64)
+url="http://dustedgames.blogspot.fi/p/wizznic.html"
+license=('GPL3')
+depends=('sdl_mixer' 'sdl_image' 'mesa' 'glu' 'wget')
+source=("<URL>")
+
+build() {
+  cd "$srcdir/<SRCDIRNAME>"
+
+  make -f Makefile.linux DATADIR=/usr/share/wizznic/ BINDIR=/usr/bin/
+}
+
+package() {
+  cd "$srcdir/<SRCDIRNAME>"
+
+  make -f Makefile.linux DATADIR=$pkgdir/usr/share/wizznic/ BINDIR=$pkgdir/usr/bin/ install
+
+  mkdir -p "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
+  cp tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
+  chmod 644 "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
+
+  mkdir -p "${pkgdir}"/usr/share/applications/
+  cp tools/releaser/data/lin/wizznic.desktop "${pkgdir}"/usr/share/applications/
+  chmod  644 "${pkgdir}"/usr/share/applications/wizznic.desktop
+}
+
+md5sums=('<SRCMD5>')
+
