@@ -1,3 +1,5 @@
+#include "defs.h"
+#include "sound.h"
 #include "switch.h"
 #include "board.h"
 
@@ -120,9 +122,11 @@ void switchReact( playField* pf, int x, int y )
     switchAffectTarget(pf, x, y, newState );
     if(newState)
     {
-      printf("Sound: Click! Switch is active!\n");
+      //Switch activated sound
+      sndPlay( SND_SWITCH_ACTIVATED, HSCREENW );
     } else {
-      printf("Sound: Click! Switch is inactive!\n");
+      //Switch deactivated sound
+      sndPlay( SND_SWITCH_DEACTIVATED, HSCREENW );
     }
   }
 }

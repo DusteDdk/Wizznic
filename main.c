@@ -207,6 +207,10 @@ int main(int argc, char *argv[])
         printf("-d requires a packname, and must not be used with other parameters.\n");
         return(1);
       }
+    } else if( i > 0 )
+    {
+      printf("\nError: Ivalid argument '%s', quitting.\n", argv[i]);
+      return(1);
     }
 
   }

@@ -94,9 +94,6 @@ int loadSample(const char* fileName, int index)
       printf("loadSample(); Warning: Couldn't load %s\n",fileName);
       return(0);
     }
-  } else {
-    //printf("loadSample: %s allready loaded, skipping.\n", fileName);
-
   }
 
   return(1);
@@ -118,6 +115,8 @@ void loadSamples(const char* sndDir, const char* musicFile)
   loadSample( packGetFile(sndDir,"timeout.ogg"), SND_TIMEOUT );
   loadSample( packGetFile(sndDir,"onewaymove.ogg"), SND_ONEWAY_MOVE );
   loadSample( packGetFile(sndDir,"teleported.ogg"), SND_TELEPORTED );
+  loadSample( packGetFile(sndDir,"switchactivate.ogg"), SND_SWITCH_ACTIVATED );
+  loadSample( packGetFile(sndDir,"switchinactive.ogg"), SND_SWITCH_DEACTIVATED );
 
   //Music load code
   if(setting()->disableMusic) return;
@@ -138,12 +137,10 @@ void loadSamples(const char* sndDir, const char* musicFile)
       printf("Couldn't load music: '%s'\n",packGetFile("./",musicFile));
     mPos[1] = 0.0f;
 
-
     if( !Mix_PlayingMusic() )
     {
       Mix_FadeInMusicPos(mus[1], -1, MUSIC_FADETIME,mPos[1]);
     }
-
   }
 
 }

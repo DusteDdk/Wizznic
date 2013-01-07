@@ -22,7 +22,6 @@
 
 #define SND_MENUMOVE 0
 #define SND_MENUCLICK 1
-
 #define SND_FIRST_GAME_SAMPLE 2
 #define SND_CLICK 2
 #define SND_BRICKMOVE 3
@@ -39,8 +38,10 @@
 #define SND_ONEWAY_MOVE 14
 #define SND_TELEPORTED 15
 #define SND_LAST_GAME_SAMPLE 15
+#define SND_SWITCH_ACTIVATED 16
+#define SND_SWITCH_DEACTIVATED 17
 
-#define NUMSAMPLES 16
+#define NUMSAMPLES 17
 
 
 int initSound();
