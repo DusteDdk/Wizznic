@@ -22,8 +22,8 @@ package() {
 
   make -f Makefile.linux DATADIR=$pkgdir/usr/share/wizznic/ BINDIR=$pkgdir/usr/bin/ install
 
-  mkdir -p "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
-  cp tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
+  mkdir -p "${pkgdir}"/usr/share/pixmaps/
+  cp tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/
   chmod 644 "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
 
   mkdir -p "${pkgdir}"/usr/share/applications/
