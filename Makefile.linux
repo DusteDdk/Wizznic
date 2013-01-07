@@ -62,7 +62,8 @@ install:
 	install -d -D -m 755 "$(DESTDIR)$(DATADIR)"
 	cp -R data "$(DESTDIR)$(DATADIR)"
 	cp -R packs "$(DESTDIR)$(DATADIR)"
-	chmod -R 755 "$(DESTIR)$(DATADIR)"
+	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
+	find "$(DESTDIR)$(DATADIR)" -type f -exec chmod 644 {} \;
 
 clean:
 	rm -f *.o $(NAME) platform/*.o
