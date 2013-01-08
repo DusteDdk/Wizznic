@@ -78,7 +78,6 @@ static char kbl[4][10] = {
 };
 
 static char kbh[4][10] = {
-
   {'!','"','#','$','%','&','/','(',')','='},
   {'Q','W','E','R','T','Y','U','I','O','P'},
   {'A','S','D','F','G','H','J','K','L',':'},
@@ -819,9 +818,10 @@ int runMenu(SDL_Surface* screen)
         //bink "press b"
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B, HSCREENW, HSCREENH+100);
 
-        if(getButton(C_BTNB))
+        if( getButton(C_BTNB) || isPointerClicked() )
         {
           resetBtn(C_BTNB);
+          resetMouseBtn();
 
           //Free image
           SDL_FreeSurface( packState()->finishedImg );
@@ -1405,16 +1405,37 @@ int runMenu(SDL_Surface* screen)
         starField(screen, 0);
         menuMaxY=4;
         menuMaxX=10;
+
+        int cy,cx;
+        char hack[2]={ ' ',0x00 };
+        int hsKeyboardWasClicked=0;
+
         txtWriteCenter(screen, FONTMEDIUM, "High score!", HSCREENW,HSCREENH-95);
         txtWriteCenter(screen, FONTSMALL, "Enter your name for highscore.", HSCREENW, HSCREENH-70);
+
+        if( getChar() )
+        {
+          if( getChar() == SDLK_RETURN )
+          {
+            //Save 
+            menuPosY=4;
+            hsKeyboardWasClicked=1;
+          }
+
+          if( getChar() == SDLK_BACKSPACE && strlen( setting()->playerName ) > 0 )
+          {
+            setting()->playerName[ strlen(setting()->playerName)-1 ]=0;
+          } else if( getChar() > 31 && getChar() < 123 && strlen( setting()->playerName ) < 11 )
+          {
+            setting()->playerName[ strlen(setting()->playerName) ] = getChar();
+            setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
+          }
+        }
 
         sprintf(buf, "Name: %s", setting()->playerName);
 
         txtWrite(screen, FONTSMALL, buf, HSCREENW-110, HSCREENH-45);
         txtWriteCenter(screen, FONTSMALL,STR_MENU_HIGHSCORE_NAME_CONTROLS, HSCREENW,HSCREENH+108);
-        int cy,cx;
-        char hack[2]={ ' ',0x00 };
-        int hsKeyboardWasClicked=0;
 
         for(cy=0; cy < kbRows; cy++)
         {

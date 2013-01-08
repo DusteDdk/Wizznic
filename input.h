@@ -38,6 +38,7 @@
 #define C_BTNVOLDOWN 13
 #define C_NUM 14
 
+inline SDLKey getChar();
 inline void setButton(int btn); //Nasty
 inline int getButton(int btn);
 inline int getBtnTime(int btn);

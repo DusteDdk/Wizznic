@@ -22,6 +22,13 @@
 
 #include "settings.h"
 
+static SDLKey inputChar=0;
+
+inline SDLKey getChar()
+{
+  return(inputChar);
+}
+
 inline void resetMouseBtn()
 {
   getInpPointerState()->isDown=0;
@@ -76,7 +83,7 @@ int runControls()
 {
   SDL_Event event;
   int i;
-
+  inputChar=0;
   //Loop through buttons to update hold-down time
   for(i=0; i < C_NUM; i++)
   {
@@ -188,6 +195,18 @@ int runControls()
             {
               button[i].state=1;
               button[i].time=0;
+            }
+          }
+
+          if( event.key.keysym.sym > 31 && event.key.keysym.sym < 123 )
+          {
+            inputChar=event.key.keysym.sym;
+          } else if( event.key.keysym.sym == SDLK_BACKSPACE || event.key.keysym.sym == SDLK_RETURN )
+          {
+            inputChar=event.key.keysym.sym;
+            if( event.key.keysym.mod & KMOD_SHIFT )
+            {
+              inputChar=toupper(inputChar);
             }
           }
         break;
