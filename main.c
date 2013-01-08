@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
       }
     } else if( i > 0 )
     {
-      printf("\nError: Ivalid argument '%s', quitting.\n", argv[i]);
+      printf("\nError: Invalid argument '%s', quitting.\n", argv[i]);
       return(1);
     }
 

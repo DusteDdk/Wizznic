@@ -41,7 +41,7 @@
 #define SND_SWITCH_ACTIVATED 16
 #define SND_SWITCH_DEACTIVATED 17
 
-#define NUMSAMPLES 17
+#define NUMSAMPLES 18
 
 
 int initSound();
