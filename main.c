@@ -96,7 +96,8 @@ int main(int argc, char *argv[])
 
   printf("Video options available:\n"
 #ifdef WITH_OPENGL
-         "    -sw   # Turn off opengl.\n"
+         "    -sw   # Disable OpenGL.\n"
+         "    -gl   # Enable OpenGL.\n"
          "    -glheight PX # Window width  (-1 for auto).\n"
          "    -glwidth  PY # Window height (-1 for auto).\n"
          "    -glfilter ST # 0=No filtering, 1=Smooth.\n"
@@ -141,6 +142,12 @@ int main(int argc, char *argv[])
       doScale=0;
       saveSettings();
     } else
+    if( strcmp( argv[i], "-gl" ) == 0 )
+    {
+      setting()->glEnable=1;
+      doScale=-1;
+      saveSettings();
+    } else
     if( strcmp( argv[i], "-z" ) == 0 )
     {
       if( i+1 < argc )
@@ -163,6 +170,7 @@ int main(int argc, char *argv[])
       {
         setting()->glHeight = atoi( argv[i+1] );
         setting()->glEnable=1;
+        doScale=-1;
         i++;
         printf("Setting OpenGL window height to %i.\n", setting()->glHeight);
         saveSettings();
@@ -176,6 +184,7 @@ int main(int argc, char *argv[])
       {
         setting()->glWidth = atoi( argv[i+1] );
         setting()->glEnable=1;
+        doScale=-1;
         i++;
         printf("Setting OpenGL window width to %i.\n", setting()->glWidth);
         saveSettings();

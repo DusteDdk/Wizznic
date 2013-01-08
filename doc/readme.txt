@@ -70,7 +70,8 @@ simply call wizznic again with some other options that you suspect will.
   -z 2   Software scale to 640x480 (320*2x240*2) (More CPU intensive than OpenGL).
 
 If Wizznic is compiled with OpenGL scaling support, these parameters are available:
-  -sw Turn off opengl, in case it's not working.
+  -sw Disable OpenGL scaling, use this if you have trouble with OpenGL scaling.
+  -gl Enable OpenGL scaling.
   -glwidth  W Enable OpenGL scaling and set width-resolution to W pixels, (use -1 for auto detection).
   -glheight H Enable OpenGL scaling and set height-resolution to H pixels, (use -1 for auto detection).
   -glfilter X (OpenGL Only) 0=Sharp/Pixelated, 1=Smooth/Soft.
