@@ -1,4 +1,6 @@
 #Maintainer: Jimmy Christensen <dusted@dusted.dk>
+#Contributor: Jesse Jaara <jesse.jaara@gmail.com>
+
 #vim:set ts=2 sw=2 et:
 
 pkgname=wizznic
@@ -13,7 +15,7 @@ source=("<URL>")
 
 build() {
   cd "$srcdir/<SRCDIRNAME>"
-
+  export BUILD_NUMBER=<BUILDNUMBER>_AUR
   make -f Makefile.linux DATADIR=/usr/share/wizznic/ BINDIR=/usr/bin/
 }
 
@@ -22,13 +24,9 @@ package() {
 
   make -f Makefile.linux DATADIR=$pkgdir/usr/share/wizznic/ BINDIR=$pkgdir/usr/bin/ install
 
-  mkdir -p "${pkgdir}"/usr/share/pixmaps/
-  cp tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/
-  chmod 644 "${pkgdir}"/usr/share/pixmaps/${pkgname}.png
-
-  mkdir -p "${pkgdir}"/usr/share/applications/
-  cp tools/releaser/data/lin/wizznic.desktop "${pkgdir}"/usr/share/applications/
-  chmod  644 "${pkgdir}"/usr/share/applications/wizznic.desktop
+  mkdir -p "${pkgdir}"/usr/share/{applications,pixmaps}
+  install -m644 tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/wizznic.png
+  install -m644 tools/releaser/data/lin/wizznic.desktop "${pkgdir}"/usr/share/applications/
 }
 
 md5sums=('<SRCMD5>')
