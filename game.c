@@ -161,28 +161,47 @@ void drawUi(SDL_Surface* screen)
 
 }
 
+void gamePause(SDL_Surface* screen)
+{
+  startTransition(screen, TRANSITION_TYPE_ROLL_IN,500);
+  restartConfirm=0;
+
+  //If we are in the editor, we want to jump back to last menu state
+  //But otherwise we want to see the main menu.
+  if(!player()->inEditor)
+  {
+    setMenu(menuStatePaused);
+    setMenuPosY(1);
+  }
+
+}
+
+void gameRestart(SDL_Surface* screen)
+{
+  restartConfirm=0;
+  player()->hsEntry.score=0;
+  //Save time before restarting
+  timeBeforeRestart=pf.levelInfo->time;
+  spentTimeBeforeRestart=player()->hsEntry.time;
+  cleanUpGame();
+//  startTransition(screen, TRANSITION_TYPE_DISSOLVE, 2500);
+  initGame(screen);
+  if(!player()->inEditor)
+  {
+    //Set time back to what it was before restarting
+    pf.levelInfo->time=timeBeforeRestart;
+    player()->hsEntry.time=spentTimeBeforeRestart;
+
+    //Tell that we restarted
+    statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "reset-level",0, NULL);
+  }
+}
 
 int runGame(SDL_Surface* screen)
 {
   if(gameState==GAMESTATEPLAYING)
   {
     getInpPointerState()->escEnable=1;
-    //Pause ?
-    if( getButton( C_BTNMENU ) || isPointerEscapeClicked() )
-    {
-
-      startTransition(screen, TRANSITION_TYPE_ROLL_IN,500);
-
-      restartConfirm=0;
-      resetBtn( C_BTNMENU );
-      if(player()->inEditor)
-        return(STATEMENU);
-
-      setMenu(menuStatePaused);
-      setMenuPosY(1);
-      return(STATEMENU);
-    }
-
     //Handle input
     int lim=1; //Limit cursor travel...
     int goUp=0, goDown=0, goLeft=0, goRight=0;
@@ -234,6 +253,14 @@ int runGame(SDL_Surface* screen)
       }
     }
 
+    //Pause ?
+    if( getButton( C_BTNMENU ) || isPointerEscapeClicked() )
+    {
+      resetBtn( C_BTNMENU );
+      gamePause(screen);
+      return(STATEMENU);
+    }
+
     //Retry
     if( getButton( C_BTNA ) )
     {
@@ -242,24 +269,9 @@ int runGame(SDL_Surface* screen)
       {
         restartConfirm=1;
       } else if(restartConfirm) {
-        restartConfirm=0;
-        player()->hsEntry.score=0;
-        //Save time before restarting
-        timeBeforeRestart=pf.levelInfo->time;
-        spentTimeBeforeRestart=player()->hsEntry.time;
-        cleanUpGame();
-        startTransition(screen, TRANSITION_TYPE_DISSOLVE, 2500);
-        initGame(screen);
-        if(!player()->inEditor)
-        {
-          //Set time back to what it was before restarting
-          pf.levelInfo->time=timeBeforeRestart;
-          player()->hsEntry.time=spentTimeBeforeRestart;
-
-          //Tell that we restarted
-          statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "reset-level",0, NULL);
-        }
+        gameRestart(screen);
       }
+
     }
 
     //Handle mouse input
@@ -344,7 +356,7 @@ int runGame(SDL_Surface* screen)
         }
       }
 
-      //Moved bric
+      //Moved brick
       if(movedBrick)
       {
         player()->hsEntry.moves++;
@@ -383,17 +395,12 @@ int runGame(SDL_Surface* screen)
     //Do rules
     int ret=doRules(&pf);
 
-    //Hack hack hack
-//      cur.px = getInpPointerState()->curX*brickSize+boardOffsetX-4;
-   // }
-
     //Draw scene
     draw(&cur,&pf, screen);
 
     //Draw a path to show where we are pulling the brick
     if( mouseGrab )
       drawPath( screen, getInpPointerState()->startX,getInpPointerState()->startY,getInpPointerState()->curX,getInpPointerState()->startY,1 );
-
 
 
     //If no more bricks, countdown time left.
@@ -447,7 +454,7 @@ int runGame(SDL_Surface* screen)
       player()->hsEntry.score += ret*ret*11*(player()->level+1);
     }
 
-    //Any non-ordinary return value is larger than -1 (ret > -1 == number of bricks destroyed)
+    //if ret > -1 then ret == number of bricks destroyed
     if(ret>-1)
     {
       //Update time:

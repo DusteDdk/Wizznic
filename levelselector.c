@@ -109,8 +109,7 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
 
     for(x=0; x < 110; x++)
     {
-      col = *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x );
-
+      col = freadPixel(img, x, y );
       //Do expensive colorkeying
       r = ((col & img->format->Rmask) >> img->format->Rshift);
       g = ((col & img->format->Gmask) >> img->format->Gshift);

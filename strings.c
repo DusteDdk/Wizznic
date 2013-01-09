@@ -43,7 +43,7 @@ int splitVals(char ch,const char* buf, char* set, char* val)
       //Here's a setting!
       if(buf[strpos]==ch)
       {
-        strcpy(set,buf);
+        strncpy(set,buf,strpos+1);
         set[strpos]='\0';
         strcpy(val,buf+strpos+1);
         return(1);

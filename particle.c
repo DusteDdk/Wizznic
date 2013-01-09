@@ -74,7 +74,10 @@ void spawnParticleSystem(psysSet_t* settings)
       {
         tSystem->particles[i].velx = (rand()%(tSystem->settings.vel*2))-(tSystem->settings.vel);
         tSystem->particles[i].vely = (rand()%(tSystem->settings.vel*2))-(tSystem->settings.vel);
-      }
+      } else {
+        tSystem->particles[i].velx = 0;
+        tSystem->particles[i].vely = 0;
+     }
 
       tSystem->particles[i].x *= 100;
       tSystem->particles[i].y *= 100;

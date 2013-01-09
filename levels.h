@@ -41,8 +41,6 @@ struct levelInfo_s
   listItem* teleList; //Initiated by mkLevelInfo
   listItem* switchList; //Initiated by mkLevelInfo
 
-  hsEntry_t* hsStats; ///hsEntry level stats. (TODO: Should this be freed by freeLevelInfo? Is it?)
-
   int time; //Time in seconds to complete
   int brick_die_ticks;  //Ticks the bricks is to die
   int brickDieParticles; //Spawn particles when bricks die

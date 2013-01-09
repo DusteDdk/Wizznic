@@ -157,10 +157,12 @@ void loadSettings()
         } else
         if( strcmp("playername", set)==0 )
         {
-          free(settings.playerName);
-          settings.playerName = malloc(sizeof(char)*(strlen(val)+1) );
-          strcpy(settings.playerName,val);
-          settings.playerName[10] = '\0'; //In case user edits file and make a longer than 10 chars name.
+          if( strlen(set) < 11 )
+          {
+            strcpy(settings.playerName,val);
+          } else {
+            printf("Error, name: '%s' too long, max length is 10.\n",set);
+          }
         } else
         if( strcmp("musicdir", set)==0 )
         {
