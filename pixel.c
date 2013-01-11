@@ -99,10 +99,7 @@ inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col)
 
 inline uint32_t freadPixel(SDL_Surface* img, int x, int y)
 {
- if( img->format->BytesPerPixel == 32 )
-   return( *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x ) );
- else    
-   return( (int32_t)(*(uint16_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x )) );
+  return( *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x ) );
 }
 
 void debugPrintSurfaceInfo(SDL_Surface* s)
