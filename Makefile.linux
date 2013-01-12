@@ -26,6 +26,10 @@ ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
 endif
 
+ifneq ($(RELEASE_VERSION),)
+  DEFS +=-DRELEASE_VERSION="\"$(RELEASE_VERSION)\""
+endif
+
 INCS =  -I. -I/usr/include -I/usr/include/SDL
 
 LDFLAGS=$(CFLAGS)

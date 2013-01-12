@@ -63,6 +63,8 @@ int initSound()
 
   loadMenuSamples();
 
+  lastLoadedSongFn[0]=0;
+
   return(1);
 }
 
@@ -129,12 +131,12 @@ void loadSamples(const char* sndDir, const char* musicFile)
     if(mus[1])
     {
       Mix_FreeMusic(mus[1]);
-      mus[1]=0;
     }
     strcpy(lastLoadedSongFn, packGetFile("./",musicFile));
     mus[1]=Mix_LoadMUS( lastLoadedSongFn );
     if(!mus[1])
       printf("Couldn't load music: '%s'\n",packGetFile("./",musicFile));
+
     mPos[1] = 0.0f;
 
     if( !Mix_PlayingMusic() )
@@ -147,8 +149,8 @@ void loadSamples(const char* sndDir, const char* musicFile)
 
 void loadMenuSamples()
 {
-  if(! loadSample( DATADIR"data/snd/menumove.ogg", SND_MENUMOVE ) );
-  if(! loadSample( DATADIR"data/snd/menuclick.ogg", SND_MENUCLICK ) );
+  loadSample( DATADIR"data/snd/menumove.ogg", SND_MENUMOVE );
+  loadSample( DATADIR"data/snd/menuclick.ogg", SND_MENUCLICK );
 }
 
 void sndPlay(int sample, int posX)
@@ -281,21 +283,17 @@ void soundRun(SDL_Surface* screen,int state)
             Mix_FadeInMusicPos(mus[0], -1, MUSIC_FADETIME,mPos[0]);
           break;
         }
-        if( state == STATEMENU )
-          Mix_FadeInMusicPos(mus[0], -1, MUSIC_FADETIME,mPos[0]);
       }
     }
 
-    if(lastState!=state && fadeOut < 1  )
+    if(lastState!=state && fadeOut == 0 )
     {
-        if( getMenuState() == menuStateFinishedLevel || (getMenuState() == menuStateNextLevel && cmState==CMSTATE_GAME) )
+        //We won't change the music the menuparts which are logically "ingame".
+        if( !( getMenuState() == menuStateFinishedLevel || (getMenuState() == menuStateNextLevel && cmState==CMSTATE_GAME) ) )
         {
-
-        } else {
-          fadeOut = MUSIC_FADETIME;
+          fadeOut = MUSIC_FADETIME+20; //We add an extra frames time to make sure the previous fade was completed.
           Mix_FadeOutMusic(MUSIC_FADETIME);
         }
-
     }
 
     switch(lastState)
@@ -309,8 +307,6 @@ void soundRun(SDL_Surface* screen,int state)
     }
   }//In-Game music
 
-
-  //printf("Menu: %i:%i Game %i\n", (int)(mPos[0]/60),(int)((int)mPos[0]%60), (int)mPos[1]);
 }
 
 void soundPlayUserSongNum(int num, char* songName)

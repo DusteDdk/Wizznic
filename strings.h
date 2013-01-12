@@ -55,27 +55,7 @@
   #define STR_GAME_PRESSB             "Press Cross to Play"
 
 
-#else ///Pc version
-  #ifdef MAME_CTRL ///Mame
-    //Menu
-    #define STR_MENU_PRESS_B            "Press Button 1"
-    #define STR_MENU_PRESS_B_PLAY       "Press B1 to Play"
-
-    #define STR_MENU_LVLEDIT_USAGE      "Edit: B4. Play: B3. Clone: B2"
-
-    //Editor
-    #define STR_EDIT_CONTROLS "1:Put 2:Del s1:Exit s2:Save"
-
-    //Entering highscores
-    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B1:Type  B2:Delete"
-
-    //Game
-    #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
-    #define STR_GAME_PRESSB             "Press B1 to Play"
-
-  #else
-    /// added by farox for pandora port
-    #ifdef PANDORA
+#elif defined (PANDORA)
     //Menu
     #define STR_MENU_PRESS_B            "Press B"
     #define STR_MENU_PRESS_B_PLAY       "Press B to Play"
@@ -92,7 +72,24 @@
     #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
     #define STR_GAME_PRESSB             "Press B to Play"
     ///////////////////////////////////////////////////////////////
-    #else ///Normal
+#elif defined(MAME_CTRL)
+    //Menu
+    #define STR_MENU_PRESS_B            "Press Button 1"
+    #define STR_MENU_PRESS_B_PLAY       "Press B1 to Play"
+
+    #define STR_MENU_LVLEDIT_USAGE      "Edit: B4. Play: B3. Clone: B2"
+
+    //Editor
+    #define STR_EDIT_CONTROLS "1:Put 2:Del s1:Exit s2:Save"
+
+    //Entering highscores
+    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B1:Type  B2:Delete"
+
+    //Game
+    #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
+    #define STR_GAME_PRESSB             "Press B1 to Play"
+
+ #else
     //Menu
     #define STR_MENU_PRESS_B            "Press Ctrl"
     #define STR_MENU_PRESS_B_PLAY       "Press Ctrl to Play"
@@ -106,21 +103,22 @@
     #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "Ctrl:Type  Alt:Delete"
 
     //Game
-    #define STR_GAME_RESTARTCONFIRM     "Press Alt to confirm"
+    #define STR_GAME_RESTARTCONFIRM     "Again to confirm"
     #define STR_GAME_PRESSB             "Press Ctrl to Play"
-    #endif
-  #endif
-
 #endif
 
 
 ///General strings
-
+#define CODE_VERSION "1.0-dev"
 
 #ifdef BUILD_NUMBER
-  #define VERSION_STRING "v1.0-dev (build "BUILD_NUMBER")"
+  #ifdef RELEASE_VERSION
+    #define VERSION_STRING RELEASE_VERSION"(B "BUILD_NUMBER")"
+  #else
+    #define VERSION_STRING CODE_VERSION" (B "BUILD_NUMBER")"
+  #endif
 #else
-  #define VERSION_STRING "v1.0-dev"
+  #define VERSION_STRING CODE_VERSION
 #endif
 
 //Menu

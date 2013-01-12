@@ -40,13 +40,15 @@ static SDL_Surface* startStopImg;
 static int gameState=GAMESTATECOUNTDOWN;
 static int startStopImgCounter=0;
 static int restartConfirm=0;
-psysSet_t ps;
+static psysSet_t ps;
 static int timeBeforeRestart=0;
 static int spentTimeBeforeRestart=0;
+static SDL_Surface* ptrRestart=0;
+static SDL_Rect ptrRestartRect;
 
-int debugNumInit=0;
+static int debugNumInit=0;
 
-int mouseGrab=0;
+static int mouseGrab=0;
 
 int initGame(SDL_Surface* screen)
 {
@@ -54,6 +56,17 @@ int initGame(SDL_Surface* screen)
     {
       printf("ERROR: Called init when a game was running\n");
       return(0);
+    }
+
+	//Only load the back-image once.
+    if( !ptrRestart )
+    {
+    	ptrRestart = loadImg( DATADIR"data/ptr-restart.png" );
+      ptrRestartRect.x=0;
+    	ptrRestartRect.w=ptrRestartRect.x+ptrRestart->w;
+
+    	ptrRestartRect.y=SCREENH-ptrRestart->h;
+    	ptrRestartRect.h=ptrRestartRect.y+ptrRestart->h;
     }
 
     debugNumInit++;
@@ -101,8 +114,6 @@ int initGame(SDL_Surface* screen)
     {
       gameState=GAMESTATESTARTIMAGE;
     }
-
-    getInpPointerState()->escEnable=1;
 
     //We also simulate the first switch tick here so all looks right at the countdown.
     switchUpdateAll( &pf );
@@ -158,6 +169,12 @@ void drawUi(SDL_Surface* screen)
   sprintf(tempStr, "%i", player()->lives );
   txtWriteCenter(screen, GAMEFONTMEDIUM, tempStr, HSCREENW-113, HSCREENH+58);
 
+  //Show the restart icon
+  if(getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && getInpPointerState()->escEnable)
+  {
+    SDL_Rect ptrRestartRectC = ptrRestartRect;
+    SDL_BlitSurface( ptrRestart,NULL, screen, &ptrRestartRectC );
+  }
 
 }
 
@@ -262,9 +279,10 @@ int runGame(SDL_Surface* screen)
     }
 
     //Retry
-    if( getButton( C_BTNA ) )
+    if( getButton( C_BTNA ) || (getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && isBoxClicked(&ptrRestartRect)) )
     {
       resetBtn( C_BTNA );
+      resetMouseBtn();
       if(!restartConfirm)
       {
         restartConfirm=1;

@@ -17,6 +17,10 @@ ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
 endif
 
+ifneq ($(RELEASE_VERSION),)
+  DEFS +=-DRELEASE_VERSION="\"$(RELEASE_VERSION)\""
+endif
+
 INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
 
 LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib

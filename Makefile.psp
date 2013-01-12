@@ -8,6 +8,10 @@ ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
 endif
 
+ifneq ($(RELEASE_VERSION),)
+  DEFS +=-DRELEASE_VERSION="\"$(RELEASE_VERSION)\""
+endif
+
 TARGET	= wizznic
 
 OBJS = board.o cursor.o draw.o platform/pspspec.o input.o main.o menu.o sprite.o\
