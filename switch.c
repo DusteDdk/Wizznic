@@ -19,9 +19,11 @@
 #include "sound.h"
 #include "switch.h"
 #include "board.h"
+#include "particles.h"
+#include "draw.h"
 
-void switchReact( playField* pf, int x, int y ); //Should be used only private
-
+static void switchReact( playField* pf, int x, int y ); //Should be used only private
+static psysSet_t ps;
 
 int switchSetTargets( playField* pf )
 {
@@ -137,14 +139,18 @@ void switchReact( playField* pf, int x, int y )
   {
     pf->board[x][y]->isActive=newState;
     switchAffectTarget(pf, x, y, newState );
-    if(newState)
+    if(newState && pf->board[x][y]->type==SWON)
     {
-      //Switch activated sound
       sndPlay( SND_SWITCH_ACTIVATED, HSCREENW );
-    } else {
-      //Switch deactivated sound
+    } else if(pf->board[x][y]->type==SWON){
       sndPlay( SND_SWITCH_DEACTIVATED, HSCREENW );
+    } else if(newState && pf->board[x][y]->type==SWOFF)
+    {
+      sndPlay( SND_SWITCH_DEACTIVATED, HSCREENW );
+    } else if(pf->board[x][y]->type==SWOFF){
+      sndPlay( SND_SWITCH_ACTIVATED, HSCREENW );
     }
+
   }
 }
 
@@ -187,6 +193,16 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
       printf( "Switch error: Type %i not handled.\n", s->target->type );
     break;
   }
+  //Let's have some particles
+  ps.layer=PSYS_LAYER_TOP;
+  ps.x=s->target->pxx+stealGfxPtr()->tiles[s->target->type-1]->clip.w/2;
+  ps.y=s->target->pxy+stealGfxPtr()->tiles[s->target->type-1]->clip.h/2;
+  ps.vel=100; // +/- in each dir
+  ps.life=250;
+  ps.lifeVar=50;
+  ps.color=PARTICLECOLORRANDOM;
+  ps.numParticles=25;
+  spawnParticleSystem(&ps);
 }
 
 void switchUpdateAll( playField* pf )
