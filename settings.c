@@ -81,6 +81,7 @@ void loadSettings()
   settings.glHeight=-1;
   settings.glEnable=1;
   settings.glFilter=0;
+  settings.fullScreen=0;
 
   //Not written to file
   settings.scaleFactor=1.0;
@@ -205,6 +206,10 @@ void loadSettings()
         if( strcmp("glfilter",set)==0 )
         {
           settings.glFilter=atoi(val);
+        } else
+        if( strcmp("fullscreen",set)==0 )
+        {
+          settings.fullScreen=atoi(val);
         }
 
       }
@@ -243,7 +248,8 @@ void saveSettings()
                "glenable=%i\n"
                "glfilter=%i\n"
                "glwidth=%i\n"
-               "glheight=%i\n",
+               "glheight=%i\n"
+               "fullscreen=%i\n",
                settings.soundVol,
                settings.musicVol,
                settings.wizClock,
@@ -260,7 +266,8 @@ void saveSettings()
                settings.glEnable,
                settings.glFilter,
                settings.glWidth,
-               settings.glHeight);
+               settings.glHeight,
+               settings.fullScreen);
     fclose( f );
   } else {
     printf("saveSettings(); Error: Couldn't open 'settings.ini' for writing.\n");

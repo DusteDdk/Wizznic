@@ -102,7 +102,8 @@ int main(int argc, char *argv[])
          "    -glwidth  PY # Window height (-1 for auto).\n"
          "    -glfilter ST # 0=No filtering, 1=Smooth.\n"
 #endif
-         "    -f    # Turn on fullscreen.\n"
+         "    -f    # Turn on fullscreen mode.\n"
+         "    -w    # Turn on windowed mode.\n"
          "    -z 2  # Software scale to 640x480.\n\n");
 
   printf("Loading settings...\n");
@@ -157,13 +158,19 @@ int main(int argc, char *argv[])
         i++;
         saveSettings();
       } else {
-        printf(" -z requires zoom level ( -f 2 for example ).\n");
+        printf(" -z requires zoom level ( -z 2 for example ).\n");
         return(1);
       }
     } else
     if( strcmp( argv[i], "-f" ) == 0 )
     {
-      sdlVideoModeFlags |= SDL_FULLSCREEN;
+        setting()->fullScreen=1;
+        saveSettings();
+    } else
+    if( strcmp( argv[i], "-w" ) == 0 )
+      {
+        setting()->fullScreen=0;
+        saveSettings();
     } else if( strcmp( argv[i], "-glheight" ) == 0 )
     {
       if( i+1 < argc )
@@ -222,6 +229,11 @@ int main(int argc, char *argv[])
       return(1);
     }
 
+  }
+
+  if( setting()->fullScreen )
+  {
+    sdlVideoModeFlags |= SDL_FULLSCREEN;
   }
 
   if(doScale)

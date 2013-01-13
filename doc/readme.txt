@@ -62,11 +62,12 @@ to compile and/or install wizznic.
 The Linux and Windows versions of wizznic takes the following command line
 parameters:
 
-Wizznic saves -sw -glwidth/height and glfilter options when it is called with
+Wizznic saves -sw -glwidth/height -f -w and -glfilter options when it is called with
 any of those parameters, if you happen to choose something that's not working,
 simply call wizznic again with some other options that you suspect will.
 
-  -f     Start in fullscreen. ( Must be used every time you want fullscreen )
+  -f     Start in fullscreen.
+  -w     Start in windowed mode.
   -z 2   Software scale to 640x480 (320*2x240*2) (More CPU intensive than OpenGL).
 
 If Wizznic is compiled with OpenGL scaling support, these parameters are available:
