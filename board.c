@@ -230,6 +230,8 @@ int loadField(playField* pf, const char* file)
   pf->blocker = malloc(sizeof(brickType));
   pf->blocker->type=RESERVED;
 
+  pf->blockerDst = malloc(sizeof(brickType));
+  pf->blockerDst->type=RESERVED;
   //Figure out which tile to use for each wall (int 6)
   boardSetWalls(pf);
 
@@ -258,6 +260,7 @@ void freeField(playField* pf)
     }
   }
   free(pf->blocker);
+  free(pf->blockerDst);
   //Clear the lists
   freeList(pf->movingList);
   freeList(pf->removeList);
@@ -310,7 +313,7 @@ int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int sp
       //add to moving
       listAddData(pf->movingList, (void*)pf->board[x][y]);
 
-      pf->board[dx][dy]=pf->blocker;
+      pf->board[dx][dy]=pf->blockerDst;
       pf->board[x][y]=pf->blocker;
 
     return(1);

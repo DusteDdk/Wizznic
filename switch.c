@@ -128,7 +128,7 @@ void switchReact( playField* pf, int x, int y )
 {
   int newState;
 
-  if( y>0 && pf->board[x][y-1] && isBrick(pf->board[x][y-1]) )
+  if( y>0 && pf->board[x][y-1] && ( isBrick(pf->board[x][y-1])||isMover(pf->board[x][y-1])||pf->board[x][y-1]==pf->blockerDst ) )
   {
     newState = (pf->board[x][y]->type==SWOFF)?0:1;
   } else {

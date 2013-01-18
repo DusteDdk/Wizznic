@@ -57,6 +57,8 @@ struct playField_t
 
   //lol
   brickType* blocker; //Universial, invisible, quite magic blocker, for reserving space when bricks are travelling.
+  brickType* blockerDst;
+
   listItem* movingList; //Start of the linked list of moving bricks
 
   listItem* deactivated;  //Bricks that are deactivated by a switch.
