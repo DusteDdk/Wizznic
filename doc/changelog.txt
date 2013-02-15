@@ -1,21 +1,19 @@
--- Minor bugs --
-  The menu-music might clip, this is a bug in an old SDL_Mixer version (I think, since I've not been able to reproduce since I upgraded SDL_Mixer)
-  leverdumper and thumbnailer don't work when glenable=1, only used by devs anyways and I don't care.
 
 -- Todo --
-  Get strings into strings.h
-  All text buffers should be 1 kb.
-  Ceate a "Training" package.
-  Chain-reaction combo detection.
-  Combo-message/text.
+  Pack 1 and 2 now have 25 levels each, many of which are new.
+  Pack 3 (Asia) with 25 brand-new levels.
+  Tweaked level-order to improve gaming experience, not being too difficult at first, or too easy later on..
+  75 official Wizznic Levels in 3 packs!
+  All text should be in strings.h. 
   Asia theme by ViperMD
-  Asia music theme by Sean Hawk
 
 1.0.0
+  Two new tracks by Sean Hawk.
   There are switches which can activate/deactivate bricks. (for example for the player to put a brick
     on top of a switch to enable a teleport/magnet/mover or remove/add a piece of wall).
   Fixed the idiotic user-music path code.
   Audio rates are set from platform/* headers to make porting easier and less intrusive.
+  Whole game can now be controlled with the mouse, no keyboard needed.
   Level editor got a dedicated background image, and a menu for selecting bricks with mouse/touchscreen.
   Switched around level1 and 3 since 3 was way easier than 1.
   Fixed bug where bricks could be moved and were evaluated even if they were on top of exploding bricks.
