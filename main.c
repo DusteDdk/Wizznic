@@ -219,6 +219,7 @@ int main(int argc, char *argv[])
         strcpy( dumpPack, argv[i+1] );
         doScale=0;
         setting()->glEnable=0;
+	i++;
       } else {
         printf("-d requires a packname, and must not be used with other parameters.\n");
         return(1);
@@ -331,6 +332,7 @@ int main(int argc, char *argv[])
   //Need to dump level-screenshots?
   if(dumpPack)
   {
+    printf("Dumping level-images for pack: %s\n", dumpPack);
     dumplevelimages(screen, dumpPack, 0);
     return(0);
   }
