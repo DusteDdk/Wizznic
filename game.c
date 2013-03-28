@@ -21,6 +21,7 @@
 #include "defs.h"
 #include "transition.h"
 #include "switch.h"
+#include "skipleveldialog.h"
 
 static playField pf;
 static cursorType cur;
@@ -36,6 +37,7 @@ static SDL_Surface* startStopImg;
 #define GAMESTATEUNSOLVABLE 5
 #define GAMESTATESTARTIMAGE 6
 #define GAMESTATESTOPIMAGE 7
+#define GAMESTATESKIPLEVEL 8
 
 static int gameState=GAMESTATECOUNTDOWN;
 static int startStopImgCounter=0;
@@ -62,7 +64,7 @@ int initGame(SDL_Surface* screen)
     if( !ptrRestart )
     {
     	ptrRestart = loadImg( DATADIR"data/ptr-restart.png" );
-      ptrRestartRect.x=0;
+    	ptrRestartRect.x=0;
     	ptrRestartRect.w=ptrRestartRect.x+ptrRestart->w;
 
     	ptrRestartRect.y=SCREENH-ptrRestart->h;
@@ -443,7 +445,7 @@ int runGame(SDL_Surface* screen)
       if(pf.levelInfo->time < 1)
       {
         //Completed level
-
+        player()->timeouts=0;
         pf.levelInfo->time=0;
         statsSubmitBest();
         sndPlay(SND_VICTORY, 160);
@@ -482,6 +484,11 @@ int runGame(SDL_Surface* screen)
       {
         countdown=4000;
         gameState=GAMESTATEOUTOFTIME;
+        if( !player()->inEditor )
+        {
+          player()->timeouts++;
+        }
+
         sndPlay(SND_TIMEOUT, 160);
       }
     }
@@ -491,6 +498,11 @@ int runGame(SDL_Surface* screen)
     {
       countdown=2000;
       gameState=GAMESTATEUNSOLVABLE;
+      if( !player()->inEditor )
+      {
+        player()->timeouts++;
+      }
+
       sndPlay(SND_TIMEOUT, 160);
     }
 
@@ -556,85 +568,108 @@ int runGame(SDL_Surface* screen)
   if(gameState==GAMESTATEOUTOFTIME) //Menu was last in "Entering level" so it will return to that if timeout
   {
     draw(&cur,&pf, screen);
-    drawUi(screen);
+    //drawUi(screen);
 
     countdown-=getTicks();
 
-    txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24);
-
-    if(countdown < 1000)
+    if( player()->timeouts > 1 )
     {
-      sprintf(buf, STR_MENU_PRESS_B);
-      txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
-      //Wait for anykey
-      if(getButton(C_BTNB) || isPointerClicked() || countdown < -6000)
+      int skipLevel = skipLevelDialog(screen);
+      if( skipLevel==1 )
       {
-        resetBtn(C_BTNB);
-        resetMouseBtn();
-        //Subtract lives
-        if(!player()->inEditor)
-        {
-          player()->lives--;
-          if(player()->lives==0)
-          {
-            setGameOver();
-          } else {
-            //Lost a life, but did not get gameover, upload the death
-            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-timeout",0, NULL);
-            setMenu(menuStateNextLevel);
-          }
-        }
+        gameState=GAMESTATESKIPLEVEL;
+        countdown=500;
+      }
+      txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24-31);
+    } else {
+      txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24);
 
-        //Clear score
-        player()->hsEntry.score=0;
-        //Goto cleanup, then menu
-        cleanUpGame();
-        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
-        return(STATEMENU);
+      if(countdown < 1000)
+      {
+        sprintf(buf, STR_MENU_PRESS_B);
+        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
+        //Wait for anykey
+        if(getButton(C_BTNB) || isPointerClicked() || countdown < -6000)
+        {
+          resetBtn(C_BTNB);
+          resetMouseBtn();
+          //Subtract lives
+          if(!player()->inEditor)
+          {
+            player()->lives--;
+            if(player()->lives==0)
+            {
+              setGameOver();
+            } else {
+              //Lost a life, but did not get gameover, upload the death
+              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-timeout",0, NULL);
+              setMenu(menuStateNextLevel);
+            }
+          }
+
+          //Clear score
+          player()->hsEntry.score=0;
+          //Goto cleanup, then menu
+          cleanUpGame();
+          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
+          return(STATEMENU);
+        }
       }
     }
 
   } else
-  if(gameState==GAMESTATEUNSOLVABLE) //More or less the same as out-of-time, but with another graphics.
+  if(gameState==GAMESTATEUNSOLVABLE) //The same as out-of-time, but with another graphics.
   {
     draw(&cur,&pf, screen);
-    drawUi(screen);
+    //drawUi(screen);
 
     countdown-=getTicks();
 
-    sprintf(buf, STR_GAME_UNSOLVABLE);
-
-    txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
-
-    if(countdown < 1000)
+    if( player()->timeouts > 1 )
     {
-      sprintf(buf, STR_MENU_PRESS_B);
-      txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
-      //Wait for anykey
-      if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
+      int skipLevel = skipLevelDialog(screen);
+      if( skipLevel==1 )
       {
-        resetBtn(C_BTNB);
-        resetMouseBtn();
-        //Subtract lives
-        if(!player()->inEditor)
-        {
-          player()->lives--;
-          if(player()->lives==0)
-          {
-            setGameOver();
-          } else {
-            //Lost a life, but did not get gameover, upload the death
-            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-unsolvable",0, NULL);
-            setMenu(menuStateNextLevel);
-          }
-        }
+        gameState=GAMESTATESKIPLEVEL;
+        countdown=500;
+      }
+      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24-31);
 
-        //Clear score
-          player()->hsEntry.score=0;
-        //Goto cleanup, then menu
-        cleanUpGame();
-        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
-        return(STATEMENU);
+    } else {
+      sprintf(buf, STR_GAME_UNSOLVABLE);
+
+      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
+
+      if(countdown < 1000)
+      {
+        sprintf(buf, STR_MENU_PRESS_B);
+        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
+        //Wait for anykey
+        if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
+        {
+          resetBtn(C_BTNB);
+          resetMouseBtn();
+          //Subtract lives
+          if(!player()->inEditor)
+          {
+            player()->lives--;
+            if(player()->lives==0)
+            {
+              setGameOver();
+            } else {
+              //Lost a life, but did not get gameover, upload the death
+              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-unsolvable",0, NULL);
+              setMenu(menuStateNextLevel);
+            }
+          }
+
+          //Clear score
+            player()->hsEntry.score=0;
+          //Goto cleanup, then menu
+          cleanUpGame();
+          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
+          return(STATEMENU);
+        }
       }
     }
   } else if(gameState==GAMESTATESTARTIMAGE)
@@ -696,6 +731,36 @@ int runGame(SDL_Surface* screen)
     SDL_BlitSurface( startStopImg, 0, screen, &(setting()->bgPos) );
     if(countdownSeconds>4000)
       txtWriteCenter(screen, GAMEFONTSMALL, STR_GAME_PRESSB, HSCREENW,HSCREENH+80);
+
+  } else if(gameState==GAMESTATESKIPLEVEL)
+  {
+
+    doRules(&pf);
+    simField(&pf, &cur);
+    draw(&cur,&pf, screen);
+
+    countdown-=getTicks();
+
+    if( countdown < 1 )
+    {
+      countdown=500;
+
+      if( boardDestroyNextBrick(&pf) == 0 )
+      {
+
+        //Tell that we chose to skip level
+        statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "skip-level",0, NULL);
+
+        pf.levelInfo->time=0;
+        player()->hsEntry.score=0;
+        cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
+        clearParticles();
+        setMenu(menuStatePrepareNextLevel);
+        return(STATEMENU);
+      }
+    }
+    drawUi(screen);
 
   }
   return(STATEPLAY);

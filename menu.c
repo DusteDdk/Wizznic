@@ -489,28 +489,32 @@ int runMenu(SDL_Surface* screen)
       {
         resetBtn(C_BTNB);
 
-        //Reset board score
-        player()->hsEntry.score=0;
-
-        //Check if the player compleated all levels
-        if(player()->level+1 == getNumLevels())
-        {
-          //Go to "Completed pack" image.
-          setMenu(menuStateBeatPack);
-          break;
-        }
-
-        //Inc to next lvl
-        player()->level++;
-
-        //Set new level
-        player()->levelFile = levelInfo( player()->level )->file;
-
-        //Entering screen
-        menuState=menuStateNextLevel;
+        setMenu( menuStatePrepareNextLevel );
         return(STATEMENU);
       }
 
+    break;
+
+    case menuStatePrepareNextLevel:
+      //Reset board score
+      player()->hsEntry.score=0;
+
+      //Check if the player compleated all levels
+      if(player()->level+1 == getNumLevels())
+      {
+        //Go to "Completed pack" image.
+        setMenu(menuStateBeatPack);
+        break;
+      }
+
+      //Inc to next lvl
+      player()->level++;
+
+      //Set new level
+      player()->levelFile = levelInfo( player()->level )->file;
+
+      //Entering screen
+      menuState=menuStateNextLevel;
     break;
 
     case menuStatePaused:

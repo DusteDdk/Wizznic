@@ -89,4 +89,6 @@ int curMoveBrick(playField *pf, brickType *b, int dir);
 brickType* findMoving(playField* pf, int x, int y);
 brickType* brickUnderCursor(playField* pf, int x, int y);
 
+int boardDestroyNextBrick(playField* pf);
+
 #endif // BOARD_H_INCLUDED

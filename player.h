@@ -27,6 +27,8 @@ struct player_s {
   int lives;
   char* levelFile;
 
+  int timeouts; //Number of times the player has run out of time during the same level
+
   hsEntry_t hsEntry; //Per-level highscore stats
   hsEntry_t campStats; //Pr-campain stats (updated by stats-best)
 };

@@ -855,7 +855,7 @@ int doRules(playField* pf)
             pf->board[x][y]->dir=1;
             listAddData(pf->removeList, (void*)pf->board[x][y]);
             //pf->board[x][y]=0;
-         } else
+          } else
           //Below
           if(y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y+1]) )
           {
@@ -886,7 +886,7 @@ int doRules(playField* pf)
   li=pf->removeList;
   while( (li = li->next) )
   {
-    //Count dying bricks as alive untill they are really removed
+    //Count dying bricks as alive until they are really removed
     bricksLeft++;
     b=(brickType*)li->data;
     if(b->dir)
@@ -1041,5 +1041,34 @@ int curMoveBrick(playField *pf, brickType *b, int dir)
       }
     }
   }
+  return(0);
+}
+
+
+//Destroys the next brick.
+int boardDestroyNextBrick(playField* pf)
+{
+  int x,y;
+  for(y=0; y < FIELDSIZE; y++)
+  {
+    for(x=0; x < FIELDSIZE; x++ )
+    {
+      if( pf->board[x][y] && isBrick( pf->board[x][y] )  )
+      {
+        if( pf->board[x][y] != pf->blocker )
+        {
+          pf->board[x][y]->dir=1;
+          listAddData(pf->removeList, (void*)pf->board[x][y]);
+          pf->board[x][y]->dir=0;
+          sndPlayOnce(SND_BRICKBREAK,pf->board[x][y]->pxx);
+          pf->board[x][y]->tl=pf->levelInfo->brick_die_ticks;
+          //This makes sure we don't add this brick again
+          pf->board[x][y]=pf->blocker;
+        }
+        return(1);
+      }
+    }
+  }
+
   return(0);
 }

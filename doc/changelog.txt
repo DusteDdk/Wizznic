@@ -1,11 +1,12 @@
 
 -- Todo --
   75 new levels!
-  After N timeouts, possible to skip level.
-  Show "Best"-stats on top of level-preview.
 
 1.0.0
-  Two new tracks by Sean Hawk.
+  You can enter your name for the highscores using the keyboard.
+  It is possible to skip puzzles after two failed attempts to solve them. 
+  Level-Editor will no longer place bricks when clicking outside of the board (annoying when missing one of the buttons).
+  New audio track "Wizzintro" by Sean Hawk
   There are switches which can activate/deactivate bricks. (for example for the player to put a brick
     on top of a switch to enable a teleport/magnet/mover or remove/add a piece of wall).
   Fixed the idiotic user-music path code.

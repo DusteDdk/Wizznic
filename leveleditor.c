@@ -47,9 +47,12 @@ static int teleState=0; //Teleport placement iteration
 static int teleSrcPos[2];
 static int editorState;
 SDL_Surface* selBrickBG;
+static int allowBrickToBePlaced;
 
 SDL_Surface* saveBtnBG;
 spriteType* saveBtnSprite;
+
+static SDL_Rect fieldRect; //Used to detect when the cursor is inside the brick-field.
 
 void editorLoad(const char* fn, SDL_Surface* screen)
 {
@@ -76,6 +79,11 @@ void editorLoad(const char* fn, SDL_Surface* screen)
   selBrick=BRICKSBEGIN;
 
   teleState=0;
+
+  fieldRect.x = HSCREENW -  74;
+  fieldRect.y = HSCREENH - 114;
+  fieldRect.w = HSCREENW + 154;
+  fieldRect.h = HSCREENH + 114;
 }
 
 void editorCleanUp()
@@ -170,7 +178,6 @@ int runEditor(SDL_Surface* screen)
       changed++; //If it was 0 then it will become 1 (saved) exit. If it was 1 it becomes 2 (not saved).
       if( changed != 2 )
       {
-        resetMouseBtn();
         editorCleanUp();
         startTransition(screen, TRANSITION_TYPE_ROLL_IN, 500 );
         return(STATEMENU);
@@ -198,6 +205,14 @@ int runEditor(SDL_Surface* screen)
     {
       changed=EDITOR_SAVEBTN_CLICKED;
       resetMouseBtn();
+    }
+
+    //We check if the cursor is in the field (if it is not, brick-placement is blocked so we don't place bricks when clicking outside of the field).
+    if( isPointerInBox(&fieldRect) || getInpPointerState()->timeSinceMoved > POINTER_SHOW_TIMEOUT )
+    {
+      allowBrickToBePlaced=1;
+    } else {
+      allowBrickToBePlaced=0;
     }
 
     //Handle movement
@@ -255,12 +270,12 @@ int runEditor(SDL_Surface* screen)
         selBrick=NUMTILES;
     }
 
-    //Is pressed brick button being presesd?
-    if( (getButton(C_BTNX) || getInpPointerState()->isDown ) && selBrick != RESERVED )
+
+
+    //Is place brick button being pressed, and if it is, are we allowed to place the brick?
+    if( (getButton(C_BTNX) || getInpPointerState()->isDown ) && selBrick != RESERVED && allowBrickToBePlaced )
     {
 
-      //We remove the brick under the cursor if it's not a teleport, or if it is and we are placing a teleport source.
-//      if( (!telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && selBrick!=TELESRC) || (selBrick==TELESRC && telePresent(pf.levelInfo->teleList, cur.x, cur.y ) && teleState==0 ) )
       //We remove the brick before placing a new one if it's not a teleport or if it's a switch (not switch-target).
       if( selBrick!=TELESRC && !((editIsSwitch(selBrick)&&teleState==1)  ) )
       {
@@ -283,7 +298,7 @@ int runEditor(SDL_Surface* screen)
           if(editIsSwitch(selBrick))
           {
             teleAddToList( pf.levelInfo->switchList, teleSrcPos[0], teleSrcPos[1], cur.x, cur.y );
-            printf("Number of members in switchList: %i\n", listSize(pf.levelInfo->switchList) );
+            //printf("Number of members in switchList: %i\n", listSize(pf.levelInfo->switchList) );
             cur.x = teleSrcPos[0];
             cur.y = teleSrcPos[1];
             editAddToBoard(selBrick);
