@@ -1,11 +1,8 @@
 
 -- Todo --
-  Pack 1 and 2 now have 25 levels each, many of which are new.
-  Pack 3 (Asia) with 25 brand-new levels.
-  Tweaked level-order to improve gaming experience, not being too difficult at first, or too easy later on..
-  75 official Wizznic Levels in 3 packs!
-  All text should be in strings.h. 
-  Asia theme by ViperMD
+  75 new levels!
+  After N timeouts, possible to skip level.
+  Show "Best"-stats on top of level-preview.
 
 1.0.0
   Two new tracks by Sean Hawk.
