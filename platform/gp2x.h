@@ -43,7 +43,7 @@
 #define GP2X_BUTTON_VOLDOWN         (17)
 
 //Help file for this platform (appended to DATADIR)
-#define PLATFORM_HELP_FILE        "data/menu/helpwiz.png" ///TODO!!
+#define PLATFORM_HELP_FILE        "data/menu/helpwiz.png"
 
 //Button definitions
 #define PLATFORM_BUTTON_UP        GP2X_BUTTON_UP

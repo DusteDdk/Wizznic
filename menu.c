@@ -104,7 +104,7 @@ int initMenu(SDL_Surface* screen)
   waving.overlaySpeed=1;
   waving.overlay = loadImg( DATADIR"data/menu/introoverlay.png" );
   waving.overlayPos=waving.overlay->w+1;
-  waving.mask = loadImg( DATADIR"data/menu/intromask.png") ;
+  waving.mask = loadImg( DATADIR"data/menu/intromask.png");
 
   return(1);
 }

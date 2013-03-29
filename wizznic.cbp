@@ -166,6 +166,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="settings.h" />
+		<Unit filename="skipleveldialog.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="skipleveldialog.h" />
 		<Unit filename="sound.c">
 			<Option compilerVar="CC" />
 		</Unit>

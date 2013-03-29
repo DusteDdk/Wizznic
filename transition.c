@@ -70,8 +70,8 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
       psys.life=time;
       psys.lifeVar=time;
       psys.srcImg=scr;
-      psys.x=0; ///TODO: Needs to be positioned for non-4:3 screens
-      psys.y=0; ///TODO: Needs to be positioned for non-4:3 screens
+      psys.x=0;
+      psys.y=0;
       psys.srcRect.x=0;
       psys.srcRect.y=0;
       psys.srcRect.h=scr->h;
@@ -80,8 +80,9 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
       spawnParticleSystem(&psys);
     break;
     case TRANSITION_TYPE_ROLL_IN:
-     case TRANSITION_TYPE_CURTAIN_DOWN:
+    case TRANSITION_TYPE_CURTAIN_DOWN:
      t.reverse=1;
+     /* no break */
     case TRANSITION_TYPE_ROLL_OUT:
     case TRANSITION_TYPE_CURTAIN_UP:
       t.sur = SDL_ConvertSurface( scr, scr->format, scr->flags );

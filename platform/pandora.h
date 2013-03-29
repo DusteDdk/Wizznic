@@ -25,7 +25,7 @@
 #define WANT_SWSCALE
 
 //Help file for this platform (appended to DATADIR)
-#define PLATFORM_HELP_FILE        "data/menu/helppc.png" ///TODO!!
+#define PLATFORM_HELP_FILE        "data/menu/helppc.png"
 
 //Button definitions
 #define PLATFORM_BUTTON_UP        SDLK_UP
