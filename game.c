@@ -64,10 +64,10 @@ int initGame(SDL_Surface* screen)
     if( !ptrRestart )
     {
     	ptrRestart = loadImg( DATADIR"data/ptr-restart.png" );
-    	ptrRestartRect.x=0;
+    	ptrRestartRect.x=HSCREENW-160;
     	ptrRestartRect.w=ptrRestartRect.x+ptrRestart->w;
 
-    	ptrRestartRect.y=SCREENH-ptrRestart->h;
+    	ptrRestartRect.y=HSCREENH+120-ptrRestart->h;
     	ptrRestartRect.h=ptrRestartRect.y+ptrRestart->h;
     }
 
@@ -170,14 +170,6 @@ void drawUi(SDL_Surface* screen)
   txtWriteCenter(screen, GAMEFONTSMALL, "Lives:", HSCREENW-113,HSCREENH+48);
   sprintf(tempStr, "%i", player()->lives );
   txtWriteCenter(screen, GAMEFONTMEDIUM, tempStr, HSCREENW-113, HSCREENH+58);
-
-  //Show the restart icon
-  if(getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && getInpPointerState()->escEnable)
-  {
-    SDL_Rect ptrRestartRectC = ptrRestartRect;
-    SDL_BlitSurface( ptrRestart,NULL, screen, &ptrRestartRectC );
-  }
-
 }
 
 void gamePause(SDL_Surface* screen)
@@ -342,7 +334,7 @@ int runGame(SDL_Surface* screen)
     }
    //   printf("x:%i\n", getInpPointerState()->curX );
       //Drag
-    if( getButton( C_BTNX ) || getButton( C_BTNB ) || mouseGrab )
+    if( getButton( C_BTNX ) || getButton( C_BTNB ) || mouseGrab || isPointerClicked() )
     {
       //Remove "Restart" question
       restartConfirm=0;
@@ -507,16 +499,23 @@ int runGame(SDL_Surface* screen)
     }
 
 
-    //Draw text
-    drawUi(screen);
 
     //Draw question
     if(restartConfirm)
     {
       sprintf(buf,STR_GAME_RESTARTWARNING);
-      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW, 100);
+      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW, HSCREENH-20);
       sprintf(buf,STR_GAME_RESTARTCONFIRM);
       txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW, HSCREENH);
+    } else {
+      //Draw text
+      drawUi(screen);
+    }
+    //Show the restart icon
+    if(getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && getInpPointerState()->escEnable)
+    {
+      SDL_Rect ptrRestartRectC = ptrRestartRect;
+      SDL_BlitSurface( ptrRestart,NULL, screen, &ptrRestartRectC );
     }
 
 

@@ -80,7 +80,7 @@ inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b)
 inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col)
 {
   //Bail if invalid position
-  if(x < 0 || x > (SCREENW-1) || y < 0 || y > (SCREENH-1) )
+  if(x < (HSCREENW-160) || x > (HSCREENW+159) || y < (HSCREENH-120) || y > (HSCREENH+119) )
   {
     return;
   }

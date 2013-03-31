@@ -1226,7 +1226,7 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->userMusic)?"Music: <User selected>":"Music: <Game Music>");
         if(dir || menuPosY!=3) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH-30);
-        if( (menuPosY==3 && menuChangeX ||getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
+        if( ( (menuPosY==3 && menuChangeX) ||getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
         {
           resetBtn(C_BTNB);
           menuPosY=0;

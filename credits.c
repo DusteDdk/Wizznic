@@ -159,6 +159,9 @@ void clearCredits()
 
 void drawTitle(SDL_Surface* screen, msg_t* m)
 {
+  SDL_Rect srcCut;
+  int vis;
+
   ticksToNextPs += getTicks();
 
   if(ticksToNextPs > 60)
@@ -176,7 +179,14 @@ void drawTitle(SDL_Surface* screen, msg_t* m)
 
   }
 
-  SDL_BlitSurface( m->surfTitle, 0, screen, &m->rTitle );
+  srcCut.x=0;
+  srcCut.y=0;
+  vis = (HSCREENW+160)-m->rTitle.x;
+  srcCut.w= (vis<0)?0:vis;
+
+  srcCut.h=m->surfTitle->h;
+
+  SDL_BlitSurface( m->surfTitle, &srcCut, screen, &m->rTitle );
 }
 
 void runCredits(SDL_Surface* screen)

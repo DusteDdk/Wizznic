@@ -61,15 +61,15 @@ void loadSkipLevelDialog()
     skipHighlightAni = mkAni(skipHighlightSurface, 48,44,150);
 
     //Define positions used for checking pointer against the buttons
-    restartBoxBtn.x = 115;
-    restartBoxBtn.y = 99;
-    restartBoxBtn.w = 160;
-    restartBoxBtn.h = 140;
+    restartBoxBtn.x = HSCREENW-45;
+    restartBoxBtn.y = HSCREENH-21;
+    restartBoxBtn.w = HSCREENW;
+    restartBoxBtn.h = HSCREENH+20;
 
-    skipBoxBtn.x = 160;
-    skipBoxBtn.y = 99;
-    skipBoxBtn.w = 206;
-    skipBoxBtn.h = 140;
+    skipBoxBtn.x = HSCREENW;
+    skipBoxBtn.y = HSCREENH-21;
+    skipBoxBtn.w = HSCREENW+46;
+    skipBoxBtn.h = HSCREENH+20;
 
     btnClicked=0;
 

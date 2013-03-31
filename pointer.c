@@ -25,6 +25,7 @@
 static inpPointerState_t inpPointer;
 static SDL_Surface* ptrBackImg;
 static SDL_Rect ptrBackRect;
+static SDL_Rect backBtnDstRect;
 
 inline inpPointerState_t* getInpPointerState()
 {
@@ -38,20 +39,22 @@ void initPointer(SDL_Surface* screen)
   if( !ptrBackImg )
     printf("Couldn't open %s\n",DATADIR"data/ptr-back.png");
 
-  ptrBackRect.x=0;
-  ptrBackRect.y=0;
-  ptrBackRect.w=ptrBackImg->w;
-  ptrBackRect.h=ptrBackImg->h;
+  ptrBackRect.x=HSCREENW-160;;
+  ptrBackRect.y=HSCREENH-120;;
+  ptrBackRect.w=ptrBackRect.x+ptrBackImg->w;
+  ptrBackRect.h=ptrBackRect.y+ptrBackImg->h;
+
+  backBtnDstRect.x = HSCREENW-160;
+  backBtnDstRect.y = HSCREENH-120;
 
   memset( &inpPointer, 0, sizeof(inpPointerState_t) );
   inpPointer.timeSinceMoved=POINTER_SHOW_TIMEOUT;
 
   //The color white
   inpPointer.colWhite = SDL_MapRGBA( screen->format, 255,255,255,255 );
-
 }
 
-inline void drawPointer(SDL_Surface* screen)
+void drawPointer(SDL_Surface* screen)
 {
   if( inpPointer.timeSinceMoved < POINTER_SHOW_TIMEOUT  )
   {
@@ -62,7 +65,7 @@ inline void drawPointer(SDL_Surface* screen)
     if( inpPointer.escEnable )
     {
       inpPointer.escEnable=0;
-      SDL_BlitSurface( ptrBackImg, NULL, screen,NULL);
+      SDL_BlitSurface( ptrBackImg, NULL, screen,&backBtnDstRect);
     }
 
     plotPixel(screen, inpPointer.vpX, inpPointer.vpY-2, inpPointer.colWhite );

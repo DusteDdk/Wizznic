@@ -35,8 +35,13 @@ void initStars(SDL_Surface* screen)
   for(i=0; i < NUMSTARS; i++)
   {
     star = malloc(sizeof(star_t));
-    star->x = rand()%(SCREENW*10);
-    star->y = rand()%(SCREENH*10);
+  //  star->x = rand()%(SCREENW*10);
+   // star->y = rand()%(SCREENH*10);
+
+    star->x = rand()%(3200) + (HSCREENW-160)*10;
+    star->y = rand()%(2400) + (HSCREENH-120)*10;
+
+
     star->sx = rand()%10; //xpos and ypos are to be divided by 10
     star->sy = 0;
     col = rand()%230+25; //from 25 to 255
@@ -47,7 +52,12 @@ void initStars(SDL_Surface* screen)
 
 void starField(SDL_Surface* screen, int move)
 {
-  SDL_FillRect(screen, NULL, 0x00);
+  SDL_Rect dst;
+  dst.x = HSCREENW-160;
+  dst.y = HSCREENH-120;
+  dst.w = 320;
+  dst.h = 240;
+  SDL_FillRect(screen, &dst, 0x00);
   star_t* star;
   listItem* it=stars;
   while( (it=it->next) )
@@ -58,11 +68,11 @@ void starField(SDL_Surface* screen, int move)
     {
       star->x -= star->sx;
       //Out of screen?
-      if(star->x < 0)
+      if(star->x < HSCREENW*10-1600)
       {
         //Give new y and reset x
-        star->y=rand()%(SCREENH*10)-1;
-        star->x= (SCREENW*10)-1;
+        star->x = 3200+(HSCREENW-160)*10;
+        star->y = rand()%(2400) + (HSCREENH-120)*10;
       }
     }
     //Draw
@@ -94,8 +104,8 @@ void fireWorks(SDL_Surface* screen)
     //Fire a new rocket
     tempRocket = malloc(sizeof(rocket_t));
     //Set initial position at y 240, and some random x
-    tempRocket->y=(SCREENH*10);
-    tempRocket->x=rand()%(SCREENW*10);
+    tempRocket->y=((HSCREENH+120)*10);
+    tempRocket->x=rand()%(3200) + (HSCREENW-160)*10;
     //Set a direction that flies towards the middle
     tempRocket->sx = rand()%5;
 

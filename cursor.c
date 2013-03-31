@@ -101,6 +101,6 @@ void initCursor(cursorType* c)
   c->y = 5;
   c->dx=c->x;
   c->dy=c->y;
-  c->px=160;
-  c->py=120;
+  c->px=HSCREENW;
+  c->py=HSCREENH;
 }

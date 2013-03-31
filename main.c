@@ -367,12 +367,35 @@ int main(int argc, char *argv[])
 
   initTransition();
 
+
+#if SCREENW != 320 || SCREENH != 240
+  SDL_Rect *borderSrcRect = malloc(sizeof(SDL_Rect));
+  SDL_Surface* border = loadImg( BORDER_IMAGE );
+  if( border )
+  {
+    printf("Border image loaded.\n");
+    borderSrcRect->x=(border->w-SCREENW)/2;
+    borderSrcRect->y=(border->h-SCREENH)/2;
+    borderSrcRect->w=SCREENW;
+    borderSrcRect->h=SCREENH;
+    SDL_BlitSurface( border, borderSrcRect, screen, NULL );
+    SDL_FreeSurface(border);
+  } else {
+    printf("Could not load border image: %s\n", BORDER_IMAGE);
+    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0,0,0));
+  }
+  free(borderSrcRect);
+  borderSrcRect=NULL;
+
+#endif
+
   int lastTick;
   while(state!=STATEQUIT)
   {
     lastTick=SDL_GetTicks();
 
     frameStart();
+
     if(runControls()) state=STATEQUIT;
     switch(state)
     {

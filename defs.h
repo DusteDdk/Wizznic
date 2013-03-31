@@ -69,6 +69,11 @@
   #define PC
 #endif
 
+#ifndef PLATFORM_BORDER_IMAGE
+  #define BORDER_IMAGE DATADIR"data/border.png"
+#else
+  #define BORDER_IMAGE PLATFORM_BORDER_IMAGE
+#endif
 
 //Half the resolution is practical for centering content
 #define HSCREENW  SCREENW/2

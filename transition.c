@@ -23,10 +23,10 @@
 
 struct transition_s {
    SDL_Surface* sur;
-   int type;
+   int_fast8_t type;
    int time;
    int timeLeft;
-   int reverse;
+   int_fast8_t reverse;
 };
 
 typedef struct transition_s transition_t;
@@ -35,7 +35,6 @@ transition_t t;
 
 void initTransition()
 {
-  printf("initTransition called\n");
   t.sur=NULL;
   t.timeLeft=0;
   t.time=0;
@@ -50,14 +49,13 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
 
   t.type=(type==TRANSITION_TYPE_RANDOM)?rand()%NUM_TRANSITIONS:type;
   t.time=time;
-  t.timeLeft=time;
+  t.timeLeft=t.time;
   t.reverse=0;
 
   if( t.sur != NULL )
   {
     SDL_FreeSurface(t.sur);
   }
-
 
   switch( t.type )
   {
@@ -70,13 +68,14 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
       psys.life=time;
       psys.lifeVar=time;
       psys.srcImg=scr;
-      psys.x=0;
-      psys.y=0;
-      psys.srcRect.x=0;
-      psys.srcRect.y=0;
-      psys.srcRect.h=scr->h;
-      psys.srcRect.w=scr->w;
+      psys.x=(HSCREENW-160);
+      psys.y=(HSCREENH-120);
+      psys.srcRect.x=(HSCREENW-160);
+      psys.srcRect.y=(HSCREENH-120);
+      psys.srcRect.w=320;
+      psys.srcRect.h=240;
       psys.vel=0;
+
       spawnParticleSystem(&psys);
     break;
     case TRANSITION_TYPE_ROLL_IN:
@@ -109,20 +108,22 @@ void runTransition(SDL_Surface* scr)
   {
     case TRANSITION_TYPE_CURTAIN_UP:
     case TRANSITION_TYPE_CURTAIN_DOWN:
-      r.x=0;
-      r.w=scr->w;
-      rr.x=0;
-      x=((float)(t.timeLeft)/(float)(t.time))*(float)(scr->h);;
+      rr.x=(HSCREENW-160);
+      x=((float)(t.timeLeft)/(float)(t.time))*(float)(240);
+
+      r.x=(HSCREENW-160);
+      r.w=(320);
+
 
       if( !t.reverse )
       {
         r.h=x;
-        r.y=0;
-        rr.y=0;
+        r.y=(HSCREENH-120);
+        rr.y=(HSCREENH-120);
       } else {
-        r.h=scr->h;
-        r.y=scr->h-x;
-        rr.y=scr->h-x;
+        r.h=HSCREENH+120;
+        r.y=HSCREENH+120-x;
+        rr.y=HSCREENH+120-x;
       }
       SDL_BlitSurface(t.sur, &r, scr, &rr );
     break;
@@ -130,25 +131,47 @@ void runTransition(SDL_Surface* scr)
       runParticles(scr);
     break;
     case TRANSITION_TYPE_ROLL_IN:
-    case TRANSITION_TYPE_ROLL_OUT:
-      x=((float)(t.timeLeft)/(float)(t.time))*(float)(scr->w);
+      x=((float)(t.timeLeft)/(float)(t.time))*(float)(320);
 
       tmpSurf = SDL_ConvertSurface( scr, scr->format, scr->flags );
       tmpSurf->flags=0x00;
-      r.y=0;
-      rr.y=0;
+      r.y=(HSCREENH-120);
+      rr.y=(HSCREENH-120);
+      r.h=240;
+      rr.h=240;
 
-      if( !t.reverse )
-      {
-        r.x=x-(scr->w);
-        rr.x=x;
-      } else {
-        r.x=(scr->w)-x;
-        rr.x=-x;
-      }
+      rr.x=HSCREENW+160-x;
+      r.x = (HSCREENW-160);
+      r.w = x;
+      SDL_BlitSurface(t.sur, &r, scr, &rr );
 
-      SDL_BlitSurface(t.sur, NULL, scr, &r );
-      SDL_BlitSurface(tmpSurf,NULL, scr, &rr );
+      rr.x=HSCREENW-160;
+      r.x = HSCREENW-160+x;
+      r.w = 320-x;
+      SDL_BlitSurface(tmpSurf,&r, scr, &rr );
+
+      SDL_FreeSurface(tmpSurf);
+    break;
+
+    case TRANSITION_TYPE_ROLL_OUT:
+      x=((float)(t.timeLeft)/(float)(t.time))*(float)(320);
+
+      tmpSurf = SDL_ConvertSurface( scr, scr->format, scr->flags );
+      tmpSurf->flags=0x00;
+      r.y=(HSCREENH-120);
+      rr.y=(HSCREENH-120);
+      r.h=240;
+      rr.h=240;
+
+      rr.x=HSCREENW-160;
+      r.x = (HSCREENW+160)-x;
+      r.w = x;
+      SDL_BlitSurface(t.sur, &r, scr, &rr );
+
+      rr.x=HSCREENW-160+x;
+      r.x = HSCREENW-160;
+      r.w = 320-x;
+      SDL_BlitSurface(tmpSurf,&r, scr, &rr );
 
       SDL_FreeSurface(tmpSurf);
     break;
