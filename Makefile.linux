@@ -31,7 +31,7 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 INCS =  -I. -I/usr/include -I/usr/include/SDL
-
+CFLAGS=-O3
 LDFLAGS=$(CFLAGS)
 LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
 

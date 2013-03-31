@@ -23,7 +23,7 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 INCS =  -I.
-
+CFLAGS=-O3
 LDFLAGS=$(CFLAGS)
 LIBS = -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lm
 

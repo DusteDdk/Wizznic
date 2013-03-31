@@ -22,7 +22,7 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
-
+CFLAGS=-O3
 LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib
 LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
 
