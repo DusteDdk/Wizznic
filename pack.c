@@ -70,6 +70,7 @@ void packAdd(const char* packDir)
 
   FILE* f=0;
   packInfoType* ti = malloc(sizeof(packInfoType));
+  ti->lives=3; //Default 3 lives, if pack do not define another number.
 
 //  printf("Adding pack '%s'\n",packDir);
 
@@ -131,6 +132,10 @@ void packAdd(const char* packDir)
           } else {
             printf("   Playlist entry format is mus=XX-XX,song name.ogg where XX-XX is a level range.\n");
           }
+        } else
+        if(strcmp("lives", set)==0)
+        {
+          ti->lives = atoi(val);
         }
       } //Found =
     } //reading file
@@ -436,6 +441,15 @@ void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
   //Number of levels
   sprintf(buf, "%i levels", pi->numLevels);
   txtWrite(screen, FONTSMALL, buf, posx+258-9*(strlen(buf)), posy+4+24);
+
+  //Number of lives
+  if( pi->lives > 0 )
+  {
+    sprintf(buf, "%i lives", pi->lives);
+  } else {
+    sprintf(buf, "Infinite lives!");
+  }
+  txtWrite(screen, FONTSMALL, buf, posx+40, posy+4+24);
 
   //Comment
 

@@ -33,6 +33,7 @@ struct packInfo_s {
   listItem* levels; //LevelInfo*'s
   int numLevels;
   int hasFinishedImg;
+  int lives;
 };
 typedef struct packInfo_s packInfoType;
 

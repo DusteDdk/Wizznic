@@ -16,6 +16,7 @@
  ************************************************************************/
 
 #include "player.h"
+#include "pack.h"
 #include "settings.h"
 
 static player_t playerInfo;
@@ -28,6 +29,7 @@ player_t* player()
 void initPlayer()
 {
   memset(&playerInfo,0, sizeof(player_t));
-  playerInfo.lives=3;
+
+  playerInfo.lives=(packState()->cp->lives>0)?packState()->cp->lives:-1;
 }
 

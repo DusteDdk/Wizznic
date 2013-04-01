@@ -166,10 +166,12 @@ void drawUi(SDL_Surface* screen)
   sprintf(tempStr, "%i", player()->hsEntry.score );
   txtWriteCenter(screen, GAMEFONTMEDIUM, tempStr, HSCREENW-113, HSCREENH+15);
 
-
-  txtWriteCenter(screen, GAMEFONTSMALL, "Lives:", HSCREENW-113,HSCREENH+48);
-  sprintf(tempStr, "%i", player()->lives );
-  txtWriteCenter(screen, GAMEFONTMEDIUM, tempStr, HSCREENW-113, HSCREENH+58);
+  if( player()->lives != -1)
+  {
+    txtWriteCenter(screen, GAMEFONTSMALL, "Lives:", HSCREENW-113,HSCREENH+48);
+    sprintf(tempStr, "%i", player()->lives );
+    txtWriteCenter(screen, GAMEFONTMEDIUM, tempStr, HSCREENW-113, HSCREENH+58);
+  }
 }
 
 void gamePause(SDL_Surface* screen)
@@ -595,7 +597,12 @@ int runGame(SDL_Surface* screen)
           //Subtract lives
           if(!player()->inEditor)
           {
-            player()->lives--;
+
+            if(player()->lives != -1)
+            {
+              player()->lives--;
+            }
+
             if(player()->lives==0)
             {
               setGameOver();
@@ -651,7 +658,11 @@ int runGame(SDL_Surface* screen)
           //Subtract lives
           if(!player()->inEditor)
           {
-            player()->lives--;
+            if(player()->lives != -1)
+            {
+              player()->lives--;
+            }
+
             if(player()->lives==0)
             {
               setGameOver();
