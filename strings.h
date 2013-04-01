@@ -140,9 +140,10 @@
 #define STR_MENU_OPTIONS_CHOICE     "Options"
 #define STR_MENU_EDITOR_CHOICE      "Editor"
 #define STR_MENU_ABOUT_CHOICE       "About"
+#define STR_MENU_PACK_CHOICE        "Pack"
 #define STR_MENU_HELP_CHOICE        "Help"
 #define STR_MENU_EXIT_CHOICE        "Exit"
-#define STR_MENU_PACK_CHOICE        "Pack: %s"
+#define STR_MENU_PACK_SHOW        "Pack: %s"
 
 #define STR_MENU_ABOUT_HEADLINE     "About Wizznic!"
 #define STR_MENU_ABOUT_TEXT         "Wizznic is an arcade game based on\n"\

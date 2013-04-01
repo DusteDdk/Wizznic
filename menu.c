@@ -518,46 +518,46 @@ int runMenu(SDL_Surface* screen)
     break;
 
     case menuStatePaused:
-      menuMaxY = 8;
+      menuMaxY = 9;
       starField(screen,1);
       if(player()->gameStarted)
       {
-        txtWave(screen, FONTMEDIUM, STR_MENU_PAUSE_HEADLINE, HSCREENW, HSCREENH-105, &rot);
+        txtWave(screen, FONTMEDIUM, STR_MENU_PAUSE_HEADLINE, HSCREENW, HSCREENH-115, &rot);
       } else {
-        txtWave(screen, FONTMEDIUM, STR_MENU_WIZZNIC_HEADLINE, HSCREENW, HSCREENH-105, &rot);
+        txtWave(screen, FONTMEDIUM, STR_MENU_WIZZNIC_HEADLINE, HSCREENW, HSCREENH-115, &rot);
       }
 
       if(dir || menuPosY!= 0)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_NEW_GAME_CHOICE, HSCREENW, HSCREENH-70);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_NEW_GAME_CHOICE, HSCREENW, HSCREENH-80);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=0;
       }
 
       if( player()->gameStarted && (dir || menuPosY!= 1 ) )
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-50);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_RESUME_CHOICE, HSCREENW, HSCREENH-60);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=1;
       }
 
       if(dir || menuPosY!= 2)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORES_CHOICE, HSCREENW, HSCREENH-30);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORES_CHOICE, HSCREENW, HSCREENH-40);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=2;
       }
 
       if(dir || menuPosY!= 3)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_CHOICE, HSCREENW, HSCREENH-10);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_CHOICE, HSCREENW, HSCREENH-20);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=3;
       }
 
       if(dir || menuPosY!= 4)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+10);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_EDITOR_CHOICE, HSCREENW, HSCREENH+0);
        if( isBoxClicked( getTxtBox() ) )
        {
           menuPosY=4;
@@ -566,31 +566,38 @@ int runMenu(SDL_Surface* screen)
 
       if(dir || menuPosY!= 5)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+30);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+20);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=5;
       }
 
       if(dir || menuPosY!= 6)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_HELP_CHOICE, HSCREENW, HSCREENH+50);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_PACK_CHOICE, HSCREENW, HSCREENH+40);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=6;
       }
 
       if(dir || menuPosY!= 7)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+70);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_HELP_CHOICE, HSCREENW, HSCREENH+60);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=7;
       }
 
       if(dir || menuPosY!= 8)
       {
-        sprintf(buf, STR_MENU_PACK_CHOICE, packState()->cp->name);
-        txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+100);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+80);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=8;
+      }
+
+      if(dir || menuPosY!= 9)
+      {
+        sprintf(buf, STR_MENU_PACK_SHOW, packState()->cp->name);
+        txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+105);
+        if( isBoxClicked( getTxtBox() ) )
+          menuPosY=9;
       }
 
 
@@ -651,11 +658,12 @@ int runMenu(SDL_Surface* screen)
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             menuState=menuStateAbout;
           break;
-          case 6: //Switch to help screen
+
+          case 7: //Switch to help screen
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStateHowto);
           break;
-          case 7: //Exit program
+          case 8: //Exit program
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             if( statsIsHighScore() )
             {
@@ -665,7 +673,8 @@ int runMenu(SDL_Surface* screen)
               setMenu(menuStateOutro);
             }
           break;
-          case 8: //Pack selection
+          case 6:
+          case 9: //Pack selection
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStatePackList);
             menuPosY = packState()->selected;
