@@ -36,6 +36,8 @@
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
   #define STR_GAME_PRESSB             "Press B to Play"
+  #define STR_SELECT_CTRLS            "---- Select with [Arrows]/[B] ----\n"
+
 
 #elif defined (PSP) /// PSP version
   //Menu
@@ -54,11 +56,14 @@
   #define STR_GAME_RESTARTCONFIRM     "Press Circle to confirm"
   #define STR_GAME_PRESSB             "Press Cross to Play"
 
+  #define STR_SELECT_CTRLS           "-- Select with [Arrows]/[Cross] --\n"
 
 #elif defined (PANDORA)
     //Menu
     #define STR_MENU_PRESS_B            "Press B"
     #define STR_MENU_PRESS_B_PLAY       "Press B to Play"
+
+
 
     #define STR_MENU_LVLEDIT_USAGE      "Edit: B. Play: A. Clone: Y"
 
@@ -71,7 +76,7 @@
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
     #define STR_GAME_PRESSB             "Press B to Play"
-    ///////////////////////////////////////////////////////////////
+    #define STR_SELECT_CTRLS            "---- Select with [Arrows]/[B] ----\n"
 #elif defined(MAME_CTRL)
     //Menu
     #define STR_MENU_PRESS_B            "Press Button 1"
@@ -88,11 +93,12 @@
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
     #define STR_GAME_PRESSB             "Press B1 to Play"
-
+    #define STR_SELECT_CTRLS            "--- Select with [Joystick]/[1] ---\n"
  #else
     //Menu
     #define STR_MENU_PRESS_B            "Press Ctrl"
     #define STR_MENU_PRESS_B_PLAY       "Press Ctrl to Play"
+    #define STR_SELECT_CTRLS            "--- Select with [Arrow]/[Ctrl] ---\n"
 
     #define STR_MENU_LVLEDIT_USAGE      "Edit: Ctrl. Play: Alt. Clone: Z"
 
@@ -168,29 +174,35 @@
                                     "But mostly bee... Advertisements!\n"\
                                     "                        - Jimmy"
 
-#define STR_MENU_UPLOADNAG          "------- Information Stuffs -------\n"\
+#define STR_MENU_UPLOADNAG          "---- Help Make Wizznic Better ----\n"\
                                     "Wizznic! is a free game that needs\n"\
                                     "your help to become really great!\n"\
-                                    "There is no crackteam of puzzle\n"\
-                                    "gods paid to make it awesome..\n"\
+                                    "\n"\
+                                    "\n"\
+                                    "\n"\
+                                    "\n"\
                                     "\n"\
                                     "Please allow Wizznic! to upload\n"\
-                                    "statistics about the gameplay.\n"\
-                                    "It's anonymous, secure, free and\n"\
-                                    "you won't even notice it's there!\n"\
+                                    "statistics about your games.\n"\
                                     "\n"\
+                                    "This can be changed in Options.\n"\
                                     "\n"\
-                                    "Use arrow keys to select, and\n"\
-                                    "CTRL to choose, please help :)\n"\
-                                    "----------------------------------\n"
+                                    STR_SELECT_CTRLS
+
+#define STR_MENU_ALLOW_UPLOAD       "< Allow? >"
+#define STR_MENU_ALLOW_UPLOAD_U     " [______] "
+#define STR_MENU_ALLOW_ANSWER_YES   "Yes"
+#define STR_MENU_ALLOW_ANSWER_YES_U "[___]"
+#define STR_MENU_ALLOW_ANSWER_NO   "No"
+#define STR_MENU_ALLOW_ANSWER_NO_U "[__]"
 
 #define STR_MENU_UPDATE             "---- Wizznic has been updated ----\n"\
                                     "Great news everyone!\n"\
                                     "There's a new version available!\n"\
                                     "Grab it at your leisure at:\n"\
-                                    "http://sf.net/projects/wizznic/\n"\
+                                    "http://wizznic.sf.net/\n"\
                                     "I'm sure it's filled with some\n"\
-                                    "Pretty cool and awesome stuff! :)\n"\
+                                    "pretty cool and awesome stuff! :)\n"\
                                     "----------------------------------\n"
 
 #define STR_MENU_NOPTRSUPPORT       "-- Pointer not supported here --\n"\

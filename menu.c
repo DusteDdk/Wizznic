@@ -1654,26 +1654,25 @@ int runMenu(SDL_Surface* screen)
         menuMaxX=2;
         txtWrite(screen, FONTSMALL, STR_MENU_UPLOADNAG, HSCREENW-152, HSCREENH-100 );
 
-        txtWriteCenter(screen, FONTSMALL, "< Help out? >", HSCREENW, HSCREENH+100);
-        if( menuPosX == 1 )
-      if(dir) txtWriteCenter(screen, FONTSMALL, "_____________", HSCREENW, HSCREENH+100 );
+        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD_U, HSCREENW, HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD, HSCREENW, HSCREENH+100);
 
-        txtWriteCenter(screen, FONTSMALL, "Yes", HSCREENW-(13*8), HSCREENH+100 );
+        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES_U, HSCREENW-(13*8), HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES, HSCREENW-(13*8), HSCREENH+100 );
         if( isBoxClicked( getTxtBox() ) )
         {
           menuPosX=0;
         }
 
-        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, "___", HSCREENW-(13*8), HSCREENH+100 );
 
 
-        txtWriteCenter(screen, FONTSMALL, "No", HSCREENW+(13*8), HSCREENH+100 );
+        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO_U, HSCREENW+(13*8), HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO, HSCREENW+(13*8), HSCREENH+100 );
         if( isBoxClicked( getTxtBox() ) )
         {
           menuPosX=2;
         }
 
-        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, "__", HSCREENW+(13*8), HSCREENH+100 );
 
         if( getButton( C_BTNB) || isPointerClicked() )
         {
