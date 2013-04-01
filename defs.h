@@ -75,6 +75,10 @@
   #define BORDER_IMAGE PLATFORM_BORDER_IMAGE
 #endif
 
+#ifndef PLATFORM_CRUDE_TIMING_TICKS
+  #define PLATFORM_CRUDE_TIMING_TICKS 20
+#endif
+
 //Half the resolution is practical for centering content
 #define HSCREENW  SCREENW/2
 #define HSCREENH  SCREENH/2

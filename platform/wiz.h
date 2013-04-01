@@ -1,7 +1,11 @@
 #ifndef _WIZ_H
 #define _WIZ_H
 
-/* This file was copied with little or no modification from the WizPort of OpenJazz */
+/* Parts of this file have been copied from the WizPort of OpenJazz */
+
+//SDL on Wiz can not sleep precisely enough.
+#define CRUDE_TIMING
+#define PLATFORM_CRUDE_TIMING_TICKS 15
 
 //Video
 #define SCREENW 320

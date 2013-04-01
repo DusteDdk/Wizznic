@@ -70,7 +70,7 @@ void loadSettings()
   //Set defaults
   settings.soundVol=64;
   settings.musicVol=72;
-  settings.wizClock=533;
+  settings.wizClock=450;
   settings.showFps=0;
   settings.arcadeMode=0;
   settings.particles=1;
@@ -92,7 +92,7 @@ void loadSettings()
   settings.online=0; //This is what will be checked for in the rest of the code
                      //regardless of "uploadStats", it will only be 1 if
                      //"uploadStats" is 1, because the check that can set it 1 is only
-                     //éxecuted if it's enabled.
+                     //executed if it's enabled.
 
 
   //Free ptrs.

@@ -437,7 +437,6 @@ int main(int argc, char *argv[])
         break;
       #else
       default:
-        printf("Fatal: Should NEVER be here.\n");
         state=STATEQUIT;
       break;
       #endif
@@ -445,7 +444,7 @@ int main(int argc, char *argv[])
 
     #if defined(CRUDE_TIMING)
     //Oh how I loathe this, is there no better way?
-    while(SDL_GetTicks()-lastTick < 20)
+    while(SDL_GetTicks()-lastTick <= PLATFORM_CRUDE_TIMING_TICKS)
     {
       //Burn, burn baby burn!
     }
