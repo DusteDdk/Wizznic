@@ -33,7 +33,7 @@ endif
 INCS =  -I. -I/usr/include -I/usr/include/SDL
 CFLAGS=-O3
 LDFLAGS=$(CFLAGS)
-LIBS = -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
+LIBS = -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
 
 #Are we compiling with gl?
 ifneq ($(WITH_OPENGL),false)

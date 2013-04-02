@@ -24,7 +24,7 @@ endif
 INCS =  -I. -I$(OPEN2X)/include -I$(OPEN2X)/include/SDL
 CFLAGS=-O3
 LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib
-LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lpng -lm -lz -lpthread
+LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
 
 OBJS = board.o cursor.o draw.o input.o main.o menu.o sprite.o text.o ticks.o\
 sound.o game.o player.o list.o levels.o platform/wiz.o pixel.o stars.o levelselector.o\
