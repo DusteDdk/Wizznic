@@ -52,4 +52,6 @@
 
 #define menuStatePrepareNextLevel 20
 
+#define menuStateConfirmReset 21
+
 #endif // STATES_H_INCLUDED

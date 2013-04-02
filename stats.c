@@ -152,11 +152,16 @@ void statsLoad()
           listAddData(st.packHsTable, (void*)hs);
         }
       }
-    } else {
-      printf("File '%s' is version %i but current version is %i, delete the file.\n", st.hsFn, i, STATS_FILE_FORMAT_VERSION);
-    }
 
-    fclose(f);
+      fclose(f);
+    } else {
+
+      //TODO: This is not how we will handle it, if the format ever changes we will use version info to migrate to new format.
+      printf("File '%s' is version %i but current version is %i, deleting the file.\n", st.hsFn, i, STATS_FILE_FORMAT_VERSION);
+      fclose(f);
+
+      packUnlinkHsFile();
+    }
   }
 
   free(buf);
@@ -355,6 +360,25 @@ void statsSaveHighScore()
   //Clear player.
   initPlayer();
 
+}
+
+void statsReset()
+{
+  printf("Cleared progress for current pack.\n");
+  initPlayer();
+  packUnlinkHsFile();
+  statsLoad();
+}
+
+void packUnlinkHsFile()
+{
+  //First we find out if it exists on the filesystem
+  FILE* f=fopen(st.hsFn, "r");
+  if(f)
+  {
+    fclose(f);
+    unlink(st.hsFn);
+  }
 }
 
 #if defined (PLATFORM_SUPPORTS_STATSUPLOAD)

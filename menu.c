@@ -1162,7 +1162,7 @@ int runMenu(SDL_Surface* screen)
         txtWave(screen, FONTMEDIUM, STR_MENU_OPTIONS, HSCREENW, HSCREENH-108, &rot);
 
         //Number of options in list
-        menuMaxY = 8;
+        menuMaxY = 9;
 
         if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_EXIT, HSCREENW, HSCREENH-70);
         //Save and exit Options menu
@@ -1357,7 +1357,7 @@ int runMenu(SDL_Surface* screen)
         }
         #else
         #ifdef GP2X
-        // to do ?
+        //TODO ?
         #else
         sprintf(buf, (setting()->uploadStats)?"Upload Stats: <Enabled>":"Upload Stats: <Disabled>");
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
@@ -1389,8 +1389,21 @@ int runMenu(SDL_Surface* screen)
             }
           }
         }
-        #endif // gp2x
-        #endif
+        #endif // Not gp2x or wiz
+        #endif // Wiz
+        //Reset progress?
+        if( stats()->progress != -1 )
+        {
+          //Disable music (requires restart)
+
+          if(dir || menuPosY!= 9) txtWriteCenter(screen, FONTSMALL, "Clear Progress and High-Scores", HSCREENW, HSCREENH+70);
+          if( isBoxClicked( getTxtBox() ) || getButton(C_BTNB) )
+          {
+            resetBtn(C_BTNB);
+            setMenu(menuStateConfirmReset);
+            menuPosX = 1;
+          }
+        }
 
       break;
 
@@ -1740,6 +1753,44 @@ int runMenu(SDL_Surface* screen)
         {
           resetBtn( C_BTNB );
           menuState=menuReturnHack;
+        }
+      break;
+
+      case menuStateConfirmReset:
+        starField(screen,0);
+        menuMaxY=0;
+        menuMaxX=2;
+        txtWriteCenter(screen, FONTMEDIUM, STR_MENU_ARE_YOU_SURE, HSCREENW,HSCREENH-95);
+        sprintf(buf, STR_MENU_CONFIRM_CLEAR_HIGHSCORES, packState()->cp->name);
+        txtWrite(screen, FONTSMALL, buf, HSCREENW-152, HSCREENH-70 );
+
+        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO_U, HSCREENW-(13*8), HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO, HSCREENW-(13*8), HSCREENH+100 );
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosX=0;
+        }
+
+        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES_U, HSCREENW+(13*8), HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES, HSCREENW+(13*8), HSCREENH+100 );
+        if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosX=2;
+        }
+
+        if( getButton(C_BTNB) || isPointerClicked() )
+        {
+          resetBtn(C_BTNB);
+          resetMouseBtn();
+          if( menuPosX==0)
+          {
+            setMenu(menuStateOptions);
+          }
+          if( menuPosX==2)
+          {
+            statsReset();
+            setMenu(menuStateOptions);
+          }
         }
       break;
   }

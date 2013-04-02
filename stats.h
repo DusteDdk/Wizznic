@@ -76,6 +76,9 @@ int statsIsHighScore();
 void statsSaveHighScore();
 void statsSave();
 
+void statsReset();
+void packUnlinkHsFile();
+
 void statsUpload(int level, int time, int moves, int combos, int score, const char* action, int ignoreIfOnline, int* retVal);
 
 #endif // STATS_H_INCLUDED

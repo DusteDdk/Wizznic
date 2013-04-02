@@ -273,6 +273,16 @@ extern const char* str_brick_names[];
 #define STR_MENU_OPTIONS_SOUNDVOL   "Effects Volume: < %i >"
 #define STR_MENU_OPTIONS_MUSICVOL   "Music Volume: < %i >"
 
+//Confirm clear highscore
+#define STR_MENU_ARE_YOU_SURE       "Are You Sure ?"
+#define STR_MENU_CONFIRM_CLEAR_HIGHSCORES "\n--- This will be deleted ---\n"\
+                                          "\nFrom: %s\n\n"\
+                                          "  * High-Scores\n"\
+                                          "  * Statistics\n"\
+                                          "  * Unlocked levels\n"\
+                                          "  * Your current game\n"\
+                                          "\n"\
+                                          "Are you sure you want to do this?"
 
 //Packs
 #define STR_MENU_SELECT_PACK        "Select pack"
