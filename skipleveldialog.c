@@ -114,6 +114,7 @@ int skipLevelDialog(SDL_Surface* screen)
   if( getButton(C_BTNB) || btnClicked )
   {
     resetBtn(C_BTNB);
+    resetMouseBtn();
     btnClicked = 0;
     player()->timeouts=0;
     return(selected);
