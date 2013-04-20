@@ -113,7 +113,7 @@ void spawnParticleSystem(psysSet_t* settings)
 
 
 //Just easier than having to deal with it down in the loop
-inline void updateParticle(particle_t* p, SDL_Surface* screen,psysSet_t* s)
+inline void updateParticle(particle_t* p, psysSet_t* s)
 {
   //Move
   p->x += p->velx;
@@ -184,7 +184,7 @@ void runParticlesLayer(SDL_Surface* screen, int layer)
           //Draw particle
           plotPixel( screen, p->particles[i].x/100,p->particles[i].y/100, p->particles[i].color );
           //Update particle
-          updateParticle(&p->particles[i], screen, &p->settings);
+          updateParticle(&p->particles[i], &p->settings);
         }
       }
       //System life

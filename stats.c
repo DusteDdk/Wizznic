@@ -15,6 +15,7 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
+#include <unistd.h>
 #include "strings.h"
 #include "stats.h"
 #include "pack.h"

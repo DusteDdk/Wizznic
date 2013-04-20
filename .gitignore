@@ -9,3 +9,5 @@ wizznic-wiz
 wizznic.layout.cbTemp
 wizznic.exe
 Debug/
+bundler/
+dlc/

@@ -1,5 +1,5 @@
-#ifndef STATES_H_INCLUDED
-#define STATES_H_INCLUDED
+#ifndef BUNDLE_H_INCLUDED
+#define BUNDLE_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -18,42 +18,20 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-#define STATEPLAY 0
-#define STATEMENU 1
-#define STATEEDIT 2
-#define STATEQUIT 3
+#define BUNDLE_SUCCESS 1
+#define BUNDLE_FAIL_DIR_EXISTS 2
+#define BUNDLE_FAIL_CORRUPT 4
+#define BUNDLE_FAIL_NO_WRITE_PERMISSION 8
+#define BUNDLE_FAIL_COULD_NOT_OPEN 16
+#define BUNDLE_FAIL_UNSUPPORTED_VERSION 32
+#define BUNDLE_FAIL_NOT_BUNDLEFILE 64
 
-#define menuStateIntro 0
-#define menuStateNewGame 1
-#define menuStateNextLevel 2
-#define menuStateHowto 3
-#define menuStateGameOver 4
-#define menuStateAbout 5
-#define menuStatePaused 6
-#define menuStateFinishedLevel 7
-#define menuStateBeatPack 9
-#define menuStateOutro 10
+int debundle( const char* file, const char* outDir );
+void bundle( const char* file, const char* inDir);
+//Get a string telling the path to the last extracted bundle (or NULL if no bundle was extracted).
+const char* bundlePath();
+//Frees the bundle-path and sets it to NULL
+void bundlePathReset();
+int getBundleError();
 
-#define menuStateUserLevels 11
-
-#define menuStatePackList 12
-#define menuStateOptions 13
-#define menuStateHighScores 14
-
-#define menuStateEnterHighScore 15
-
-#define menuStateSelectMusicDir 16
-
-#define menuStateUploadDiag 17
-
-#define menuStateUpdate 18
-
-#define menuStateNoPointerSupport 19
-
-#define menuStatePrepareNextLevel 20
-
-#define menuStateConfirmReset 21
-
-#define menuStateDLC 22
-
-#endif // STATES_H_INCLUDED
+#endif

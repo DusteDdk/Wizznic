@@ -115,6 +115,9 @@
 //Url where stats are
 #define STATS_SERVER_URL "http://dusted.dk/wizznic"
 
+//Url where the DLC api is
+#define DLC_SERVER_URL "http://dusted.dk/wizznic/dlc/"
+
 #ifndef STR_PLATFORM
   #ifndef STR_PLATFORM
     #define STR_PLATFORM "Unknown"

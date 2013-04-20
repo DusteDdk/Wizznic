@@ -41,6 +41,11 @@
 
 #include "transition.h"
 
+#if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
+  #include "bundle.h"
+  #include "libDLC.h"
+#endif
+
 static float rot=0;
 
 #define MENUGFXINTRO 0
@@ -69,6 +74,8 @@ static wavingImage_t waving;
 
 static int kbRows = 4;
 static int kbCols = 10;
+
+static char dlcCode[20];
 
 static char kbl[4][10] = {
   {'1','2','3','4','5','6','7','8','9','0'},
@@ -117,7 +124,6 @@ void setMenu(int mstate)
   menuState=mstate;
   dir=0;
   countdown=0;
-
 }
 
 void setMenuPosX(int x)
@@ -1162,7 +1168,7 @@ int runMenu(SDL_Surface* screen)
         txtWave(screen, FONTMEDIUM, STR_MENU_OPTIONS, HSCREENW, HSCREENH-108, &rot);
 
         //Number of options in list
-        menuMaxY = 9;
+        menuMaxY = 10;
 
         if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_EXIT, HSCREENW, HSCREENH-70);
         //Save and exit Options menu
@@ -1216,7 +1222,6 @@ int runMenu(SDL_Surface* screen)
           incPosX();
         }
 
-
         //Set posY
         if(menuPosY==2)
         {
@@ -1235,7 +1240,7 @@ int runMenu(SDL_Surface* screen)
 
         sprintf(buf, (setting()->userMusic)?"Music: <User selected>":"Music: <Game Music>");
         if(dir || menuPosY!=3) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW,HSCREENH-30);
-        if( ( (menuPosY==3 && menuChangeX) ||getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
+        if(  (menuPosY==3  && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
         {
           resetBtn(C_BTNB);
           menuPosY=0;
@@ -1355,10 +1360,11 @@ int runMenu(SDL_Surface* screen)
             WIZ_SetClock( setting()->wizClock );
           }
         }
-        #else
-        #ifdef GP2X
-        //TODO ?
-        #else
+        #endif
+
+
+        //Upload stats?
+        #ifdef PLATFORM_SUPPORTS_STATSUPLOAD
         sprintf(buf, (setting()->uploadStats)?"Upload Stats: <Enabled>":"Upload Stats: <Disabled>");
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
         if( isBoxClicked( getTxtBox() ) )
@@ -1383,27 +1389,44 @@ int runMenu(SDL_Surface* screen)
             if(setting()->uploadStats && !setting()->online)
             {
               statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
+              dlcCheckOnline();
             } else if(!setting()->uploadStats)
             {
               setting()->online=0;
             }
           }
         }
-        #endif // Not gp2x or wiz
-        #endif // Wiz
+        #endif
+
         //Reset progress?
-        if( stats()->progress != -1 )
+        if( stats()->progress != -1 || 1)
         {
           //Disable music (requires restart)
 
           if(dir || menuPosY!= 9) txtWriteCenter(screen, FONTSMALL, "Clear Progress and High-Scores", HSCREENW, HSCREENH+70);
-          if( isBoxClicked( getTxtBox() ) || getButton(C_BTNB) )
+          if(  (menuPosY==9  && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
           {
             resetBtn(C_BTNB);
             setMenu(menuStateConfirmReset);
             menuPosX = 1;
           }
         }
+
+        //Able to download packs ?
+      #if defined( PLATFORM_SUPPORTS_STATSUPLOAD ) && defined( PLATFORM_HAS_KEYBOARD )
+
+        if( setting()->online && dlcGetState()==DLC_READY )
+        {
+          if(dir || menuPosY!= 10) txtWriteCenter(screen, FONTSMALL, "Install more Puzzles", HSCREENW, HSCREENH+80);
+          if(  (menuPosY==10  && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
+          {
+            resetBtn(C_BTNB);
+            setMenu(menuStateDLC);
+            memset(dlcCode, 0, 20);
+            menuPosX = 1;
+          }
+        }
+      #endif
 
       break;
 
@@ -1705,6 +1728,10 @@ int runMenu(SDL_Surface* screen)
           {
             setting()->uploadStats=1;
             statsUpload(0,0,0,0,0,"check",1, &(setting()->session));
+
+            #ifdef PLATFORM_SUPPORTS_STATSUPLOAD
+            dlcCheckOnline();
+            #endif
           }
 
           //Disabled
@@ -1771,6 +1798,10 @@ int runMenu(SDL_Surface* screen)
           menuPosX=0;
         }
 
+        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET_U, HSCREENW, HSCREENH+100 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET, HSCREENW, HSCREENH+100);
+
+
         if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES_U, HSCREENW+(13*8), HSCREENH+100 );
         txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES, HSCREENW+(13*8), HSCREENH+100 );
         if( isBoxClicked( getTxtBox() ) )
@@ -1793,6 +1824,117 @@ int runMenu(SDL_Surface* screen)
           }
         }
       break;
+
+      #if defined( PLATFORM_HAS_KEYBOARD ) && defined( PLATFORM_SUPPORTS_STATSUPLOAD )
+      case menuStateDLC:
+        starField(screen,1);
+
+        if( dlcGetState() == DLC_BUSY )
+        {
+          fireWorks(screen);
+          txtWriteCenter(screen, FONTMEDIUM, "Installing..", HSCREENW,HSCREENH-95);
+          txtWriteCenter(screen, FONTSMALL, "Please wait while installing pack.", HSCREENW, HSCREENH-70);
+        } else if( dlcGetState() == DLC_INSTALLED )
+        {
+          fireWorks(screen);
+          txtWriteCenter(screen, FONTMEDIUM, "Success!", HSCREENW,HSCREENH-95);
+          txtWriteCenter(screen, FONTSMALL, "It's ready to play!", HSCREENW, HSCREENH-70);
+          txtWriteCenter(screen, FONTSMALL, "Press Enter", HSCREENW, HSCREENH-60);
+          if( getChar() == SDLK_RETURN )
+          {
+            setMenu( menuStatePackList );
+            menuPosY = packAdd( bundlePath() );
+            bundlePathReset();
+            dlcSetReady();
+          }
+        } else if( dlcGetState() == DLC_READY )
+        {
+          txtWriteCenter(screen, FONTMEDIUM, "Install Puzzles!", HSCREENW,HSCREENH-95);
+          txtWriteCenter(screen, FONTSMALL, "Please enter the DLC Code", HSCREENW, HSCREENH-70);
+          txtWriteCenter(screen, FONTSMALL, "Press CTRL to go back", HSCREENW, HSCREENH+110);
+
+          if( getButton(C_BTNB) )
+          {
+            setMenu(menuStateOptions);
+            resetBtn(C_BTNB);
+          }
+          if( getChar() )
+          {
+            if( getChar() == SDLK_RETURN && strlen(dlcCode) > 1 )
+            {
+              //Save
+              if( dlcGetState() == DLC_READY )
+              {
+                dlcTryInstall(dlcCode, getUsrPackDir() );
+              }
+
+            }
+
+            if( getChar() == SDLK_BACKSPACE && strlen( dlcCode ) > 0 )
+            {
+              dlcCode[ strlen(dlcCode)-1 ]=0;
+            } else if( getChar() > 31 && getChar() < 123 && strlen( dlcCode ) < 20 )
+            {
+              dlcCode[ strlen(dlcCode) ] = getChar();
+              dlcCode[ strlen(dlcCode)+1 ] = 0x0;
+            }
+          }
+
+          sprintf(buf, "Code: %s", dlcCode);
+          txtWrite(screen, FONTSMALL, buf, HSCREENW-110, HSCREENH-45);
+        } else if( dlcGetState() == DLC_FAILED )
+        {
+          txtWriteCenter(screen, FONTMEDIUM, "Error", HSCREENW,HSCREENH-95);
+          txtWrite(screen, FONTSMALL, "I'm sorry!\n\nFor some reason it was not\npossible to download a DLC using\nthe code you entered...\nMaybe the code was wrong, try it again!\nIf it's not working, maybe\nWizznic could not connect to the\nDLC-Server, it could be down..\n\nPlease go to:\nhttp://dusted.dk/wizznic/dlc/\nfor help with this!\n\nPress Enter", HSCREENW-150, HSCREENH-70);
+
+          if( getChar() == SDLK_RETURN )
+          {
+            dlcSetReady();
+            setMenu(menuStateOptions);
+          }
+
+        } else if( dlcGetState() == DLC_API_OUTDATED )
+        {
+          txtWriteCenter(screen, FONTMEDIUM, "Update Wizznic", HSCREENW,HSCREENH-95);
+          txtWrite(screen, FONTSMALL, "This version of Wizznic!\nis getting a bit moldy..\nIt's too old :(\nPlease update Wizznic!\n\nPress Enter", HSCREENW-150, HSCREENH-70);
+          if( getChar() == SDLK_RETURN )
+          {
+            setMenu(menuStateOptions);
+          }
+        } else if( dlcGetState() == DLC_BUNDLE_ERROR )
+        {
+          txtWriteCenter(screen, FONTMEDIUM, "Install Error", HSCREENW,HSCREENH-95);
+          switch( getBundleError() )
+          {
+            case BUNDLE_FAIL_CORRUPT:
+              txtWrite(screen, FONTSMALL, "The downloaded file was corrupt.\nPlease try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+            case BUNDLE_FAIL_COULD_NOT_OPEN:
+              txtWrite(screen, FONTSMALL, "The downloaded file could not be opened.\nPlease try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+            case BUNDLE_FAIL_DIR_EXISTS:
+              txtWrite(screen, FONTSMALL, "This DLC is already intalled.\nIf it's not working, please go to\nyour DLC directory and\ndelete it and try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+            case BUNDLE_FAIL_NOT_BUNDLEFILE:
+              txtWrite(screen, FONTSMALL, "The downloaded file is not recognized as a Wizznic DLC.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+            case BUNDLE_FAIL_NO_WRITE_PERMISSION:
+              txtWrite(screen, FONTSMALL, "Wizznic did not have permission\nto install the DLC.\n.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+            case BUNDLE_FAIL_UNSUPPORTED_VERSION:
+              txtWrite(screen, FONTSMALL, "This of Wizznic do not know\nhow to install that DLC, maybe\n this version of Wizznic\n is too old?\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              break;
+          }
+          if( getChar() == SDLK_RETURN )
+          {
+            dlcSetReady();
+            setMenu(menuStateOptions);
+          }
+        }
+
+
+      break;
+      #endif
   }
   menuChangeX=0;
   menuChangeY=0;

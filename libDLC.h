@@ -1,5 +1,5 @@
-#ifndef STATES_H_INCLUDED
-#define STATES_H_INCLUDED
+#ifndef LIBDLC_H_INCLUDED
+#define LIBDLC_H_INCLUDED
 
 /************************************************************************
  * This file is part of Wizznic.                                        *
@@ -17,43 +17,31 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
+#include "list.h"
 
-#define STATEPLAY 0
-#define STATEMENU 1
-#define STATEEDIT 2
-#define STATEQUIT 3
+//Ready for action
+#define DLC_READY 1
+//Downloading
+#define DLC_BUSY 2
+//Download succeeded, file extracted
+#define DLC_INSTALLED 3
+//Nope
+#define DLC_FAILED 4
+//The api is outdated
+#define DLC_API_OUTDATED 5
+//Some error happened while debundle.
+#define DLC_BUNDLE_ERROR 6
 
-#define menuStateIntro 0
-#define menuStateNewGame 1
-#define menuStateNextLevel 2
-#define menuStateHowto 3
-#define menuStateGameOver 4
-#define menuStateAbout 5
-#define menuStatePaused 6
-#define menuStateFinishedLevel 7
-#define menuStateBeatPack 9
-#define menuStateOutro 10
+//Tries to install a DLC using "code"
+void dlcTryInstall( const char* code, const char* dest );
 
-#define menuStateUserLevels 11
+//Get the DLC_* state
+int dlcGetState();
 
-#define menuStatePackList 12
-#define menuStateOptions 13
-#define menuStateHighScores 14
+//Set DLC to ready state
+void dlcSetReady();
 
-#define menuStateEnterHighScore 15
+//Start thread to check if the DLC server can be reached, and if we have the right api version.
+void dlcCheckOnline();
 
-#define menuStateSelectMusicDir 16
-
-#define menuStateUploadDiag 17
-
-#define menuStateUpdate 18
-
-#define menuStateNoPointerSupport 19
-
-#define menuStatePrepareNextLevel 20
-
-#define menuStateConfirmReset 21
-
-#define menuStateDLC 22
-
-#endif // STATES_H_INCLUDED
+#endif

@@ -25,6 +25,7 @@
 
 static char* strConfDir;
 static char* strEditLvlDir;
+static char* strUsrPackDir;
 static char* strHsDir;
 
 void initUserPaths()
@@ -57,14 +58,20 @@ void initUserPaths()
   strHsDir = malloc( sizeof(char)*( strlen(strConfDir)+strlen("/highscores")+1 ) );
   sprintf( strHsDir, "%s/highscores", strConfDir );
 
+  strUsrPackDir = malloc( sizeof(char)*( strlen(strConfDir)+strlen("/dlc")+1 ) );
+  sprintf( strUsrPackDir, "%s/dlc", strConfDir );
+
   //Check if dir exists (we check each dir, since ./ might exist without the others
   struct stat s;
   if (stat(strConfDir,&s) != 0) mkdir(strConfDir,S_IRWXU);
   if (stat(strEditLvlDir,&s) != 0) mkdir(strEditLvlDir,S_IRWXU);
   if (stat(strHsDir,&s) != 0) mkdir(strHsDir,S_IRWXU);
+  if (stat(strUsrPackDir,&s) != 0) mkdir(strUsrPackDir,S_IRWXU);
+
 
 }
 
 char* getConfigDir() { return( strConfDir ); }
 char* getHighscoreDir() { return( strHsDir ); }
 char* getUserLevelDir() { return( strEditLvlDir ); }
+char* getUsrPackDir() { return( strUsrPackDir ); }

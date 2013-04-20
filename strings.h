@@ -180,11 +180,11 @@
                                     "your help to become really great!\n"\
                                     "\n"\
                                     "\n"\
-                                    "\n"\
-                                    "\n"\
-                                    "\n"\
                                     "Please allow Wizznic! to upload\n"\
                                     "statistics about your games.\n"\
+                                    "\n"\
+                                    "If you want to download packs\n"\
+                                    "from the menu, you need to say yes.\n"\
                                     "\n"\
                                     "This can be changed in Options.\n"\
                                     "\n"\
@@ -196,6 +196,10 @@
 #define STR_MENU_ALLOW_ANSWER_YES_U "[___]"
 #define STR_MENU_ALLOW_ANSWER_NO   "No"
 #define STR_MENU_ALLOW_ANSWER_NO_U "[__]"
+
+
+#define STR_MENU_ALLOW_RESET       "< Reset? >"
+#define STR_MENU_ALLOW_RESET_U     " [______] "
 
 #define STR_MENU_UPDATE             "---- Wizznic has been updated ----\n"\
                                     "Great news everyone!\n"\

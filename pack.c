@@ -19,10 +19,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "pack.h"
 #include "strings.h"
 #include "defs.h"
+#include "userfiles.h"
+#include "bundle.h"
 
 static packStateType ps;
 
@@ -55,7 +58,7 @@ int isDir(const char* dirName)
 }
 
 
-void packAdd(const char* packDir)
+int packAdd(const char* packDir)
 {
   char* buf = malloc(sizeof(char)*2048);
   char* buf2= malloc(sizeof(char)*1024);
@@ -72,13 +75,11 @@ void packAdd(const char* packDir)
   packInfoType* ti = malloc(sizeof(packInfoType));
   ti->lives=3; //Default 3 lives, if pack do not define another number.
 
-//  printf("Adding pack '%s'\n",packDir);
-
   //Any levels? (Packs are invalid without a levels folder and atleast one level)
   sprintf(buf, "%s/levels/level000.wzp", packDir);
   if( !isFile(buf) )
   {
-    printf("   Error: must contain level000.wzp\n");
+    printf("Error: Pack '%s' must contain level000.wzp\n", packDir);
     free(ti);
 
     free(buf);
@@ -86,7 +87,7 @@ void packAdd(const char* packDir)
     free(val);
     free(set);
 
-    return;
+    return(0);
   }
 
   //Initialize list for playlist
@@ -162,7 +163,6 @@ void packAdd(const char* packDir)
   ti->icon = loadImg(buf);
   if(!ti->icon)
   {
-//    printf("   Warning: '%s' not found.\n", buf);
     ti->icon = loadImg( DATADIR"data/noicon.png" );
   }
 
@@ -171,7 +171,6 @@ void packAdd(const char* packDir)
   if( !isFile( buf ) )
   {
     ti->hasFinishedImg=0;
-//    printf("   Warning: '%s' not found.\n", buf);
   } else {
     ti->hasFinishedImg=1;
   }
@@ -206,7 +205,6 @@ void packAdd(const char* packDir)
         strcpy(levelInfo(i)->musicFile, pli->song);
       }
     }
-
   }
 
   //Clear playlist data
@@ -224,6 +222,8 @@ void packAdd(const char* packDir)
   free(buf2);
   free(val);
   free(set);
+
+  return(ps.numPacks-1);
 }
 
 int strCmp(const void* a, const void* b)
@@ -231,12 +231,77 @@ int strCmp(const void* a, const void* b)
   return( strcmp( *(char**)a, *(char**)b) );
 }
 
-void packInit()
+void packScanDir( const char* path, listItem* dirList )
 {
-  DIR *pdir=0;
   struct dirent *pent;
   struct stat st;
-  char* buf=malloc(sizeof(char)*128);
+  char* buf=malloc(sizeof(char)*2048);
+  DIR *pdir= opendir( path );
+
+  if(pdir)
+  {
+    while( (pent=readdir(pdir)) )
+    {
+      //We're not going to read hidden files or . / ..
+      if(pent->d_name[0] != '.')
+      {
+        sprintf(buf, "%s/%s",path,pent->d_name);
+        if(stat(buf, &st)==0)
+        {
+          if( (st.st_mode&S_IFDIR)==S_IFDIR )
+          {
+            //Ignore the "wizznic" directory since it's allready added.
+            if(strcmp( buf, DATADIR"packs/000_wizznic" ) != 0)
+            {
+              char* pdstr = malloc( sizeof(char)*strlen(buf)+1 );
+              strcpy( pdstr, buf );
+              listAddData( dirList, (void*)pdstr );
+            }
+          } else if(  (st.st_mode&S_IFREG) )
+          {
+            //It's a file, let's try and see if it's a bundle.
+            int l = strlen(buf);
+            if( l > 4 && strcasecmp( &buf[l-4] ,".wiz" )==0 )
+            {
+
+              l = debundle( buf, getUsrPackDir() );
+
+              if( l == BUNDLE_SUCCESS )
+              {
+                printf("Installed bundle '%s'.\n", buf);
+                char* pdstr = malloc( sizeof(char)*strlen(buf)+1 );
+                strcpy( pdstr, bundlePath() );
+                listAddData( dirList, (void*)pdstr );
+                unlink( buf );
+              } else if( l == BUNDLE_FAIL_CORRUPT )
+              {
+                printf("The bundle file '%s' is corrupt, deleting it.\n", buf);
+                unlink( buf );
+              } else if( l == BUNDLE_FAIL_UNSUPPORTED_VERSION )
+              {
+                printf("The bundle file '%s' is not supported by this version of Wizznic, please try and update Wizznic.\n", buf);
+              } else if( l == BUNDLE_FAIL_DIR_EXISTS )
+              {
+                printf("The bundle file '%s' has already been installed.\n", buf);
+              }
+
+              bundlePathReset();
+            }
+
+          }
+        } else {
+          printf("packScanDir(); Error: stat('%s') failed!\n", buf);
+        }
+      }
+    }
+    closedir(pdir);
+  }
+
+  free(buf);
+}
+
+void packInit()
+{
 
   printf("initPack();\n");
 
@@ -246,42 +311,18 @@ void packInit()
   //Add the wizznic pack as nr 0.
   packAdd( DATADIR"packs/000_wizznic" );
 
-  pdir = opendir( DATADIR"packs/" );
-
   listItem* packDirList = initList();
+  listItem* usrPackDirList = initList();
 
-  if(pdir)
+  packScanDir( DATADIR"packs", packDirList);
+  packScanDir( getUsrPackDir(), usrPackDirList);
+
+  if(listSize(packDirList) < 1)
   {
-    while( (pent=readdir(pdir)) )
-    {
-      //We're not going to read hidden files or . / ..
-      if(pent->d_name[0] != '.')
-      {
-        sprintf(buf, DATADIR"packs/%s",pent->d_name);
-        if(stat(buf, &st)==0)
-        {
-          if( (st.st_mode&S_IFDIR)==S_IFDIR )
-          {
-            //Ignore the "wizznic" directory since it's allready added.
-            if(strcmp( buf, DATADIR"packs/000_wizznic" ) != 0)
-            {
-              //packAdd(buf);
-              char* pdstr = malloc( sizeof(char)*strlen(buf)+1 );
-              strcpy( pdstr, buf );
-              listAddData( packDirList, (void*)pdstr );
-            }
-          }
-        } else {
-          printf("packInit(); Error: stat('%s') failed!\n", buf);
-        }
-      }
-    }
-    closedir(pdir);
-  } else {
-    printf("packInit(); Eror: No packs found.\n");
+    printf("packInit(); Error: No packs found.\n");
   }
 
-  //Add the rest of the packs.
+  //Add pack directories to list of strings to be sorted
   char** sortme = malloc( sizeof(char**) * listSize(packDirList) );
   listItem* it = packDirList;
   int i=0;
@@ -303,14 +344,18 @@ void packInit()
     free( sortme[i] );
   }
 
+  //Append the unsorted list of DLC packs.
+  it=usrPackDirList;
+  while( (it = it->next) )
+  {
+    packAdd( (char*)it->data );
+  }
+
   //Free sortme array
   free(sortme);
 
   //Free packDirList
   freeList( packDirList );
-
-  free(buf);
-  buf=0;
 
   printf("initPack(); Added %i packs.\n", listSize(ps.packs));
 
@@ -450,7 +495,4 @@ void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
     sprintf(buf, "Infinite lives!");
   }
   txtWrite(screen, FONTSMALL, buf, posx+40, posy+4+24);
-
-  //Comment
-
 }

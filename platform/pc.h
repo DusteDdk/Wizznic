@@ -24,6 +24,9 @@
 //For Uploading stats
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 
+//For downloading DLC's
+#define PLATFORM_HAS_KEYBOARD
+
 #if defined(WIN32)
   #if defined(WITH_OPENGL)
     #define GLEW_STATIC
@@ -32,9 +35,11 @@
 
   #define STR_PLATFORM "Windows"
   #define UPLOAD_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"/commit.php --data-ascii "
+  #define DLC_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url"
 #elif defined(linux) || defined(__linux)
   #define STR_PLATFORM "Linux"
   #define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
+  #define DLC_PROGRAM "wget -q --user-agent=wizznicLinux --timeout=10 --tries=1"
 #endif
 
 #ifndef WIN32

@@ -37,7 +37,7 @@ inline void resetMouseBtn()
 }
 
 static struct {
-  int button;
+  uint32_t button;
   int state;
   int time;
 } button[C_NUM];

@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
+#include <string.h>
+#include <stdint.h>
 
 #include "strings.h"
-#include <string.h>
 
 // We reuse the "Reserved/blocker" brick as a "Remove" icon in the mousedriven editor.
 const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Brick 3","Brick 4","Brick 5","Brick 6","Brick 7","Brick 8","Brick 9","V. Lift", "H. Lift", "L. Oneway", "R. Oneway", "Glue", "Wall", "Remove", "Teleport", "SwOn", "SwOff" };
@@ -24,7 +25,8 @@ const char* str_brick_names[] = { "Nobrick", "Brick 0", "Brick 1","Brick 2","Bri
 void stripNewLine(char* str)
 {
   int i;
-  for(i=0; i<strlen(str); i++)
+  int strLen = (int)strlen(str);
+  for(i=0; i<strLen; i++)
   {
     if( str[i] == '\r' || str[i] == '\n' )
       str[i]='\0';
@@ -34,11 +36,12 @@ void stripNewLine(char* str)
 int splitVals(char ch,const char* buf, char* set, char* val)
 {
   int strpos=0;
+  int strLen = (int)strlen(buf);
   set[0]='\0';
   val[0]='\0';
   if(buf[0]!='#')
   {
-    for(strpos=0; strpos<strlen(buf);strpos++)
+    for(strpos=0; strpos < strLen;strpos++)
     {
       //Here's a setting!
       if(buf[strpos]==ch)

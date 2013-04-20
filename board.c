@@ -470,9 +470,9 @@ static int bricksOnTop(playField* pf, int x, int y)
     if(pf->board[x][y] && isBrick(pf->board[x][y]))
       num++;
       else
-    return(num);
+    break;
   }
-
+  return(num);
 }
 
 //Returns 0 if couldn't move. Returns 1 if could.

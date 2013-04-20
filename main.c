@@ -45,6 +45,9 @@
 #include "pointer.h"
 #include "transition.h"
 
+#include "bundle.h"
+#include "libDLC.h"
+
 #ifdef PC
   #include "dumplevelimages.h"
 #endif
@@ -91,8 +94,8 @@ int main(int argc, char *argv[])
   initUserPaths();
 
   //Tell where stuff's at.
-  printf("Directories:\n    Settings: %s\n    Highscores: %s\n    Editorlevels: %s\n    Datafiles: %s\n\n", \
-                            getConfigDir(), getHighscoreDir(), getUserLevelDir(), (!strlen(DATADIR))?".":DATADIR);
+  printf("Directories:\n    Settings: %s\n    DLC: %s\n    Highscores: %s\n    Editorlevels: %s\n    Datafiles: %s\n\n", \
+                            getConfigDir(), getUsrPackDir(), getHighscoreDir(), getUserLevelDir(), (!strlen(DATADIR))?".":DATADIR);
 
   printf("Video options available:\n"
 #ifdef WITH_OPENGL
@@ -355,6 +358,9 @@ int main(int argc, char *argv[])
   {
     statsUpload(0,0,0,0,0,"check",1, &(setting()->session) );
     statsUpload(0,0,0,0,0,"q_solved",1, &(setting()->solvedWorldWide) );
+
+    //DLC only works when stats-uploading is enabled so we can use the same nag-screen.
+    dlcCheckOnline();
   }
   #endif
 

@@ -23,5 +23,6 @@ void initUserPaths();
 char* getConfigDir();
 char* getHighscoreDir();
 char* getUserLevelDir();
+char* getUsrPackDir();
 
 #endif // USERFILES_H_INCLUDED
