@@ -113,10 +113,10 @@
 #define STATS_FILE_FORMAT_VERSION 1
 
 //Url where stats are
-#define STATS_SERVER_URL "http://dusted.dk/wizznic"
+#define STATS_SERVER_URL "http://wizznic.org/api/stats/"
 
 //Url where the DLC api is
-#define DLC_SERVER_URL "http://dusted.dk/wizznic/dlc/"
+#define DLC_SERVER_URL "http://wizznic.org/api/packs/"
 
 #ifndef STR_PLATFORM
   #ifndef STR_PLATFORM

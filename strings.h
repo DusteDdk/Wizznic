@@ -1,7 +1,6 @@
 #ifndef STRINGS_H_INCLUDED
 #define STRINGS_H_INCLUDED
 
-
 /************************************************************************
  * This file is part of Wizznic.                                        *
  * Copyright 2009-2013 Jimmy Christensen <dusted@dusted.dk>             *
@@ -119,9 +118,9 @@
 
 #ifdef BUILD_NUMBER
   #ifdef RELEASE_VERSION
-    #define VERSION_STRING RELEASE_VERSION"(B "BUILD_NUMBER")"
+    #define VERSION_STRING RELEASE_VERSION"(B"BUILD_NUMBER")"
   #else
-    #define VERSION_STRING CODE_VERSION" (B "BUILD_NUMBER")"
+    #define VERSION_STRING CODE_VERSION"(B"BUILD_NUMBER")"
   #endif
 #else
   #define VERSION_STRING CODE_VERSION
@@ -159,7 +158,7 @@
                                     "by creating levels and/or\n"\
                                     "sound-effects or gfx themes!\n"\
                                     ".... or donate something :P"
-#define STR_MENU_ABOUT_WEBSITE      "http://wizznic.sf.net/"
+#define STR_MENU_ABOUT_WEBSITE      "http://wizznic.org/"
 
 #define STR_MENU_BEAT_PACK_HEADLINE "Good job!"
 #define STR_MENU_BEAT_PACK_RANT     "Congratulations!\n"\
@@ -201,15 +200,19 @@
 #define STR_MENU_ALLOW_RESET       "< Reset? >"
 #define STR_MENU_ALLOW_RESET_U     " [______] "
 
+
+//                                  "----------------------------------"
 #define STR_MENU_UPDATE             "---- Wizznic has been updated ----\n"\
                                     "Great news everyone!\n"\
                                     "There's a new version available!\n"\
                                     "Grab it at your leisure at:\n"\
-                                    "http://wizznic.sf.net/\n"\
+                                    "http://wizznic.org/\n"\
                                     "I'm sure it's filled with some\n"\
                                     "pretty cool and awesome stuff! :)\n"\
                                     "----------------------------------\n"
 
+
+//                                  "----------------------------------"
 #define STR_MENU_NOPTRSUPPORT       "-- Pointer not supported here --\n"\
                                     "You need to use the cursor keys\n"\
                                     "to do this, because I am\n"\
@@ -221,6 +224,69 @@
                                     "the pointer work here.. - Jimmy."
 
 
+//                                        "----------------------------------"
+#define STR_MENU_DLC_ERROR_DOWNLOAD       "I'm sorry!\n\n"\
+		                                      "For some reason it was not\n"\
+                                          "possible to download a DLC using\n"\
+                                          "the code you entered...\n"\
+                                          "Maybe the code was wrong, try again!\n"\
+                                          "If it's not working, maybe\n"\
+                                          "Wizznic could not connect to the\n"\
+                                          "DLC-Server, it could be down..\n\n"\
+                                          "Please go to:\n"\
+                                          "http://wizznic.org/\n"\
+                                          "for help with this!\n\nPress Enter"
+
+
+//                                        "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_API_OUTDATED   "This version of Wizznic! is a bit\n"\
+		                                      "too dusty..\n"\
+		                                      "\n"\
+		                                      "It's too old for DLCs. :(\n"\
+		                                      "Please update Wizznic!\n\n"\
+		                                      "Press Enter"
+
+
+//                                        "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_CORRUPT        "The DLC file was corrupt.\n"\
+		                                      "\n"\
+		                                      "Please try again.\n"\
+		                                      "Press Enter."
+
+
+//                                        "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_COULD_NOT_OPEN "Could not open the DLC file,\n"\
+		                                      "please check the permissions of:\n"\
+                                          "%s\n"\
+                                          "And try again try again.\n\n"\
+		                                      "Press Enter."
+
+
+//                                        "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_DIR_EXISTS     "This DLC is already intalled.\n"\
+		                                      "If it's not working, please go to\n"\
+		                                      "your DLC directory and\n"\
+		                                      "delete it and try again.\n\n"\
+		                                      "Press Enter."
+
+
+//                                        "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_NOT_BUNDLEFILE "The downloaded file is not\n"\
+		                                      "recognized as a Wizznic DLC.\n\n"\
+		                                      "Press Enter."
+
+
+//                                              "----------------------------------\n"
+#define STR_MENU_DLC_ERROR_NO_WRITE_PERMISSION  "Wizznic did not have permission\n"\
+		                                            "to install the DLC.\n\n\n"\
+		                                            "Press Enter."
+
+//                                              "---- Wizznic has been updated ----\n"
+#define STR_MENU_DLC_ERROR_UNSUPPORTED_VERSION  "This of Wizznic do not know\n"\
+		                                            "how to install that DLC, maybe\n"\
+		                                            "this version of Wizznic\n"\
+		                                            "is too old?\n\n"\
+		                                            "Press Enter."
 
 #define STR_MENU_GAMEOVER           "Game Over!"
 #define STR_MENU_SCORE              "Score %i"

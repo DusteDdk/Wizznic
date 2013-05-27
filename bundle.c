@@ -299,6 +299,7 @@ int debundle( const char* file, const char* outDir )
   if( fe ) { free(fe); }
   if( f ) { fclose(f); }
 
+  lastError=ret;
   return(ret);
 }
 

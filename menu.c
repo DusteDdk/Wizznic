@@ -1417,7 +1417,7 @@ int runMenu(SDL_Surface* screen)
 
         if( setting()->online && dlcGetState()==DLC_READY )
         {
-          if(dir || menuPosY!= 10) txtWriteCenter(screen, FONTSMALL, "Install more Puzzles", HSCREENW, HSCREENH+80);
+          if(dir || menuPosY!= 10) txtWriteCenter(screen, FONTSMALL, "Install more Puzzles", HSCREENW, HSCREENH+90);
           if(  (menuPosY==10  && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
           {
             resetBtn(C_BTNB);
@@ -1885,7 +1885,7 @@ int runMenu(SDL_Surface* screen)
         } else if( dlcGetState() == DLC_FAILED )
         {
           txtWriteCenter(screen, FONTMEDIUM, "Error", HSCREENW,HSCREENH-95);
-          txtWrite(screen, FONTSMALL, "I'm sorry!\n\nFor some reason it was not\npossible to download a DLC using\nthe code you entered...\nMaybe the code was wrong, try it again!\nIf it's not working, maybe\nWizznic could not connect to the\nDLC-Server, it could be down..\n\nPlease go to:\nhttp://dusted.dk/wizznic/dlc/\nfor help with this!\n\nPress Enter", HSCREENW-150, HSCREENH-70);
+          txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_DOWNLOAD, HSCREENW-150, HSCREENH-70);
 
           if( getChar() == SDLK_RETURN )
           {
@@ -1896,33 +1896,34 @@ int runMenu(SDL_Surface* screen)
         } else if( dlcGetState() == DLC_API_OUTDATED )
         {
           txtWriteCenter(screen, FONTMEDIUM, "Update Wizznic", HSCREENW,HSCREENH-95);
-          txtWrite(screen, FONTSMALL, "This version of Wizznic!\nis getting a bit moldy..\nIt's too old :(\nPlease update Wizznic!\n\nPress Enter", HSCREENW-150, HSCREENH-70);
+          txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_API_OUTDATED, HSCREENW-150, HSCREENH-70);
           if( getChar() == SDLK_RETURN )
           {
             setMenu(menuStateOptions);
           }
         } else if( dlcGetState() == DLC_BUNDLE_ERROR )
         {
+          printf("dlcGetState(): %i getBundleError(): %i\n",dlcGetState(),getBundleError());
           txtWriteCenter(screen, FONTMEDIUM, "Install Error", HSCREENW,HSCREENH-95);
           switch( getBundleError() )
           {
             case BUNDLE_FAIL_CORRUPT:
-              txtWrite(screen, FONTSMALL, "The downloaded file was corrupt.\nPlease try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_CORRUPT, HSCREENW-150, HSCREENH-70);
               break;
             case BUNDLE_FAIL_COULD_NOT_OPEN:
-              txtWrite(screen, FONTSMALL, "The downloaded file could not be opened.\nPlease try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_COULD_NOT_OPEN, HSCREENW-150, HSCREENH-70);
               break;
             case BUNDLE_FAIL_DIR_EXISTS:
-              txtWrite(screen, FONTSMALL, "This DLC is already intalled.\nIf it's not working, please go to\nyour DLC directory and\ndelete it and try again.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_DIR_EXISTS, HSCREENW-150, HSCREENH-70);
               break;
             case BUNDLE_FAIL_NOT_BUNDLEFILE:
-              txtWrite(screen, FONTSMALL, "The downloaded file is not recognized as a Wizznic DLC.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_NOT_BUNDLEFILE, HSCREENW-150, HSCREENH-70);
               break;
             case BUNDLE_FAIL_NO_WRITE_PERMISSION:
-              txtWrite(screen, FONTSMALL, "Wizznic did not have permission\nto install the DLC.\n.\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_NO_WRITE_PERMISSION, HSCREENW-150, HSCREENH-70);
               break;
             case BUNDLE_FAIL_UNSUPPORTED_VERSION:
-              txtWrite(screen, FONTSMALL, "This of Wizznic do not know\nhow to install that DLC, maybe\n this version of Wizznic\n is too old?\n\nPress Enter.", HSCREENW-150, HSCREENH-70);
+              txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_UNSUPPORTED_VERSION, HSCREENW-150, HSCREENH-70);
               break;
           }
           if( getChar() == SDLK_RETURN )

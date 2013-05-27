@@ -124,7 +124,7 @@ void initCredits(SDL_Surface* screen)
 {
   printf("initCredits();\n");
   msgList=initList();
-  listAddData(msgList, (void*)initMsg("Website","wizznic.sf.net", screen));
+  listAddData(msgList, (void*)initMsg("Website","wizznic.org", screen));
   listAddData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
   listAddData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
 

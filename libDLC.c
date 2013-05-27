@@ -130,7 +130,7 @@ void dlcCheckOnline()
   cmd->destFileName = NULL;
   cmd->requestCmd = malloc( 2048 );
 
-  sprintf( cmd->requestCmd, "%s -O - %sget/cmd_version", DLC_PROGRAM, DLC_SERVER_URL);
+  sprintf( cmd->requestCmd, "%s -O - %scheck/version", DLC_PROGRAM, DLC_SERVER_URL);
 
   SDL_CreateThread( dlcCheckOnlineThread, cmd );
   //Do not free cmd, the thread will do that.

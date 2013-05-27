@@ -392,7 +392,7 @@ int* ret;
 
 int upStatsThread(void * d)
 {
-  char pBuf[128];
+  char pBuf[2048];
   memset(pBuf, 0, sizeof(pBuf));
   FILE *pipe;
   thrDat_t* dat = (thrDat_t*)d;
@@ -403,9 +403,9 @@ int upStatsThread(void * d)
   {
       setting()->online=1;
 
-      if( fgets( pBuf, 127, pipe)!= NULL )
+      if( fread( pBuf, 1,2047, pipe)!= 0 )
       {
-        //printf("Server: (%p) ='%s'\n",ret,pBuf);
+        printf("Server returned:'%s'\n",pBuf);
         if(ret)
         {
           *ret=atoi(pBuf);

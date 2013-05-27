@@ -34,11 +34,11 @@
   #endif
 
   #define STR_PLATFORM "Windows"
-  #define UPLOAD_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"/commit.php --data-ascii "
+  #define UPLOAD_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"/commit/ --data-ascii "
   #define DLC_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url"
 #elif defined(linux) || defined(__linux)
   #define STR_PLATFORM "Linux"
-  #define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
+  #define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit/ -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
   #define DLC_PROGRAM "wget -q --user-agent=wizznicLinux --timeout=10 --tries=1"
 #endif
 
