@@ -3,6 +3,8 @@
   75 new levels!
 
 1.0.0
+  Installation of packs are simplified, put the .wiz file in the dlc dir.
+  Packs can be installed from the net by typing a code in options -> dlc.
   You can enter your name for the highscores using the keyboard.
   It is possible to skip puzzles after two failed attempts to solve them. 
   Level-Editor will no longer place bricks when clicking outside of the board (annoying when missing one of the buttons).

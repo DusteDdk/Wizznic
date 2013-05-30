@@ -3,10 +3,7 @@ Here's how to compile/install wizznic for the 3 officially supported platforms.
 If your platform is not here, check ports.txt, unofficial (but highly appreciated)
 ports exist for other other platforms, some of which are listed there.
 
-The latest builds are available at http://jenkins.cyberstalker.dk/job/Wizznic/
-these are cutting edge, and might not work as expected.
-
-The latest official releases are available at http://sf.net/projects/wizznic/
+The latest releases are available at http://wizznic.org/
 
 GP2X Wiz.
 ---------
@@ -40,7 +37,6 @@ distributions package system.
 
 You'll need SDL, SDL-mixer, SDL-image, a gcc compiler and Make.
 To compile in Code::Blocks, open the project file, and build the Linux target.
-
 
 Compiling on Linux commandline:
 -------------------------------
@@ -81,6 +77,15 @@ the make parameters, for example:
 
 
 
+Installing on Arch Linux.
+--------
+Being an Arch user, I also maintain the Arch package for Wizznic,
+to install the latest version of wizznic you can simply do:
+
+$ mkdir wizznic && cd wizznic
+$ wget http://jenkins.cyberstalker.dk/job/Wizznic/lastSuccessfulBuild/artifact/build/PKGBUILD
+$ makepkg
+$ sudo pacman -U wizznic*.tar.xz
 
 Additionally for PC versions.
 --------

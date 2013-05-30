@@ -27,8 +27,7 @@
 
 1.0 Wizznic Info
 Author: Jimmy Christensen
-Project page: https://sourceforge.net/projects/wizznic/
-Web site: There's no real website.
+Web site: http://wizznic.org/
 
 License:
 Code, Graphics, Levels are GPLv3
