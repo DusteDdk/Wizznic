@@ -126,6 +126,13 @@
   #define VERSION_STRING CODE_VERSION
 #endif
 
+#ifdef WITH_OPENGL
+  #define STR_VID_OPTIONS STR_VID_OPTIONS_OPENGL""STR_VID_OPTIONS_SW
+#else
+  #define STR_VID_OPTIONS STR_VID_OPTIONS_SW
+#endif
+
+
 //Menu
 #define STR_MENU_PUZZLES_WORLDWIDE  "Puzzles worldwide: %i"
 #define STR_MENU_NEW_GAME           "New Game!"
@@ -364,7 +371,25 @@ extern const char* str_brick_names[];
 #define STR_GAME_UNSOLVABLE         "Unsolvable!"
 #define STR_GAME_OUTOFTIME          "Out Of Time!"
 
-//Well
+
+//This put to stdout
+#define STR_VID_OPTIONS_OPENGL \
+    "    -gl           # Enable OpenGL.\n"\
+    "    -sw           # Disable OpenGL.\n"\
+    "    -glheight PX  # Window width  (-1 for auto).\n"\
+    "    -glwidth  PY  # Window height (-1 for auto).\n"\
+    "    -glfilter ST  # 0=Blocky, 1=Smooth.\n"
+
+#define STR_VID_OPTIONS_SW \
+    "    -f            # Enable fullscreen.\n"\
+    "    -w            # Disable fullscreen.\n"\
+    "    -z 2          # Software scale to 640x480.\n"\
+    "    -d PACKNAME   # Dump screenshots of levels.\n\n"
+
+
+
+
+//Well, string functions...
 void stripNewLine(char* str);
 int splitVals(char ch,const char* buf, char* set, char* val); //Splits a setting=value line and returns true if it did. else returns 0
 int charrpos(const char* str, char c); //Return position of last instance of character c

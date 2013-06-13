@@ -35,9 +35,9 @@ SDL_Surface* platformInitAccel( int sdlVideoModeFlags )
         w = vidinfo->current_w;
         h = vidinfo->current_h;
       } else {
-        //Find largest resolution within screen
         if(w==-1||h==-1)
         {
+          //If width or height is set to -1, autosize is enabled, calculate largest window size that fit on the screen, keeps aspect and scales nicely.
           int factor=(int)floor( (float)(vidinfo->current_h-1)/240.0 );
           w=320*factor;
           h=240*factor;

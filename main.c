@@ -58,7 +58,8 @@ SDL_Surface* swScreen(int sdlVideoModeFlags)
 
   if( !screen )
   {
-    printf("\nERROR: Couldn't create window, crashing...\n");   
+    printf("\nERROR: Couldn't create the window, exiting...\n");
+    return(NULL);
   } else {
     setting()->glEnable=0;
     printf("Videomode: Unscaled %ix%i@16 bits.\n",SCREENW, SCREENH);
@@ -97,20 +98,18 @@ int main(int argc, char *argv[])
   printf("Directories:\n    Settings: %s\n    DLC: %s\n    Highscores: %s\n    Editorlevels: %s\n    Datafiles: %s\n\n", \
                             getConfigDir(), getUsrPackDir(), getHighscoreDir(), getUserLevelDir(), (!strlen(DATADIR))?".":DATADIR);
 
-  printf("Video options available:\n"
-#ifdef WITH_OPENGL
-         "    -sw   # Disable OpenGL.\n"
-         "    -gl   # Enable OpenGL.\n"
-         "    -glheight PX # Window width  (-1 for auto).\n"
-         "    -glwidth  PY # Window height (-1 for auto).\n"
-         "    -glfilter ST # 0=No filtering, 1=Smooth.\n"
-#endif
-         "    -f    # Turn on fullscreen mode.\n"
-         "    -w    # Turn on windowed mode.\n"
-         "    -z 2  # Software scale to 640x480.\n\n");
+  //Print the command line parameters
+  printf("Command-line parameters:\n"STR_VID_OPTIONS);
 
-  printf("Loading settings...\n");
+  //Quit if user wants help
+  if( argc > 1 && ( strcmp(argv[1], "-h")==0 || strcmp(argv[1], "--help")==0 || strcmp(argv[1], "-help")==0 ))
+  {
+    printf("Please see readme.txt or http://wizznic.org/ for more help.\n");
+    return(0);
+  }
+
   //Read settings
+  printf("Loading settings...\n");
   initSettings();
 
   #if defined(WITH_OPENGL)
@@ -276,6 +275,12 @@ int main(int argc, char *argv[])
 
   printf("Scaling factor: %f\n", setting()->scaleFactor);
 
+  if( screen == NULL )
+  {
+    printf("ERROR: Couldn't init video.\n");
+    return(-1);
+  }
+
 
   //Set window title
   SDL_WM_SetCaption("Wizznic!", "Wizznic!");
@@ -294,7 +299,7 @@ int main(int argc, char *argv[])
   //Open Joysticks (for wiz)
   if (SDL_NumJoysticks() > 0) SDL_JoystickOpen(0);
 
-  //Hide mousecursor
+  //Hide mouse cursor
   SDL_ShowCursor(SDL_DISABLE);
 
   //Load fonts
@@ -329,6 +334,7 @@ int main(int argc, char *argv[])
   //Init particles
   initParticles(screen);
 
+  //Seed the pseudo random number generator (for particles 'n' stuff)
   srand( (int)time(NULL) );
 
   #if defined(PC)
