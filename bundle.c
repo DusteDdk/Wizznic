@@ -149,7 +149,11 @@ int debundleCreateEntry( bundleFileEntry* fe, const char* fileName, FILE* f )
     //It does not
     if( fe->type==TYPE_DIR)
     {
+#ifdef WIN32
+      if( mkdir( fileName ) != 0 )
+#else
       if( mkdir( fileName,S_IRWXU ) != 0 )
+#endif
       {
         printf("ERROR: Could not create directory '%s'\n", fileName);
         retVal=BUNDLE_FAIL_NO_WRITE_PERMISSION;

@@ -83,7 +83,7 @@ Being an Arch user, I also maintain the Arch package for Wizznic,
 to install the latest version of wizznic you can simply do:
 
 $ mkdir wizznic && cd wizznic
-$ wget http://jenkins.cyberstalker.dk/job/Wizznic/lastSuccessfulBuild/artifact/build/PKGBUILD
+$ wget http://cilefusk.cyberstalker.dk/job/Wizznic/lastSuccess/out/PKGBUILD
 $ makepkg
 $ sudo pacman -U wizznic*.tar.xz
 
