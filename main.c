@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
     scePowerSetClockFrequency(333,333,166);
   #endif
 
-  #ifdef WIN32
-  //Redirect stdout to console on windows, so we can see what's going in.
-  FILE *stream;
-  stream = freopen("CON", "w", stdout);
-  #endif
+//  #ifdef WIN32
+//Redirect stdout to console on windows, so we can see what's going in.
+//  FILE *stream;
+//  stream = freopen("CON", "w", stdout);
+//  #endif
 
   //Print welcome message
   printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010-2013\n\n");
@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
       if( !screen )
       {
         printf("Failed to set platform accelerated scaling, falling back to software window.\n");
-        screen=swScreen(sdlVideoModeFlags);
+        screen=swScreen(SDL_SWSURFACE);
         doScale=0;
       }
     #else

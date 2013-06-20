@@ -1,6 +1,7 @@
-
 -- Todo --
   75 new levels!
+  Seems the windows version is not that windowsy at all, more fullscreenish..
+  There's an ugly bug when using the sw-scaler in fullscreen (it shouldn't ever go fullscreen should it?)
 
 1.0.0
   Installation of packs are simplified, put the .wiz file in the dlc dir.
