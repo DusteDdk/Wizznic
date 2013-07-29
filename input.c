@@ -201,13 +201,15 @@ int runControls()
           if( event.key.keysym.sym > 31 && event.key.keysym.sym < 123 )
           {
             inputChar=event.key.keysym.sym;
-          } else if( event.key.keysym.sym == SDLK_BACKSPACE || event.key.keysym.sym == SDLK_RETURN )
-          {
-            inputChar=event.key.keysym.sym;
+
             if( event.key.keysym.mod & KMOD_SHIFT )
             {
               inputChar=toupper(inputChar);
             }
+          } else if( event.key.keysym.sym == SDLK_BACKSPACE || event.key.keysym.sym == SDLK_RETURN )
+          {
+            inputChar=event.key.keysym.sym;
+
           }
         break;
         case SDL_KEYUP:
