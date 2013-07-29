@@ -24,6 +24,9 @@
 #include "sprite.h"
 #include "levels.h"
 
+#define PACK_IS_NOT_DLC 0
+#define PACK_IS_DLC 1
+
 struct packInfo_s {
   char* name; //Name user sees
   char* author;
@@ -34,6 +37,7 @@ struct packInfo_s {
   int numLevels;
   int hasFinishedImg;
   int lives;
+  int isDLC;
 };
 typedef struct packInfo_s packInfoType;
 
@@ -42,9 +46,10 @@ struct packState_s {
   int selected; //Currently selected
   listItem* packs; //PackInfoType*s
   packInfoType* cp; //Current pack
+  packInfoType* dlc; //The "DLC" entry, on the pack list.
   SDL_Surface* packBoxImg; //Graphics for the box
   SDL_Surface* finishedImg;; //Image shown when cp is completed (0 = not been loaded)
-  spriteType* packBoxSpr[2];
+  spriteType* packBoxSpr[5];
 };
 typedef struct packState_s packStateType;
 
@@ -70,6 +75,6 @@ int isFile(const char* fileName);
 int isDir(const char* dirName);
 
 //Returns the number of the added pack.
-int packAdd(const char* packDir);
+int packAdd(const char* packDir, int isDLC);
 
 #endif // PACK_H_INCLUDED

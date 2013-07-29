@@ -21,11 +21,20 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "settings.h"
 #include "pack.h"
 #include "strings.h"
 #include "defs.h"
 #include "userfiles.h"
 #include "bundle.h"
+#include "libDLC.h"
+
+#define PCKLISTIMG_SELECTED 0
+#define PCKLISTIMG_DEFAULT  1
+#define PCKLISTIMG_IS_DLC 2
+#define PCKLISTIMG_DLC_ENTER 3
+#define PCKLISTIMG_DLC_OFFLINE 4
+
 
 static packStateType ps;
 
@@ -58,7 +67,7 @@ int isDir(const char* dirName)
 }
 
 
-int packAdd(const char* packDir)
+int packAdd(const char* packDir, int isDLC)
 {
   char* buf = malloc(sizeof(char)*2048);
   char* buf2= malloc(sizeof(char)*1024);
@@ -74,6 +83,7 @@ int packAdd(const char* packDir)
   FILE* f=0;
   packInfoType* ti = malloc(sizeof(packInfoType));
   ti->lives=3; //Default 3 lives, if pack do not define another number.
+  ti->isDLC=isDLC;
 
   //Any levels? (Packs are invalid without a levels folder and atleast one level)
   sprintf(buf, "%s/levels/level000.wzp", packDir);
@@ -309,7 +319,7 @@ void packInit()
   ps.numPacks=0;
 
   //Add the wizznic pack as nr 0.
-  packAdd( DATADIR"packs/000_wizznic" );
+  packAdd( DATADIR"packs/000_wizznic", 0 );
 
   listItem* packDirList = initList();
   listItem* usrPackDirList = initList();
@@ -339,7 +349,7 @@ void packInit()
   for(i=0; i<listSize(packDirList); i++)
   {
     //add pack
-    packAdd( sortme[i] );
+    packAdd( sortme[i], PACK_IS_NOT_DLC );
     //free string
     free( sortme[i] );
   }
@@ -348,7 +358,7 @@ void packInit()
   it=usrPackDirList;
   while( (it = it->next) )
   {
-    packAdd( (char*)it->data );
+    packAdd( (char*)it->data, PACK_IS_DLC );
   }
 
   //Free sortme array
@@ -441,9 +451,15 @@ void packFreeGfx()
   SDL_FreeSurface(ps.packBoxImg);
   free(ps.packBoxSpr[0]);
   free(ps.packBoxSpr[1]);
+  free(ps.packBoxSpr[2]);
+  free(ps.packBoxSpr[3]);
+  free(ps.packBoxSpr[4]);
   ps.packBoxImg=0;
   ps.packBoxSpr[0]=0;
   ps.packBoxSpr[1]=0;
+  ps.packBoxSpr[2]=0;
+  ps.packBoxSpr[3]=0;
+  ps.packBoxSpr[4]=0;
 }
 
 void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
@@ -458,18 +474,52 @@ void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
   {
     //Load graphics
     ps.packBoxImg = loadImg( DATADIR"data/pack-box-small.png" );
-    ps.packBoxSpr[0] = cutSprite(ps.packBoxImg, 0,0,260,42);
-    ps.packBoxSpr[1] = cutSprite(ps.packBoxImg, 0,42,260,42);
+    ps.packBoxSpr[PCKLISTIMG_SELECTED] = cutSprite(ps.packBoxImg, 0,0,260,42);
+    ps.packBoxSpr[PCKLISTIMG_DEFAULT] = cutSprite(ps.packBoxImg, 0,42,260,42);
+    ps.packBoxSpr[PCKLISTIMG_IS_DLC] = cutSprite(ps.packBoxImg, 0,42+42,260,42);
+    ps.packBoxSpr[PCKLISTIMG_DLC_ENTER] = cutSprite(ps.packBoxImg, 0,42+42+42,260,42);
+    ps.packBoxSpr[PCKLISTIMG_DLC_OFFLINE] = cutSprite(ps.packBoxImg, 0,42+42+42+42,260,42);
   }
 
   //PackInfo is now in pi.
-  packInfoType* pi = (packInfoType*)listGetItemData(ps.packs,packNum);
+  packInfoType* pi;
+
+  if( packNum == ps.numPacks )
+  {
+    pi = ps.dlc;
+  } else {
+    pi = (packInfoType*)listGetItemData(ps.packs,packNum);
+  }
 
   //Blit the box
-  if(ps.selected==packNum)
-    drawSprite(screen, ps.packBoxSpr[0], posx, posy);
-  else
-    drawSprite(screen, ps.packBoxSpr[1], posx, posy);
+  if(pi == ps.dlc )
+  {
+
+#if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
+    if( setting()->online && dlcGetState()==DLC_READY )
+    {
+      drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_DLC_ENTER], posx, posy);
+      txtWrite(screen, FONTSMALL, STR_MENU_PACKLIST_DLC_ENTER, posx+40, posy+4);
+    } else {
+      drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_DLC_OFFLINE], posx, posy);
+      txtWrite(screen, FONTSMALL, STR_MENU_PACKLIST_DLC_OFFLINE, posx+12, posy+4);
+    }
+#else
+    drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_DLC_OFFLINE], posx, posy);
+    txtWrite(screen, FONTSMALL, STR_MENU_PACKLIST_DLC_OFFLINE, posx+12, posy+4);
+#endif
+    return; //We don't want to write any info on that special box.
+  } else if(ps.selected==packNum)
+  {
+    drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_SELECTED], posx, posy);
+  } else {
+    if(pi->isDLC == PACK_IS_DLC)
+    {
+      drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_IS_DLC], posx, posy);
+    } else {
+      drawSprite(screen, ps.packBoxSpr[PCKLISTIMG_DEFAULT], posx, posy);
+    }
+  }
 
   //Blit the icon image
   SDL_BlitSurface(pi->icon,0,screen, &r);

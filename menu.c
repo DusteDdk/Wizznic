@@ -1071,7 +1071,7 @@ int runMenu(SDL_Surface* screen)
         txtWriteCenter(screen, FONTMEDIUM, STR_MENU_SELECT_PACK, HSCREENW, HSCREENH-106);
         getInpPointerState()->escEnable=1;
         if(dir && !(getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT )) txtWriteCenter(screen, FONTSMALL, STR_MENU_SELECT_PACK_PRESS_CTRL, HSCREENW, HSCREENH-84);
-        menuMaxY= packState()->numPacks-1;
+        menuMaxY= packState()->numPacks;
         ul=0;
         scroll=0;
         if(menuPosY > 2)
@@ -1083,8 +1083,9 @@ int runMenu(SDL_Surface* screen)
 
         //Clear box
         SDL_FillRect(menuBg[MENUGFXPACKBOX],0, SDL_MapRGB(screen->format, 0,255,255));
+
         int_fast8_t packListItemWasClicked=0;
-        while(ul < packState()->numPacks && ul-scroll <  4)
+        while(ul < packState()->numPacks+1 && ul-scroll <  4)
         {
           //The selected box waves
           if(menuPosY== ul)
@@ -1125,33 +1126,48 @@ int runMenu(SDL_Surface* screen)
         if( getButton(C_BTNB) || isPointerEscapeClicked() || packListItemWasClicked )
         {
           resetBtn(C_BTNB);
-          packFreeGfx();
-          //If it's a different pack
-          if(menuPosY != packState()->selected)
+          //Check if it's the DLC box
+          if( menuPosY == packState()->numPacks )
           {
-            //If there's a game started
-            if(player()->gameStarted)
+            if( setting()->online && dlcGetState()==DLC_READY )
             {
-              cleanUpGame();
+              startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+              setMenu(menuStateDLC);
+            } else {
+              //We can't go into the dlc download menu, select the previous pack, and do nothing.
+              menuPosY--;
             }
+          } else {
 
-            //Clear the levelselector image (it caches images)
-            resetLevelSelector();
+            packFreeGfx();
+            //If it's a different pack
+            if(menuPosY != packState()->selected)
+            {
+              //If there's a game started
+              if(player()->gameStarted)
+              {
+                cleanUpGame();
+              }
 
-            //Set selected pack.
-            packSet(menuPosY);
-            printf("Selected pack number: %i\n", menuPosY);
+              //Clear the levelselector image (it caches images)
+              resetLevelSelector();
 
-            //Save setting
-            free( setting()->packDir);
-            setting()->packDir = malloc( sizeof(char)*(strlen(packState()->cp->path)+1) );
-            strcpy( setting()->packDir, packState()->cp->path );
-            saveSettings(); //Save
-            //--
+              //Set selected pack.
+              packSet(menuPosY);
+              printf("Selected pack number: %i\n", menuPosY);
+
+              //Save setting
+              free( setting()->packDir);
+              setting()->packDir = malloc( sizeof(char)*(strlen(packState()->cp->path)+1) );
+              strcpy( setting()->packDir, packState()->cp->path );
+              saveSettings(); //Save
+              //--
+
+            }
+            startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+            //Return to main menu
+            setMenu(menuStatePaused);
           }
-          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
-          //Return to main menu
-          setMenu(menuStatePaused);
         }
       break;
 
@@ -1161,7 +1177,7 @@ int runMenu(SDL_Surface* screen)
         txtWave(screen, FONTMEDIUM, STR_MENU_OPTIONS, HSCREENW, HSCREENH-108, &rot);
 
         //Number of options in list
-        menuMaxY = 10;
+        menuMaxY = 9;
 
         if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_MENU_OPTIONS_EXIT, HSCREENW, HSCREENH-70);
         //Save and exit Options menu
@@ -1405,21 +1421,7 @@ int runMenu(SDL_Surface* screen)
           }
         }
 
-        //Able to download packs ?
-      #if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
 
-        if( setting()->online && dlcGetState()==DLC_READY )
-        {
-          if(dir || menuPosY!= 10) txtWriteCenter(screen, FONTSMALL, "Install more Puzzles", HSCREENW, HSCREENH+90);
-          if(  (menuPosY==10  && getButton(C_BTNB)) || isBoxClicked( getTxtBox() ) )
-          {
-            resetBtn(C_BTNB);
-            setMenu(menuStateDLC);
-        //    memset(dlcCode, 0, 20);
-            menuPosX = 1;
-          }
-        }
-      #endif
 
       break;
 
@@ -1706,6 +1708,7 @@ int runMenu(SDL_Surface* screen)
       case menuStateDLC:
         starField(screen,1);
         INP_GET_STR_LIMITS
+        getInpPointerState()->escEnable=0;
 
         if( dlcGetState() == DLC_BUSY )
         {
@@ -1716,24 +1719,26 @@ int runMenu(SDL_Surface* screen)
         {
           fireWorks(screen);
           txtWriteCenter(screen, FONTMEDIUM, "Success!", HSCREENW,HSCREENH-95);
-          txtWriteCenter(screen, FONTSMALL, "It's ready to play!", HSCREENW, HSCREENH-70);
-          txtWriteCenter(screen, FONTSMALL, "Press Enter", HSCREENW, HSCREENH-60);
-          if( getChar() == SDLK_RETURN )
+          txtWriteCenter(screen, FONTSMALL, "It's ready to play!", HSCREENW, HSCREENH-60);
+
+          if( getChar() == SDLK_RETURN || getButton(C_BTNMENU) || getButton(C_BTNB) || isPointerEscapeClicked() || isPointerClicked() )
           {
             setMenu( menuStatePackList );
-            menuPosY = packAdd( bundlePath() );
+            menuPosY = packAdd( bundlePath(), PACK_IS_DLC );
             bundlePathReset();
             dlcSetReady();
           }
         } else if( dlcGetState() == DLC_READY )
         {
+          getInpPointerState()->escEnable=1;
+
           txtWriteCenter(screen, FONTMEDIUM, "Install Puzzles!", HSCREENW,HSCREENH-95);
           txtWriteCenter(screen, FONTSMALL, "Please enter the DLC Code", HSCREENW, HSCREENH-70);
-          txtWriteCenter(screen, FONTSMALL, "Press CTRL to go back", HSCREENW, HSCREENH+110);
 
-          if( getButton(C_BTNB) )
+
+          if( getButton(C_BTNMENU) || isPointerEscapeClicked() )
           {
-            setMenu(menuStateOptions);
+            setMenu(menuStatePackList);
             resetBtn(C_BTNB);
           }
 
@@ -1747,23 +1752,24 @@ int runMenu(SDL_Surface* screen)
           txtWriteCenter(screen, FONTMEDIUM, "Error", HSCREENW,HSCREENH-95);
           txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_DOWNLOAD, HSCREENW-150, HSCREENH-70);
 
-          if( getChar() == SDLK_RETURN )
+          if( getChar() == SDLK_RETURN || getButton(C_BTNMENU) || getButton(C_BTNB) || isPointerEscapeClicked() || isPointerClicked() )
           {
+            resetMouseBtn();
             dlcSetReady();
-            setMenu(menuStateOptions);
+            setMenu(menuStateDLC);
           }
 
         } else if( dlcGetState() == DLC_API_OUTDATED )
         {
           txtWriteCenter(screen, FONTMEDIUM, "Update Wizznic", HSCREENW,HSCREENH-95);
           txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_API_OUTDATED, HSCREENW-150, HSCREENH-70);
-          if( getChar() == SDLK_RETURN )
+          if( getChar() == SDLK_RETURN || getButton(C_BTNMENU) || getButton(C_BTNB) || isPointerEscapeClicked() || isPointerClicked() )
           {
-            setMenu(menuStateOptions);
+            resetMouseBtn();
+            setMenu(menuStatePackList);
           }
         } else if( dlcGetState() == DLC_BUNDLE_ERROR )
         {
-          printf("dlcGetState(): %i getBundleError(): %i\n",dlcGetState(),getBundleError());
           txtWriteCenter(screen, FONTMEDIUM, "Install Error", HSCREENW,HSCREENH-95);
           switch( getBundleError() )
           {
@@ -1786,10 +1792,11 @@ int runMenu(SDL_Surface* screen)
               txtWrite(screen, FONTSMALL, STR_MENU_DLC_ERROR_UNSUPPORTED_VERSION, HSCREENW-150, HSCREENH-70);
               break;
           }
-          if( getChar() == SDLK_RETURN )
+          if( getChar() == SDLK_RETURN || getButton(C_BTNMENU) || getButton(C_BTNB) || isPointerEscapeClicked() || isPointerClicked() )
           {
+            resetMouseBtn();
             dlcSetReady();
-            setMenu(menuStateOptions);
+            setMenu(menuStatePackList);
           }
         }
 

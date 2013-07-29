@@ -151,6 +151,13 @@
 #define STR_MENU_EXIT_CHOICE        "Exit"
 #define STR_MENU_PACK_SHOW        "Pack: %s"
 
+#define STR_MENU_PACKLIST_DLC_ENTER "Get More Packs!\n"\
+		                                "Enter a DLC code here,\n"\
+		                                "to install more puzzles!"
+
+#define STR_MENU_PACKLIST_DLC_OFFLINE "Wizznic is offline.\n\n"\
+		                                  "DLC download is disabled."
+
 #define STR_MENU_ABOUT_HEADLINE     "About Wizznic!"
 #define STR_MENU_ABOUT_TEXT         "Wizznic is an arcade game based on\n"\
                                     "the Taito classic \"Puzznic\" (1989)\n"\
@@ -236,13 +243,13 @@
 		                                      "For some reason it was not\n"\
                                           "possible to download a DLC using\n"\
                                           "the code you entered...\n"\
-                                          "Maybe the code was wrong, try again!\n"\
-                                          "If it's not working, maybe\n"\
-                                          "Wizznic could not connect to the\n"\
-                                          "DLC-Server, it could be down..\n\n"\
-                                          "Please go to:\n"\
-                                          "http://wizznic.org/\n"\
-                                          "for help with this!\n\nPress Enter"
+                                          "Maybe the code was wrong?\n"\
+                                          "Maybe Wizznic could not connect\n"\
+                                          "to the server? It could be down..\n\n"\
+                                          "Try again please!\n\n"\
+                                          "If you can not get it to work:"\
+                                          "Visit http://wizznic.org/\n"
+
 
 
 //                                        "----------------------------------\n"
@@ -250,50 +257,42 @@
 		                                      "too dusty..\n"\
 		                                      "\n"\
 		                                      "It's too old for DLCs. :(\n"\
-		                                      "Please update Wizznic!\n\n"\
-		                                      "Press Enter"
+		                                      "Please update Wizznic!"
 
 
 //                                        "----------------------------------\n"
 #define STR_MENU_DLC_ERROR_CORRUPT        "The DLC file was corrupt.\n"\
 		                                      "\n"\
-		                                      "Please try again.\n"\
-		                                      "Press Enter."
+		                                      "Please try again."
 
 
 //                                        "----------------------------------\n"
 #define STR_MENU_DLC_ERROR_COULD_NOT_OPEN "Could not open the DLC file,\n"\
 		                                      "please check the permissions of:\n"\
                                           "%s\n"\
-                                          "And try again try again.\n\n"\
-		                                      "Press Enter."
+                                          "And try again try again."
 
 
 //                                        "----------------------------------\n"
 #define STR_MENU_DLC_ERROR_DIR_EXISTS     "This DLC is already intalled.\n"\
 		                                      "If it's not working, please go to\n"\
 		                                      "your DLC directory and\n"\
-		                                      "delete it and try again.\n\n"\
-		                                      "Press Enter."
+		                                      "delete it and try again."
 
 
 //                                        "----------------------------------\n"
 #define STR_MENU_DLC_ERROR_NOT_BUNDLEFILE "The downloaded file is not\n"\
-		                                      "recognized as a Wizznic DLC.\n\n"\
-		                                      "Press Enter."
+		                                      "recognized as a Wizznic DLC."
 
 
 //                                              "----------------------------------\n"
 #define STR_MENU_DLC_ERROR_NO_WRITE_PERMISSION  "Wizznic did not have permission\n"\
-		                                            "to install the DLC.\n\n\n"\
-		                                            "Press Enter."
+		                                            "to install the DLC."
 
 //                                              "---- Wizznic has been updated ----\n"
-#define STR_MENU_DLC_ERROR_UNSUPPORTED_VERSION  "This of Wizznic do not know\n"\
-		                                            "how to install that DLC, maybe\n"\
-		                                            "this version of Wizznic\n"\
-		                                            "is too old?\n\n"\
-		                                            "Press Enter."
+#define STR_MENU_DLC_ERROR_UNSUPPORTED_VERSION  "This version of Wizznic do not\n"\
+		                                            "know how to install that DLC,\n"\
+		                                            "maybe it is too old ?"\
 
 #define STR_MENU_GAMEOVER           "Game Over!"
 #define STR_MENU_SCORE              "Score %i"
@@ -309,7 +308,7 @@
 
 #define STR_MENU_LVLEDIT_PLAY       "Play"
 #define STR_MENU_LVLEDIT_CLONE      "Clone"
-#define STR_MENU_LVLEDIT_EDIT         "Edit"
+#define STR_MENU_LVLEDIT_EDIT       "Edit"
 
 #define STR_EDIT_SAVED              "Saved"
 #define STR_EDIT_UNSAVED            "Not saved"
