@@ -74,13 +74,16 @@ void updateCursor(cursorType* c)
 
 }
 
-int moveCursor(cursorType* c, int dirX, int dirY, int limit)
+void moveCursor(cursorType* c, int dirX, int dirY, int limit)
 {
 
   int dx = c->dx + dirX;
   int dy = c->dy + dirY;
 
-  if(dx < 0 || dx+1 > FIELDSIZE  || dy < 0 || dy+1 > FIELDSIZE) return(0);
+  if(dx < 0 || dx+1 > FIELDSIZE  || dy < 0 || dy+1 > FIELDSIZE)
+  {
+    return;
+  }
 
   if(c->x == c->dx || !limit)
   {
@@ -92,7 +95,6 @@ int moveCursor(cursorType* c, int dirX, int dirY, int limit)
     c->dy += dirY;
   }
 
-  return(1);
 }
 
 void initCursor(cursorType* c)

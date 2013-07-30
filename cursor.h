@@ -32,7 +32,7 @@ struct cursor_t
 typedef struct cursor_t cursorType;
 
 void updateCursor(cursorType* c); //Update cursor pixel pos if moving
-int moveCursor(cursorType* c,int dirX, int dirY, int limit);
+void moveCursor(cursorType* c,int dirX, int dirY, int limit);
 void initCursor(cursorType* c);
 void setCursor(cursorType* c, int x, int y);
 
