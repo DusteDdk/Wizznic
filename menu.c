@@ -22,6 +22,7 @@
 #include "sound.h"
 #include "ticks.h"
 #include "input.h"
+#include "strinput.h"
 
 #include "states.h"
 #include "game.h"
@@ -72,31 +73,15 @@ static int x,y;
 
 static wavingImage_t waving;
 
-static int kbRows = 4;
-static int kbCols = 10;
 
-static char dlcCode[20];
 
-static char kbl[4][10] = {
-  {'1','2','3','4','5','6','7','8','9','0'},
-  {'q','w','e','r','t','y','u','i','o','p'},
-  {'a','s','d','f','g','h','j','k','l',';'},
-  {'z','x','c','v','b','n','m',' ',',','.'}
-};
+inpStrState* strStateHighScore;
+inpStrState* strStateDlcCode;
 
-static char kbh[4][10] = {
-  {'!','"','#','$','%','&','/','(',')','='},
-  {'Q','W','E','R','T','Y','U','I','O','P'},
-  {'A','S','D','F','G','H','J','K','L',':'},
-  {'Z','X','C','V','B','N','M','_',',','.'}
-};
-static char (*kb)[4][10];
-static char kbCase=0;
 int getMenuState() { return(menuState); }
 
 int initMenu(SDL_Surface* screen)
 {
-  kb=&kbl;
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
@@ -112,6 +97,9 @@ int initMenu(SDL_Surface* screen)
   waving.overlay = loadImg( DATADIR"data/menu/introoverlay.png" );
   waving.overlayPos=waving.overlay->w+1;
   waving.mask = loadImg( DATADIR"data/menu/intromask.png");
+
+  strStateHighScore = inpStrCreate(screen, "Name:", 1,10, HSCREENW-110, HSCREENH-45 );
+  strStateDlcCode = inpStrCreate(screen, "Code:", 1,20, HSCREENW-110, HSCREENH-45 );
 
   return(1);
 }
@@ -1413,7 +1401,7 @@ int runMenu(SDL_Surface* screen)
         }
 
         //Able to download packs ?
-      #if defined( PLATFORM_SUPPORTS_STATSUPLOAD ) && defined( PLATFORM_HAS_KEYBOARD )
+      #if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
 
         if( setting()->online && dlcGetState()==DLC_READY )
         {
@@ -1422,7 +1410,7 @@ int runMenu(SDL_Surface* screen)
           {
             resetBtn(C_BTNB);
             setMenu(menuStateDLC);
-            memset(dlcCode, 0, 20);
+        //    memset(dlcCode, 0, 20);
             menuPosX = 1;
           }
         }
@@ -1452,114 +1440,15 @@ int runMenu(SDL_Surface* screen)
 
       case menuStateEnterHighScore:
         starField(screen, 0);
-        menuMaxY=4;
-        menuMaxX=10;
-
-        int cy,cx;
-        char hack[2]={ ' ',0x00 };
-        int hsKeyboardWasClicked=0;
-
+        INP_GET_STR_LIMITS
         txtWriteCenter(screen, FONTMEDIUM, "High score!", HSCREENW,HSCREENH-95);
         txtWriteCenter(screen, FONTSMALL, "Enter your name for highscore.", HSCREENW, HSCREENH-70);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORE_NAME_CONTROLS, HSCREENW,HSCREENH+108);
 
-        if( getChar() )
+        if( inpStrGet(strStateHighScore, menuPosX, menuPosY, dir) )
         {
-          if( getChar() == SDLK_RETURN )
-          {
-            //Save 
-            menuPosY=4;
-            hsKeyboardWasClicked=1;
-          }
+          strcpy( setting()->playerName, strStateHighScore->str );
 
-          if( getChar() == SDLK_BACKSPACE && strlen( setting()->playerName ) > 0 )
-          {
-            setting()->playerName[ strlen(setting()->playerName)-1 ]=0;
-          } else if( getChar() > 31 && getChar() < 123 && strlen( setting()->playerName ) < 11 )
-          {
-            setting()->playerName[ strlen(setting()->playerName) ] = getChar();
-            setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
-          }
-        }
-
-        sprintf(buf, "Name: %s", setting()->playerName);
-
-        txtWrite(screen, FONTSMALL, buf, HSCREENW-110, HSCREENH-45);
-        txtWriteCenter(screen, FONTSMALL,STR_MENU_HIGHSCORE_NAME_CONTROLS, HSCREENW,HSCREENH+108);
-
-        for(cy=0; cy < kbRows; cy++)
-        {
-          for(cx=0; cx < kbCols; cx++)
-          {
-
-            if( (menuPosX==cx && menuPosY==cy) && !dir && !( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  ) )
-            {
-              txtWrite(screen, FONTSMALL, "[_]", (HSCREENW-70)+(cx)*16-8, (HSCREENH-9)+cy*15);
-            }
-
-            hack[0]=(*kb)[cy][cx];
-            txtWrite(screen, FONTSMALL, hack, (HSCREENW-70)+cx*16, (HSCREENH-10)+cy*15);
-            hack[0]=0;
-            if( isBoxClicked( getTxtBox() ) )
-            {
-              menuPosX=cx;
-              menuPosY=cy;
-              hsKeyboardWasClicked=1;
-            }
-          }
-        }
-        //Blink "Save" underline if selected
-        if( menuPosY==4 && dir)
-        {
-          if(menuPosX > 9) menuPosX=0;
-          txtWriteCenter(screen, FONTSMALL, " ____ ", HSCREENW, HSCREENH+50);
-        }
-        txtWriteCenter(screen, FONTSMALL, "[Save]", HSCREENW, HSCREENH+50);
-        if( isBoxClicked( getTxtBox() ))
-        {
-          menuPosY=4;
-          hsKeyboardWasClicked=1;
-        }
-
-        //Blink "Caps" underline if selected
-        if( menuPosX==10 && dir)
-        {
-          if(menuPosY >3) menuPosY =1;
-          txtWrite( screen, FONTSMALL, " ____", HSCREENW-130, HSCREENH+10 );
-        }
-        txtWrite( screen, FONTSMALL, "[Caps]", HSCREENW-130, HSCREENH+10 );
-        if( isBoxClicked( getTxtBox() ))
-        {
-          menuPosX=10;
-          hsKeyboardWasClicked=1;
-        }
-
-        //If the cursor is being used, show "delete" button, this is only usable with pointer.
-        if(  getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT  )
-        {
-          txtWrite(screen, FONTSMALL, "[DEL]", (HSCREENW+38), (HSCREENH-25) );
-          if( isBoxClicked( getTxtBox() ))
-          {
-            menuPosY=5;
-            hsKeyboardWasClicked=1;
-          }
-        }
-
-        //Switch layouts if we're at posX 10
-        if( menuPosX == 10 && (getButton( C_BTNB ) || hsKeyboardWasClicked) )
-        {
-
-          resetBtn( C_BTNB );
-          kbCase=!kbCase;
-          if(kbCase)
-          {
-            kb=&kbh;
-          } else {
-            kb=&kbl;
-          }
-
-        } else if( menuPosY==4 && ( getButton( C_BTNB ) || hsKeyboardWasClicked ) ) //Save if we're at row 4
-        {
-          resetBtn( C_BTNB );
           saveSettings();
           //Copy player name.
           strcpy(player()->campStats.name, setting()->playerName);
@@ -1568,22 +1457,6 @@ int runMenu(SDL_Surface* screen)
           startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500);
           menuState=menuReturnHack;
           menuPosY=0;
-        } else if( getButton( C_BTNB ) || (hsKeyboardWasClicked && menuPosY < 5) )
-        {
-          resetBtn( C_BTNB );
-          resetMouseBtn();
-          if(strlen( setting()->playerName ) < 11)
-          {
-            setting()->playerName[ strlen(setting()->playerName) ] = (*kb)[menuPosY][menuPosX];
-            setting()->playerName[ strlen(setting()->playerName)+1 ] = 0x0;
-          }
-        } else if( getButton( C_BTNA ) || (hsKeyboardWasClicked && menuPosY == 5) )
-        {
-          resetBtn( C_BTNA);
-          if(strlen(setting()->playerName) > 0)
-          {
-            setting()->playerName[ strlen(setting()->playerName)-1 ]=0;
-          }
         }
       break;
 
@@ -1825,9 +1698,10 @@ int runMenu(SDL_Surface* screen)
         }
       break;
 
-      #if defined( PLATFORM_HAS_KEYBOARD ) && defined( PLATFORM_SUPPORTS_STATSUPLOAD )
+      #if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
       case menuStateDLC:
         starField(screen,1);
+        INP_GET_STR_LIMITS
 
         if( dlcGetState() == DLC_BUSY )
         {
@@ -1858,30 +1732,12 @@ int runMenu(SDL_Surface* screen)
             setMenu(menuStateOptions);
             resetBtn(C_BTNB);
           }
-          if( getChar() )
+
+          if( inpStrGet(strStateDlcCode, menuPosX, menuPosY, dir ) )
           {
-            if( getChar() == SDLK_RETURN && strlen(dlcCode) > 1 )
-            {
-              //Save
-              if( dlcGetState() == DLC_READY )
-              {
-                dlcTryInstall(dlcCode, getUsrPackDir() );
-              }
-
-            }
-
-            if( getChar() == SDLK_BACKSPACE && strlen( dlcCode ) > 0 )
-            {
-              dlcCode[ strlen(dlcCode)-1 ]=0;
-            } else if( getChar() > 31 && getChar() < 123 && strlen( dlcCode ) < 20 )
-            {
-              dlcCode[ strlen(dlcCode) ] = getChar();
-              dlcCode[ strlen(dlcCode)+1 ] = 0x0;
-            }
+            dlcTryInstall(strStateDlcCode->str, getUsrPackDir() );
           }
 
-          sprintf(buf, "Code: %s", dlcCode);
-          txtWrite(screen, FONTSMALL, buf, HSCREENW-110, HSCREENH-45);
         } else if( dlcGetState() == DLC_FAILED )
         {
           txtWriteCenter(screen, FONTMEDIUM, "Error", HSCREENW,HSCREENH-95);

@@ -21,11 +21,9 @@
 #define SCREENW 320
 #define SCREENH 240
 
-//For Uploading stats
+//For Uploading stats and downloading DLC's
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 
-//For downloading DLC's
-#define PLATFORM_HAS_KEYBOARD
 
 #if defined(WIN32)
   #if defined(WITH_OPENGL)
