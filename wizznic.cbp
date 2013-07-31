@@ -32,6 +32,7 @@
 				<Option output="wizznic" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="-w" />
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-Winit-self" />
@@ -62,6 +63,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="board.h" />
+		<Unit filename="bundle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bundle.h" />
 		<Unit filename="credits.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -105,6 +110,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="levelselector.h" />
+		<Unit filename="libDLC.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libDLC.h" />
 		<Unit filename="list.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -141,9 +150,7 @@
 		<Unit filename="platform/pc.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="platform/pc.h">
-			<Option target="Win32" />
-		</Unit>
+		<Unit filename="platform/pc.h" />
 		<Unit filename="platform/pspspec.c">
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
@@ -191,6 +198,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="strings.h" />
+		<Unit filename="strinput.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="strinput.h" />
 		<Unit filename="switch.c">
 			<Option compilerVar="CC" />
 		</Unit>
