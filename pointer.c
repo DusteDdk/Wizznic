@@ -68,6 +68,8 @@ void drawPointer(SDL_Surface* screen)
       SDL_BlitSurface( ptrBackImg, NULL, screen,&backBtnDstRect);
     }
 
+    plotPixel(screen, inpPointer.vpX, inpPointer.vpY, inpPointer.colWhite );
+
     plotPixel(screen, inpPointer.vpX, inpPointer.vpY-2, inpPointer.colWhite );
     plotPixel(screen, inpPointer.vpX, inpPointer.vpY+2, inpPointer.colWhite );
 
