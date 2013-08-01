@@ -122,10 +122,10 @@ int inpStrGet(inpStrState* state, int menuPosX, int menuPosY, int blink)
   if( menuPosY==4 && blink)
   {
     if(menuPosX > 9) menuPosX=0;
-    txtWriteCenter(state->dstSurface, FONTSMALL, " ____ ", HSCREENW, HSCREENH+50);
+    txtWriteCenter(state->dstSurface, FONTSMALL, " _____ ", HSCREENW, HSCREENH+50);
   }
-  txtWriteCenter(state->dstSurface, FONTSMALL, "[done]", HSCREENW, HSCREENH+50);
-  if( isBoxClicked( getTxtBox() ))
+  txtWriteCenter(state->dstSurface, FONTSMALL, "[ENTER]", HSCREENW, HSCREENH+50);
+  if( isBoxClicked( getTxtBox() ) )
   {
     menuPosY=4;
     hsKeyboardWasClicked=1;
@@ -170,7 +170,10 @@ int inpStrGet(inpStrState* state, int menuPosX, int menuPosY, int blink)
   } else if( menuPosY==4 && ( getButton( C_BTNB ) || hsKeyboardWasClicked ) ) //Return true
   {
     resetBtn( C_BTNB );
-    return(1);
+    if(strlen( state->str ) >= state->minLen)
+    {
+      return(1);
+    }
   } else if( getButton( C_BTNB ) || (hsKeyboardWasClicked && menuPosY < 5) )
   {
     resetBtn( C_BTNB );
