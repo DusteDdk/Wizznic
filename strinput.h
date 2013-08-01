@@ -20,7 +20,6 @@
 
 typedef struct {
     SDL_Surface* dstSurface;
-    int px,py;
     size_t minLen, maxLen;
     int curX;
     int curY;
@@ -32,7 +31,7 @@ typedef struct {
 } inpStrState;
 
 //Return a state structure for use with inpGetStr and inpGetStrClear
-inpStrState* inpStrCreate(SDL_Surface* dstSurface, char* promptTxt, size_t minLen, size_t maxLen, int px, int py );
+inpStrState* inpStrCreate(SDL_Surface* dstSurface, char* promptTxt, size_t minLen, size_t maxLen );
 
 void inpStrClear(inpStrState* state);
 

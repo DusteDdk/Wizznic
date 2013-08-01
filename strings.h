@@ -30,7 +30,7 @@
   #define STR_EDIT_CONTROLS "X:Put Y:Del Menu:Exit Select:Save"
 
   //Entering highscores
-  #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B:Type  A:Delete "
+  #define STR_STRINPUT_CONTROLS "B:Type  A:Delete "
 
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
@@ -49,7 +49,7 @@
   #define STR_EDIT_CONTROLS "Squ:Put Tri:Del Start:Exit Sel:Save"
 
   //Entering highscores
-  #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "Start:Save  X:Type  O:Delete"
+  #define STR_STRINPUT_CONTROLS  "Start:Save  X:Type  O:Delete"
 
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press Circle to confirm"
@@ -70,7 +70,7 @@
     #define STR_EDIT_CONTROLS "X:Put Y:Del START:Exit SELECT:Save"
 
     //Entering highscores
-    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B:Type  A:Delete"
+    #define STR_STRINPUT_CONTROLS  "B:Type  A:Delete"
 
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
@@ -87,7 +87,7 @@
     #define STR_EDIT_CONTROLS "1:Put 2:Del s1:Exit s2:Save"
 
     //Entering highscores
-    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "B1:Type  B2:Delete"
+    #define STR_STRINPUT_CONTROLS  "B1:Type  B2:Delete"
 
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
@@ -105,7 +105,7 @@
     #define STR_EDIT_CONTROLS "X:Put Z:Del ESC:Exit Space:Save"
 
     //Entering highscores
-    #define STR_MENU_HIGHSCORE_NAME_CONTROLS  "Ctrl:Type  Alt:Delete"
+    #define STR_STRINPUT_CONTROLS  "Ctrl:Type  Alt:Delete"
 
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Again to confirm"

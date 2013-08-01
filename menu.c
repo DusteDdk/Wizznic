@@ -96,8 +96,8 @@ int initMenu(SDL_Surface* screen)
   waving.overlayPos=waving.overlay->w+1;
   waving.mask = loadImg( DATADIR"data/menu/intromask.png");
 
-  strStateHighScore = inpStrCreate(screen, "Name:", 1,10, HSCREENW-110, HSCREENH-45 );
-  strStateDlcCode = inpStrCreate(screen, "Code:", 1,20, HSCREENW-110, HSCREENH-45 );
+  strStateHighScore = inpStrCreate(screen, "Name:", 1,10 );
+  strStateDlcCode = inpStrCreate(screen, "Code:", 1,20 );
 
   return(1);
 }
@@ -1441,7 +1441,6 @@ int runMenu(SDL_Surface* screen)
         INP_GET_STR_LIMITS
         txtWriteCenter(screen, FONTMEDIUM, "High score!", HSCREENW,HSCREENH-95);
         txtWriteCenter(screen, FONTSMALL, "Enter your name for highscore.", HSCREENW, HSCREENH-70);
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_HIGHSCORE_NAME_CONTROLS, HSCREENW,HSCREENH+108);
 
         if( inpStrGet(strStateHighScore, menuPosX, menuPosY, dir) )
         {

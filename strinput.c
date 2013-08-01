@@ -17,6 +17,7 @@
 
 #include "strinput.h"
 #include "input.h"
+#include "strings.h"
 
 static char kbl[4][10] = {
   {'1','2','3','4','5','6','7','8','9','0'},
@@ -39,16 +40,13 @@ static int kbCols = 10;
 
 
 //Return a state structure for use with inpGetStr and inpGetStrClear
-inpStrState* inpStrCreate(SDL_Surface* dstSurface, char* promptTxt, size_t minLen, size_t maxLen, int px, int py )
+inpStrState* inpStrCreate(SDL_Surface* dstSurface, char* promptTxt, size_t minLen, size_t maxLen )
 {
   inpStrState* s = malloc( sizeof(inpStrState) );
   s->dstSurface=dstSurface;
   s->maxLen=maxLen;
   s->minLen=minLen;
   s->prompt=promptTxt;
-  s->px=px;
-  s->py=py;
-
 
   s->str=malloc(sizeof(char)*(maxLen+1));
   s->_buf=malloc( (sizeof(char))*(maxLen+strlen(s->prompt)+2) );
@@ -73,7 +71,7 @@ int inpStrGet(inpStrState* state, int menuPosX, int menuPosY, int blink)
   char hack[2]={ ' ',0x00 };
   int hsKeyboardWasClicked=0;
 
-
+  txtWriteCenter(state->dstSurface, FONTSMALL, STR_STRINPUT_CONTROLS, HSCREENW,HSCREENH+108);
 
   if( getChar() )
   {
@@ -96,7 +94,7 @@ int inpStrGet(inpStrState* state, int menuPosX, int menuPosY, int blink)
 
   sprintf(state->_buf, "%s %s", state->prompt, state->str);
 
-  txtWrite(state->dstSurface, FONTSMALL, state->_buf, state->px, state->py);
+  txtWrite(state->dstSurface, FONTSMALL, state->_buf, HSCREENW-110, HSCREENH-45);
 
 
   for(cy=0; cy < kbRows; cy++)
