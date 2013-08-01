@@ -56,7 +56,6 @@ static float rot=0;
 #define MENUGFXNUM 4
 
 static SDL_Surface* menuBg[MENUGFXNUM];
-static spriteType* helpSpr;
 
 static int menuState=menuStateIntro;
 
@@ -85,7 +84,6 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
-  helpSpr = cutSprite(menuBg[MENUGFXHELP],0,0,320,240);
   menuBg[MENUGFXBYE]=0;
 
   menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
@@ -678,33 +676,33 @@ int runMenu(SDL_Surface* screen)
       break;
 
       case menuStateHowto:
-      starField(screen,1);
+        starField(screen,1);
 
-      #if defined (GP2X) || defined (PSP) || defined (WIZ)
-      //Sprinkle particles
-      if( !dir && countdown < 1 )
-      {
-        ps.layer=PSYS_LAYER_TOP;
-        ps.x=(rand()%109)+107;
-        ps.y=(rand()%40)+78;
-        ps.vel=50; // +/- in each dir
-        ps.life=2000;
-        ps.lifeVar=500;
-        ps.fade=0;
-        ps.gravity=1;
-        ps.bounce=0;      //If 1, particles will bounce off screen borders ( (vel * -1)/2 )
-        ps.fadeColor=0x00;
-        ps.color=PARTICLECOLORRANDOM;
-        ps.srcImg=0; //Don't get colors from an image
-        ps.numParticles=20;
-        spawnParticleSystem(&ps);
-      }
-      runParticles(screen);
-      #else
-      fireWorks(screen);
-      #endif
+        #if defined (GP2X) || defined (PSP) || defined (WIZ)
+        //Sprinkle particles
+        if( !dir && countdown < 1 )
+        {
+          ps.layer=PSYS_LAYER_TOP;
+          ps.x=(rand()%109)+107;
+          ps.y=(rand()%40)+78;
+          ps.vel=50; // +/- in each dir
+          ps.life=2000;
+          ps.lifeVar=500;
+          ps.fade=0;
+          ps.gravity=1;
+          ps.bounce=0;      //If 1, particles will bounce off screen borders ( (vel * -1)/2 )
+          ps.fadeColor=0x00;
+          ps.color=PARTICLECOLORRANDOM;
+          ps.srcImg=0; //Don't get colors from an image
+          ps.numParticles=20;
+          spawnParticleSystem(&ps);
+        }
+        runParticles(screen);
+        #else
+        fireWorks(screen);
+        #endif
 
-      drawSprite(screen, helpSpr,setting()->bgPos.x,setting()->bgPos.y);
+        SDL_BlitSurface(menuBg[MENUGFXHELP] , NULL, screen, &(setting()->bgPos) );
 
         if(dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_PRESS_B_PLAY, HSCREENW, HSCREENH+108);
 
