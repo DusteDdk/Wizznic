@@ -1083,6 +1083,7 @@ int runMenu(SDL_Surface* screen)
 
         //Clear box
         SDL_FillRect(menuBg[MENUGFXPACKBOX],0, SDL_MapRGB(screen->format, 0,255,255));
+        int_fast8_t packListItemWasClicked=0;
         while(ul < packState()->numPacks && ul-scroll <  4)
         {
           //The selected box waves
@@ -1104,7 +1105,13 @@ int runMenu(SDL_Surface* screen)
 
           if( isBoxClicked( &r ) )
           {
-            menuPosY=ul;
+            resetMouseBtn();
+            if( menuPosY == ul )
+            {
+              packListItemWasClicked=1;
+            } else {
+              menuPosY=ul;
+            }
           }
 
           //Increase counter (doh, most obvious comment to date)
@@ -1115,7 +1122,7 @@ int runMenu(SDL_Surface* screen)
           if(dir) txtWrite(screen, FONTSMALL, STR_MENU_PACKS_MORE, HSCREENW+100, HSCREENH+108);
         }
 
-        if( getButton(C_BTNB) || isPointerEscapeClicked() )
+        if( getButton(C_BTNB) || isPointerEscapeClicked() || packListItemWasClicked )
         {
           resetBtn(C_BTNB);
           packFreeGfx();
