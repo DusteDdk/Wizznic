@@ -1123,7 +1123,13 @@ int runMenu(SDL_Surface* screen)
           if(dir) txtWrite(screen, FONTSMALL, STR_MENU_PACKS_MORE, HSCREENW+100, HSCREENH+108);
         }
 
-        if( getButton(C_BTNB) || isPointerEscapeClicked() || packListItemWasClicked )
+        if( isPointerEscapeClicked() )
+        {
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+          setMenu(menuStatePaused);
+        }
+
+        if( getButton(C_BTNB) || packListItemWasClicked )
         {
           resetBtn(C_BTNB);
           //Check if it's the DLC box
@@ -1133,10 +1139,8 @@ int runMenu(SDL_Surface* screen)
             {
               startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
               setMenu(menuStateDLC);
-            } else {
-              //We can't go into the dlc download menu, select the previous pack, and do nothing.
-              menuPosY--;
             }
+
           } else {
 
             packFreeGfx();
