@@ -149,14 +149,15 @@
 #define STR_MENU_PACK_CHOICE        "Pack"
 #define STR_MENU_HELP_CHOICE        "Help"
 #define STR_MENU_EXIT_CHOICE        "Exit"
-#define STR_MENU_PACK_SHOW        "Pack: %s"
+#define STR_MENU_PACK_SHOW          "Pack: %s"
 
 #define STR_MENU_PACKLIST_DLC_ENTER "Get More Packs!\n"\
 		                                "Enter a DLC code here,\n"\
 		                                "to install more puzzles!"
 
-#define STR_MENU_PACKLIST_DLC_OFFLINE "Wizznic is offline.\n\n"\
-		                                  "DLC download is disabled."
+#define STR_MENU_PACKLIST_DLC_OFFLINE "Wizznic is offline.\n"\
+		                                  "DLC download is disabled.\n"\
+                                      "Go to wizznic.org/dlc"
 
 #define STR_MENU_ABOUT_HEADLINE     "About Wizznic!"
 #define STR_MENU_ABOUT_TEXT         "Wizznic is an arcade game based on\n"\
