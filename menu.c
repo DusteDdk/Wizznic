@@ -1378,7 +1378,7 @@ int runMenu(SDL_Surface* screen)
 
         //Upload stats?
         #ifdef PLATFORM_SUPPORTS_STATSUPLOAD
-        sprintf(buf, (setting()->uploadStats)?"Upload Stats: <Enabled>":"Upload Stats: <Disabled>");
+        sprintf(buf, (setting()->uploadStats)?"Allow Online: <Yes>":"Allow Online: <No>");
         if(dir || menuPosY!= 8) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+50);
         if( isBoxClicked( getTxtBox() ) )
         {
@@ -1497,7 +1497,7 @@ int runMenu(SDL_Surface* screen)
           resetBtn(C_BTNB);
 
           {
-            setting()->userMusic=1; //Turn user-selected music on 
+            setting()->userMusic=1; //Turn user-selected music on
             saveSettings();
             fileListFree();
             soundSetMusic(); //Important to set after freeing file list, since this is using that list
@@ -1540,8 +1540,8 @@ int runMenu(SDL_Surface* screen)
                     #define DELIMCHAR '/'
                   #endif
                   nmd = strncpy( nmd, setting()->musicDir, charrpos( setting()->musicDir, DELIMCHAR ) );
-                  nmd[charrpos( setting()->musicDir, DELIMCHAR )] = 0; 
-                  printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd); 
+                  nmd[charrpos( setting()->musicDir, DELIMCHAR )] = 0;
+                  printf("Went from '%s' to '%s'\n", setting()->musicDir, nmd);
                   free( setting()->musicDir );
                   setting()->musicDir = nmd;
                 } else {

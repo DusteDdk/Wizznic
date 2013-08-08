@@ -189,16 +189,18 @@
                                     "But mostly bee... Advertisements!\n"\
                                     "                        - Jimmy"
 
-#define STR_MENU_UPLOADNAG          "---- Help Make Wizznic Better ----\n"\
+#define STR_MENU_UPLOADNAG          "-- Please allow Internet access --\n"\
+                                    "\n"\
                                     "Wizznic! is a free game that needs\n"\
                                     "your help to become really great!\n"\
                                     "\n"\
+                                    "Internet access enables Wizznic\n"\
+                                    "to install DLCs and also upload\n"\
+                                    "gameplay statistics.\n"\
                                     "\n"\
-                                    "Please allow Wizznic! to upload\n"\
-                                    "statistics about your games.\n"\
-                                    "\n"\
-                                    "If you want to download packs\n"\
-                                    "from the menu, you need to say yes.\n"\
+                                    "These stats are used to make\n"\
+                                    "new versions more balanced and\n"\
+                                    "improve the gameplay experience.\n"\
                                     "\n"\
                                     "This can be changed in Options.\n"\
                                     "\n"\
