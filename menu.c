@@ -1727,6 +1727,8 @@ int runMenu(SDL_Surface* screen)
 
           if( getChar() == SDLK_RETURN || getButton(C_BTNMENU) || getButton(C_BTNB) || isPointerEscapeClicked() || isPointerClicked() )
           {
+            resetBtn(C_BTNMENU);
+            resetBtn(C_BTNB);
             setMenu( menuStatePackList );
             menuPosY = packAdd( bundlePath(), PACK_IS_DLC );
             bundlePathReset();
