@@ -35,6 +35,7 @@ struct settings_s {
   int bpp; //bit per pixel that the "screen" runs
   int glHeight, glWidth, glEnable,glFilter;
   int fullScreen;
+  int rift;
 
   char* packDir; //
   char* playerName;

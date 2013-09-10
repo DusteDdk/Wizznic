@@ -84,6 +84,7 @@ void loadSettings()
   settings.fullScreen=0;
 
   //Not written to file
+  settings.rift=0;
   settings.scaleFactor=1.0;
   settings.session=0;
   settings.solvedWorldWide=0;

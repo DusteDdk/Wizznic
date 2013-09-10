@@ -380,7 +380,8 @@ extern const char* str_brick_names[];
     "    -sw           # Disable OpenGL.\n"\
     "    -glheight PX  # Window width  (-1 for auto).\n"\
     "    -glwidth  PY  # Window height (-1 for auto).\n"\
-    "    -glfilter ST  # 0=Blocky, 1=Smooth.\n"
+    "    -glfilter ST  # 0=Blocky, 1=Smooth.\n"\
+    "    -rift         # Usable for Oculus Rift.\n"
 
 #define STR_VID_OPTIONS_SW \
     "    -f            # Enable fullscreen.\n"\

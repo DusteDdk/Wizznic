@@ -221,11 +221,19 @@ int main(int argc, char *argv[])
         strcpy( dumpPack, argv[i+1] );
         doScale=0;
         setting()->glEnable=0;
-	i++;
+        i++;
       } else {
         printf("-d requires a packname, and must not be used with other parameters.\n");
         return(1);
       }
+    } else if( strcmp( argv[i], "-rift") == 0 )
+    {
+      setting()->glWidth = 1280;
+      setting()->glHeight = 800;
+      setting()->glEnable=1;
+      setting()->rift=1;
+      setting()->fullScreen=0;
+      doScale=-1;
     } else if( i > 0 )
     {
       printf("\nError: Invalid argument '%s', quitting.\n", argv[i]);
