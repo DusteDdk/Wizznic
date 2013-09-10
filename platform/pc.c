@@ -85,7 +85,7 @@ SDL_Surface* riftInitAccel(int sdlVideoModeFlags)
   glEndList();
 
   //Set scaling
-  setting()->scaleFactor=1.0f;
+  setting()->scaleFactor=2.0f;
 
   return(screen);
 

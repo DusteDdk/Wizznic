@@ -232,7 +232,6 @@ int main(int argc, char *argv[])
       setting()->glHeight = 800;
       setting()->glEnable=1;
       setting()->rift=1;
-      setting()->fullScreen=0;
       doScale=-1;
     } else if( i > 0 )
     {
