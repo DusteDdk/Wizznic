@@ -1153,11 +1153,13 @@ int runMenu(SDL_Surface* screen)
           //Check if it's the DLC box
           if( menuPosY == packState()->numPacks )
           {
+#if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
             if( setting()->online && dlcGetState()==DLC_READY )
             {
               startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
               setMenu(menuStateDLC);
             }
+#endif
 
           } else {
 
