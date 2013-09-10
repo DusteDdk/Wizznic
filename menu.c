@@ -907,18 +907,18 @@ int runMenu(SDL_Surface* screen)
         {
           i++;
 
-          if( menuPosY < 0 && -menuPosY==ul+2)
+          if( menuPosY==ul+2)
           {
             sprintf(buf, STR_MENU_LVLEDIT_USRLVL_SEL, ul);
           } else {
             sprintf(buf, STR_MENU_LVLEDIT_USRLVL, ul);
           }
 
-          if(dir || menuPosY!= ul+2) txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-50+(10*(ul-scroll)));
+          txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH-53+(11*(ul-scroll)));
 
           if( isBoxClicked( getTxtBox() ) )
           {
-            menuPosY=-(ul+2); //hackity hack, if menuposy is negative, we click-selected a level
+            menuPosY=(ul+2); //hackity hack, if menuposy is negative, we click-selected a level
           }
 
           ul++;
@@ -928,9 +928,16 @@ int runMenu(SDL_Surface* screen)
           }
         }
 
-        if( getNumUserLevels() > ul )
+        if( getNumUserLevels() > ul && dir )
         {
-          txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_MORE, HSCREENW, HSCREENH-50+(10*(ul-scroll+1)));
+          txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_MORE, HSCREENW, HSCREENH+106-14);
+
+          if( isBoxClicked( getTxtBox() ) )
+          {
+            resetMouseBtn();
+            menuPosY=ul; //hackity hack
+            scroll=ul;
+          }
         }
 
         //Show keys only if cursor not active
@@ -939,28 +946,31 @@ int runMenu(SDL_Surface* screen)
           txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_USAGE, HSCREENW, HSCREENH+106);
         } else  {
           //Show Play Clone Edit buttons for the mouse
-          if( menuPosY < 0)
+          if( menuPosY > 1)
           {
 
             txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_PLAY, HSCREENW-60, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
+              resetMouseBtn();
               ul=-1; //Decided that -1 means "play"
-              menuPosY=-menuPosY;
+             // menuPosY=-menuPosY;
             }
 
             txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_EDIT, HSCREENW, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
+              resetMouseBtn();
               ul=-2; //Decided that -2 means "edit"
-              menuPosY=-menuPosY;
+             // menuPosY=-menuPosY;
             }
 
             txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_CLONE, HSCREENW+60, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
+              resetMouseBtn();
               ul=-3; //Decided that -3 means "clone"
-              menuPosY=-menuPosY;
+            //  menuPosY=-menuPosY;
             }
 
           }
@@ -968,21 +978,29 @@ int runMenu(SDL_Surface* screen)
 
 
         //Show Create and Exit menu-points.
-        if(dir || menuPosY!= 0) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_CREATE_CHOICE,HSCREENW,HSCREENH-70);
+        if( (!dir || menuPosY!=0)|| (getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT)) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_CREATE_CHOICE,HSCREENW,HSCREENH-78);
         if( isBoxClicked( getTxtBox() ) )
+        {
+          resetMouseBtn();
           menuPosY=0;
+          ul=-4; //No special meaning.
+        }
 
-        if( dir || menuPosY!= 1 ) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-60);
+        if( (!dir || menuPosY!=1)|| (getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT)) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-65);
         if( isBoxClicked( getTxtBox() ) )
+        {
+          resetMouseBtn();
           menuPosY=1;
+          ul=-4; //No special meaning.
+
+        }
 
         if( menuPosY > -1 )
         {
 
           //Edit levels/select
-          if(getButton(C_BTNB) || isAnyBoxHit() )
+          if(getButton(C_BTNB) || ul < 0 )
           {
-            resetMouseBtn();
             resetBtn(C_BTNB);
 
             if(menuPosY==0) //Load empty, and create new levelname
