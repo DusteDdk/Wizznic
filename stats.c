@@ -427,10 +427,9 @@ void statsUpload(int level, int time, int moves, int combos, int score, const ch
   #if defined (PLATFORM_SUPPORTS_STATSUPLOAD)
   if( (setting()->online || ignoreIfOnline) )
   {
-//    printf("StatsUpload with session = %i\n",setting()->session );
     int b = sprintf( curlbuf, "%s\"version=%s&pack=%s&level=%i&time=%i&moves=%i&combos=%i&score=%i&action=%s&session=%i&platform=%s\"",\
-     UPLOAD_PROGRAM, VERSION_STRING, packState()->cp->path,\
-    level,time,moves,combos,score,action, setting()->session, STR_PLATFORM );
+        CMD_UPLOAD_STATS_POST, VERSION_STRING, packState()->cp->path,\
+        level,time,moves,combos,score,action, setting()->session, STR_PLATFORM );
     if(b > 0 && b < 2048)
     {
       thrDat_t* thrData=malloc(sizeof(thrDat_t));
@@ -442,7 +441,7 @@ void statsUpload(int level, int time, int moves, int combos, int score, const ch
         printf("Warning: Coulnd't start thread: %s\n", SDL_GetError());
       }
     } else {
-      printf("Errir; printf returned %i\n", b);
+      printf("Error: sprintf returned %i\n", b);
     }
   }
   #endif

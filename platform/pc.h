@@ -24,7 +24,6 @@
 //For Uploading stats and downloading DLC's
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 
-
 #if defined(WIN32)
   #if defined(WITH_OPENGL)
     #define GLEW_STATIC
@@ -32,12 +31,20 @@
   #endif
 
   #define STR_PLATFORM "Windows"
-  #define UPLOAD_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"/commit/ --data-ascii "
-  #define DLC_PROGRAM "curl\\curl.exe --user-agent wizznicWindows --connect-timeout 10 --fail --silent --url"
+  #define CMD_UPLOAD_STATS_POST "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
+  #define CMD_CHECK_DLC_API_VERSION "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent  --url "DLC_SERVER_URL"check/version"
+  #define CMD_DOWNLOAD_DLC_FILE "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
 #elif defined(linux) || defined(__linux)
   #define STR_PLATFORM "Linux"
-  #define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit/ -O - -q --user-agent=wizznicLinux --timeout=10 --tries=1 --post-data="
-  #define DLC_PROGRAM "wget -q --user-agent=wizznicLinux --timeout=10 --tries=1"
+  #if defined(WITH_CURL)
+    #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
+    #define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
+    #define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
+  #else
+    #define CMD_UPLOAD_STATS_POST "wget "STATS_SERVER_URL"/commit/ -O - -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 --post-data="
+    #define CMD_CHECK_DLC_API_VERSION "wget -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 -O - "DLC_SERVER_URL"check/version"
+    #define CMD_DOWNLOAD_DLC_FILE "wget -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 "DLC_SERVER_URL"get/%s -O %s"
+  #endif
 #endif
 
 #ifndef WIN32

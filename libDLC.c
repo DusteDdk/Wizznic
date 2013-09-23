@@ -81,7 +81,7 @@ void dlcTryInstall( const char* code, const char* dest )
   cmd->requestCmd = malloc( 2048+strlen(cmd->destFileName) );
 
   sprintf( cmd->destFileName, "%s/%s.bin", getUsrPackDir(), code );
-  sprintf( cmd->requestCmd, "%s -O %s %sget/%s", DLC_PROGRAM,cmd->destFileName, DLC_SERVER_URL, code);
+  sprintf( cmd->requestCmd,CMD_DOWNLOAD_DLC_FILE, code, cmd->destFileName);
 
   if( SDL_CreateThread( dlcDownloadThread, cmd ) == NULL )
   {
@@ -102,6 +102,7 @@ int dlcCheckOnlineThread(void * d)
   {
     if( fgets( pBuf, 127, pipe)!= NULL )
     {
+      dlcState = DLC_API_OUTDATED;
       if( pBuf[0] == 'W' && strlen(pBuf)>=strlen(DLC_API_VERSION_STRING))
       {
         //Truncate the string
@@ -110,8 +111,6 @@ int dlcCheckOnlineThread(void * d)
         if( strcmp(pBuf, DLC_API_VERSION_STRING) == 0 )
         {
           dlcState = DLC_READY;
-        } else {
-          dlcState = DLC_API_OUTDATED;
         }
       }
     }
@@ -130,7 +129,7 @@ void dlcCheckOnline()
   cmd->destFileName = NULL;
   cmd->requestCmd = malloc( 2048 );
 
-  sprintf( cmd->requestCmd, "%s -O - %scheck/version", DLC_PROGRAM, DLC_SERVER_URL);
+  sprintf( cmd->requestCmd, CMD_CHECK_DLC_API_VERSION);
 
   SDL_CreateThread( dlcCheckOnlineThread, cmd );
   //Do not free cmd, the thread will do that.
