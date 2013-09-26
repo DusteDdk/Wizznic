@@ -42,9 +42,9 @@ void initStars(SDL_Surface* screen)
     star->y = rand()%(2400) + (HSCREENH-120)*10;
 
 
-    star->sx = rand()%10; //xpos and ypos are to be divided by 10
     star->sy = 0;
-    col = rand()%230+25; //from 25 to 255
+    col = rand()%229+26; //from 26 to 255
+    star->sx = (int)( (float)(10.0/255.0)*(float)col );
     star->color = SDL_MapRGB(screen->format, col,col,col);
     listAddData(stars, (void*)star); //Add star to list
   }
