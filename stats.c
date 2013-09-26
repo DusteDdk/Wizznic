@@ -399,6 +399,8 @@ int upStatsThread(void * d)
   char* cmd = dat->cmd;
   int* ret = dat->ret;
 
+  if( setting()->showWeb ) { printf( "%s\n", cmd ); }
+
   if( (pipe = popen( cmd, "r" )) != NULL )
   {
       setting()->online=1;

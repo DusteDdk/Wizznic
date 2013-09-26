@@ -22,6 +22,7 @@
 #include <string.h>
 #include <SDL/SDL.h>
 
+#include "settings.h"
 #include "userfiles.h"
 #include "libDLC.h"
 #include "bundle.h"
@@ -39,6 +40,8 @@ int dlcDownloadThread(void * d)
 {
   dlcState=DLC_BUSY;
   dlcThreadCmd* cmd = (dlcThreadCmd*)d;
+
+  if( setting()->showWeb ) { printf( "%s\n", cmd->requestCmd ); }
 
   if( system( cmd->requestCmd ) == 0)
   {
@@ -97,6 +100,8 @@ int dlcCheckOnlineThread(void * d)
   char* pBuf = malloc( 128 );
   FILE *pipe;
   dlcThreadCmd* cmd = (dlcThreadCmd*)d;
+
+  if( setting()->showWeb ) { printf( "%s\n", cmd->requestCmd ); }
 
   if( (pipe = popen( cmd->requestCmd, "r" )) != NULL )
   {

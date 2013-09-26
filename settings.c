@@ -82,6 +82,7 @@ void loadSettings()
   settings.glEnable=1;
   settings.glFilter=0;
   settings.fullScreen=0;
+  settings.showWeb=0;
 
   //Not written to file
   settings.rift=0;
@@ -211,7 +212,12 @@ void loadSettings()
         if( strcmp("fullscreen",set)==0 )
         {
           settings.fullScreen=atoi(val);
+        } else
+        if( strcmp("showweb",set)==0 )
+        {
+          settings.showWeb=atoi(val);
         }
+
 
       }
     }

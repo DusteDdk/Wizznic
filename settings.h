@@ -46,6 +46,7 @@ struct settings_s {
   int uploadStats; //Allow to connect to STATS_SERVER_URL
   int online; //are we online, should not be saved
   int firstRun; //Is 1 if there's no config file (only happens once, or if stuffs really buggy)
+  int showWeb; //print curl/wget command lines (for debugging)
 
   SDL_Rect bgPos; //background position
   int solvedWorldWide;
