@@ -24,20 +24,28 @@ SDL_Surface* loadImg( const char* fileName )
   SDL_Surface* unoptimized = NULL;
   SDL_Surface* optimized = NULL;
 
-  unoptimized = IMG_Load( fileName ); //Cast that makes no sense?
-
-  if(unoptimized!=NULL)
+  FILE* f = fopen( fileName, "rb" );
+  if( f != NULL )
   {
-    //Create optimized.
-    optimized = SDL_DisplayFormat( unoptimized );
+    fclose(f);
 
-    //Destroy old img
-    SDL_FreeSurface( unoptimized );
+    unoptimized = IMG_Load( fileName );
 
-    if(optimized!=NULL)
+    if(unoptimized!=NULL)
     {
-      //Set colorkey for cheap transparency
-      SDL_SetColorKey( optimized, SDL_SRCCOLORKEY, SDL_MapRGB( optimized->format, 0, 0xFF, 0xFF ) );
+      //Create optimized.
+      optimized = SDL_DisplayFormat( unoptimized );
+
+      //Destroy old img
+      SDL_FreeSurface( unoptimized );
+
+      if(optimized!=NULL)
+      {
+        //Set colorkey for cheap transparency
+        SDL_SetColorKey( optimized, SDL_SRCCOLORKEY, SDL_MapRGB( optimized->format, 0, 0xFF, 0xFF ) );
+      }
+    } else {
+      printf("loadImg(%s) (IMG_Load) failed: %s\n", fileName, IMG_GetError());
     }
   }
 
