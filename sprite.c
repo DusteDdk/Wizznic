@@ -17,6 +17,7 @@
 
 #include "sprite.h"
 #include "ticks.h"
+#include "pack.h"
 
 SDL_Surface* loadImg( const char* fileName )
 {
@@ -24,10 +25,8 @@ SDL_Surface* loadImg( const char* fileName )
   SDL_Surface* unoptimized = NULL;
   SDL_Surface* optimized = NULL;
 
-  FILE* f = fopen( fileName, "rb" );
-  if( f != NULL )
+  if( isFile(fileName) )
   {
-    fclose(f);
 
     unoptimized = IMG_Load( fileName );
 
