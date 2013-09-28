@@ -319,7 +319,7 @@
 #define STR_EDIT_NOT_SAVED_WARNING  "Not Saved!"
 
 
-#ifdef GP2X
+#if defined(GP2X) || defined(WIZ)
   #define STR_EDIT_NEXTBRICK_KEY      "B>"
   #define STR_EDIT_PREVBRICK_KEY      "<A"
 #elif defined (PSP)
