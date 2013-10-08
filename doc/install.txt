@@ -58,7 +58,7 @@ Type this:
         BINDIR=/usr/games/
 
 	sudo make -f Makefile.linux DATADIR=/usr/share/games/wizznic/ \
-        BINDIR=/usr/games/ install
+        BINDIR=/usr/games/ MANDIR=/usr/share/man/ install
 
 To remove the installation again, type:
 	sudo rm -R /usr/games/wizznic /usr/share/games/wizznic

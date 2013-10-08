@@ -15,6 +15,11 @@ endif
 
 DEFS = -DDATADIR="\"$(DATADIR)\""
 
+#default to /usr/share/man for man page
+#note: some systems use /usr/local/share/man, others use /usr/local/man
+#packagers should set the variable accordingly
+MANDIR = /usr/share/man
+
 #Add the PER_USER_FILES define if the DATADIR is set
 ifneq ($(DATADIR),)
   ifneq ($(DATADIR),"./")
@@ -68,6 +73,8 @@ install:
 	cp -R packs "$(DESTDIR)$(DATADIR)"
 	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
 	find "$(DESTDIR)$(DATADIR)" -type f -exec chmod 644 {} \;
+	install -d "$(DESTDIR)$(MANDIR)man1/"
+	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
 
 clean:
 	rm -f *.o $(NAME) platform/*.o
