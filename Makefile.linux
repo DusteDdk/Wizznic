@@ -18,7 +18,7 @@ DEFS = -DDATADIR="\"$(DATADIR)\""
 #default to /usr/share/man for man page
 #note: some systems use /usr/local/share/man, others use /usr/local/man
 #packagers should set the variable accordingly
-MANDIR = /usr/share/man
+MANDIR = /usr/share/man/
 
 #Add the PER_USER_FILES define if the DATADIR is set
 ifneq ($(DATADIR),)

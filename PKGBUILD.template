@@ -22,7 +22,7 @@ build() {
 package() {
   cd "$srcdir/<SRCDIRNAME>"
 
-  make -f Makefile.linux DATADIR=$pkgdir/usr/share/wizznic/ BINDIR=$pkgdir/usr/bin/ install
+  make -f Makefile.linux DATADIR=$pkgdir/usr/share/wizznic/ BINDIR=$pkgdir/usr/bin/ MANDIR=$pkgdir/usr/share/man/ install
 
   mkdir -p "${pkgdir}"/usr/share/{applications,pixmaps}
   install -m644 tools/releaser/data/lin/wizznic.png "${pkgdir}"/usr/share/pixmaps/wizznic.png
