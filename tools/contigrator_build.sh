@@ -9,7 +9,6 @@ set -e;set -x
 
 #Add your build instructions below:
 
-
 echo "Wizznic build script."
 VERSION_LONG=build_$BN_NUM
 VERSION=1.0-dev
@@ -19,12 +18,12 @@ make -f Makefile.win clean
 make -f Makefile.wiz clean
 
 # The 64 bit linux version
-make -j 4 -f Makefile.linux
+make -j 4 -f Makefile.linux CC='ccache gcc'
 mv wizznic wizznic_linux_x64_precompiled
 make -j 4 -f Makefile.linux clean
 
 # The chrooted 32 bit linux version.
-sudo -E -P USER=$USER USERNAME=$USER LOGNAME=$LOGNAME -- /usr/sbin/chroot /var/local/32bitDeb/ su -p -l $USER -c "cd /home/contigrator/jobs/Wizznic/workspace/ && make -j 4 -f Makefile.linux"
+sudo -E -P USER=$USER USERNAME=$USER LOGNAME=$LOGNAME -- /usr/sbin/chroot /var/local/32bitDeb/ su -p -l $USER -c "cd /home/contigrator/jobs/Wizznic/workspace/ && make -j 4 -f Makefile.linux CC='ccache gcc'"
 mv wizznic wizznic_linux_x86_precompiled
 
 #Copy files around and package
@@ -33,13 +32,13 @@ mkdir $DST
 cp -a data packs doc wizznic_linux_x64_precompiled wizznic_linux_x86_precompiled $DST/
 rm -f wizznic_linux_x86_precompiled wizznic_linux_x64_precompiled
 rm $DST/data/border.png
-tar jcvf $OUT/$DST.tar.bz2 $DST
+tar jcf $OUT/$DST.tar.bz2 $DST
 rm -R $DST
 
 make -f Makefile.linux clean
 
 #32 Bit Windows
-make -j 4 -f Makefile.win
+make -j 4 -f Makefile.win CC='ccache i586-mingw32msvc-gcc'
 
 DST=Wizznic_win_build_$BN_NUM
 mkdir $DST
@@ -52,17 +51,15 @@ cd $DST/doc/
 unix2dos *.txt
 cd ../..
 
-zip -9 -r $OUT/$DST.zip $DST
+zip -9 -r $OUT/$DST.zip $DST > /dev/null
 rm -R $DST
 
 make -f Makefile.win clean
 
 
-
-
 #Gp2X Wiz
 export TOOLCHAIN=/opt/arm-openwiz-linux-gnu
-make -j 4 -f Makefile.wiz
+make -j 4 -f Makefile.wiz CC='ccache /opt/arm-openwiz-linux-gnu/bin/arm-openwiz-linux-gnu-gcc'
 
 DST=Wizznic_wiz_build_$BN_NUM
 
@@ -76,7 +73,7 @@ cd ..
 mkdir game
 mv $DST/$DST.ini game/
 mv $DST game/
-zip -9 -r $OUT/$DST.zip game
+zip -9 -r $OUT/$DST.zip game > /dev/null
 rm -R game
 
 make -f Makefile.wiz clean
