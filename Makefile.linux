@@ -36,7 +36,14 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 INCS =  -I. -I/usr/include -I/usr/include/SDL
-CFLAGS=-O3 -Wall -Wextra
+CFLAGS=-Wall -Wextra
+ifeq ($(DEBUG),)
+  CFLAGS += -O3
+else
+  STRIP = true
+  CFLAGS += -g
+endif
+
 LDFLAGS=$(CFLAGS)
 LIBS = -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
 
