@@ -371,6 +371,7 @@ extern const char* str_brick_names[];
 //Game
 #define STR_GAME_RESTARTWARNING     "Restart Level?"
 #define STR_GAME_UNSOLVABLE         "Unsolvable!"
+#define STR_GAME_LOSTLIFE           "Life Lost!"
 #define STR_GAME_OUTOFTIME          "Out Of Time!"
 
 

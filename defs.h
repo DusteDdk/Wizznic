@@ -39,7 +39,10 @@
 #define TELESRC 18    //Teleport source brick
 #define SWON 19       //Switch turns on target when brick on top
 #define SWOFF 20      //Switch turns off target when brick on top
-#define NUMTILES 20   //type 1 = index 0 in tile array
+#define REMBRICK 21   //Brick is removed from level (may result in unsolvable)
+#define COPYBRICK 22  //Copies brick on top of it and places in field below if free.
+#define EVILBRICK 23  //Makes player lose game.
+#define NUMTILES 23   //type 1 = index 0 in tile array
 
 
 #define MOVERCOUNTDOWN 500  //Ms pause before mover switch direction

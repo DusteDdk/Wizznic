@@ -27,6 +27,7 @@
 
 #define NOBRICKSLEFT -1
 #define UNSOLVABLE -2
+#define LIFELOST -3
 
 struct brick_t
 {

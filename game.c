@@ -38,6 +38,7 @@ static SDL_Surface* startStopImg;
 #define GAMESTATESTARTIMAGE 6
 #define GAMESTATESTOPIMAGE 7
 #define GAMESTATESKIPLEVEL 8
+#define GAMESTATELIFELOST 9
 
 static int gameState=GAMESTATECOUNTDOWN;
 static int startStopImgCounter=0;
@@ -498,6 +499,18 @@ int runGame(SDL_Surface* screen)
       }
 
       sndPlay(SND_TIMEOUT, 160);
+    } else if(ret==LIFELOST)
+    {
+      countdown=2000;
+      gameState=GAMESTATELIFELOST;
+
+      if( !player()->inEditor )
+      {
+        player()->timeouts++;
+      }
+
+      sndPlay(SND_TIMEOUT, 160);
+
     }
 
 
@@ -682,7 +695,58 @@ int runGame(SDL_Surface* screen)
         }
       }
     }
-  } else if(gameState==GAMESTATESTARTIMAGE)
+  } else
+  if(gameState==GAMESTATELIFELOST)
+  {
+
+    draw(&cur,&pf, screen);
+    //drawUi(screen);
+
+    countdown-=getTicks();
+
+      sprintf(buf, STR_GAME_LOSTLIFE);
+
+      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
+
+      if(countdown < 1000)
+      {
+        sprintf(buf, STR_MENU_PRESS_B);
+        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
+        //Wait for anykey
+        if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
+        {
+          resetBtn(C_BTNB);
+          resetMouseBtn();
+          //Subtract lives
+          if(!player()->inEditor)
+          {
+            if(player()->lives != -1)
+            {
+              player()->lives--;
+            }
+
+            if(player()->lives==0)
+            {
+              setGameOver();
+            } else {
+              //Lost a life, but did not get gameover, upload the death
+              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-evilbrick",0, NULL);
+              setMenu(menuStateNextLevel);
+            }
+          }
+
+          //Clear score
+            player()->hsEntry.score=0;
+          //Goto cleanup, then menu
+          cleanUpGame();
+          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
+          return(STATEMENU);
+        }
+      }
+
+
+  } else
+  if(gameState==GAMESTATESTARTIMAGE)
   {
 
     if(!startStopImg)

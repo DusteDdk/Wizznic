@@ -32,6 +32,7 @@ int switchSetTargets( playField* pf )
   while( (it=it->next) )
   {
     switch_t* sw = (switch_t*)it->data;
+
     //Sanity check
     if( !isSwitch( pf->board[sw->sx][sw->sy] ) )
     {
@@ -80,7 +81,7 @@ int switchFindTele( playField* pf, int x, int y )
 int switchIsValidTarget( playField* pf, int x, int y )
 {
 
-  if( isWall( pf, x, y ) || isMover(pf->board[x][y]) || switchFindTele(pf, x, y) )
+  if( isWall( pf, x, y ) || isMover(pf->board[x][y]) || switchFindTele(pf, x, y) || ( pf->board[x][y] && (pf->board[x][y]->type==EVILBRICK || pf->board[x][y]->type==COPYBRICK || pf->board[x][y]->type==REMBRICK) ) )
   {
     return(1);
   }
@@ -91,7 +92,7 @@ int switchIsValidTarget( playField* pf, int x, int y )
 void switchAttachTarget( playField* pf, switch_t* sw )
 {
   //If it's a walltype or mover.
-  if( isWall( pf, sw->dx, sw->dy ) || isMover(pf->board[sw->dx][sw->dy])  )
+  if( isWall( pf, sw->dx, sw->dy ) || isMover(pf->board[sw->dx][sw->dy]) || (pf->board[sw->dx][sw->dy] &&(pf->board[sw->dx][sw->dy]->type==EVILBRICK||pf->board[sw->dx][sw->dy]->type==COPYBRICK||pf->board[sw->dx][sw->dy]->type==REMBRICK) ) )
   {
     pf->board[sw->sx][sw->sy]->target = pf->board[sw->dx][sw->dy];
   }
@@ -138,6 +139,7 @@ void switchReact( playField* pf, int x, int y )
   if( pf->board[x][y]->isActive != newState )
   {
     pf->board[x][y]->isActive=newState;
+
     switchAffectTarget(pf, x, y, newState );
     if(newState && pf->board[x][y]->type==SWON)
     {
@@ -181,6 +183,9 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
     case MOVERVERT:
     case ONEWAYLEFT:
     case ONEWAYRIGHT:
+    case EVILBRICK:
+    case COPYBRICK:
+    case REMBRICK:
       s->target->isActive = newState;
     break;
 

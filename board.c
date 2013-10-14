@@ -145,6 +145,27 @@ void boardSetWalls(playField* pf)
   }
 }
 
+void newBrick(playField* pf, int x, int y, int type)
+{
+  pf->board[x][y] = malloc( sizeof( brickType ) );
+  pf->board[x][y]->type = type;
+  pf->board[x][y]->pxx = x*brickSize+boardOffsetX;
+  pf->board[x][y]->pxy = y*brickSize+boardOffsetY;
+  pf->board[x][y]->dir=0;
+  pf->board[x][y]->checked=0;
+  pf->board[x][y]->curLock=0;
+  pf->board[x][y]->sx = x;
+  pf->board[x][y]->sy = y;
+  pf->board[x][y]->dx = x;
+  pf->board[x][y]->dy = y;
+  pf->board[x][y]->tl  = MOVERCOUNTDOWN;
+  pf->board[x][y]->moveXspeed = 0;
+  pf->board[x][y]->moveYspeed = 0;
+  pf->board[x][y]->isActive=1; //all bricks are born alive, except switches, these are updated in switchSetTarget
+  pf->board[x][y]->target=NULL;
+  pf->board[x][y]->dmx = 0;
+}
+
 int loadField(playField* pf, const char* file)
 {
   FILE *f = fopen(file, "r");
@@ -194,24 +215,7 @@ int loadField(playField* pf, const char* file)
 
       if(type !=0)
       {
-        pf->board[x][y] = malloc( sizeof( brickType ) );
-        pf->board[x][y]->type = type;
-        pf->board[x][y]->pxx = x*brickSize+boardOffsetX;
-        pf->board[x][y]->pxy = y*brickSize+boardOffsetY;
-        pf->board[x][y]->dir=0;
-        pf->board[x][y]->checked=0;
-        pf->board[x][y]->curLock=0;
-        pf->board[x][y]->sx = x;
-        pf->board[x][y]->sy = y;
-        pf->board[x][y]->dx = x;
-        pf->board[x][y]->dy = y;
-        pf->board[x][y]->tl  = MOVERCOUNTDOWN;
-        pf->board[x][y]->moveXspeed = 0;
-        pf->board[x][y]->moveYspeed = 0;
-        pf->board[x][y]->isActive=1; //all bricks are born alive, except switches, these are updated in switchSetTarget
-        pf->board[x][y]->target=NULL;
-
-        pf->board[x][y]->dmx = 0;
+        newBrick(pf,x,y,type);
       } else {
         pf->board[x][y] = 0;
       }
@@ -768,6 +772,24 @@ void simField(playField* pf, cursorType* cur)
             }
 
           }
+        } else if(pf->board[x][y] && pf->board[x][y]->isActive && y>0 &&  pf->board[x][y-1] && isBrick( pf->board[x][y-1]) && !isBrickFalling(pf,pf->board[x][y-1]))
+        {
+          if( pf->board[x][y]->type == REMBRICK)
+          {
+            pf->board[x][y-1]->dir=1;
+            listAddData(pf->removeList, (void*)pf->board[x][y-1]);
+          } else
+          if( pf->board[x][y]->type==COPYBRICK && !pf->board[x][y+1] )
+          {
+            if( pf->board[x][y]->dir < 1 )
+            {
+              pf->board[x][y]->dir=500;
+              newBrick(pf,x,y+1,pf->board[x][y-1]->type);
+            } else {
+              pf->board[x][y]->dir -= getTicks();
+            }
+          }
+
         }
       }
     }
@@ -835,51 +857,61 @@ int doRules(playField* pf)
   {
     for(x=0; x < FIELDSIZE; x++)
     {
-      if(pf->board[x][y] && isBrick(pf->board[x][y]))
+      if(pf->board[x][y])
       {
-        //Bricks on board
-        bricksLeft++;
-
-        //Tell this type exists on the board (for detecting if it's still solvable)
-        typeLeft[pf->board[x][y]->type-1]++;
-
-
-        //Check a brick, only if it is NOT falling and if the brick below it is NOT a reserved brick type (reserved meaning that the brick below is exploding)
-        if(!isBrickFalling(pf,pf->board[x][y]) && !onTopOfReserved(pf, x,y ) )
+        if( isBrick(pf->board[x][y]) )
         {
-          //Detect touching bricks.
+          //Bricks on board
+          bricksLeft++;
 
-          //On top
-          if(y > 0 && pf->board[x][y-1] && pf->board[x][y-1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y-1]) )
-          {
-            pf->board[x][y]->dir=1;
-            listAddData(pf->removeList, (void*)pf->board[x][y]);
-            //pf->board[x][y]=0;
-          } else
-          //Below
-          if(y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y+1]) )
-          {
-            pf->board[x][y]->dir=1;
-            listAddData(pf->removeList, (void*)pf->board[x][y]);
-            //pf->board[x][y]=0;
-          } else
-          //Left
-          if(x > 0 && pf->board[x-1][y] && pf->board[x-1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x-1][y]) )
-          {
-            pf->board[x][y]->dir=1;
-            listAddData(pf->removeList, (void*)pf->board[x][y]);
-            //pf->board[x][y]=0;
-          } else
-          //Right
-          if(x+1 < FIELDSIZE && pf->board[x+1][y] && pf->board[x+1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x+1][y]))
-          {
-            pf->board[x][y]->dir=1;
-            listAddData(pf->removeList, (void*)pf->board[x][y]);
-            //pf->board[x][y]=0;
-          }
+          //Tell this type exists on the board (for detecting if it's still solvable)
+          typeLeft[pf->board[x][y]->type-1]++;
 
-        } //A brick
-      } //Not falling
+
+          //Check a brick, only if it is NOT falling and if the brick below it is NOT a reserved brick type (reserved meaning that the brick below is exploding)
+          if(!isBrickFalling(pf,pf->board[x][y]) && !onTopOfReserved(pf, x,y ) )
+          {
+            //Detect touching bricks.
+
+            //On top
+            if(y > 0 && pf->board[x][y-1] && pf->board[x][y-1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y-1]) )
+            {
+              pf->board[x][y]->dir=1;
+              listAddData(pf->removeList, (void*)pf->board[x][y]);
+              //pf->board[x][y]=0;
+            } else
+            //Below
+            if(y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y+1]) )
+            {
+              pf->board[x][y]->dir=1;
+              listAddData(pf->removeList, (void*)pf->board[x][y]);
+              //pf->board[x][y]=0;
+            } else
+            //Left
+            if(x > 0 && pf->board[x-1][y] && pf->board[x-1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x-1][y]) )
+            {
+              pf->board[x][y]->dir=1;
+              listAddData(pf->removeList, (void*)pf->board[x][y]);
+              //pf->board[x][y]=0;
+            } else
+            //Right
+            if(x+1 < FIELDSIZE && pf->board[x+1][y] && pf->board[x+1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x+1][y]))
+            {
+              pf->board[x][y]->dir=1;
+              listAddData(pf->removeList, (void*)pf->board[x][y]);
+              //pf->board[x][y]=0;
+            }
+
+          } //Not falling
+        } // A Brick
+        else
+        if( pf->board[x][y]->type==EVILBRICK && pf->board[x][y]->isActive && y > 0 && pf->board[x][y-1] && isBrick(pf->board[x][y-1]) )
+        {
+          return(LIFELOST);
+        }//Evil brick
+      } // Not empty
+
+
     }
   }
   //Remove ones that need removed
