@@ -40,6 +40,7 @@ int isWall(playField* pf, int x, int y)
   if(pf->board[x][y]->type==ONEWAYLEFT) return(1);
   if(pf->board[x][y]->type==ONEWAYRIGHT) return(1);
   if( pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF ) return(1);
+  if( pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == EVILBRICK || pf->board[x][y]->type == COPYBRICK ) return(1);
 
   return(0);
 }
@@ -137,7 +138,7 @@ void boardSetWalls(playField* pf)
   {
     for(y=0; y < FIELDSIZE; y++)
     {
-      if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF) )
+      if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF || pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == COPYBRICK || pf->board[x][y]->type == EVILBRICK) )
       {
         setWallType(pf,x,y);
       }

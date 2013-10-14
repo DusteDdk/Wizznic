@@ -252,7 +252,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       //Bricks-Walls
       if(pf->board[x][y] && pf->board[x][y]->type != RESERVED)
       {
-        //We treat walls/glue/oneways/switches as walls (they will have the walltile defined)
+        //We treat walls/glue/oneways/switches/evilbricks/copybricks and rembricks as walls (they will have the walltile defined)
         if( isWall(pf, x, y) )
         {
           drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
