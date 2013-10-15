@@ -81,7 +81,7 @@ int switchFindTele( playField* pf, int x, int y )
 int switchIsValidTarget( playField* pf, int x, int y )
 {
 
-  if( isWall( pf, x, y ) || isMover(pf->board[x][y]) || switchFindTele(pf, x, y) || ( pf->board[x][y] && (pf->board[x][y]->type==EVILBRICK || pf->board[x][y]->type==COPYBRICK || pf->board[x][y]->type==REMBRICK) ) )
+  if( isWall( pf, x, y ) || isMover(pf->board[x][y]) || switchFindTele(pf, x, y) || ( pf->board[x][y] && (pf->board[x][y]->type==EVILBRICK || pf->board[x][y]->type==COPYBRICK || pf->board[x][y]->type==REMBRICK||pf->board[x][y]->type==SWAPBRICK) ) )
   {
     return(1);
   }
@@ -92,7 +92,7 @@ int switchIsValidTarget( playField* pf, int x, int y )
 void switchAttachTarget( playField* pf, switch_t* sw )
 {
   //If it's a walltype or mover.
-  if( isWall( pf, sw->dx, sw->dy ) || isMover(pf->board[sw->dx][sw->dy]) || (pf->board[sw->dx][sw->dy] &&(pf->board[sw->dx][sw->dy]->type==EVILBRICK||pf->board[sw->dx][sw->dy]->type==COPYBRICK||pf->board[sw->dx][sw->dy]->type==REMBRICK) ) )
+  if( isWall( pf, sw->dx, sw->dy ) || isMover(pf->board[sw->dx][sw->dy]) || (pf->board[sw->dx][sw->dy] &&(pf->board[sw->dx][sw->dy]->type==EVILBRICK||pf->board[sw->dx][sw->dy]->type==COPYBRICK||pf->board[sw->dx][sw->dy]->type==REMBRICK||pf->board[sw->dx][sw->dy]->type==SWAPBRICK) ) )
   {
     pf->board[sw->sx][sw->sy]->target = pf->board[sw->dx][sw->dy];
   }
@@ -186,6 +186,7 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
     case EVILBRICK:
     case COPYBRICK:
     case REMBRICK:
+    case SWAPBRICK:
       s->target->isActive = newState;
     break;
 

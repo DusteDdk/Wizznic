@@ -26,7 +26,6 @@
 #include "draw.h"
 #include "input.h"
 
-
 int isWall(playField* pf, int x, int y)
 {
   if(x < 0) return(0);
@@ -40,9 +39,19 @@ int isWall(playField* pf, int x, int y)
   if(pf->board[x][y]->type==ONEWAYLEFT) return(1);
   if(pf->board[x][y]->type==ONEWAYRIGHT) return(1);
   if( pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF ) return(1);
-  if( pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == EVILBRICK || pf->board[x][y]->type == COPYBRICK ) return(1);
+  if( pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == EVILBRICK || pf->board[x][y]->type == COPYBRICK || pf->board[x][y]->type == SWAPBRICK ) return(1);
 
   return(0);
+}
+
+void dumpBrickTypes(playField* pf)
+{
+  int t;
+  printf("BrickTypes on board:\n");
+  for(t=0; t < BRICKSEND; t++)
+  {
+    printf("  %i of type %i\n", pf->brickTypes[t],t+1);
+  }
 }
 
 void setWallType(playField* pf, int x, int y)
@@ -138,7 +147,8 @@ void boardSetWalls(playField* pf)
   {
     for(y=0; y < FIELDSIZE; y++)
     {
-      if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF || pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == COPYBRICK || pf->board[x][y]->type == EVILBRICK) )
+      //if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF || pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == COPYBRICK || pf->board[x][y]->type == EVILBRICK || pf->board[x][y]->type == SWAPBRICK) )
+      if(isWall( pf, x,y ))
       {
         setWallType(pf,x,y);
       }
@@ -165,6 +175,10 @@ void newBrick(playField* pf, int x, int y, int type)
   pf->board[x][y]->isActive=1; //all bricks are born alive, except switches, these are updated in switchSetTarget
   pf->board[x][y]->target=NULL;
   pf->board[x][y]->dmx = 0;
+  if( !(type < BRICKSBEGIN) && !(type > BRICKSEND) )
+  {
+    pf->brickTypes[type-1]++;
+  }
 }
 
 int loadField(playField* pf, const char* file)
@@ -177,6 +191,8 @@ int loadField(playField* pf, const char* file)
 
   char temp[32];
   int type=0;
+
+  memset( pf->brickTypes, 0,sizeof(pf->brickTypes) );
 
   //For atoi hack
   temp[2] = '\0';
@@ -193,6 +209,7 @@ int loadField(playField* pf, const char* file)
   //For checking that level var correctly loaded
   //Read each byte into the field
   int c=0,x=0,y=0;
+
   do {
     c = fgetc(f);
     temp[0]=c;
@@ -333,16 +350,12 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
   psysSet_t ps; //Particle system for particle effect
   brickType* b = pf->board[t->sx][t->sy];
 
-  //Setup particle system
+  //Spawn systems in source
   ps.layer=PSYS_LAYER_TOP;
   ps.fade=0;
   ps.gravity=0;
   ps.bounce=0;
   ps.srcImg=0;
-
-
-  //Spawn systems in source
-  ps.layer=PSYS_LAYER_TOP;
   ps.x=b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2;
   ps.y=b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2;
   ps.vel=100; // +/- in each dir
@@ -531,6 +544,9 @@ static int horizMover(playField* pf, int x, int y, int dir)
 void simField(playField* pf, cursorType* cur)
 {
   int x,y;
+
+  psysSet_t ps; //Particle system for particle effect
+
 
   //Update moving bricks
   listItem* li=pf->movingList;
@@ -780,12 +796,131 @@ void simField(playField* pf, cursorType* cur)
             pf->board[x][y-1]->dir=1;
             listAddData(pf->removeList, (void*)pf->board[x][y-1]);
           } else
-          if( pf->board[x][y]->type==COPYBRICK && !pf->board[x][y+1] )
+          if( pf->board[x][y]->type==COPYBRICK )
           {
             if( pf->board[x][y]->dir < 1 )
             {
-              pf->board[x][y]->dir=500;
-              newBrick(pf,x,y+1,pf->board[x][y-1]->type);
+              pf->board[x][y]->dir=COPYBRICK_COPYDELAY;
+              if( !pf->board[x][y+1] )
+              {
+                newBrick(pf,x,y+1,pf->board[x][y-1]->type);
+
+                sndPlayOnce( SND_BRICKCOPY, pf->board[x][y-1]->pxx );
+                //Spawn system
+                ps.layer=PSYS_LAYER_TOP;
+                ps.fade=0;
+                ps.gravity=0;
+                ps.bounce=0;
+                ps.srcImg=0;
+                ps.vel=100; // +/- in each dir
+                ps.life=250;
+                ps.lifeVar=10;
+                ps.color=PARTICLECOLORRANDOM;
+                ps.numParticles=30;
+                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                spawnParticleSystem(&ps);
+
+                ps.color=PARTICLECOLORRANDOM;
+                ps.x=pf->board[x][y+1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                ps.y=pf->board[x][y+1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                spawnParticleSystem(&ps);
+              } else {
+                sndPlayOnce( SND_BRICKCOPY_DENIED, pf->board[x][y-1]->pxx );
+                //Spawn system
+                ps.layer=PSYS_LAYER_TOP;
+                ps.fade=0;
+                ps.gravity=0;
+                ps.bounce=0;
+                ps.srcImg=0;
+                ps.vel=100; // +/- in each dir
+                ps.life=250;
+                ps.lifeVar=10;
+                ps.color=0x0000;
+                ps.numParticles=30;
+                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                spawnParticleSystem(&ps);
+              }
+            } else {
+              pf->board[x][y]->dir -= getTicks();
+            }
+          } else
+          if( pf->board[x][y]->type == SWAPBRICK)
+          {
+            if( pf->board[x][y]->dir < 1 )
+            {
+              pf->board[x][y]->dir=SWAPBRICK_SWAPDELAY;
+              if(pf->brickTypes[pf->board[x][y-1]->type-1] > 2)
+              {
+                int oldType = pf->board[x][y-1]->type;
+
+                //Remove brick entry from type accounting.
+                pf->brickTypes[pf->board[x][y-1]->type-1]--;
+
+                do {
+                  pf->board[x][y-1]->type++;
+                  if( pf->board[x][y-1]->type > BRICKSEND )
+                  {
+                    pf->board[x][y-1]->type=BRICKSBEGIN;
+                  }
+                } while ( !pf->brickTypes[pf->board[x][y-1]->type-1] );
+
+                //Add brick entry
+                pf->brickTypes[pf->board[x][y-1]->type-1]++;
+
+                if( oldType != pf->board[x][y-1]->type )
+                {
+                  sndPlayOnce(SND_BRICKSWAP, pf->board[x][y-1]->pxx);
+                  //Spawn system
+                  ps.layer=PSYS_LAYER_TOP;
+                  ps.fade=0;
+                  ps.gravity=0;
+                  ps.bounce=0;
+                  ps.srcImg=0;
+                  ps.vel=100; // +/- in each dir
+                  ps.life=250;
+                  ps.lifeVar=10;
+                  ps.color=PARTICLECOLORRANDOM;
+                  ps.numParticles=60;
+                  ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                  ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                  spawnParticleSystem(&ps);
+                } else {
+                  sndPlayOnce(SND_BRICKSWAP_DENIED, pf->board[x][y-1]->pxx);
+                  //Spawn system
+                  ps.layer=PSYS_LAYER_TOP;
+                  ps.fade=0;
+                  ps.gravity=0;
+                  ps.bounce=0;
+                  ps.srcImg=0;
+                  ps.vel=100; // +/- in each dir
+                  ps.life=250;
+                  ps.lifeVar=10;
+                  ps.color=0x0000;
+                  ps.numParticles=30;
+                  ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                  ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                  spawnParticleSystem(&ps);
+                }
+              } else {
+                sndPlayOnce(SND_BRICKSWAP_DENIED, pf->board[x][y-1]->pxx);
+                //Spawn system
+                ps.layer=PSYS_LAYER_TOP;
+                ps.fade=0;
+                ps.gravity=0;
+                ps.bounce=0;
+                ps.srcImg=0;
+                ps.vel=100; // +/- in each dir
+                ps.life=250;
+                ps.lifeVar=10;
+                ps.color=0x0000;
+                ps.numParticles=30;
+                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
+                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
+                spawnParticleSystem(&ps);
+              }
+
             } else {
               pf->board[x][y]->dir -= getTicks();
             }
@@ -841,10 +976,6 @@ int doRules(playField* pf)
   int removed=0;
   int bricksLeft=0;
 
-  //Used to count how many of each type there is (simple detection of unsolvable lvl)
-  int typeLeft[BRICKSEND]; //Bricktype offset = -1
-  for(x=0;x<BRICKSEND;x++) typeLeft[x]=0; //Set to 0 to start with.
-
   //Count moving bricks
   listItem* li=pf->movingList;
   brickType* b;
@@ -864,10 +995,6 @@ int doRules(playField* pf)
         {
           //Bricks on board
           bricksLeft++;
-
-          //Tell this type exists on the board (for detecting if it's still solvable)
-          typeLeft[pf->board[x][y]->type-1]++;
-
 
           //Check a brick, only if it is NOT falling and if the brick below it is NOT a reserved brick type (reserved meaning that the brick below is exploding)
           if(!isBrickFalling(pf,pf->board[x][y]) && !onTopOfReserved(pf, x,y ) )
@@ -935,6 +1062,8 @@ int doRules(playField* pf)
 
       if(b->tl < 1)
       {
+        pf->brickTypes[b->type-1]--;
+
         removed++;
         //Unreserve
         pf->board[b->dx][b->dy]=0;
@@ -950,9 +1079,9 @@ int doRules(playField* pf)
   //resuing x as counter.
   if(!removed && !pf->removeList->next && !pf->movingList->next)
   {
-    for(x=0;x<BRICKSEND;x++)
+    for(x=0;x <BRICKSEND;x++)
     {
-      if(typeLeft[x]==1)
+      if(pf->brickTypes[x]==1)
       {
         return(UNSOLVABLE);
       }

@@ -119,6 +119,10 @@ void loadSamples(const char* sndDir, const char* musicFile)
   loadSample( packGetFile(sndDir,"teleported.ogg"), SND_TELEPORTED );
   loadSample( packGetFile(sndDir,"switchactivate.ogg"), SND_SWITCH_ACTIVATED );
   loadSample( packGetFile(sndDir,"switchinactive.ogg"), SND_SWITCH_DEACTIVATED );
+  loadSample( packGetFile(sndDir,"brickswap.ogg"), SND_BRICKSWAP );
+  loadSample( packGetFile(sndDir,"brickcopy.ogg"), SND_BRICKCOPY );
+  loadSample( packGetFile(sndDir,"brickswapdenied.ogg"), SND_BRICKSWAP );
+  loadSample( packGetFile(sndDir,"brickcopydenied.ogg"), SND_BRICKCOPY );
 
   //Music load code
   if(setting()->disableMusic) return;

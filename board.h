@@ -64,6 +64,8 @@ struct playField_t
 
   listItem* deactivated;  //Bricks that are deactivated by a switch.
 
+  int brickTypes[BRICKSEND]; //Number of bricks of each type currently on board
+
   listItem* removeList; //Start of the linked list of bricks that's going to die, tl counts down their lifespan
 };
 

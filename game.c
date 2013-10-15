@@ -355,7 +355,6 @@ int runGame(SDL_Surface* screen)
         cur.px = b->pxx-4;
         cur.py = b->pxy-4;
 
-
         sndPlay( SND_BRICKGRAB, cur.px );
       }
 

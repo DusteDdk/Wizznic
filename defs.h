@@ -42,7 +42,8 @@
 #define REMBRICK 21   //Brick is removed from level (may result in unsolvable)
 #define COPYBRICK 22  //Copies brick on top of it and places in field below if free.
 #define EVILBRICK 23  //Makes player lose game.
-#define NUMTILES 23   //type 1 = index 0 in tile array
+#define SWAPBRICK 24  //Swaps current brick to another type (of remaining bricks) every 1 second
+#define NUMTILES 24   //type 1 = index 0 in tile array
 
 
 #define MOVERCOUNTDOWN 500  //Ms pause before mover switch direction
@@ -57,6 +58,9 @@
 
 #define DIRUP -1
 #define DIRDOWN 1
+
+#define COPYBRICK_COPYDELAY 800
+#define SWAPBRICK_SWAPDELAY 1100
 
 //Get defines from platform .h file
 #if defined(PANDORA)  //Pandora

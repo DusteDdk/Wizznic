@@ -319,6 +319,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
   //Draw dying bricks, animation?
   t=pf->removeList;
+
   while( (t = t->next) )
   {
     b=(brickType*)t->data;
