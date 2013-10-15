@@ -181,6 +181,16 @@ void newBrick(playField* pf, int x, int y, int type)
   }
 }
 
+void queueBrickRemoval(playField* pf,int x,int y)
+{
+  //Only add if not already added.
+  if( pf->board[x][y]->dir == 0 )
+  {
+    pf->board[x][y]->dir=1;
+    listAddData(pf->removeList, (void*)pf->board[x][y]);
+  }
+}
+
 int loadField(playField* pf, const char* file)
 {
   FILE *f = fopen(file, "r");
@@ -793,8 +803,7 @@ void simField(playField* pf, cursorType* cur)
         {
           if( pf->board[x][y]->type == REMBRICK)
           {
-            pf->board[x][y-1]->dir=1;
-            listAddData(pf->removeList, (void*)pf->board[x][y-1]);
+            queueBrickRemoval(pf,x,y-1);
           } else
           if( pf->board[x][y]->type==COPYBRICK )
           {
@@ -1004,30 +1013,22 @@ int doRules(playField* pf)
             //On top
             if(y > 0 && pf->board[x][y-1] && pf->board[x][y-1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y-1]) )
             {
-              pf->board[x][y]->dir=1;
-              listAddData(pf->removeList, (void*)pf->board[x][y]);
-              //pf->board[x][y]=0;
+              queueBrickRemoval(pf,x,y);
             } else
             //Below
             if(y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x][y+1]) )
             {
-              pf->board[x][y]->dir=1;
-              listAddData(pf->removeList, (void*)pf->board[x][y]);
-              //pf->board[x][y]=0;
+              queueBrickRemoval(pf,x,y);
             } else
             //Left
             if(x > 0 && pf->board[x-1][y] && pf->board[x-1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x-1][y]) )
             {
-              pf->board[x][y]->dir=1;
-              listAddData(pf->removeList, (void*)pf->board[x][y]);
-              //pf->board[x][y]=0;
+              queueBrickRemoval(pf,x,y);
             } else
             //Right
             if(x+1 < FIELDSIZE && pf->board[x+1][y] && pf->board[x+1][y]->type == pf->board[x][y]->type && !isBrickFalling(pf,pf->board[x+1][y]))
             {
-              pf->board[x][y]->dir=1;
-              listAddData(pf->removeList, (void*)pf->board[x][y]);
-              //pf->board[x][y]=0;
+              queueBrickRemoval(pf,x,y);
             }
 
           } //Not falling
