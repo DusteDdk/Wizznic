@@ -27,6 +27,12 @@
 
 #define PARTICLECOLORRANDOM 0x1e2f
 
+#define PSYS_PRESET_BLACK 0
+#define PSYS_PRESET_WHITE 1
+#define PSYS_PRESET_COLOR 2
+#define PSYS_NUM_PRESETS  3
+
+
 struct particle_s
 {
   uint32_t color; //Color
@@ -70,5 +76,6 @@ void runParticles(SDL_Surface* screen); //Convenience function, draws all PSYS_L
 void runParticlesLayer(SDL_Surface* screen, int layer); //This runs/draws all particle systems, and emitters on LAYER
 inline void clearParticles(); //Frees all resources and removes all systems and emitters.
 inline void clearSystem(pSystem_t* s); //Frees one system
+inline void psysSpawnPreset( int preset, int x, int y, int num, int life );
 
 #endif // PARTICLES_H_INCLUDED

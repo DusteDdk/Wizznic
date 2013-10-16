@@ -23,7 +23,7 @@
 #include "draw.h"
 
 static void switchReact( playField* pf, int x, int y ); //Should be used only private
-static psysSet_t ps;
+
 
 int switchSetTargets( playField* pf )
 {
@@ -200,15 +200,8 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
     break;
   }
   //Let's have some particles
-  ps.layer=PSYS_LAYER_TOP;
-  ps.x=s->target->pxx+stealGfxPtr()->tiles[s->target->type-1]->clip.w/2;
-  ps.y=s->target->pxy+stealGfxPtr()->tiles[s->target->type-1]->clip.h/2;
-  ps.vel=100; // +/- in each dir
-  ps.life=250;
-  ps.lifeVar=50;
-  ps.color=PARTICLECOLORRANDOM;
-  ps.numParticles=25;
-  spawnParticleSystem(&ps);
+  psysSpawnPreset(PSYS_PRESET_COLOR, (s->target->pxx+stealGfxPtr()->tiles[s->target->type-1]->clip.w/2), (s->target->pxy+stealGfxPtr()->tiles[s->target->type-1]->clip.h/2), 25,250 );
+
 }
 
 void switchUpdateAll( playField* pf )

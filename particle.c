@@ -24,6 +24,8 @@
 static listItem* pSystems; //All particle systems are added to this list
 static SDL_Surface* screen;
 
+static psysSet_t psysPresets[PSYS_NUM_PRESETS];
+
 //Spawn particle system
 void spawnParticleSystem(psysSet_t* settings)
 {
@@ -227,4 +229,32 @@ void initParticles(SDL_Surface* scr)
 {
   pSystems = initList();
   screen=scr;
+
+  psysPresets[PSYS_PRESET_COLOR].layer=PSYS_LAYER_TOP;
+  psysPresets[PSYS_PRESET_COLOR].fade=0;
+  psysPresets[PSYS_PRESET_COLOR].gravity=0;
+  psysPresets[PSYS_PRESET_COLOR].bounce=0;
+  psysPresets[PSYS_PRESET_COLOR].srcImg=0;
+  psysPresets[PSYS_PRESET_COLOR].vel=100; // +/- in each dir
+  psysPresets[PSYS_PRESET_COLOR].lifeVar=10;
+  psysPresets[PSYS_PRESET_COLOR].color=PARTICLECOLORRANDOM;
+
+  psysPresets[PSYS_PRESET_WHITE] = psysPresets[PSYS_PRESET_COLOR];
+
+  psysPresets[PSYS_PRESET_WHITE].vel=50; // +/- in each dir
+  psysPresets[PSYS_PRESET_WHITE].color=0xFFFF;
+  psysPresets[PSYS_PRESET_WHITE].numParticles=30;
+
+  psysPresets[PSYS_PRESET_BLACK] = psysPresets[PSYS_PRESET_WHITE];
+  psysPresets[PSYS_PRESET_BLACK].color=0x0000;
+
+}
+
+inline void psysSpawnPreset( int preset, int x, int y, int num, int life )
+{
+  psysPresets[preset].x = x;
+  psysPresets[preset].y = y;
+  psysPresets[preset].numParticles = num;
+  psysPresets[preset].life = life;
+  spawnParticleSystem( &(psysPresets[preset]) );
 }

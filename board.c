@@ -357,29 +357,11 @@ int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int sp
 //Move a brick instantly to teleports dest
 void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
 {
-  psysSet_t ps; //Particle system for particle effect
   brickType* b = pf->board[t->sx][t->sy];
 
   //Spawn systems in source
-  ps.layer=PSYS_LAYER_TOP;
-  ps.fade=0;
-  ps.gravity=0;
-  ps.bounce=0;
-  ps.srcImg=0;
-  ps.x=b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2;
-  ps.y=b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2;
-  ps.vel=100; // +/- in each dir
-  ps.life=350;
-  ps.lifeVar=10;
-  ps.color=PARTICLECOLORRANDOM;
-  ps.numParticles=60;
-  spawnParticleSystem(&ps);
-  ps.vel=50; // +/- in each dir
-  ps.life=200;
-  ps.lifeVar=10;
-  ps.color=0xFFFF;
-  ps.numParticles=30;
-  spawnParticleSystem(&ps);
+  psysSpawnPreset(PSYS_PRESET_COLOR, (b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2), (b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2), 60,350 );
+  psysSpawnPreset(PSYS_PRESET_WHITE, (b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2), (b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2), 30,200 );
 
 
   //Move brick to dest
@@ -397,21 +379,9 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
   b->sy=b->dy;
 
   //Spawn system in dest
-  ps.layer=PSYS_LAYER_TOP;
-  ps.x=b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2;
-  ps.y=b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2;
-  ps.vel=100; // +/- in each dir
-  ps.life=300;
-  ps.lifeVar=10;
-  ps.color=PARTICLECOLORRANDOM;
-  ps.numParticles=60;
-  spawnParticleSystem(&ps);
-  ps.vel=50; // +/- in each dir
-  ps.life=200;
-  ps.lifeVar=10;
-  ps.color=0xFFFF;
-  ps.numParticles=30;
-  spawnParticleSystem(&ps);
+  psysSpawnPreset(PSYS_PRESET_COLOR, (b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2), (b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2), 60,350 );
+  psysSpawnPreset(PSYS_PRESET_WHITE, (b->pxx+stealGfxPtr()->tiles[b->type-1]->clip.w/2), (b->pxy+stealGfxPtr()->tiles[b->type-1]->clip.h/2), 30,200 );
+
 
   //We detach mouse because it makes no sense to have it locked on,
   //since the destination might be too far away, and the user won't want
@@ -554,9 +524,6 @@ static int horizMover(playField* pf, int x, int y, int dir)
 void simField(playField* pf, cursorType* cur)
 {
   int x,y;
-
-  psysSet_t ps; //Particle system for particle effect
-
 
   //Update moving bricks
   listItem* li=pf->movingList;
@@ -815,41 +782,15 @@ void simField(playField* pf, cursorType* cur)
                 newBrick(pf,x,y+1,pf->board[x][y-1]->type);
 
                 sndPlayOnce( SND_BRICKCOPY, pf->board[x][y-1]->pxx );
-                //Spawn system
-                ps.layer=PSYS_LAYER_TOP;
-                ps.fade=0;
-                ps.gravity=0;
-                ps.bounce=0;
-                ps.srcImg=0;
-                ps.vel=100; // +/- in each dir
-                ps.life=250;
-                ps.lifeVar=10;
-                ps.color=PARTICLECOLORRANDOM;
-                ps.numParticles=30;
-                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                spawnParticleSystem(&ps);
 
-                ps.color=PARTICLECOLORRANDOM;
-                ps.x=pf->board[x][y+1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                ps.y=pf->board[x][y+1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                spawnParticleSystem(&ps);
+                psysSpawnPreset(PSYS_PRESET_COLOR, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2), (pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 30,300 );
+                psysSpawnPreset(PSYS_PRESET_COLOR, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y+1]->type-1]->clip.w/2), (pf->board[x][y+1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 30,300 );
+
               } else {
                 sndPlayOnce( SND_BRICKCOPY_DENIED, pf->board[x][y-1]->pxx );
-                //Spawn system
-                ps.layer=PSYS_LAYER_TOP;
-                ps.fade=0;
-                ps.gravity=0;
-                ps.bounce=0;
-                ps.srcImg=0;
-                ps.vel=100; // +/- in each dir
-                ps.life=250;
-                ps.lifeVar=10;
-                ps.color=0x0000;
-                ps.numParticles=30;
-                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                spawnParticleSystem(&ps);
+
+                psysSpawnPreset(PSYS_PRESET_BLACK, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2), (pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 30,250 );
+
               }
             } else {
               pf->board[x][y]->dir -= getTicks();
@@ -882,52 +823,17 @@ void simField(playField* pf, cursorType* cur)
                 {
                   sndPlayOnce(SND_BRICKSWAP, pf->board[x][y-1]->pxx);
                   //Spawn system
-                  ps.layer=PSYS_LAYER_TOP;
-                  ps.fade=0;
-                  ps.gravity=0;
-                  ps.bounce=0;
-                  ps.srcImg=0;
-                  ps.vel=100; // +/- in each dir
-                  ps.life=250;
-                  ps.lifeVar=10;
-                  ps.color=PARTICLECOLORRANDOM;
-                  ps.numParticles=60;
-                  ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                  ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                  spawnParticleSystem(&ps);
+                  psysSpawnPreset(PSYS_PRESET_COLOR, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2), (pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 60,350 );
+
                 } else {
                   sndPlayOnce(SND_BRICKSWAP_DENIED, pf->board[x][y-1]->pxx);
                   //Spawn system
-                  ps.layer=PSYS_LAYER_TOP;
-                  ps.fade=0;
-                  ps.gravity=0;
-                  ps.bounce=0;
-                  ps.srcImg=0;
-                  ps.vel=100; // +/- in each dir
-                  ps.life=250;
-                  ps.lifeVar=10;
-                  ps.color=0x0000;
-                  ps.numParticles=30;
-                  ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                  ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                  spawnParticleSystem(&ps);
+                  psysSpawnPreset(PSYS_PRESET_BLACK, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2), (pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 30,200 );
                 }
               } else {
                 sndPlayOnce(SND_BRICKSWAP_DENIED, pf->board[x][y-1]->pxx);
                 //Spawn system
-                ps.layer=PSYS_LAYER_TOP;
-                ps.fade=0;
-                ps.gravity=0;
-                ps.bounce=0;
-                ps.srcImg=0;
-                ps.vel=100; // +/- in each dir
-                ps.life=250;
-                ps.lifeVar=10;
-                ps.color=0x0000;
-                ps.numParticles=30;
-                ps.x=pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2;
-                ps.y=pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2;
-                spawnParticleSystem(&ps);
+                psysSpawnPreset(PSYS_PRESET_BLACK, (pf->board[x][y-1]->pxx+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.w/2), (pf->board[x][y-1]->pxy+stealGfxPtr()->tiles[pf->board[x][y-1]->type-1]->clip.h/2), 30,200 );
               }
 
             } else {

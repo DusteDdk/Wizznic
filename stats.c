@@ -407,7 +407,7 @@ int upStatsThread(void * d)
 
       if( fread( pBuf, 1,2047, pipe)!= 0 )
       {
-        printf("Server returned:'%s'\n",pBuf);
+        if( setting()->showWeb ) { printf("Server returned:'%s'\n",pBuf); }
         if(ret)
         {
           *ret=atoi(pBuf);

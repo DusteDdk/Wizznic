@@ -175,6 +175,53 @@ void drawUi(SDL_Surface* screen)
   }
 }
 
+int lostLifeMsg( cursorType* cur, playField* pf, SDL_Surface* screen, const char* strmsg, const char* straction )
+{
+  draw(cur,pf, screen);
+  //drawUi(screen);
+
+  countdown-=getTicks();
+
+
+    txtWriteCenter(screen, GAMEFONTMEDIUM, strmsg, HSCREENW,HSCREENH-24);
+
+    if(countdown < 1000)
+    {
+      txtWriteCenter(screen, GAMEFONTSMALL, STR_MENU_PRESS_B, HSCREENW,HSCREENH+12);
+      //Wait for anykey
+      if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
+      {
+        resetBtn(C_BTNB);
+        resetMouseBtn();
+        //Subtract lives
+        if(!player()->inEditor)
+        {
+          if(player()->lives != -1)
+          {
+            player()->lives--;
+          }
+
+          if(player()->lives==0)
+          {
+            setGameOver();
+          } else {
+            //Lost a life, but did not get gameover, upload the death
+            statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, straction,0, NULL);
+            setMenu(menuStateNextLevel);
+          }
+        }
+
+        //Clear score
+          player()->hsEntry.score=0;
+        //Goto cleanup, then menu
+        cleanUpGame();
+        startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
+        return(1);
+      }
+    }
+    return(0);
+}
+
 void gamePause(SDL_Surface* screen)
 {
   startTransition(screen, TRANSITION_TYPE_ROLL_IN,500);
@@ -513,7 +560,6 @@ int runGame(SDL_Surface* screen)
     }
 
 
-
     //Draw question
     if(restartConfirm)
     {
@@ -557,7 +603,6 @@ int runGame(SDL_Surface* screen)
 
     drawUi(screen);
 
-
     if(countdown < 1)
     {
       countdown=1000;
@@ -595,43 +640,9 @@ int runGame(SDL_Surface* screen)
       }
       txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24-31);
     } else {
-      txtWriteCenter(screen, GAMEFONTMEDIUM, STR_GAME_OUTOFTIME, HSCREENW,HSCREENH-24);
-
-      if(countdown < 1000)
+      if( lostLifeMsg(&cur, &pf, screen, STR_GAME_OUTOFTIME, "lostlife-timeout" ) )
       {
-        sprintf(buf, STR_MENU_PRESS_B);
-        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
-        //Wait for anykey
-        if(getButton(C_BTNB) || isPointerClicked() || countdown < -6000)
-        {
-          resetBtn(C_BTNB);
-          resetMouseBtn();
-          //Subtract lives
-          if(!player()->inEditor)
-          {
-
-            if(player()->lives != -1)
-            {
-              player()->lives--;
-            }
-
-            if(player()->lives==0)
-            {
-              setGameOver();
-            } else {
-              //Lost a life, but did not get gameover, upload the death
-              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-timeout",0, NULL);
-              setMenu(menuStateNextLevel);
-            }
-          }
-
-          //Clear score
-          player()->hsEntry.score=0;
-          //Goto cleanup, then menu
-          cleanUpGame();
-          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
-          return(STATEMENU);
-        }
+        return(STATEMENU);
       }
     }
 
@@ -654,96 +665,20 @@ int runGame(SDL_Surface* screen)
       txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24-31);
 
     } else {
-      sprintf(buf, STR_GAME_UNSOLVABLE);
-
-      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
-
-      if(countdown < 1000)
+      if( lostLifeMsg(&cur, &pf, screen, STR_GAME_UNSOLVABLE, "lostlife-unsolvable" ) )
       {
-        sprintf(buf, STR_MENU_PRESS_B);
-        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
-        //Wait for anykey
-        if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
-        {
-          resetBtn(C_BTNB);
-          resetMouseBtn();
-          //Subtract lives
-          if(!player()->inEditor)
-          {
-            if(player()->lives != -1)
-            {
-              player()->lives--;
-            }
-
-            if(player()->lives==0)
-            {
-              setGameOver();
-            } else {
-              //Lost a life, but did not get gameover, upload the death
-              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-unsolvable",0, NULL);
-              setMenu(menuStateNextLevel);
-            }
-          }
-
-          //Clear score
-            player()->hsEntry.score=0;
-          //Goto cleanup, then menu
-          cleanUpGame();
-          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
-          return(STATEMENU);
-        }
+        return(STATEMENU);
       }
     }
+
+
   } else
   if(gameState==GAMESTATELIFELOST)
   {
-
-    draw(&cur,&pf, screen);
-    //drawUi(screen);
-
-    countdown-=getTicks();
-
-      sprintf(buf, STR_GAME_LOSTLIFE);
-
-      txtWriteCenter(screen, GAMEFONTMEDIUM, buf, HSCREENW,HSCREENH-24);
-
-      if(countdown < 1000)
-      {
-        sprintf(buf, STR_MENU_PRESS_B);
-        txtWriteCenter(screen, GAMEFONTSMALL, buf, HSCREENW,HSCREENH+12);
-        //Wait for anykey
-        if(getButton(C_BTNB) || countdown < -6000 || getInpPointerState()->isDown )
-        {
-          resetBtn(C_BTNB);
-          resetMouseBtn();
-          //Subtract lives
-          if(!player()->inEditor)
-          {
-            if(player()->lives != -1)
-            {
-              player()->lives--;
-            }
-
-            if(player()->lives==0)
-            {
-              setGameOver();
-            } else {
-              //Lost a life, but did not get gameover, upload the death
-              statsUpload(player()->level, player()->hsEntry.time, player()->hsEntry.moves,player()->hsEntry.combos,player()->hsEntry.score, "lostlife-evilbrick",0, NULL);
-              setMenu(menuStateNextLevel);
-            }
-          }
-
-          //Clear score
-            player()->hsEntry.score=0;
-          //Goto cleanup, then menu
-          cleanUpGame();
-          startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);
-          return(STATEMENU);
-        }
-      }
-
-
+    if( lostLifeMsg(&cur, &pf, screen, STR_GAME_LOSTLIFE, "lostlife-evilbrick" ) )
+    {
+      return(STATEMENU);
+    }
   } else
   if(gameState==GAMESTATESTARTIMAGE)
   {
