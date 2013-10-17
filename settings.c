@@ -90,7 +90,7 @@ void loadSettings()
   settings.session=0;
   settings.solvedWorldWide=0;
   settings.firstRun=1;
-  settings.uploadStats=0;
+  settings.uploadStats=-1;
   settings.online=0; //This is what will be checked for in the rest of the code
                      //regardless of "uploadStats", it will only be 1 if
                      //"uploadStats" is 1, because the check that can set it 1 is only
@@ -190,8 +190,11 @@ void loadSettings()
         if( strcmp("uploadstats",set)==0 )
         {
           //Only if the option is in the file, are we sure they had the choice.
-          settings.firstRun=0;
           settings.uploadStats=atoi(val);
+          if( settings.uploadStats!=-1 )
+          {
+            settings.firstRun=0;
+          }
         } else
         if( strcmp("glwidth",set)==0 )
         {
