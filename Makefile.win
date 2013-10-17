@@ -33,7 +33,7 @@ ifneq ($(WITH_OPENGL),false)
 	DEFS += -DWITH_OPENGL
 endif
 
-SOURCES = $(wildcard src/*.c) src/platform/pc.c
+SOURCES = $(wildcard src/*.c) src/platform/pc.c src/platform/dumplevelimages.c
 OBJS = $(SOURCES:.c=.o)
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)

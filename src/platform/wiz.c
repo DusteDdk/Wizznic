@@ -1,10 +1,12 @@
 /* This file was copied with little or no modification from the WizPort of OpenJazz */
 /* There's also some bits from libcastor in here (Copyright (c) 2009 Adan Scotney) */
-#include "settings.h"
+
+#ifdef WIZ
+
+#include "../settings.h"
 
 #include "wiz.h"
 
-#ifdef WIZ
 
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
