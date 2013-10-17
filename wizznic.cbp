@@ -106,10 +106,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/levelselector.h" />
-		<Unit filename="src/libDLC.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/libDLC.h" />
 		<Unit filename="src/list.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -141,6 +137,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/platform/dumplevelimages.h" />
+		<Unit filename="src/platform/libDLC.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/platform/libDLC.h" />
 		<Unit filename="src/platform/pc.c">
 			<Option compilerVar="CC" />
 		</Unit>

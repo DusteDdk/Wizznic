@@ -15,17 +15,16 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-#include "defs.h"
-
+#include "libDLC.h"
 
 #include <unistd.h>
 #include <string.h>
 #include <SDL/SDL.h>
 
-#include "settings.h"
-#include "userfiles.h"
-#include "libDLC.h"
-#include "bundle.h"
+#include "../defs.h"
+#include "../settings.h"
+#include "../userfiles.h"
+#include "../bundle.h"
 
 #define DLC_API_VERSION_STRING "Wizznic 0x10"
 

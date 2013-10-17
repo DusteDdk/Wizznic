@@ -27,7 +27,7 @@
 #include "defs.h"
 #include "userfiles.h"
 #include "bundle.h"
-#include "libDLC.h"
+#include "platform/libDLC.h"
 
 #define PCKLISTIMG_SELECTED 0
 #define PCKLISTIMG_DEFAULT  1

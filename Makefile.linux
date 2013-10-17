@@ -53,7 +53,8 @@ ifneq ($(WITH_OPENGL),false)
 	DEFS += -DWITH_OPENGL
 endif
 
-SOURCES = $(wildcard src/*.c) src/platform/pc.c src/platform/dumplevelimages.c
+SOURCES = $(wildcard src/*.c) src/platform/pc.c\
+src/platform/dumplevelimages.c src/platform/libDLC.c
 OBJS = $(SOURCES:.c=.o)
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 

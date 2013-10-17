@@ -44,7 +44,7 @@
 
 #if defined( PLATFORM_SUPPORTS_STATSUPLOAD )
   #include "bundle.h"
-  #include "libDLC.h"
+  #include "platform/libDLC.h"
 #endif
 
 static float rot=0;

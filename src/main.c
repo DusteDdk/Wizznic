@@ -44,9 +44,7 @@
 #include "swscale.h"
 #include "pointer.h"
 #include "transition.h"
-
-#include "bundle.h"
-#include "libDLC.h"
+#include "platform/libDLC.h"
 
 SDL_Surface* swScreen(int sdlVideoModeFlags)
 {

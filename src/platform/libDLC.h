@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License    *
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
-#include "list.h"
 
 //Ready for action
 #define DLC_READY 1
