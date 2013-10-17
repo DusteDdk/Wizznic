@@ -59,181 +59,165 @@
 		<Unit filename="Makefile.linux">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="board.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="board.h" />
-		<Unit filename="bundle.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="bundle.h" />
-		<Unit filename="credits.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="credits.h" />
-		<Unit filename="cursor.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cursor.h" />
-		<Unit filename="defs.h" />
 		<Unit filename="doc/changelog.txt" />
 		<Unit filename="doc/credits.txt" />
 		<Unit filename="doc/install.txt" />
 		<Unit filename="doc/media-licenses.txt" />
 		<Unit filename="doc/ports.txt" />
 		<Unit filename="doc/readme.txt" />
-		<Unit filename="draw.c">
+		<Unit filename="src/board.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="draw.h" />
-		<Unit filename="dumplevelimages.c">
+		<Unit filename="src/board.h" />
+		<Unit filename="src/bundle.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="dumplevelimages.h" />
-		<Unit filename="game.c">
+		<Unit filename="src/bundle.h" />
+		<Unit filename="src/credits.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="game.h" />
-		<Unit filename="input.c">
+		<Unit filename="src/credits.h" />
+		<Unit filename="src/cursor.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="input.h" />
-		<Unit filename="leveleditor.c">
+		<Unit filename="src/cursor.h" />
+		<Unit filename="src/defs.h" />
+		<Unit filename="src/draw.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="leveleditor.h" />
-		<Unit filename="levels.c">
+		<Unit filename="src/draw.h" />
+		<Unit filename="src/game.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="levels.h" />
-		<Unit filename="levelselector.c">
+		<Unit filename="src/game.h" />
+		<Unit filename="src/input.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="levelselector.h" />
-		<Unit filename="libDLC.c">
+		<Unit filename="src/input.h" />
+		<Unit filename="src/leveleditor.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="libDLC.h" />
-		<Unit filename="list.c">
+		<Unit filename="src/leveleditor.h" />
+		<Unit filename="src/levels.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="list.h" />
-		<Unit filename="main.c">
+		<Unit filename="src/levels.h" />
+		<Unit filename="src/levelselector.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="mbrowse.c">
+		<Unit filename="src/levelselector.h" />
+		<Unit filename="src/libDLC.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="mbrowse.h" />
-		<Unit filename="menu.c">
+		<Unit filename="src/libDLC.h" />
+		<Unit filename="src/list.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="menu.h" />
-		<Unit filename="pack.c">
+		<Unit filename="src/list.h" />
+		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="pack.h" />
-		<Unit filename="particle.c">
+		<Unit filename="src/mbrowse.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="particles.h" />
-		<Unit filename="pixel.c">
+		<Unit filename="src/mbrowse.h" />
+		<Unit filename="src/menu.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="pixel.h" />
-		<Unit filename="platform/gp2x.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="platform/pandora.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="platform/pc.c">
+		<Unit filename="src/menu.h" />
+		<Unit filename="src/pack.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="platform/pc.h" />
-		<Unit filename="platform/pspspec.c">
-			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="platform/pspspec.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="platform/wiz.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="player.c">
+		<Unit filename="src/pack.h" />
+		<Unit filename="src/particle.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="player.h" />
-		<Unit filename="pointer.c">
+		<Unit filename="src/particles.h" />
+		<Unit filename="src/pixel.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="pointer.h" />
-		<Unit filename="settings.c">
+		<Unit filename="src/pixel.h" />
+		<Unit filename="src/platform/dumplevelimages.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="settings.h" />
-		<Unit filename="skipleveldialog.c">
+		<Unit filename="src/platform/dumplevelimages.h" />
+		<Unit filename="src/platform/pc.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="skipleveldialog.h" />
-		<Unit filename="sound.c">
+		<Unit filename="src/platform/pc.h" />
+		<Unit filename="src/player.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sound.h" />
-		<Unit filename="sprite.c">
+		<Unit filename="src/player.h" />
+		<Unit filename="src/pointer.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sprite.h" />
-		<Unit filename="stars.c">
+		<Unit filename="src/pointer.h" />
+		<Unit filename="src/settings.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="stars.h" />
-		<Unit filename="states.h" />
-		<Unit filename="stats.c">
+		<Unit filename="src/settings.h" />
+		<Unit filename="src/skipleveldialog.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="stats.h" />
-		<Unit filename="strings.c">
+		<Unit filename="src/skipleveldialog.h" />
+		<Unit filename="src/sound.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="strings.h" />
-		<Unit filename="strinput.c">
+		<Unit filename="src/sound.h" />
+		<Unit filename="src/sprite.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="strinput.h" />
-		<Unit filename="switch.c">
+		<Unit filename="src/sprite.h" />
+		<Unit filename="src/stars.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="switch.h" />
-		<Unit filename="swscale.c">
+		<Unit filename="src/stars.h" />
+		<Unit filename="src/states.h" />
+		<Unit filename="src/stats.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="swscale.h" />
-		<Unit filename="teleport.c">
+		<Unit filename="src/stats.h" />
+		<Unit filename="src/strings.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="teleport.h" />
-		<Unit filename="text.c">
+		<Unit filename="src/strings.h" />
+		<Unit filename="src/strinput.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="text.h" />
-		<Unit filename="ticks.c">
+		<Unit filename="src/strinput.h" />
+		<Unit filename="src/switch.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ticks.h" />
-		<Unit filename="transition.c">
+		<Unit filename="src/switch.h" />
+		<Unit filename="src/swscale.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="transition.h" />
-		<Unit filename="userfiles.c">
+		<Unit filename="src/swscale.h" />
+		<Unit filename="src/teleport.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="userfiles.h" />
-		<Unit filename="waveimg.c">
+		<Unit filename="src/teleport.h" />
+		<Unit filename="src/text.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="waveimg.h" />
+		<Unit filename="src/text.h" />
+		<Unit filename="src/ticks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ticks.h" />
+		<Unit filename="src/transition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/transition.h" />
+		<Unit filename="src/userfiles.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/userfiles.h" />
+		<Unit filename="src/waveimg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/waveimg.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

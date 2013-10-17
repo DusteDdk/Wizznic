@@ -16,12 +16,12 @@
  ************************************************************************/
 
 #include "dumplevelimages.h"
-#include "levels.h"
-#include "board.h"
-#include "draw.h"
-#include "cursor.h"
-#include "player.h"
-#include "pack.h"
+#include "../levels.h"
+#include "../board.h"
+#include "../draw.h"
+#include "../cursor.h"
+#include "../player.h"
+#include "../pack.h"
 
 void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartImage)
 {

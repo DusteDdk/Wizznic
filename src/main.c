@@ -48,10 +48,6 @@
 #include "bundle.h"
 #include "libDLC.h"
 
-#ifdef PC
-  #include "dumplevelimages.h"
-#endif
-
 SDL_Surface* swScreen(int sdlVideoModeFlags)
 {
   SDL_Surface* screen=SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlVideoModeFlags);

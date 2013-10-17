@@ -74,8 +74,6 @@ void drawPackBox(SDL_Surface* screen, int posx, int posy, int packNum);
 int isFile(const char* fileName);
 int isDir(const char* dirName);
 
-int isFile(const char* fileName);
-
 //Returns the number of the added pack.
 int packAdd(const char* packDir, int isDLC);
 

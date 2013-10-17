@@ -33,11 +33,8 @@ ifneq ($(WITH_OPENGL),false)
 	DEFS += -DWITH_OPENGL
 endif
 
-OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
-text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
-levelselector.o leveleditor.o particle.o pack.o settings.o stats.o strings.o\
-mbrowse.o teleport.o credits.o waveimg.o userfiles.o swscale.o platform/pc.o\
-pointer.o transition.o switch.o skipleveldialog.o bundle.o libDLC.o strinput.o
+SOURCES = $(wildcard src/*.c) src/platform/pc.c
+OBJS = $(SOURCES:.c=.o)
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
@@ -52,13 +49,5 @@ $(TARGET): $(OBJS)
 .c.o:
 	$(MYCC) -c $< -o $@
 
-install:
-	install -d -D -m 755 "$(DESTDIR)$(BINDIR)"
-	install -D -m 755 "$(TARGET)" "$(DESTDIR)$(BINDIR)"
-	install -d -D -m 755 "$(DESTDIR)$(DATADIR)"
-	cp -R data "$(DESTDIR)$(DATADIR)"
-	cp -R packs "$(DESTDIR)$(DATADIR)"
-	chmod -R 755 "$(DESTIR)$(DATADIR)"
-
 clean:
-	rm -f *.o $(NAME) platform/*.o
+	rm -f $(NAME) src/*.o src/platform/*.o

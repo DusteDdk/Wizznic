@@ -18,6 +18,8 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
+#include "dumplevelimages.h"
+
 #define SCREENW 320
 #define SCREENH 240
 

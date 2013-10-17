@@ -1,6 +1,6 @@
 #Makefile for wizznic.
 #To make a system-wide install add DATADIR=/dir/to/data/ and BINDIR=/dir/to/bin/ to the make command
-#To compile with OpenGL scaling support, add WITH_OPENGL=true to the make command.
+#To compile without OpenGL scaling support, add WITH_OPENGL=false to the make command.
 
 CC = gcc
 LD = $(CC)
@@ -53,21 +53,17 @@ ifneq ($(WITH_OPENGL),false)
 	DEFS += -DWITH_OPENGL
 endif
 
-OBJS = dumplevelimages.o board.o cursor.o draw.o input.o main.o menu.o sprite.o\
-text.o ticks.o sound.o game.o player.o list.o levels.o pixel.o stars.o\
-levelselector.o leveleditor.o particle.o pack.o settings.o stats.o strings.o\
-mbrowse.o teleport.o credits.o waveimg.o userfiles.o swscale.o platform/pc.o\
-pointer.o transition.o switch.o skipleveldialog.o bundle.o libDLC.o strinput.o
-
+SOURCES = $(wildcard src/*.c) src/platform/pc.c src/platform/dumplevelimages.c
+OBJS = $(SOURCES:.c=.o)
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 ########################################################################
 
-sdl: $(TARGET)
-
 $(TARGET): $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+ifeq ($(DEBUG),)
 	$(STRIP) $@
+endif
 
 .c.o:
 	$(MYCC) -c $< -o $@
@@ -84,4 +80,4 @@ install:
 	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
 
 clean:
-	rm -f *.o $(NAME) platform/*.o
+	rm -f $(NAME) src/*.o src/platform/*.o
