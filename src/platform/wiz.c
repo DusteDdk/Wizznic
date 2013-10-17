@@ -12,8 +12,7 @@
 #include <sys/soundcard.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "settings.h"
-#include "ticks.h"
+#include "../ticks.h"
 
 //For clock code
 #include <sys/mman.h>
