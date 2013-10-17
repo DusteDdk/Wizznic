@@ -206,16 +206,16 @@
                                     "\n"\
                                     STR_SELECT_CTRLS
 
-#define STR_MENU_ALLOW_UPLOAD       "< Allow? >"
-#define STR_MENU_ALLOW_UPLOAD_U     " [______] "
+#define STR_MENU_ALLOW_UPLOAD        "<---  --->"
+#define STR_MENU_ALLOW_UPLOAD_U     "<          >"
 #define STR_MENU_ALLOW_ANSWER_YES   "Yes"
 #define STR_MENU_ALLOW_ANSWER_YES_U "[___]"
 #define STR_MENU_ALLOW_ANSWER_NO   "No"
 #define STR_MENU_ALLOW_ANSWER_NO_U "[__]"
 
 
-#define STR_MENU_ALLOW_RESET       "< Reset? >"
-#define STR_MENU_ALLOW_RESET_U     " [______] "
+#define STR_MENU_ALLOW_RESET        "<---  --->"
+#define STR_MENU_ALLOW_RESET_U     "<          >"
 
 
 //                                  "----------------------------------"
