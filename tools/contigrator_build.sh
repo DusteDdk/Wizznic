@@ -42,7 +42,7 @@ make -j 4 -f Makefile.win CC='ccache i586-mingw32msvc-gcc'
 
 DST=Wizznic_win_build_$BN_NUM
 mkdir $DST
-cp -a data packs doc wizznic.exe tools/releaser/data/win/win-dlls/* tools/releaser/data/win/curl tools/releaser/data/win/Wizznic_* tools/releaser/data/win/prgicon* $DST
+cp -a data packs doc wizznic.exe tools/releaser/data/win/win-dlls/* tools/releaser/data/win/curl tools/releaser/data/win/Wizznic_* $DST
 rm $DST/data/border.png
 
 
