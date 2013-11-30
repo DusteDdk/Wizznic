@@ -8,6 +8,7 @@
 CC = i586-mingw32msvc-gcc
 LD = $(CC)
 STRIP = i586-mingw32msvc-strip
+WINDRES = i586-mingw32msvc-windres
 
 NAME=wizznic.exe
 TARGET= $(NAME)
@@ -45,11 +46,12 @@ MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 sdl: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+	$(WINDRES) src/platform/windows.rc -O coff -o windows.res
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ windows.res $(LIBS)
 	$(STRIP) $@
 
 .c.o:
 	$(MYCC) -c $< -o $@
 
 clean:
-	rm -f $(NAME) src/*.o src/platform/*.o
+	rm -f $(NAME) src/*.o src/platform/*.o windows.res
