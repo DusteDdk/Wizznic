@@ -209,6 +209,3 @@ I'll be happy to use your theme as the default sound-theme :)
   See doc/credits.txt
 
 ------------------------------------
-
-5.0 Frequently Asked Questions
-Nobody asked any questions yet.
