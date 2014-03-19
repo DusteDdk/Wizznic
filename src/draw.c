@@ -56,7 +56,7 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
   }
 
   //Single wall (Override tile15 in graphics.tiles)
-  sprintf(tempStr, "%s.png", li->wallBase);
+  sprintf(tempStr, "%s-middle.png", li->wallBase);
   graphics.wallImg = loadImg( packGetFile("themes",tempStr) );
   if(!graphics.wallImg)
   {
@@ -65,36 +65,26 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     return(0);
   }
 
-  //Override wall tile
+  //Override tile15 tile
   free(graphics.tiles[15]);
   graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
 
-  //Extra walls, if they exist, if they don't, default to tile 6 (from 0) in tiles.
-  sprintf(tempStr, "%s-extra.png", li->wallBase);
+
+  sprintf(tempStr, "%s-edges.png", li->wallBase);
+
   graphics.wallsImg = loadImg( packGetFile("themes",tempStr) );
-  if(!graphics.wallsImg) printf("Optional GFX missing: '%s'\n", packGetFile("themes",tempStr) );
-  int r,c; //rows, column, sprite index
-  i=0;
-  for(r=0; r < 5; r++)
+  if(graphics.wallsImg)
   {
-    for(c=0; c < 3; c++)
+    printf("Using teststones!\n");
+    for(i=0; i < 12; i++)
     {
-      if(graphics.wallsImg)
-      {
-        //Cut out from sheet
-        x=c*20;
-        y=r*20;
-        graphics.walls[i] = cutSprite(graphics.wallsImg, x,y, 20, 20);
-      } else {
-        //Default to the freestanding wall
-        graphics.walls[i] = cutSprite(graphics.wallImg, 0, 0, 20, 20);
-      }
-      i++;
+      graphics.edges[i] =  cutSprite(graphics.wallsImg, i*20,0, 20, 20);
     }
+
+  } else {
+    printf("Boom!\n");
   }
-  //Above loop leaves when i==15.
-  //Middle-free is 15 = default tile index in image is 15 (starting from 0).
-  graphics.walls[15] = cutSprite(graphics.wallImg, 0, 0, 20, 20);
+
 
   //Explosions, reuse R as frame number index
   for(i=0; i < BRICKSEND; i++)
@@ -192,10 +182,10 @@ void cleanUpDraw()
     graphics.wallsImg=0;
 
   //Wall sprites
-  for(i=0; i < 16; i++)
+  for(i=0; i < 12; i++)
   {
-    if(graphics.walls[i]) free(graphics.walls[i]);
-    graphics.walls[i]=0;
+    if(graphics.edges[i]) free(graphics.edges[i]);
+    graphics.edges[i]=0;
   }
 
   //Explosion
@@ -255,7 +245,17 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
         //We treat walls/glue/oneways/switches/evilbricks/copybricks and rembricks as walls (they will have the walltile defined)
         if( isWall(pf, x, y) )
         {
-          drawSprite(screen, graphics.walls[pf->board[x][y]->wall], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+
+          int i;
+          drawSprite(screen, graphics.tiles[15], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+          for(i=0; i < 12; i++)
+          {
+            if(pf->board[x][y]->wall & (1<<i) )
+            {
+              drawSprite(screen, graphics.edges[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            }
+          }
+
         }
 
         if( pf->board[x][y]->type != STDWALL && graphics.tiles[pf->board[x][y]->type-1])

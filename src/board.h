@@ -43,7 +43,7 @@ struct brick_t
   int tl; //dirchange time left, used for kill timeout too
 
   int checked; //Have this brick been checked in this loop ? (for bricks that moved)
-  int wall; //Only used by walls, index in walls-sprite array.
+  int_fast16_t wall; //Only used by walls, bit decides edge
 
   int isActive; //Only used by switches, if 1, the switch have activated it's target (if 0, the target is in the deactivated list).
   struct brick_t* target; //Only used by switched, target brick, is set upon init.
