@@ -54,137 +54,35 @@ void dumpBrickTypes(playField* pf)
   }
 }
 
-typedef struct {
-    int condition[3][3];
-} edgeDesc_t;
-
-static edgeDesc_t wallRules[12] = {
-    //0 Flat top
-    {
-          {
-            { 2,0,2 },
-            { 2,2,2 },
-            { 2,2,2 }
-          }
-    },
-    //1 Flat bottom
-    {
-          {
-            { 2,2,2 },
-            { 2,2,2 },
-            { 2,0,2 }
-          }
-    },
-    //2 Flat left
-    {
-          {
-            { 2,2,2 },
-            { 0,2,2 },
-            { 2,2,2 }
-          }
-    },
-    //3 Flat right
-    {
-          {
-            { 2,2,2 },
-            { 2,2,0 },
-            { 2,2,2 }
-          }
-    },
-    //4 Top left corner
-    {
-          {
-            { 2,0,2 },
-            { 0,2,2 },
-            { 2,2,2 }
-          }
-    },
-    //5 Top right corner
-    {
-          {
-            { 2,0,2 },
-            { 2,2,0 },
-            { 2,2,2 }
-          }
-    },
-    //6 Bottom left corner
-    {
-          {
-            { 2,2,2 },
-            { 0,2,2 },
-            { 2,0,2 }
-          }
-    },
-    //7 Bottom right corner
-    {
-          {
-            { 2,2,2 },
-            { 2,2,0 },
-            { 2,0,2 }
-          }
-    },
-    //8 Top left inverted corner
-    {
-          {
-            { 0,1,2 },
-            { 1,2,2 },
-            { 2,2,2 }
-          }
-    },
-    //9 Top right inverted corner
-    {
-          {
-            { 2,1,0 },
-            { 2,2,1 },
-            { 2,2,2 }
-          }
-    },
-    //10 Bottom left inverted corner
-    {
-          {
-            { 2,2,2 },
-            { 1,2,2 },
-            { 0,1,2 }
-          }
-    },
-    //11 Bottom right inverted corner
-    {
-          {
-            { 2,2,2 },
-            { 2,2,1 },
-            { 2,1,0 }
-          }
-    }
-};
 
 void setWallType(playField* pf, int x, int y)
 {
-  int i,xx,yy;
   pf->board[x][y]->wall=0;
-  for(i=0; i < 12; i++ )
-  {
-    int score=0;
-    for(xx=0; xx < 3; xx++)
-    {
-      for(yy=0; yy < 3; yy++)
-      {
-        if( wallRules[i].condition[yy][xx] != 2 )
-        {
-          if( (wallRules[i].condition[yy][xx] == 1 && isWall(pf, (x-1+xx),(y-1+yy) )) || (wallRules[i].condition[yy][xx] == 0 && !isWall(pf, (x-1+xx),(y-1+yy) ) ) )
-          {
-            score++;
-          }
-        } else {
-          score++;
-        }
-      }
-    }
-    if(score==9)
-    {
-      pf->board[x][y]->wall |= (1<<i);
-    }
-  }
-  //pf->board[x][y]->wall=0;
+
+  //0 Flat top
+  if( !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<0);
+  //1 Flat bottom
+  if( !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<1);
+  //2 Flat left
+  if( !isWall(pf,x-1,y) ) pf->board[x][y]->wall |= (1<<2);
+  //3 Flat right
+  if( !isWall(pf,x+1,y) ) pf->board[x][y]->wall |= (1<<3);
+  //4 Top left corner
+  if( !isWall(pf,x-1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<4);
+  //5 Top right corner
+  if( !isWall(pf,x+1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<5);
+  //6 Bottom left corner
+  if( !isWall(pf,x-1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<6);
+  //7 Bottom right corner
+  if( !isWall(pf,x+1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<7);
+  //8 Top left inverted corner
+  if( !isWall(pf,x-1,y-1) && isWall(pf,x,y-1) && isWall(pf,x-1,y) ) pf->board[x][y]->wall |= (1<<8);
+  //9 Top right inverted corner
+  if( !isWall(pf,x+1,y-1) && isWall(pf,x,y-1) && isWall(pf,x+1,y) ) pf->board[x][y]->wall |= (1<<9);
+  //10 Bottom left inverted corner
+  if( !isWall(pf,x-1,y+1) && isWall(pf,x-1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<10);
+  //11 Bottom right inverted corner
+  if( !isWall(pf,x+1,y+1) && isWall(pf,x+1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<11);
 }
 
 void boardSetWalls(playField* pf)
