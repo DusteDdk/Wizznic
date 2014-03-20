@@ -99,6 +99,7 @@ void boardSetWalls(playField* pf)
       }
     }
   }
+  pf->newWalls=1;
 }
 
 void newBrick(playField* pf, int x, int y, int type)

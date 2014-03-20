@@ -67,6 +67,8 @@ struct playField_t
   int brickTypes[BRICKSEND]; //Number of bricks of each type currently on board
 
   listItem* removeList; //Start of the linked list of bricks that's going to die, tl counts down their lifespan
+  int_fast8_t newWalls; //Used to indicate that walls have changed on this board.
+
 };
 
 typedef struct playField_t playField;

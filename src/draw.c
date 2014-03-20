@@ -26,17 +26,28 @@ struct boardGraphics_t graphics;
 int initDraw(levelInfo_t* li, SDL_Surface* screen)
 {
   char tempStr[512];
-  int i,x,y;
+  int i;
 
   //Background image
   graphics.boardImg = loadImg( packGetFile("themes",li->bgFile) );
-
   if(!graphics.boardImg)
   {
     printf("Couldn't load board file:'%s'\n", packGetFile("themes",li->bgFile) );
     cleanUpDraw();
     return(0);
   }
+
+
+  //The image into which we blit background and bricks
+  graphics.background = SDL_ConvertSurface( graphics.boardImg, graphics.boardImg->format, graphics.boardImg->flags );
+  if( !graphics.background )
+  {
+    printf("ERROR: Could not allocate SDL_Surface for background.");
+    cleanUpDraw();
+    return(0);
+  }
+  //Some surfaces has flags set that prevent propper blitting
+  graphics.background->flags=0x00;
 
   //Tileset
   sprintf(tempStr, "%s.png", li->tileBase);
@@ -64,25 +75,22 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     cleanUpDraw();
     return(0);
   }
-
-  //Override tile15 tile
   free(graphics.tiles[15]);
   graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
 
 
   sprintf(tempStr, "%s-edges.png", li->wallBase);
-
   graphics.wallsImg = loadImg( packGetFile("themes",tempStr) );
   if(graphics.wallsImg)
   {
-    printf("Using teststones!\n");
     for(i=0; i < 12; i++)
     {
       graphics.edges[i] =  cutSprite(graphics.wallsImg, i*20,0, 20, 20);
     }
-
   } else {
-    printf("Boom!\n");
+    printf("Error: No edges for: %s (File not found: %s)\n",li->wallBase,tempStr );
+    cleanUpDraw();
+    return(0);
   }
 
 
@@ -151,6 +159,9 @@ void cleanUpDraw()
   //Board image
   if(graphics.boardImg) SDL_FreeSurface(graphics.boardImg);
   graphics.boardImg=0;
+
+  if(graphics.background) SDL_FreeSurface(graphics.background);
+  graphics.background=0;
 
   //Tile image
   if(graphics.tileImg) SDL_FreeSurface(graphics.tileImg);
@@ -227,37 +238,57 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   listItem* t; //general purpose, reusable
   psysSet_t ps;
 
-  SDL_BlitSurface(graphics.boardImg , NULL, screen, &(setting()->bgPos) );
+  //Check if we should draw walls
+  if( pf->newWalls )
+  {
+    pf->newWalls=0;
+    SDL_BlitSurface(graphics.boardImg , NULL, graphics.background, NULL );
 
+    //Draw static bricks
+    for(y=0; y < FIELDSIZE; y++)
+    {
+      for(x=0; x < FIELDSIZE; x++)
+      {
+        //Bricks-Walls
+        if(pf->board[x][y] && pf->board[x][y]->type != RESERVED)
+        {
+          //We treat walls/glue/oneways/switches/evilbricks/copybricks and rembricks as walls (they will have the walltile defined)
+
+          if( isWall(pf, x, y) )
+          {
+            int i;
+            drawSprite(graphics.background, graphics.tiles[15], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            for(i=0; i < 12; i++)
+            {
+              if(pf->board[x][y]->wall & (1<<i) )
+              {
+                drawSprite(graphics.background, graphics.edges[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  //Blit background
+  SDL_BlitSurface(graphics.background , NULL, screen, &(setting()->bgPos) );
+
+  //Advance animations
   for(x=0;x<NUMTILES;x++)
   {
     playAni(graphics.tileAni[x]);
   }
 
-  //Draw static bricks
+  //Draw bricks that are not moving around
   for(y=0; y < FIELDSIZE; y++)
   {
     for(x=0; x < FIELDSIZE; x++)
     {
-      //Bricks-Walls
+
       if(pf->board[x][y] && pf->board[x][y]->type != RESERVED)
       {
-        //We treat walls/glue/oneways/switches/evilbricks/copybricks and rembricks as walls (they will have the walltile defined)
-        if( isWall(pf, x, y) )
-        {
-
-          int i;
-          drawSprite(screen, graphics.tiles[15], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
-          for(i=0; i < 12; i++)
-          {
-            if(pf->board[x][y]->wall & (1<<i) )
-            {
-              drawSprite(screen, graphics.edges[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
-            }
-          }
-
-        }
-
         if( pf->board[x][y]->type != STDWALL && graphics.tiles[pf->board[x][y]->type-1])
         {
           //We draw the animated extra-tiles if they exist.

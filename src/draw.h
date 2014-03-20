@@ -32,6 +32,8 @@
 struct boardGraphics_t
 {
   SDL_Surface* boardImg;
+  SDL_Surface* background;
+
   SDL_Surface* tileImg;
   SDL_Surface* curImg;
   SDL_Surface* wallImg;//Single wall
