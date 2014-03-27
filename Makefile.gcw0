@@ -1,0 +1,87 @@
+#Makefile for wizznic.
+#To make a system-wide install add DATADIR=/dir/to/data/ and BINDIR=/dir/to/bin/ to the make command
+#To compile without OpenGL scaling support, add WITH_OPENGL=false to the make command.
+
+WITH_OPENGL := false
+CROSS_COMPILE := /opt/gcw0-toolchain/usr/bin/mipsel-linux-
+CC = $(CROSS_COMPILE)gcc
+LD = $(CC)
+STRIP = $(CROSS_COMPILE)strip
+SYSROOT := $(shell $(CC) --print-sysroot)
+
+NAME=wizznic
+TARGET= $(NAME).elf
+
+ifeq ($(DATADIR),)
+  DATADIR="./"
+endif 
+
+DEFS = -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\""
+
+#default to /usr/share/man for man page
+#note: some systems use /usr/local/share/man, others use /usr/local/man
+#packagers should set the variable accordingly
+MANDIR = /usr/share/man/
+
+#Add the PER_USER_FILES define if the DATADIR is set
+ifneq ($(DATADIR),)
+  ifneq ($(DATADIR),"./")
+        DEFS +=-DPER_USER_FILES
+  endif
+endif
+
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
+
+ifneq ($(RELEASE_VERSION),)
+  DEFS +=-DRELEASE_VERSION="\"$(RELEASE_VERSION)\""
+endif
+
+INCS =  -I. -I$(SYSROOT)/usr/include -I$(SYSROOT)/usr/include/SDL
+CFLAGS=-Wall -Wextra
+ifeq ($(DEBUG),)
+  CFLAGS += -O3
+else
+  STRIP = true
+  CFLAGS += -g
+endif
+
+LDFLAGS=$(CFLAGS)
+LIBS = -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
+
+#Are we compiling with gl?
+ifneq ($(WITH_OPENGL),false)
+	LIBS += -lGL
+	DEFS += -DWITH_OPENGL
+endif
+
+SOURCES = $(wildcard src/*.c) src/platform/pc.c\
+src/platform/dumplevelimages.c src/platform/libDLC.c
+OBJS = $(SOURCES:.c=.o)
+MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
+
+########################################################################
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+ifeq ($(DEBUG),)
+	$(STRIP) $@
+endif
+
+.c.o:
+	$(MYCC) -c $< -o $@
+
+install:
+	install -d -D -m 755 "$(DESTDIR)$(BINDIR)"
+	install -D -m 755 "$(TARGET)" "$(DESTDIR)$(BINDIR)"
+	install -d -D -m 755 "$(DESTDIR)$(DATADIR)"
+	cp -R data "$(DESTDIR)$(DATADIR)"
+	cp -R packs "$(DESTDIR)$(DATADIR)"
+	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
+	find "$(DESTDIR)$(DATADIR)" -type f -exec chmod 644 {} \;
+	install -d "$(DESTDIR)$(MANDIR)man1/"
+	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
+
+clean:
+	rm -f $(NAME) src/*.o src/platform/*.o
