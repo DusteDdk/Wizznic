@@ -76,6 +76,36 @@
     #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
     #define STR_GAME_PRESSB             "Press B to Play"
     #define STR_SELECT_CTRLS            "---- Select with [Arrows]/[B] ----\n"
+#elif defined(GCW0) /// GCW Zero version
+  // Note: GCW Zero button layout matches the GP2X/Wiz layout in the following manner:
+  //  GCW Zero - GP2X/Wiz
+  //  A        - B
+  //  B        - X
+  //  X        - A
+  //  Y        - Y
+  //  L        - L
+  //  R        - R
+  //  START    - MENU
+  //  SELECT   - SELECT
+
+  //Menu
+  #define STR_MENU_PRESS_B            "Press A"
+  #define STR_MENU_PRESS_B_PLAY       "Press A to Play"
+
+  #define STR_MENU_LVLEDIT_USAGE      "Edit: A. Play: X. Clone: Y"
+
+  //Editor
+  #define STR_EDIT_CONTROLS "B:Put Y:Del Start:Exit Select:Save"
+
+  //Entering highscores
+  #define STR_STRINPUT_CONTROLS "A:Type  B:Delete "
+
+  //Game
+  #define STR_GAME_RESTARTCONFIRM     "Press X to confirm"
+  #define STR_GAME_PRESSB             "Press A to Play"
+  #define STR_SELECT_CTRLS            "---- Select with [D-PAD]/[A] ----\n"
+
+
 #elif defined(MAME_CTRL)
     //Menu
     #define STR_MENU_PRESS_B            "Press Button 1"
@@ -328,6 +358,9 @@
 #elif defined (PANDORA)
   #define STR_EDIT_NEXTBRICK_KEY      "B>"
   #define STR_EDIT_PREVBRICK_KEY      "<A"
+#elif defined (GCW0)
+  #define STR_EDIT_NEXTBRICK_KEY      "A>"
+  #define STR_EDIT_PREVBRICK_KEY      "<X"
 #else
   #define STR_EDIT_NEXTBRICK_KEY      "Alt"
   #define STR_EDIT_PREVBRICK_KEY      "Ctrl"

@@ -16,7 +16,7 @@ ifeq ($(DATADIR),)
   DATADIR="./"
 endif 
 
-DEFS = -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\""
+DEFS = -DGCW0 -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\""
 
 #default to /usr/share/man for man page
 #note: some systems use /usr/local/share/man, others use /usr/local/man

@@ -76,6 +76,10 @@ int main(int argc, char *argv[])
     scePowerSetClockFrequency(333,333,166);
   #endif
 
+  #ifdef GCW0
+    sdlVideoModeFlags = (SDL_HWSURFACE | SDL_DOUBLEBUF);
+  #endif
+
 //  #ifdef WIN32
 //Redirect stdout to console on windows, so we can see what's going in.
 //  FILE *stream;
@@ -125,7 +129,7 @@ int main(int argc, char *argv[])
   }
 
   //Setup display
-  #if defined (GP2X) || defined (PSP) || defined (WIZ)
+  #if defined (GP2X) || defined (PSP) || defined (WIZ) || defined(GCw0)
   SDL_Surface* screen = SDL_SetVideoMode(SCREENW,SCREENH,16, sdlVideoModeFlags);
   #else
   SDL_Surface* screen=NULL;

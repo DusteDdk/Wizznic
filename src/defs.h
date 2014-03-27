@@ -71,6 +71,8 @@
   #include "platform/gp2x.h"
 #elif defined(WIZ)    //GP2X Wiz
   #include "platform/wiz.h"
+#elif defined(GCW0)    //GCW Zero
+  #include "platform/gcw0.h"
 #else                 //Linux, Windows, Default
   #include "platform/pc.h"
   #define PC
