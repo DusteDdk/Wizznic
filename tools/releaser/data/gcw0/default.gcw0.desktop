@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wizznic!
+Comment=Brick-matching puzzle game
+Exec=wizznic.elf
+Terminal=false
+Icon=wizznic
+Type=Application
+StartupNotify=true
+Categories=games;
