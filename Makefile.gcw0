@@ -16,19 +16,12 @@ ifeq ($(DATADIR),)
   DATADIR="./"
 endif 
 
-DEFS = -DGCW0 -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\""
+DEFS = -DGCW0 -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\"" -DPER_USER_FILES
 
 #default to /usr/share/man for man page
 #note: some systems use /usr/local/share/man, others use /usr/local/man
 #packagers should set the variable accordingly
 MANDIR = /usr/share/man/
-
-#Add the PER_USER_FILES define if the DATADIR is set
-ifneq ($(DATADIR),)
-  ifneq ($(DATADIR),"./")
-        DEFS +=-DPER_USER_FILES
-  endif
-endif
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
