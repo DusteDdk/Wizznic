@@ -8,6 +8,7 @@ CC = $(CROSS_COMPILE)gcc
 LD = $(CC)
 STRIP = $(CROSS_COMPILE)strip
 SYSROOT := $(shell $(CC) --print-sysroot)
+OPKNAME := "wizznic"
 
 NAME=wizznic
 TARGET= $(NAME).elf
@@ -21,7 +22,8 @@ DEFS = -DGCW0 -DIS_LITTLE_ENDIAN -DDATADIR="\"$(DATADIR)\"" -DPER_USER_FILES
 #default to /usr/share/man for man page
 #note: some systems use /usr/local/share/man, others use /usr/local/man
 #packagers should set the variable accordingly
-MANDIR = /usr/share/man/
+MANDIR = /man/
+DESTDIR := ./opk/
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
@@ -71,10 +73,13 @@ install:
 	install -d -D -m 755 "$(DESTDIR)$(DATADIR)"
 	cp -R data "$(DESTDIR)$(DATADIR)"
 	cp -R packs "$(DESTDIR)$(DATADIR)"
+	cp -R ./tools/releaser/data/gcw0/* "$(DESTDIR)$(DATADIR)"
 	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
-	find "$(DESTDIR)$(DATADIR)" -type f -exec chmod 644 {} \;
+	find "$(DESTDIR)$(DATADIR)" -type f \! -executable -exec chmod 644 {} \;
 	install -d "$(DESTDIR)$(MANDIR)man1/"
 	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
+	mksquashfs $(DESTDIR) $(OPKNAME)_GCW0_$(RELEASE_VERSION)_$(BUILD_NUMBER).opk -all-root -noappend -no-exports -no-xattrs
 
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o
+	rm -Rf $(DESTDIR)
