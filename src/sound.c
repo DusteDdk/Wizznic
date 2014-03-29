@@ -108,8 +108,6 @@ void loadSamples(const char* sndDir, const char* musicFile)
   loadSample( packGetFile(sndDir,"brickgrab.ogg"), SND_BRICKGRAB );
   loadSample( packGetFile(sndDir,"brickbreak.ogg"), SND_BRICKBREAK );
   loadSample( packGetFile(sndDir,"scoretick.ogg"), SND_SCORECOUNT );
-  loadSample( packGetFile(sndDir,"rocketboom.ogg"), SND_ROCKETBOOM );
-  loadSample( packGetFile(sndDir,"rocketlaunch.ogg"), SND_ROCKETLAUNCH );
   loadSample( packGetFile(sndDir,"countdown.ogg"), SND_COUNTDOWNTOSTART );
   loadSample( packGetFile(sndDir,"start.ogg"), SND_START );
   loadSample( packGetFile(sndDir,"timeout.ogg"), SND_TIMEOUT );
@@ -155,6 +153,8 @@ void loadMenuSamples()
 {
   loadSample( DATADIR"data/snd/menumove.ogg", SND_MENUMOVE );
   loadSample( DATADIR"data/snd/menuclick.ogg", SND_MENUCLICK );
+  loadSample( DATADIR"data/snd/rocketboom.ogg", SND_ROCKETBOOM );
+  loadSample( DATADIR"data/snd/rocketlaunch.ogg", SND_ROCKETLAUNCH );
 }
 
 void sndPlay(int sample, int posX)
