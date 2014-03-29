@@ -59,33 +59,19 @@ int initDraw(levelInfo_t* li, SDL_Surface* screen)
     return(0);
   }
 
-
   //Cut tiles into sprites
   for(i=0; i < NUMTILES; i++)
   {
     graphics.tiles[i] = cutSprite(graphics.tileImg, i*20, 0, 20,20);
   }
 
-  //Single wall (Override tile15 in graphics.tiles)
-  sprintf(tempStr, "%s-middle.png", li->wallBase);
-  graphics.wallImg = loadImg( packGetFile("themes",tempStr) );
-  if(!graphics.wallImg)
-  {
-    printf("Couldn't load wall file:'%s'\n", packGetFile("themes",tempStr) );
-    cleanUpDraw();
-    return(0);
-  }
-  free(graphics.tiles[15]);
-  graphics.tiles[15] = cutSprite(graphics.wallImg,0,0,20,20);
-
-
-  sprintf(tempStr, "%s-edges.png", li->wallBase);
+  sprintf(tempStr, "%s.png", li->wallBase);
   graphics.wallsImg = loadImg( packGetFile("themes",tempStr) );
   if(graphics.wallsImg)
   {
-    for(i=0; i < 12; i++)
+    for(i=0; i < 13; i++)
     {
-      graphics.edges[i] =  cutSprite(graphics.wallsImg, i*20,0, 20, 20);
+      graphics.walls[i] =  cutSprite(graphics.wallsImg, i*20,0, 20, 20);
     }
   } else {
     printf("Error: No edges for: %s (File not found: %s)\n",li->wallBase,tempStr );
@@ -193,10 +179,10 @@ void cleanUpDraw()
     graphics.wallsImg=0;
 
   //Wall sprites
-  for(i=0; i < 12; i++)
+  for(i=0; i < 13; i++)
   {
-    if(graphics.edges[i]) free(graphics.edges[i]);
-    graphics.edges[i]=0;
+    if(graphics.walls[i]) free(graphics.walls[i]);
+    graphics.walls[i]=0;
   }
 
   //Explosion
@@ -257,12 +243,14 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
           if( isWall(pf, x, y) )
           {
             int i;
-            drawSprite(graphics.background, graphics.tiles[15], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
-            for(i=0; i < 12; i++)
+            //Draw middle wall (idx 0)
+            drawSprite(graphics.background, graphics.walls[0], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            //Draw edges (if any)
+            for(i=1; i < 13; i++)
             {
-              if(pf->board[x][y]->wall & (1<<i) )
+              if(pf->board[x][y]->edges & (1<<i) )
               {
-                drawSprite(graphics.background, graphics.edges[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+                drawSprite(graphics.background, graphics.walls[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
               }
             }
           }

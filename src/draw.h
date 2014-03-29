@@ -47,7 +47,7 @@ struct boardGraphics_t
   aniType* brickExpl[BRICKSEND];
   aniType* tileAni[NUMTILES];
 
-  spriteType* edges[12];
+  spriteType* walls[13];
   spriteType* countDownSpr[4]; //Countdown graphics 3,2,1,start
 
   //Teleport path animation

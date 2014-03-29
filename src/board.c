@@ -57,32 +57,32 @@ void dumpBrickTypes(playField* pf)
 
 void setWallType(playField* pf, int x, int y)
 {
-  pf->board[x][y]->wall=0;
+  pf->board[x][y]->edges=0;
 
   //0 Flat top
-  if( !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<0);
+  if( !isWall(pf,x,y-1) ) pf->board[x][y]->edges |= (1<<1);
   //1 Flat bottom
-  if( !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<1);
+  if( !isWall(pf,x,y+1) ) pf->board[x][y]->edges |= (1<<2);
   //2 Flat left
-  if( !isWall(pf,x-1,y) ) pf->board[x][y]->wall |= (1<<2);
+  if( !isWall(pf,x-1,y) ) pf->board[x][y]->edges |= (1<<3);
   //3 Flat right
-  if( !isWall(pf,x+1,y) ) pf->board[x][y]->wall |= (1<<3);
+  if( !isWall(pf,x+1,y) ) pf->board[x][y]->edges |= (1<<4);
   //4 Top left corner
-  if( !isWall(pf,x-1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<4);
+  if( !isWall(pf,x-1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->edges |= (1<<5);
   //5 Top right corner
-  if( !isWall(pf,x+1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->wall |= (1<<5);
+  if( !isWall(pf,x+1,y) && !isWall(pf,x,y-1) ) pf->board[x][y]->edges |= (1<<6);
   //6 Bottom left corner
-  if( !isWall(pf,x-1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<6);
+  if( !isWall(pf,x-1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->edges |= (1<<7);
   //7 Bottom right corner
-  if( !isWall(pf,x+1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<7);
+  if( !isWall(pf,x+1,y) && !isWall(pf,x,y+1) ) pf->board[x][y]->edges |= (1<<8);
   //8 Top left inverted corner
-  if( !isWall(pf,x-1,y-1) && isWall(pf,x,y-1) && isWall(pf,x-1,y) ) pf->board[x][y]->wall |= (1<<8);
+  if( !isWall(pf,x-1,y-1) && isWall(pf,x,y-1) && isWall(pf,x-1,y) ) pf->board[x][y]->edges |= (1<<9);
   //9 Top right inverted corner
-  if( !isWall(pf,x+1,y-1) && isWall(pf,x,y-1) && isWall(pf,x+1,y) ) pf->board[x][y]->wall |= (1<<9);
+  if( !isWall(pf,x+1,y-1) && isWall(pf,x,y-1) && isWall(pf,x+1,y) ) pf->board[x][y]->edges |= (1<<10);
   //10 Bottom left inverted corner
-  if( !isWall(pf,x-1,y+1) && isWall(pf,x-1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<10);
+  if( !isWall(pf,x-1,y+1) && isWall(pf,x-1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->edges |= (1<<11);
   //11 Bottom right inverted corner
-  if( !isWall(pf,x+1,y+1) && isWall(pf,x+1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->wall |= (1<<11);
+  if( !isWall(pf,x+1,y+1) && isWall(pf,x+1,y) && isWall(pf,x,y+1) ) pf->board[x][y]->edges |= (1<<12);
 }
 
 void boardSetWalls(playField* pf)
@@ -92,7 +92,6 @@ void boardSetWalls(playField* pf)
   {
     for(y=0; y < FIELDSIZE; y++)
     {
-      //if(pf->board[x][y] && ( pf->board[x][y]->type==STDWALL || pf->board[x][y]->type==GLUE || pf->board[x][y]->type==ONEWAYLEFT || pf->board[x][y]->type==ONEWAYRIGHT || pf->board[x][y]->type == SWON || pf->board[x][y]->type == SWOFF || pf->board[x][y]->type == REMBRICK || pf->board[x][y]->type == COPYBRICK || pf->board[x][y]->type == EVILBRICK || pf->board[x][y]->type == SWAPBRICK) )
       if(isWall( pf, x,y ))
       {
         setWallType(pf,x,y);
