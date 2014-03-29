@@ -96,15 +96,16 @@ or you will lose a life.
 
 1.2 Controls and keys
 On the Wiz:
-D-Pad - Navigate menus, move cursor about.
-B     - Select item in menu, select brick.
-Y     - Reset level (you have infinite retries, but time won't be reset)
-MENU  - Pauses the game and displays the menu.
-Vol   - Adjust volume, the setting is saved.
+D-Pad  - Navigate menus, move cursor about.
+B      - Select item in menu, select brick.
+SELECT - Reset level (you have infinite retries, but time won't be reset)
+MENU   - Pauses the game and displays the menu.
+Vol    - Adjust volume, the setting is saved.
 
 On the Pc:
 Arrows - Navigate menus, move cursor.
 Ctrl   - Select item in menu, select brick.
+Space  - Reset level.
 Escape - Pauses the game and displays the menu.
 
 ------------------------------------
