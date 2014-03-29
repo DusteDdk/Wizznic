@@ -323,9 +323,9 @@ int runGame(SDL_Surface* screen)
     }
 
     //Retry
-    if( getButton( C_BTNA ) || (getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && isBoxClicked(&ptrRestartRect)) )
+    if( getButton( C_BTNSELECT ) || (getInpPointerState()->timeSinceMoved<POINTER_SHOW_TIMEOUT && isBoxClicked(&ptrRestartRect)) )
     {
-      resetBtn( C_BTNA );
+      resetBtn( C_BTNSELECT );
       resetMouseBtn();
       if(!restartConfirm)
       {
