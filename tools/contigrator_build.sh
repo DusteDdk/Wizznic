@@ -78,6 +78,15 @@ rm -R game
 
 make -f Makefile.wiz clean
 
+#GCW-Zero
+
+echo "Making GCW-Zero package"
+make -f Makefile.gcw0  CC='ccache /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc'
+make -f Makefile.gcw0 install
+mv *.opk $OUT/Wizznic_gcw0_build_"$BN_NUM".opk
+rm -f *.opk
+make -f Makefile.gcw0 clean
+
 echo "Making source..."
 
 SRCFN="Wizznic_src_build_$BN_NUM.tar.bz2"
@@ -93,4 +102,3 @@ cp PKGBUILD.template $OUT/PKGBUILD
 SRCURL="http:\/\/contigrator.wizznic.org\/jobs\/Wizznic\/builds\/$BN\/output\/$SRCFN"
 
 sed -i "s/<BUILDNUMBER>/$BN_NUM/g; s/<URL>/$SRCURL/g; s/<SRCMD5>/$SRCMD5/g; s/<SRCDIRNAME>/Wizznic_src_build_$BN_NUM/g;" $OUT/PKGBUILD
-
