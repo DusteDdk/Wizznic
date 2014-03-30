@@ -122,7 +122,6 @@ void freeMsg(msg_t* msg)
 
 void initCredits(SDL_Surface* screen)
 {
-  printf("initCredits();\n");
   msgList=initList();
   listAddData(msgList, (void*)initMsg("Website","wizznic.org", screen));
   listAddData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
@@ -134,19 +133,19 @@ void initCredits(SDL_Surface* screen)
   listAddData(msgList, (void*)initMsg("Thx","bMan", screen));
   listAddData(msgList, (void*)initMsg("Thx","KML", screen));
   listAddData(msgList, (void*)initMsg("Thx","Neil L", screen));
+  listAddData(msgList, (void*)initMsg("Thx","Zear", screen));
 
   listAddData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
   listAddData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
+  listAddData(msgList, (void*)initMsg("Greetings","gcw-zero.com", screen));
 
   //Set current
   currentMsgIndex=0;
   setCurrent();
-  printf("credits initialized.\n");
 }
 
 void clearCredits()
 {
-  printf("clearCredits();\n");
   listItem* it=msgList;
   while( (it=it->next) )
   {
