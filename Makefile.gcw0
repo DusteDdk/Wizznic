@@ -83,3 +83,5 @@ install:
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o
 	rm -Rf $(DESTDIR)
+	rm -f $TARGET
+	rm -f $(OPKNAME)_GCW0_$(RELEASE_VERSION)_$(BUILD_NUMBER).opk
