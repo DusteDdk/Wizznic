@@ -301,8 +301,9 @@ int main(int argc, char *argv[])
 
   printf("Screen surface using %i bytes per pixel.\n",setting()->bpp);
 
-  //Open Joysticks (for wiz)
-  if (SDL_NumJoysticks() > 0) SDL_JoystickOpen(0);
+  //Open Joysticks (if present)
+  for(i = 0; i < SDL_NumJoysticks(); i++)
+	SDL_JoystickOpen(i);
 
   //Hide mouse cursor
   SDL_ShowCursor(SDL_DISABLE);

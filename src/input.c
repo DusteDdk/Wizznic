@@ -23,6 +23,8 @@
 #include "settings.h"
 
 static SDLKey inputChar=0;
+static int joyCanMoveX=0;
+static int joyCanMoveY=0;
 
 inline SDLKey getChar()
 {
@@ -186,8 +188,139 @@ int runControls()
           }
         break;
 
+	#else
+	//Joystick
+	case SDL_JOYAXISMOTION:	// Analog joystick movement
+		switch(event.jaxis.axis)
+		{
+			case 0:
+				if(event.jaxis.value < -PLATFORM_JOY_DEADZONE && joyCanMoveX)
+				{
+					joyCanMoveX = 0;
+					// left movement
+					button[C_LEFT].state=1;
+					button[C_LEFT].time=0;
+				}
+				else if(event.jaxis.value > PLATFORM_JOY_DEADZONE && joyCanMoveX)
+				{
+					joyCanMoveX = 0;
+					// right movement
+					button[C_RIGHT].state=1;
+					button[C_RIGHT].time=0;
+				}
+				else if(event.jaxis.value > -PLATFORM_JOY_DEADZONE && event.jaxis.value < PLATFORM_JOY_DEADZONE)
+				{
+					joyCanMoveX = 1;
+					// is at center
+					button[C_LEFT].state=0;
+					button[C_LEFT].time=0;
+					button[C_RIGHT].state=0;
+					button[C_RIGHT].time=0;
+				}
+			break;
+			case 1:
+				if(event.jaxis.value < -PLATFORM_JOY_DEADZONE && joyCanMoveY)
+				{
+					joyCanMoveY = 0;
+					// up movement
+					button[C_UP].state=1;
+					button[C_UP].time=0;
+				}
+				else if(event.jaxis.value > PLATFORM_JOY_DEADZONE && joyCanMoveY)
+				{
+					joyCanMoveY = 0;
+					// down movement
+					button[C_DOWN].state=1;
+					button[C_DOWN].time=0;
+				}
+				else if(event.jaxis.value > -PLATFORM_JOY_DEADZONE && event.jaxis.value < PLATFORM_JOY_DEADZONE)
+				{
+					joyCanMoveY = 1;
+					// is at center
+					button[C_UP].state=0;
+					button[C_UP].time=0;
+					button[C_DOWN].state=0;
+					button[C_DOWN].time=0;
+				}
+			break;
+
+			default:
+			break;
+		}
+	break;
+
+	case SDL_JOYHATMOTION:
+		button[C_UP].state=(event.jhat.value & SDL_HAT_UP);
+		button[C_UP].time=0;
+		button[C_DOWN].state=(event.jhat.value & SDL_HAT_DOWN);
+		button[C_DOWN].time=0;
+		button[C_LEFT].state=(event.jhat.value & SDL_HAT_LEFT);
+		button[C_LEFT].time=0;
+		button[C_RIGHT].state=(event.jhat.value & SDL_HAT_RIGHT);
+		button[C_RIGHT].time=0;
+	break;
+
+	case SDL_JOYBUTTONDOWN:
+		switch (event.jbutton.button)
+		{
+			case 0:
+				button[C_BTNB].state = 1;
+				button[C_BTNB].time=0;
+			break;
+			case 1:
+				button[C_BTNX].state = 1;
+				button[C_BTNX].time=0;
+			break;
+			case 2:
+				button[C_BTNA].state = 1;
+				button[C_BTNA].time=0;
+			break;
+			case 3:
+				button[C_BTNB].state = 1;
+				button[C_BTNB].time=0;
+			break;
+			case 4:
+				button[C_BTNMENU].state = 1;
+				button[C_BTNMENU].time=0;
+			break;
+			case 5:
+				button[C_BTNSELECT].state = 1;
+				button[C_BTNSELECT].time=0;
+			break;
+		}
+	break;
+
+	case SDL_JOYBUTTONUP:
+		switch (event.jbutton.button)
+		{
+			case 0:
+				button[C_BTNB].state = 0;
+				button[C_BTNB].time=0;
+			break;
+			case 1:
+				button[C_BTNX].state = 0;
+				button[C_BTNX].time=0;
+			break;
+			case 2:
+				button[C_BTNA].state = 0;
+				button[C_BTNA].time=0;
+			break;
+			case 3:
+				button[C_BTNB].state = 0;
+				button[C_BTNB].time=0;
+			break;
+			case 4:
+				button[C_BTNMENU].state = 0;
+				button[C_BTNMENU].time=0;
+			break;
+			case 5:
+				button[C_BTNSELECT].state = 0;
+				button[C_BTNSELECT].time=0;
+			break;
+		}
+	break;
+
         //Keyboard
-        #else
         case SDL_KEYDOWN:
           for(i=0; i < C_NUM; i++)
           {

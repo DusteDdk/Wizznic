@@ -38,6 +38,10 @@
 #define C_BTNVOLDOWN 13
 #define C_NUM 14
 
+#ifndef PLATFORM_JOY_DEADZONE
+#define PLATFORM_JOY_DEADZONE 500
+#endif
+
 inline SDLKey getChar();
 inline void setButton(int btn); //Nasty
 inline int getButton(int btn);
