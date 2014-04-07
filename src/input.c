@@ -248,6 +248,7 @@ int runControls()
 			break;
 		}
 	break;
+
 	case SDL_JOYHATMOTION:
 		button[C_UP].state=(event.jhat.value & SDL_HAT_UP);
 		button[C_UP].time=0;
@@ -257,6 +258,66 @@ int runControls()
 		button[C_LEFT].time=0;
 		button[C_RIGHT].state=(event.jhat.value & SDL_HAT_RIGHT);
 		button[C_RIGHT].time=0;
+	break;
+
+	case SDL_JOYBUTTONDOWN:
+		switch (event.jbutton.button)
+		{
+			case 0:
+				button[C_BTNB].state = 1;
+				button[C_BTNB].time=0;
+			break;
+			case 1:
+				button[C_BTNX].state = 1;
+				button[C_BTNX].time=0;
+			break;
+			case 2:
+				button[C_BTNA].state = 1;
+				button[C_BTNA].time=0;
+			break;
+			case 3:
+				button[C_BTNB].state = 1;
+				button[C_BTNB].time=0;
+			break;
+			case 4:
+				button[C_BTNMENU].state = 1;
+				button[C_BTNMENU].time=0;
+			break;
+			case 5:
+				button[C_BTNSELECT].state = 1;
+				button[C_BTNSELECT].time=0;
+			break;
+		}
+	break;
+
+	case SDL_JOYBUTTONUP:
+		switch (event.jbutton.button)
+		{
+			case 0:
+				button[C_BTNB].state = 0;
+				button[C_BTNB].time=0;
+			break;
+			case 1:
+				button[C_BTNX].state = 0;
+				button[C_BTNX].time=0;
+			break;
+			case 2:
+				button[C_BTNA].state = 0;
+				button[C_BTNA].time=0;
+			break;
+			case 3:
+				button[C_BTNB].state = 0;
+				button[C_BTNB].time=0;
+			break;
+			case 4:
+				button[C_BTNMENU].state = 0;
+				button[C_BTNMENU].time=0;
+			break;
+			case 5:
+				button[C_BTNSELECT].state = 0;
+				button[C_BTNSELECT].time=0;
+			break;
+		}
 	break;
 
         //Keyboard
