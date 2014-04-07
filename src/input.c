@@ -248,6 +248,16 @@ int runControls()
 			break;
 		}
 	break;
+	case SDL_JOYHATMOTION:
+		button[C_UP].state=(event.jhat.value & SDL_HAT_UP);
+		button[C_UP].time=0;
+		button[C_DOWN].state=(event.jhat.value & SDL_HAT_DOWN);
+		button[C_DOWN].time=0;
+		button[C_LEFT].state=(event.jhat.value & SDL_HAT_LEFT);
+		button[C_LEFT].time=0;
+		button[C_RIGHT].state=(event.jhat.value & SDL_HAT_RIGHT);
+		button[C_RIGHT].time=0;
+	break;
 
         //Keyboard
         case SDL_KEYDOWN:
