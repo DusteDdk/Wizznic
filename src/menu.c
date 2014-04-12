@@ -143,7 +143,8 @@ void incPosX()
 void decPosY()
 {
   menuChangeY=1;
-  sndPlay(SND_MENUMOVE, 160);
+  if(!( menuState==menuStatePaused && menuPosY==1 && !player()->gameStarted ))
+    sndPlay(SND_MENUMOVE, 160);
   countdown=0;
   dir=0;
   menuPosY--;
@@ -154,7 +155,8 @@ void decPosY()
 void incPosY()
 {
   menuChangeY=1;
-  sndPlay(SND_MENUMOVE, 160);
+  if(!( menuState==menuStatePaused && menuPosY==1 && !player()->gameStarted ))
+    sndPlay(SND_MENUMOVE, 160);
   countdown=0;
   dir=0;
   menuPosY++;
