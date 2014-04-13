@@ -101,7 +101,7 @@
   #define STR_STRINPUT_CONTROLS "A:Type  B:Delete "
 
   //Game
-  #define STR_GAME_RESTARTCONFIRM     "Press X to confirm"
+  #define STR_GAME_RESTARTCONFIRM     "Press again to confirm"
   #define STR_GAME_PRESSB             "Press A to Play"
   #define STR_SELECT_CTRLS            "---- Select with [D-PAD]/[A] ----\n"
 
