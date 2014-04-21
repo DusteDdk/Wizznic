@@ -68,6 +68,8 @@ int main(int argc, char *argv[])
   char* dumpPack=NULL;
   int state=1; //Game, Menu, Editor, Quit
   int sdlVideoModeFlags = SDL_SWSURFACE;
+  int i;
+
 
   #ifdef PSP
     //Note to PSP porter, please test if HW is actually faster, Wizznic does a lot of memory-manipulation in the screen-surface, each call might initiate a full copy back/forth from video memory. Remove comment when read. :)
@@ -134,7 +136,6 @@ int main(int argc, char *argv[])
   #else
   SDL_Surface* screen=NULL;
 
-  int i;
   for( i=0; i < argc; i++ )
   {
     if( strcmp( argv[i], "-sw" ) == 0 )
