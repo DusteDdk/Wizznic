@@ -39,6 +39,9 @@ void listInsertData(listItem* start, void* data, int p);
 listItem* listRemoveItem(listItem* start, listItem* item); //Removes item from list, returns item just before removed item. (or 0)
 listItem* cutItem(listItem* previous, listItem* removeMe ); //Given previous item, removes item, returns next item (or 0)
 
+void listReverse( listItem* old, listItem* new ); //Appends the elements of old in to new in reverse order
+
+
 listItem* initList();
 void freeList(listItem* start);
 int listSize(listItem* start);

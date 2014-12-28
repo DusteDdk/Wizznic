@@ -108,6 +108,18 @@ listItem* cutItem(listItem* previous, listItem* removeMe )
   return(previous->next);
 }
 
+
+//Appends the elements of old in to new in reverse order
+void listReverse( listItem* old, listItem* new )
+{
+  if( old->next )
+  {
+    listReverse( old->next, new );
+  }
+  listAddData( new, old->data );
+}
+
+
 listItem* initList()
 {
   listItem* ptr = malloc(sizeof(listItem));
