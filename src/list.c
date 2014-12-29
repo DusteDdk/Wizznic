@@ -109,16 +109,25 @@ listItem* cutItem(listItem* previous, listItem* removeMe )
 }
 
 
-//Appends the elements of old in to new in reverse order
-void listReverse( listItem* old, listItem* new )
+//Reverse the list
+void listReverse( listItem* list )
 {
-  if( old->next )
-  {
-    listReverse( old->next, new );
-  }
-  listAddData( new, old->data );
-}
+  listItem* it;
+  listItem* next;
+  listItem* prev=NULL;
 
+  it=list;
+  it=it->next;
+
+  while( it )
+  {
+    next=it->next;
+    it->next=prev;
+    prev=it;
+    it=next;
+  }
+  list->next=prev;
+}
 
 listItem* initList()
 {
