@@ -63,11 +63,18 @@ void initUserPaths()
 
   //Check if dir exists (we check each dir, since ./ might exist without the others
   struct stat s;
+
+#ifdef WIN32
+  if (stat(strConfDir,&s) != 0) mkdir(strConfDir);
+  if (stat(strEditLvlDir,&s) != 0) mkdir(strEditLvlDir);
+  if (stat(strHsDir,&s) != 0) mkdir(strHsDir);
+  if (stat(strUsrPackDir,&s) != 0) mkdir(strUsrPackDir);
+#else
   if (stat(strConfDir,&s) != 0) mkdir(strConfDir,S_IRWXU);
   if (stat(strEditLvlDir,&s) != 0) mkdir(strEditLvlDir,S_IRWXU);
   if (stat(strHsDir,&s) != 0) mkdir(strHsDir,S_IRWXU);
   if (stat(strUsrPackDir,&s) != 0) mkdir(strUsrPackDir,S_IRWXU);
-
+#endif
 
 }
 
