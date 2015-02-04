@@ -1,6 +1,6 @@
 /************************************************************************
  * This file is part of Wizznic.                                        *
- * Copyright 2009-2013 Jimmy Christensen <dusted@dusted.dk>             *
+ * Copyright 2009-2015 Jimmy Christensen <dusted@dusted.dk>             *
  * Wizznic is free software: you can redistribute it and/or modify      *
  * it under the terms of the GNU General Public License as published by *
  * the Free Software Foundation, either version 3 of the License, or    *
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 //  #endif
 
   //Print welcome message
-  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2010-2013\n\n");
+  printf( "Wizznic "VERSION_STRING". GPLv3 or newer Copyleft 2009-2015\n\n");
 
   //initialize path strings
   initUserPaths();
