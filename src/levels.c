@@ -278,7 +278,6 @@ void makeUserLevelList()
   while( LISTFWD(userLevelFiles, it) )
   {
     tl = (levelInfo_t*)it->data;
-    printf("Userlevel: '%s','%s','%s'\n", tl->author, tl->bgFile, tl->file);
   }
 }
 
