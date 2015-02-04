@@ -26,7 +26,7 @@ CFLAGS=-O3
 LDFLAGS=$(CFLAGS) -L$(OPEN2X)/lib
 LIBS = -Wl,-rpath,$(OPEN2X)/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
 
-SOURCES = $(wildcard src/*.c) src/platform/wiz.c
+SOURCES = $(wildcard src/*.c) src/platform/wiz.c src/list/list.c
 OBJS = $(SOURCES:.c=.o)
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
@@ -37,16 +37,12 @@ sdl: $(TARGET)
 
 all: $(TARGET)
 
-$(TARGET): list $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) src/list/list.a -o $@ $(LIBS)
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 	$(STRIP) $@
-
-list:
-	$(MAKE) -C src/list/ lib
 
 .c.o:
 	$(MYCC) -c $< -o $@
 
 clean:
-	rm -f $(NAME) src/*.o src/platform/*.o
-	$(MAKE) -C src/list/ clean
+	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o

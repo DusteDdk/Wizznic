@@ -55,21 +55,21 @@ ifneq ($(WITH_OPENGL),false)
 endif
 
 SOURCES = $(wildcard src/*.c) src/platform/pc.c\
-src/platform/dumplevelimages.c src/platform/libDLC.c
+src/platform/dumplevelimages.c src/platform/libDLC.c\
+src/list/list.c
+
 OBJS = $(SOURCES:.c=.o)
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 ########################################################################
 all: $(TARGET)
 
-$(TARGET): list $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) src/list/list.a -o $@ $(LIBS)
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 ifeq ($(DEBUG),)
 	$(STRIP) $@
 endif
 
-list:
-	$(MAKE) -C src/list/ lib
 
 .c.o:
 	$(MYCC) -c $< -o $@
@@ -86,5 +86,4 @@ install:
 	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
 
 clean:
-	rm -f $(NAME) src/*.o src/platform/*.o
-	$(MAKE) -C src/list/ clean
+	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o
