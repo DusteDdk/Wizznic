@@ -89,3 +89,4 @@ clean:
 	rm -Rf $(DESTDIR)
 	rm -f $(TARGET)
 	rm -f $(OPKNAME)_GCW0_$(RELEASE_VERSION)_$(BUILD_NUMBER).opk
+	$(MAKE) -C src/list/ clean
