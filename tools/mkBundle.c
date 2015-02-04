@@ -16,7 +16,7 @@
  ************************************************************************/
 
 #include <stdio.h>
-#include "../bundle.h"
+#include "../src/bundle.h"
 
 int main(int argc, char** argv)
 {

@@ -357,7 +357,7 @@ void bundle( const char* file, const char* inDir)
         fwrite( (void*)(&header), sizeof(bundleHeader_t),1, f );
 
         //Write entries
-        while( (it=it->next) )
+        while( LISTFWD(entryList,it) )
         {
           e = (entity*)it->data;
           be = malloc( sizeof(bundleFileEntry) );
