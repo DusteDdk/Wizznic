@@ -61,7 +61,7 @@ void waveImg(wavingImage_t* wi)
 
   for(x=0; x < wi->img->w; x++)
   {
-    yInc = cos(wi->privRotAmount+x*pxInc)*wi->amount;
+    yInc = round( cos(wi->privRotAmount+x*pxInc)*wi->amount );
 
     if(wi->useOverlay)
     {
