@@ -38,7 +38,7 @@ sdl: $(TARGET)
 all: $(TARGET)
 
 $(TARGET): list $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+	$(LD) $(LDFLAGS) $(OBJS) src/list/list.a -o $@ $(LIBS)
 	$(STRIP) $@
 
 list:
@@ -49,3 +49,4 @@ list:
 
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o
+	$(MAKE) -C src/list/ clean

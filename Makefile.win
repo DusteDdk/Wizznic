@@ -49,7 +49,7 @@ all: $(TARGET)
 
 $(TARGET): list $(OBJS)
 	$(WINDRES) src/platform/windows.rc -O coff -o windows.res
-	$(LD) $(LDFLAGS) $(OBJS) -o $@ windows.res $(LIBS)
+	$(LD) $(LDFLAGS) $(OBJS) src/list/list.a -o $@ windows.res $(LIBS)
 	$(STRIP) $@
 
 list:
@@ -61,3 +61,4 @@ list:
 
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o windows.res
+	$(MAKE) -C src/list/ clean

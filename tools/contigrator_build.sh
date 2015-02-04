@@ -10,6 +10,8 @@ set -e;set -x
 #Add your build instructions below:
 
 echo "Wizznic build script."
+git submodule update
+
 VERSION_LONG=build_$BN_NUM
 VERSION=1.0-dev
 

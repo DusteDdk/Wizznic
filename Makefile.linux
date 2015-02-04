@@ -87,3 +87,4 @@ install:
 
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o
+	$(MAKE) -C src/list/ clean
