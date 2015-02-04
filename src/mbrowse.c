@@ -30,7 +30,7 @@
   #define cwd getcwd
 #endif
 
-static listItem* fl=0;
+static list_t* fl=0;
 
 static void fileListFreeItem(fileListItem_t* i)
 {
@@ -41,14 +41,14 @@ static void fileListFreeItem(fileListItem_t* i)
 
 void fileListFree()
 {
-  listItem* it=fl;
+  listItem* it=&fl->begin;
   if(it)
   {
-    while( (it=it->next) )
+    while( LISTFWD(fl,it) )
     {
       fileListFreeItem( (fileListItem_t*)(it->data) );
     }
-    freeList(fl);
+    listFree(fl);
     fl=0;
   }
 }
@@ -120,7 +120,7 @@ void fileListMake(const char* path)
   fileListItem_t* fi;
 
   if(fl) fileListFree();
-  fl=initList();
+  fl=listInit(NULL);
 
   //Add ".."
   fi=malloc(sizeof(fileListItem_t));
@@ -130,7 +130,7 @@ void fileListMake(const char* path)
   fi->fullName=(char*)0;
   fi->dir=1;
 
-  listAddData(fl,(void*)fi);
+  listAppendData(fl,(void*)fi);
 
 
 
@@ -173,7 +173,7 @@ void fileListMake(const char* path)
 
           if(fi->dir!=-1)
           {
-            listAddData(fl, (void*)fi);
+            listAppendData(fl, (void*)fi);
           } else {
             fileListFreeItem(fi);
           }
@@ -187,7 +187,7 @@ void fileListMake(const char* path)
   free(buf);
 }
 
-inline listItem* fileList()
+inline list_t* fileList()
 {
   return(fl);
 }

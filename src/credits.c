@@ -19,7 +19,7 @@
 #include "waveimg.h"
 #include "pixel.h"
 #include "text.h"
-#include "list.h"
+#include "list/list.h"
 #include "particles.h"
 #include "defs.h"
 #include "settings.h"
@@ -42,7 +42,7 @@ typedef struct msg_s msg_t;
 
 static msg_t* cm; //Current msg.
 static int currentMsgIndex; //in list
-static listItem* msgList;
+static list_t* msgList;
 static int ticksToNextPs=0;
 static psysSet_t ps;
 SDL_Rect r; //Used to shake the name
@@ -82,7 +82,7 @@ msg_t* initMsg(const char* strTitle, const char* strName,SDL_Surface* screen)
 
 void setCurrent()
 {
-  cm=(msg_t*)listGetItemData(msgList,currentMsgIndex);
+  cm=(msg_t*)listGetItemAt(msgList,currentMsgIndex)->data;
 
   cm->stateTicks=0;
   cm->state=MSGSTATE_TITLE_SLIDING_IN;
@@ -112,47 +112,43 @@ void setCurrent()
 
 }
 
-void freeMsg(msg_t* msg)
+void _freeCreditListItem(void* data)
 {
+  msg_t* msg = (msg_t*)data;
   SDL_FreeSurface( msg->surfTitle );
   SDL_FreeSurface( msg->nameWaving.img );
-
   free(msg);
 }
 
+
 void initCredits(SDL_Surface* screen)
 {
-  msgList=initList();
-  listAddData(msgList, (void*)initMsg("Website","wizznic.org", screen));
-  listAddData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
-  listAddData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
+  msgList=listInit(_freeCreditListItem);
+  listAppendData(msgList, (void*)initMsg("Website","wizznic.org", screen));
+  listAppendData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
+  listAppendData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
 
-  listAddData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
-  listAddData(msgList, (void*)initMsg("Thx","Qubodup", screen));
-  listAddData(msgList, (void*)initMsg("Thx","Farox", screen));
-  listAddData(msgList, (void*)initMsg("Thx","bMan", screen));
-  listAddData(msgList, (void*)initMsg("Thx","KML", screen));
-  listAddData(msgList, (void*)initMsg("Thx","Neil L", screen));
-  listAddData(msgList, (void*)initMsg("Thx","Zear", screen));
+  listAppendData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","Qubodup", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","Farox", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","bMan", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","KML", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","Neil L", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","Zear", screen));
 
-  listAddData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
-  listAddData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
-  listAddData(msgList, (void*)initMsg("Greetings","gcw-zero.com", screen));
+  listAppendData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
+  listAppendData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
+  listAppendData(msgList, (void*)initMsg("Greetings","gcw-zero.com", screen));
 
   //Set current
   currentMsgIndex=0;
   setCurrent();
 }
 
+
 void clearCredits()
 {
-  listItem* it=msgList;
-  while( (it=it->next) )
-  {
-    cm = (msg_t*)it->data;
-    freeMsg(cm);
-  }
-  freeList(msgList);
+  listFree(msgList);
 }
 
 
@@ -303,7 +299,7 @@ void runCredits(SDL_Surface* screen)
 
       //Update current msg
     currentMsgIndex++;
-    if(currentMsgIndex == listSize(msgList))
+    if(currentMsgIndex == msgList->count)
       currentMsgIndex=0;
 
     setCurrent();

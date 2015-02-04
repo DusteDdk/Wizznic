@@ -1,3 +1,6 @@
+# Can someone with a PSP environment update this Makefile to actually work?
+# I don't know what to do about it.
+
 ifeq ($(DATADIR),)
   DATADIR="./"
 endif 
@@ -13,6 +16,10 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 TARGET	= wizznic
+
+
+list:
+	$(MAKE) -C src/list/ lib
 
 SOURCES = $(wildcard src/*.c) src/platform/pspspec.c
 OBJS = $(SOURCES:.c=.o)

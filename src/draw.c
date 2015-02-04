@@ -318,9 +318,9 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   } //xy loop
 
   //Draw moving bricks
-  t=pf->movingList;
+  t=&pf->movingList->begin;
   brickType* b;
-  while( (t = t->next) )
+  while( LISTFWD(pf->movingList,t) )
   {
     b=(brickType*)t->data;
 
@@ -337,9 +337,9 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
 
   //Draw dying bricks, animation?
-  t=pf->removeList;
+  t=&pf->removeList->begin;
 
-  while( (t = t->next) )
+  while( LISTFWD(pf->removeList,t) )
   {
     b=(brickType*)t->data;
     //Draw base brick if time enough left
@@ -377,9 +377,9 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
   }
 
   //Teleport overlay
-  t = pf->levelInfo->teleList;
+  t = &pf->levelInfo->teleList->begin;
   telePort_t* tp;
-  while( (t=t->next) )
+  while( LISTFWD(pf->levelInfo->teleList,t) )
   {
     tp = (telePort_t*)t->data;
 
@@ -510,12 +510,12 @@ void drawTelePath(SDL_Surface* screen, telePort_t* tp, int animate)
     drawPath( screen, tp->sx, tp->sy,tp->dx, tp->dy, animate );
 }
 
-void drawAllTelePaths( SDL_Surface* screen, listItem* l )
+void drawAllTelePaths( SDL_Surface* screen, list_t* l )
 {
-  listItem* it = l;
+  listItem* it = &l->begin;
   telePort_t* t;
 
-  while( (it=it->next) )
+  while( LISTFWD(l,it) )
   {
     t = (telePort_t*)it->data;
     drawTelePath(screen, t, 0);

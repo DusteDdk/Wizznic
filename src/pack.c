@@ -40,6 +40,13 @@ static packStateType ps;
 
 packStateType* packState() { return(&ps); }
 
+void _freePlaylistItem(void* data)
+{
+  playListItem* pli=(playListItem*)data;
+  free( pli->song );
+  free(data);
+}
+
 int isFile(const char* fileName)
 {
   struct stat st;
@@ -75,7 +82,7 @@ int packAdd(const char* packDir, int isDLC)
   char* set = malloc(sizeof(char)*1024);
 
   //This block is for playlists
-  listItem* playList=0;
+  list_t* playList=0;
   listItem* li=0;
   playListItem* pli=0;
   int i; //Counter
@@ -101,7 +108,7 @@ int packAdd(const char* packDir, int isDLC)
   }
 
   //Initialize list for playlist
-  playList = initList();
+  playList = listInit(_freePlaylistItem);
 
   //Open packs/packname/info.ini
   sprintf(buf, "%s/info.ini", packDir);
@@ -139,7 +146,7 @@ int packAdd(const char* packDir, int isDLC)
               pli->to=atoi(buf2);
               pli->song=malloc(sizeof(char)*strlen(set)+1);
               strcpy( pli->song, set );
-              listAddData( playList, (void*)pli );
+              listAppendData( playList, (void*)pli );
           } else {
             printf("   Playlist entry format is mus=XX-XX,song name.ogg where XX-XX is a level range.\n");
           }
@@ -190,20 +197,21 @@ int packAdd(const char* packDir, int isDLC)
 
   //Add levels.
   ti->levels=0;
-  makeLevelList( &ti->levels, packDir); //makeLevelList looks in packDir/levels/
+  ti->levels=makeLevelList(packDir); //makeLevelList looks in packDir/levels/
 
-  //update num+
-  ti->numLevels = listSize( ti->levels ) -1 ; //The last level does not count
+  //set number of levels in pack
+  ti->numLevels = ti->levels->count - 1  ; //The last level does not count (because it is just a "completed" screen).
+
 
   //Add to list of packages
-  listAddData( ps.packs, (void*)ti );
+  listAppendData( ps.packs, (void*)ti );
 
   //Increase number of available packages
   ps.numPacks++;
 
   //Put playlist songs into levelfiles.
-  li=playList;
-  while( (li=li->next) )
+  li=&playList->begin;
+  while( LISTFWD(playList,li) )
   {
     pli=(playListItem*)li->data;
 
@@ -218,15 +226,7 @@ int packAdd(const char* packDir, int isDLC)
   }
 
   //Clear playlist data
-  li=playList;
-  while( (li=li->next) )
-  {
-    pli=(playListItem*)li->data;
-    free( pli->song );
-    free(li->data);
-  }
-  freeList( playList );
-  playList=0;
+  listFree( playList );
 
   free(buf);
   free(buf2);
@@ -236,12 +236,14 @@ int packAdd(const char* packDir, int isDLC)
   return(ps.numPacks-1);
 }
 
+
+
 int strCmp(const void* a, const void* b)
 {
   return( strcmp( *(char**)a, *(char**)b) );
 }
 
-void packScanDir( const char* path, listItem* dirList )
+void packScanDir( const char* path, list_t* dirList )
 {
   struct dirent *pent;
   struct stat st;
@@ -265,7 +267,7 @@ void packScanDir( const char* path, listItem* dirList )
             {
               char* pdstr = malloc( sizeof(char)*strlen(buf)+1 );
               strcpy( pdstr, buf );
-              listAddData( dirList, (void*)pdstr );
+              listAppendData( dirList, (void*)pdstr );
             }
           } else if(  (st.st_mode&S_IFREG) )
           {
@@ -281,7 +283,7 @@ void packScanDir( const char* path, listItem* dirList )
                 printf("Installed bundle '%s'.\n", buf);
                 char* pdstr = malloc( sizeof(char)*strlen(buf)+1 );
                 strcpy( pdstr, bundlePath() );
-                listAddData( dirList, (void*)pdstr );
+                listAppendData( dirList, (void*)pdstr );
                 unlink( buf );
               } else if( l == BUNDLE_FAIL_CORRUPT )
               {
@@ -315,38 +317,38 @@ void packInit()
 
   printf("initPack();\n");
 
-  ps.packs = initList();
+  ps.packs = listInit(NULL);
   ps.numPacks=0;
 
   //Add the wizznic pack as nr 0.
   packAdd( DATADIR"packs/000_wizznic", 0 );
 
-  listItem* packDirList = initList();
-  listItem* usrPackDirList = initList();
+  list_t* packDirList = listInit(NULL);
+  list_t* usrPackDirList = listInit(NULL);
 
   packScanDir( DATADIR"packs", packDirList);
   packScanDir( getUsrPackDir(), usrPackDirList);
 
-  if(listSize(packDirList) < 1)
+  if(packDirList->count < 1)
   {
     printf("packInit(); Error: No packs found.\n");
   }
 
   //Add pack directories to list of strings to be sorted
-  char** sortme = malloc( sizeof(char**) * listSize(packDirList) );
-  listItem* it = packDirList;
+  char** sortme = malloc( sizeof(char**) * packDirList->count );
   int i=0;
-  while( (it = it->next) )
+  listItem* it = &packDirList->begin;
+  while( LISTFWD(packDirList,it) )
   {
     sortme[i]=(char*)it->data;
     i++;
   }
 
   //Sort the array
-  qsort( sortme, listSize(packDirList), sizeof(char*), strCmp );
+  qsort( sortme, packDirList->count, sizeof(char*), strCmp );
 
   //Loop through array, add pack, free string
-  for(i=0; i<listSize(packDirList); i++)
+  for(i=0; i<packDirList->count; i++)
   {
     //add pack
     packAdd( sortme[i], PACK_IS_NOT_DLC );
@@ -355,8 +357,8 @@ void packInit()
   }
 
   //Append the unsorted list of DLC packs.
-  it=usrPackDirList;
-  while( (it = it->next) )
+  it=&usrPackDirList->begin;
+  while( LISTFWD(usrPackDirList,it) )
   {
     packAdd( (char*)it->data, PACK_IS_DLC );
   }
@@ -365,9 +367,10 @@ void packInit()
   free(sortme);
 
   //Free packDirList
-  freeList( packDirList );
+  //FIXME: Check if the data or pointers are copied, maybe we could free ?
+  listFree( packDirList );
 
-  printf("initPack(); Added %i packs.\n", listSize(ps.packs));
+  printf("initPack(); Added %i packs.\n", ps.packs->count);
 
   //Do not call packSet here, it will be called after setting's are read.
 
@@ -385,7 +388,7 @@ const char* packGetFile(const char* path,const char* fn)
   //Can't find the file in the pack? default to pack0 (wizznic standard pack)
   if( !isFile(buf) )
   {
-    sprintf( buf, "%s/%s/%s", ((packInfoType*)listGetItemData(ps.packs,0))->path, path , fn );
+    sprintf( buf, "%s/%s/%s", ((packInfoType*)(ps.packs->begin.next->data))->path, path , fn );
   }
 
   return(buf);
@@ -394,7 +397,8 @@ const char* packGetFile(const char* path,const char* fn)
 
 levelInfo_t* levelInfo(int num)
 {
-  return( (levelInfo_t*)listGetItemData(ps.cp->levels,num) );
+  levelInfo_t* li = (levelInfo_t*)(listGetItemAt(ps.cp->levels,num)->data);
+  return( li );
 }
 
 int getNumLevels()
@@ -414,8 +418,7 @@ void packSet(int packNum)
   }
 
   printf("packSet(); Selecting pack %i...\n", ps.selected);
-
-  ps.cp = (packInfoType*)listGetItemData(ps.packs,ps.selected);
+  ps.cp = (packInfoType*)listGetItemAt(ps.packs, ps.selected)->data;
 
   //Set finishedImg 0 when we select a pack, to make sure the correct image is loaded.
   ps.finishedImg=0;
@@ -432,15 +435,20 @@ void packSet(int packNum)
 //it is also smaller and only used once.
 void packSetByPath(const char* dir)
 {
-  int i;
-  for(i=0; i < ps.numPacks; i++)
+  int i=0;
+  listItem* it=&ps.packs->begin;
+  while( LISTFWD(ps.packs,it) )
   {
-    if( strcmp( ((packInfoType*)listGetItemData(ps.packs, i))->path , dir)==0 )
+    if( strcmp( ((packInfoType*)it->data)->path,dir ) == 0 )
     {
       packSet(i);
       return;
     }
+    i++;
   }
+
+  printf( "packSetByPath(); Error: Could not find pack with path '%s'\n",dir);
+
   packSet(0);
   return;
 }
@@ -488,7 +496,7 @@ void drawPackBox(SDL_Surface* screen,int posx, int posy,int packNum)
   {
     pi = ps.dlc;
   } else {
-    pi = (packInfoType*)listGetItemData(ps.packs,packNum);
+    pi = (packInfoType*)( listGetItemAt(ps.packs,packNum) )->data;
   }
 
   //Blit the box

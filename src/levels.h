@@ -18,7 +18,7 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-#include "list.h"
+#include "list/list.h"
 #include "stats.h"
 
 struct levelInfo_s
@@ -38,8 +38,8 @@ struct levelInfo_s
   char* startImg; //img to show before game starts
   char* stopImg;  //img to show after level completed.
 
-  listItem* teleList; //Initiated by mkLevelInfo
-  listItem* switchList; //Initiated by mkLevelInfo
+  list_t* teleList; //Initiated by mkLevelInfo
+  list_t* switchList; //Initiated by mkLevelInfo
 
   int time; //Time in seconds to complete
   int brick_die_ticks;  //Ticks the bricks is to die
@@ -47,7 +47,7 @@ struct levelInfo_s
 };
 typedef struct levelInfo_s levelInfo_t;
 
-void makeLevelList(listItem** list, const char* dir);
+list_t* makeLevelList(const char* dir);
 void makeUserLevelList();
 void addUserLevel(const char* fn);
 levelInfo_t* mkLevelInfo(const char* fileName);

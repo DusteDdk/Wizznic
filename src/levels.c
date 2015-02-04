@@ -16,7 +16,7 @@
  ************************************************************************/
 
 #include "levels.h"
-#include "list.h"
+#include "list/list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "strings.h"
@@ -25,9 +25,7 @@
 
 #include "userfiles.h"
 
-static listItem* userLevelFiles;
-static int numUserLevels=0;
-
+static list_t* userLevelFiles;
 
 //Returns pointr to levelInfo_t if level successfully opened, returns nullptr if not.
 levelInfo_t* mkLevelInfo(const char* fileName)
@@ -78,10 +76,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
     tl->brickDieParticles=1;
 
     //Initialize teleList
-    tl->teleList = initList();
+    tl->teleList = listInit(free);
 
     //Initialize switchlist
-    tl->switchList = initList();
+    tl->switchList = listInit(free);
 
     //Loop through file
     while(fgets(buf, 255, f))
@@ -214,13 +212,13 @@ levelInfo_t* mkLevelInfo(const char* fileName)
 
 }
 
-void makeLevelList(listItem** list, const char* dir)
+list_t* makeLevelList(const char* dir)
 {
   int i=0;
   char* buf = malloc(sizeof(char)*1024);
 
   //Init the list to hold the filenames
-  *list = initList();
+  list_t * list = listInit(NULL);
   levelInfo_t* tl;
 
   //List all levels in dir.
@@ -230,7 +228,7 @@ void makeLevelList(listItem** list, const char* dir)
     tl=mkLevelInfo( buf );
     if(tl)
     {
-      listAddData(*list, (void*)tl);
+      listAppendData(list, (void*)tl);
     } else {
       break;
     }
@@ -245,17 +243,17 @@ void makeLevelList(listItem** list, const char* dir)
   tl->imgFile = malloc( sizeof(char)*(strlen(buf)+1) );
   strcpy(tl->imgFile, buf);
 
-  listAddData(*list, (void*)tl);
+  listAppendData(list, (void*)tl);
 
   free(buf);
   buf=0;
-
+  return(list);
 }
 
 void makeUserLevelList()
 {
    //List userlevels
-  userLevelFiles = initList();
+  userLevelFiles = listInit(NULL);
   int i=0;
 
   levelInfo_t* tl;
@@ -267,33 +265,39 @@ void makeUserLevelList()
     tl=mkLevelInfo( buf );
     if( tl )
     {
-      listAddData(userLevelFiles, (void*)tl);
+      listAppendData(userLevelFiles, (void*)tl);
     } else {
       break;
     }
     i++;
   }
 
-  numUserLevels=listSize(userLevelFiles);
   free(buf);
+
+  listItem* it = &userLevelFiles->begin;
+  while( LISTFWD(userLevelFiles, it) )
+  {
+    tl = (levelInfo_t*)it->data;
+    printf("Userlevel: '%s','%s','%s'\n", tl->author, tl->bgFile, tl->file);
+  }
 }
 
 
 // Userlevels
 int getNumUserLevels()
 {
-  return(numUserLevels);
+  return(userLevelFiles->count);
 }
 
 //Adds the level to list if it's not allready there.
 void addUserLevel(const char* fn)
 {
   levelInfo_t* tl;
-  listItem* l=userLevelFiles;
+  listItem* it=&userLevelFiles->begin;
   //Check if it's there
-  while( (l=l->next) )
+  while( LISTFWD(userLevelFiles,it) )
   {
-    if(strcmp( ((levelInfo_t*)l->data)->file, fn )==0)
+    if(strcmp( ((levelInfo_t*)it->data)->file, fn )==0)
     {
       return;
     }
@@ -304,8 +308,7 @@ void addUserLevel(const char* fn)
 
   if(tl)
   {
-    listAddData(userLevelFiles, (void*)tl);
-    numUserLevels=listSize(userLevelFiles);
+    listAppendData(userLevelFiles, (void*)tl);
   } else {
     printf("Strange error, couldn't open saved level.\n");
   }
@@ -313,12 +316,18 @@ void addUserLevel(const char* fn)
 
 char* userLevelFile(int num)
 {
-  if(num < numUserLevels)
+  printf("Asked for userLevelFile: %i\n", num);
+
+  listItem* it = listGetItemAt(userLevelFiles,num);
+  if( it )
   {
-    return( ((levelInfo_t*)listGetItemData(userLevelFiles,num))->file );
+    levelInfo_t* linfo = (levelInfo_t*)it->data;
+    return(linfo->file);
   } else {
-    return(NULL);
+    printf("Something wrong..\n");
   }
+
+    return(NULL);
 }
 
 
@@ -341,8 +350,8 @@ void freeLevelInfo(levelInfo_t** p)
   if( (*p)->startImg ) free( (*p)->startImg );
   if( (*p)->stopImg ) free( (*p)->stopImg );
 
-  if( (*p)->teleList ) teleFreeList( (*p)->teleList );
-  if( (*p)->switchList) teleFreeList( (*p)->switchList );
+  if( (*p)->teleList ) listFree( (*p)->teleList );
+  if( (*p)->switchList) listFree( (*p)->switchList );
 
   //Set everything 0 for good measure.
   memset( *p, 0, sizeof(levelInfo_t));

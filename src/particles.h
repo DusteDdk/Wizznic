@@ -22,7 +22,7 @@
 
 #include "defs.h"
 #include "pixel.h"
-#include "list.h"
+#include "list/list.h"
 #include "ticks.h"
 
 #define PARTICLECOLORRANDOM 0x1e2f

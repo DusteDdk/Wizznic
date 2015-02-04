@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "bundle.h"
-#include "list.h"
+#include "list/list.h"
 
 #define bundleFileIdentString "Wizznic Bundle "
 #define bundleFileEndMarkString "<End of Wizznic Bundle>"
@@ -57,7 +57,7 @@ typedef struct {
     void* data;
 } entity;
 
-int dirScan( const char* dir,int type, listItem* list )
+int dirScan( const char* dir,int type, list_t* list )
 {
   entity* fe;
   FILE* f;
@@ -85,7 +85,7 @@ int dirScan( const char* dir,int type, listItem* list )
               fe->dataSize = 0;
               strcpy( fe->name, buf );
 
-              listAddData( list, (void*)fe );
+              listAppendData( list, (void*)fe );
             }
 
             if(!dirScan( buf, type, list ))
@@ -119,7 +119,7 @@ int dirScan( const char* dir,int type, listItem* list )
                 return(0);
               }
 
-              listAddData( list, (void*)fe );
+              listAppendData( list, (void*)fe );
             }
           } else {
             printf("Bundles must only contain directories and regular files.\n");
@@ -313,8 +313,8 @@ void bundle( const char* file, const char* inDir)
 {
   FILE* f;
   entity* e;
-  listItem* entryList = initList();
-  listItem* it=entryList;
+  list_t* entryList = listInit(NULL);
+  listItem* it=&entryList->begin;
   bundleHeader_t header;
   bundleFileEntry* be;
   uint32_t dataOffset=0;
@@ -329,19 +329,19 @@ void bundle( const char* file, const char* inDir)
   e->dataSize=0;
   strcpy( e->name, inDir );
   e->type = TYPE_DIR;
-  listAddData( entryList, (void*)e );
+  listAppendData( entryList, (void*)e );
 
   printf("Listing directories...\n");
   if( dirScan( inDir, TYPE_DIR, entryList ) )
   {
-    header.numEntries = listSize(entryList);
+    header.numEntries = entryList->count;
     printf("Added %i directories.\n", header.numEntries );
 
     printf("Listing files...\n");
     if( dirScan( inDir, TYPE_FILE, entryList ) )
     {
-      printf("Added %i files.\n", (listSize(entryList)-header.numEntries) );
-      header.numEntries = listSize(entryList);
+      printf("Added %i files.\n", (entryList->count - header.numEntries) );
+      header.numEntries = entryList->count;
       printf("There are now %i entries.\n", header.numEntries);
       //First dataoffset is after the list of all entries
       dataOffset = sizeof(bundleHeader_t) + (sizeof(bundleFileEntry)*header.numEntries);
@@ -374,9 +374,9 @@ void bundle( const char* file, const char* inDir)
           free(be);
         }
 
-        it=entryList;
+        it=&entryList->begin;
         //Write file data
-        while( (it=it->next) )
+        while( LISTFWD(entryList,it) )
         {
           e = (entity*)it->data;
           //Write file-name

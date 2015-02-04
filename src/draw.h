@@ -23,7 +23,7 @@
 #include "board.h"
 #include "cursor.h"
 #include "sprite.h"
-#include "list.h"
+#include "list/list.h"
 #include "particles.h"
 #include "levels.h"
 #include "teleport.h"
@@ -60,7 +60,7 @@ void cleanUpDraw();
 void draw(cursorType* cur, playField* pf, SDL_Surface* screen);
 void drawTelePath( SDL_Surface* screen, telePort_t* tp, int animate );
 void drawPath( SDL_Surface* screen, int sx, int sy, int dx, int dy, int animate );
-void drawAllTelePaths( SDL_Surface* screen,listItem* tp );
+void drawAllTelePaths( SDL_Surface* screen,list_t* tp );
 void drawShowCountDown(SDL_Surface* screen, int i);
 struct boardGraphics_t* stealGfxPtr();
 //For editor

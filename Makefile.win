@@ -45,10 +45,16 @@ MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 sdl: $(TARGET)
 
-$(TARGET): $(OBJS)
+all: $(TARGET) 
+
+$(TARGET): list $(OBJS)
 	$(WINDRES) src/platform/windows.rc -O coff -o windows.res
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ windows.res $(LIBS)
 	$(STRIP) $@
+
+list:
+	$(MAKE) -C src/list/ lib
+
 
 .c.o:
 	$(MYCC) -c $< -o $@

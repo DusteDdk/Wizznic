@@ -20,7 +20,7 @@
 
 #include "defs.h"
 #include "cursor.h"
-#include "list.h"
+#include "list/list.h"
 #include "sound.h"
 #include "levels.h"
 #include "teleport.h"
@@ -60,13 +60,13 @@ struct playField_t
   brickType* blocker; //Universial, invisible, quite magic blocker, for reserving space when bricks are travelling.
   brickType* blockerDst;
 
-  listItem* movingList; //Start of the linked list of moving bricks
+  list_t* movingList; //Start of the linked list of moving bricks
 
-  listItem* deactivated;  //Bricks that are deactivated by a switch.
+  list_t* deactivated;  //Bricks that are deactivated by a switch.
 
   int brickTypes[BRICKSEND]; //Number of bricks of each type currently on board
 
-  listItem* removeList; //Start of the linked list of bricks that's going to die, tl counts down their lifespan
+  list_t* removeList; //Start of the linked list of bricks that's going to die, tl counts down their lifespan
   int_fast8_t newWalls; //Used to indicate that walls have changed on this board.
 
 };

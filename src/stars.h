@@ -19,7 +19,7 @@
  ************************************************************************/
 
 #include <SDL/SDL.h>
-#include "list.h"
+#include "list/list.h"
 
 struct star_s {
   int x, y, sx,sy;
@@ -29,12 +29,11 @@ struct star_s {
 };
 typedef struct star_s star_t;
 
-struct rocket_s {
+typedef struct rocket_s {
   int x, y, sx, sy;
   int life;
-  listItem* p;
-};
-typedef struct rocket_s rocket_t;
+  list_t* p;
+} rocket_t;
 
 void initStars(SDL_Surface* screen);
 void starField(SDL_Surface* screen, int move);

@@ -5,6 +5,7 @@
 CC = gcc
 LD = $(CC)
 STRIP = strip
+MAKE = make
 
 NAME=wizznic
 TARGET= $(NAME)
@@ -36,7 +37,7 @@ ifneq ($(RELEASE_VERSION),)
 endif
 
 INCS =  -I. -I/usr/include -I/usr/include/SDL
-CFLAGS=-Wall -Wextra
+CFLAGS=-Wall -Wextra -Werror
 ifeq ($(DEBUG),)
   CFLAGS += -O3
 else
@@ -59,12 +60,16 @@ OBJS = $(SOURCES:.c=.o)
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 ########################################################################
+all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+$(TARGET): list $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) src/list/list.a -o $@ $(LIBS)
 ifeq ($(DEBUG),)
 	$(STRIP) $@
 endif
+
+list:
+	$(MAKE) -C src/list/ lib
 
 .c.o:
 	$(MYCC) -c $< -o $@

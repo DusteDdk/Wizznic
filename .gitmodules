@@ -1,0 +1,3 @@
+[submodule "src/list"]
+	path = src/list
+	url = https://github.com/DusteDdk/list.git

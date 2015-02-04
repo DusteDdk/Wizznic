@@ -57,12 +57,16 @@ OBJS = $(SOURCES:.c=.o)
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 ########################################################################
+all: $(TARGET)
 
-$(TARGET): $(OBJS)
+$(TARGET): list $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 ifeq ($(DEBUG),)
 	$(STRIP) $@
 endif
+
+list:
+	$(MAKE) -C src/list/ lib
 
 .c.o:
 	$(MYCC) -c $< -o $@

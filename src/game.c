@@ -630,7 +630,8 @@ int runGame(SDL_Surface* screen)
 
     countdown-=getTicks();
 
-    if( player()->timeouts > 1 )
+    //Offer to skip after dying twice on same level, but only if it is not the last level in the pack.
+    if( player()->timeouts > 1 && player()->level+1 < getNumLevels() )
     {
       int skipLevel = skipLevelDialog(screen);
       if( skipLevel==1 )
@@ -654,7 +655,8 @@ int runGame(SDL_Surface* screen)
 
     countdown-=getTicks();
 
-    if( player()->timeouts > 1 )
+    //Offer to skip after dying twice on same level, but only if it is not the last level in the pack.
+    if( player()->timeouts > 1 && player()->level+1 < getNumLevels() )
     {
       int skipLevel = skipLevelDialog(screen);
       if( skipLevel==1 )

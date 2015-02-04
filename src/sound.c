@@ -316,10 +316,10 @@ void soundRun(SDL_Surface* screen,int state)
 void soundPlayUserSongNum(int num, char* songName)
 {
   if(!setting()->musicVol) return;
-  listItem* it=fileList();
+  listItem* it=&fileList()->begin;
   fileListItem_t* file;
   int i=0;
-  while( (it=it->next) )
+  while( LISTFWD(fileList(),it) )
   {
     file=(fileListItem_t*)it->data;
     if(!file->dir)

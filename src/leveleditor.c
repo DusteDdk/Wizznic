@@ -24,7 +24,7 @@
 #include "input.h"
 #include "text.h"
 #include "levels.h"
-#include "list.h"
+#include "list/list.h"
 #include <stdio.h>
 
 #include "strings.h"
@@ -477,8 +477,8 @@ int runEditor(SDL_Surface* screen)
 
 
   //Draw switchpath we hover above
-  listItem* t = pf.levelInfo->switchList;
-  while( (t=t->next) )
+  listItem* t = &pf.levelInfo->switchList->begin;
+  while( LISTFWD(pf.levelInfo->switchList, t) )
   {
     telePort_t* tp=(telePort_t*)t->data;
     if(cur.x == tp->sx && cur.y == tp->sy)

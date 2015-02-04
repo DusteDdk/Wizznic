@@ -21,7 +21,7 @@
 #define GRAVITYCONSTANT 2
 
 
-static listItem* pSystems; //All particle systems are added to this list
+static list_t* pSystems; //All particle systems are added to this list
 static SDL_Surface* screen;
 
 static psysSet_t psysPresets[PSYS_NUM_PRESETS];
@@ -110,7 +110,7 @@ void spawnParticleSystem(psysSet_t* settings)
 
 
   //Add to list of systems.
-  listAddData(pSystems, (void*)tSystem);
+  listAppendData(pSystems, (void*)tSystem);
 }
 
 
@@ -166,13 +166,13 @@ void runParticles(SDL_Surface* screen)
 void runParticlesLayer(SDL_Surface* screen, int layer)
 {
   if(!setting()->particles) return;
-  listItem* it = pSystems;
-  listItem* prev = pSystems; //For quick removal
+
   pSystem_t* p; //psystem
   int i;
 
   //Loop through systems
-  while( (it=it->next) )
+  listItem* it = &pSystems->begin;
+  while( LISTFWD(pSystems,it) )
   {
     p=(pSystem_t*)it->data;
     if(p->settings.layer==layer)
@@ -196,11 +196,9 @@ void runParticlesLayer(SDL_Surface* screen, int layer)
         //Remove system
         clearSystem(p);
         //Remove from list. (removeItem returns the item just before current, if any)
-        cutItem(prev, it);
-        it=prev;
+        it=listRemoveItem(pSystems, it, LIST_PREV);
       }
     } //System is on correct layer
-    prev=it;
   }
 }
 
@@ -216,18 +214,18 @@ inline void clearSystem(pSystem_t* s)
 //Frees all resources and removes all systems and emitters.
 void clearParticles()
 {
-  listItem* it = pSystems;
+  listItem* it = &pSystems->begin;
   //Loop through systems
-  while( (it=it->next) )
+  while( LISTFWD(pSystems,it) )
   {
     clearSystem( (pSystem_t*)it->data );
-    it=listRemoveItem(pSystems, it);
+    it=listRemoveItem(pSystems, it, LIST_PREV);
   }
 }
 
 void initParticles(SDL_Surface* scr)
 {
-  pSystems = initList();
+  pSystems = listInit(NULL);
   screen=scr;
 
   psysPresets[PSYS_PRESET_COLOR].layer=PSYS_LAYER_TOP;

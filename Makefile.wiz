@@ -35,9 +35,14 @@ MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 
 sdl: $(TARGET)
 
-$(TARGET): $(OBJS)
+all: $(TARGET)
+
+$(TARGET): list $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 	$(STRIP) $@
+
+list:
+	$(MAKE) -C src/list/ lib
 
 .c.o:
 	$(MYCC) -c $< -o $@

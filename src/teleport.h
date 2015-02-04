@@ -19,7 +19,7 @@
  ************************************************************************/
 
 #include <SDL/SDL.h>
-#include "list.h"
+#include "list/list.h"
 
 struct telePort_s {
   int sx, sy;
@@ -27,11 +27,11 @@ struct telePort_s {
 };
 typedef struct telePort_s telePort_t;
 
-void teleFreeList( listItem* l );
-void teleAddToList( listItem* l, int sx, int sy, int dx, int dy );
-void teleRemoveFromList( listItem* l, int sx, int sy );
-void teleAddFromString(listItem* l, const char* str); //Expects a string in the format sx,sy:dx,dy
-char* teleMkStrings(listItem* l, const char* prefix);
-int_fast8_t telePresent( listItem* l, int sx,int sy);
+void teleFreeList( list_t* l );
+void teleAddToList( list_t* l, int sx, int sy, int dx, int dy );
+void teleRemoveFromList( list_t* l, int sx, int sy );
+void teleAddFromString(list_t* l, const char* str); //Expects a string in the format sx,sy:dx,dy
+char* teleMkStrings(list_t* l, const char* prefix);
+int_fast8_t telePresent( list_t* l, int sx,int sy);
 
 #endif // TELEPORT_H_INCLUDED

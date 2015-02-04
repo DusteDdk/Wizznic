@@ -18,7 +18,7 @@
 #include "transition.h"
 #include "pixel.h"
 #include "ticks.h"
-#include "list.h"
+#include "list/list.h"
 #include "particles.h"
 
 struct transition_s {

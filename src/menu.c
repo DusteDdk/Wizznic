@@ -1538,9 +1538,9 @@ int runMenu(SDL_Surface* screen)
           scroll=x;
         }
         //Run through list
-        it=fileList();
+        it=&fileList()->begin;
 
-        while( (it=it->next) )
+        while( LISTFWD(fileList(), it) )
         {
           fItem=(fileListItem_t*)it->data;
           if(fItem->dir)
@@ -1584,8 +1584,8 @@ int runMenu(SDL_Surface* screen)
         x++;
         menuMaxY=x;
 
-        it=fileList();
-        while( (it=it->next) )
+        it=&fileList()->begin;
+        while( LISTFWD(fileList(), it) )
         {
           fItem=(fileListItem_t*)it->data;
           if(!fItem->dir)

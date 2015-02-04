@@ -21,14 +21,14 @@
 #include "ticks.h"
 #include "defs.h"
 
-static listItem* stars;
-static listItem* rockets;
+static list_t* stars;
+static list_t* rockets;
 //Setup 1000 stars
 #define NUMSTARS 500
 void initStars(SDL_Surface* screen)
 {
-  rockets = initList();
-  stars = initList();
+  rockets = listInit(free);
+  stars = listInit(free);
   star_t* star;
   int i;
   uint8_t col;
@@ -46,7 +46,7 @@ void initStars(SDL_Surface* screen)
     col = rand()%229+26; //from 26 to 255
     star->sx = (int)( (float)(10.0/255.0)*(float)col );
     star->color = SDL_MapRGB(screen->format, col,col,col);
-    listAddData(stars, (void*)star); //Add star to list
+    listAppendData(stars, (void*)star); //Add star to list
   }
 }
 
@@ -59,8 +59,8 @@ void starField(SDL_Surface* screen, int move)
   dst.h = 240;
   SDL_FillRect(screen, &dst, 0x00);
   star_t* star;
-  listItem* it=stars;
-  while( (it=it->next) )
+  listItem* it= &stars->begin;
+  while( LISTFWD(stars,it) )
   {
     star=(star_t*)it->data;
     //Move star
@@ -118,7 +118,7 @@ void fireWorks(SDL_Surface* screen)
     //Set life
     tempRocket->life=rand()%1000+250+10;
 
-    tempRocket->p = initList();
+    tempRocket->p = listInit(free);
     //Init particles for explosion
     int i, r=rand()%100;
     for(i=0; i < r; i++)
@@ -130,10 +130,10 @@ void fireWorks(SDL_Surface* screen)
       tempStar->color = SDL_MapRGB( screen->format, rand()%128+128,rand()%256,rand()%128);
       tempStar->life = rand()%3000+500;
       //Add to list
-      listAddData( tempRocket->p, (void*)tempStar );
+      listAppendData( tempRocket->p, (void*)tempStar );
     }
     //Add rocket to list
-    listAddData(rockets, (void*)tempRocket);
+    listAppendData(rockets, (void*)tempRocket);
 
     //Play  launch sound
     sndPlay(SND_ROCKETLAUNCH, tempRocket->x/10);
@@ -142,9 +142,9 @@ void fireWorks(SDL_Surface* screen)
   /*
       Going through rockets and their particles
                                                   */
-  it=rockets;
+  it=&rockets->begin;
   listItem* itt;
-  while( (it=it->next) )
+  while( LISTFWD(rockets,it) )
   {
     tempRocket=(rocket_t*)it->data;
     //If rocket is still alive, fly it
@@ -155,8 +155,8 @@ void fireWorks(SDL_Surface* screen)
       //Set position for particles if it got too old
       if(tempRocket->life < 1)
       {
-        itt=tempRocket->p;
-        while( (itt=itt->next) )
+        itt=&(tempRocket->p->begin);
+        while( LISTFWD(tempRocket->p, itt) )
         {
           tempStar=(star_t*)itt->data;
           tempStar->x = tempRocket->x*10;
@@ -174,9 +174,9 @@ void fireWorks(SDL_Surface* screen)
 
     } else {
       //iterate through stars
-      itt=tempRocket->p;
+      itt=&(tempRocket->p->begin);
       int liveStars=0;
-      while( (itt=itt->next) )
+      while( LISTFWD(tempRocket->p, itt) )
       {
         tempStar=(star_t*)itt->data;
         //alive?
@@ -207,16 +207,10 @@ void fireWorks(SDL_Surface* screen)
       if(liveStars == 0)
       {
         //Remove stars
-        itt=tempRocket->p;
-        while( (itt=itt->next) )
-        {
-          free(itt->data);
-        }
-        freeList(tempRocket->p);
+        listFree(tempRocket->p);
 
         //Remove rocket
-        free(it->data);
-        it=listRemoveItem(rockets, it);
+        it=listRemoveItem(rockets, it, LIST_NEXT);
       }
     } //Sim rocket stars
   } //iterate through rockets

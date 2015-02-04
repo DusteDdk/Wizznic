@@ -20,7 +20,7 @@
 
 #include <SDL/SDL.h>
 
-#include "list.h"
+#include "list/list.h"
 #include "sprite.h"
 #include "levels.h"
 
@@ -33,7 +33,7 @@ struct packInfo_s {
   char* comment;
   char* path; //Path to pack
   SDL_Surface* icon;
-  listItem* levels; //LevelInfo*'s
+  list_t* levels; //LevelInfo*'s
   int numLevels;
   int hasFinishedImg;
   int lives;
@@ -44,7 +44,7 @@ typedef struct packInfo_s packInfoType;
 struct packState_s {
   int numPacks; //Number of packs
   int selected; //Currently selected
-  listItem* packs; //PackInfoType*s
+  list_t* packs; //PackInfoType*s
   packInfoType* cp; //Current pack
   packInfoType* dlc; //The "DLC" entry, on the pack list.
   SDL_Surface* packBoxImg; //Graphics for the box

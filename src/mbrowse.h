@@ -18,7 +18,7 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-#include "list.h"
+#include "list/list.h"
 
 struct fileListItem_s
 {
@@ -31,6 +31,6 @@ typedef struct fileListItem_s fileListItem_t;
 
 void fileListFree();
 void fileListMake(const char* path);
-listItem* fileList();
+list_t* fileList();
 
 #endif // MBROWSE_H_INCLUDED

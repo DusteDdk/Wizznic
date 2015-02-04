@@ -20,17 +20,7 @@
 #include "defs.h"
 #include "strings.h"
 
-void teleFreeList( listItem* l )
-{
-  listItem* it = l;
-  while( (it=it->next) )
-  {
-    free( it->data );
-  }
-  freeList( l );
-}
-
-void teleAddToList( listItem* l, int sx, int sy, int dx, int dy )
+void teleAddToList( list_t* l, int sx, int sy, int dx, int dy )
 {
   telePort_t* t = malloc( sizeof(telePort_t) );
 
@@ -39,9 +29,10 @@ void teleAddToList( listItem* l, int sx, int sy, int dx, int dy )
   t->dx=dx;
   t->dy=dy;
 
-  listAddData(l, (void*)t );
+  listAppendData(l, (void*)t );
+
 }
-void teleAddFromString(listItem* l, const char* str)
+void teleAddFromString(list_t* l, const char* str)
 {
   char* srcStr = malloc( sizeof(char)*10 );
   char* dstStr = malloc( sizeof(char)*10 );
@@ -75,32 +66,33 @@ void teleAddFromString(listItem* l, const char* str)
   free(tempStrY);
 }
 
-void teleRemoveFromList( listItem* l, int sx, int sy )
+void teleRemoveFromList( list_t* l, int sx, int sy )
 {
-  listItem* it = l;
+  listItem* it = &l->begin;
   telePort_t* t;
-  while( (it=it->next) )
+  while( LISTFWD(l,it) )
   {
     t = (telePort_t*)it->data;
     if(t->sx==sx && t->sy==sy)
     {
-      listRemoveItem(l, it);
+      listRemoveItem(l, it, LIST_NEXT);
+      break;
     }
   }
 }
 
-char* teleMkStrings(listItem* l, const char* prefix)
+char* teleMkStrings(list_t* l, const char* prefix)
 {
-  if(!listSize(l)) return(0);
+  if(!l || !l->count) return(0);
 
-  listItem* it = l;
   telePort_t* t;
-  int bytes =  sizeof(char)*(listSize(l)*strlen("=10,10:10,10\n"));
-  bytes += sizeof(char)*listSize(l)*strlen(prefix);
+  int bytes =  sizeof(char)*(l->count)*strlen("=10,10:10,10\n") ;
+  bytes += sizeof(char)*(l->count)*strlen(prefix);
   char* str = malloc( bytes );
   memset(str,0,bytes);
 
-  while( (it=it->next) )
+  listItem* it = &l->begin;
+  while( LISTFWD(l,it) )
   {
     t = (telePort_t*)it->data;
     sprintf(str, "%s%s=%i,%i:%i,%i\n",str,prefix, t->sx,t->sy,t->dx,t->dy);
@@ -109,11 +101,11 @@ char* teleMkStrings(listItem* l, const char* prefix)
   return(str);
 }
 
-int_fast8_t telePresent( listItem* l, int sx,int sy)
+int_fast8_t telePresent( list_t* l, int sx,int sy)
 {
-  listItem* it = l;
+  listItem* it = &l->begin;
   telePort_t* t;
-  while( (it=it->next) )
+  while( LISTFWD(l,it) )
   {
     t = (telePort_t*)it->data;
     if( t->sx==sx && t->sy==sy)

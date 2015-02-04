@@ -21,7 +21,6 @@
 #include "pack.h"
 #include "defs.h"
 #include "player.h"
-#include "list.h"
 #include "settings.h"
 #include "userfiles.h"
 
@@ -47,10 +46,10 @@ void statsLoad()
   char* buf = malloc(sizeof(char)*128);
   char* bufb = malloc(sizeof(char)*128);
   int i;
-  listItem* it;
   hsEntry_t* hs;
   hsEntry_t ths;
   statsFileHeader_t sfh;
+  listItem* it;
 
   //Set progress -1 before reading the real progress from file (in case there is no file yet)
   // -1 because progress is updated to current-level after the completion of that level, but
@@ -60,16 +59,11 @@ void statsLoad()
   //Free levelStats if allready filled
   if(st.levelStats)
   {
-    it = st.levelStats;
-    while( (it = it->next) )
-    {
-      free(it->data);
-    }
-    freeList( st.levelStats );
+    listFree( st.levelStats );
   }
 
   //Create new list for levelStats
-  st.levelStats = initList();
+  st.levelStats = listInit(free);
   for(i=0; i < packState()->cp->numLevels; i++)
   {
     hs = malloc(sizeof(hsEntry_t));
@@ -82,22 +76,17 @@ void statsLoad()
     hs->moves=9999;
     hs->combos=0;
     //Add to list
-    listAddData(st.levelStats, (void*)hs);
+    listAppendData(st.levelStats, (void*)hs);
   }
 
   //Remove packwide highscores if they exist
   if(st.packHsTable)
   {
-    it=st.packHsTable;
-    while( (it=it->next) )
-    {
-      free(it->data);
-    }
-    freeList(st.packHsTable);
+    listFree(st.packHsTable);
   }
 
   //Create new list for packWide highscores
-  st.packHsTable = initList();
+  st.packHsTable = listInit(free);
 
 
   //Cut pack name  out of pack-path from last /
@@ -134,15 +123,27 @@ void statsLoad()
       //Override defaults for levels found in file
       for(i=0; i < sfh.numLevelEntries; i++)
       {
+        //Read a highscore entry
         elementsRead = fread( (void*)(&ths), sizeof(hsEntry_t), 1, f );
-        //Find the list to put it in
-        hs = (hsEntry_t*)listGetItemData(st.levelStats,ths.levelNum);
-        //If it was found, copy it
-        if(elementsRead==1 && hs)
+
+        //Look for a list to add it to
+        if( ths.levelNum <  st.levelStats->count )
         {
-          memcpy( hs, &ths, sizeof(hsEntry_t) );
+          it = listGetItemAt(st.levelStats,ths.levelNum);
+
+          //If it was found, copy it
+          if(elementsRead==1 && it)
+          {
+            hs = (hsEntry_t*)it->data;
+            memcpy( hs, &ths, sizeof(hsEntry_t) );
+          }
+        } else {
+          printf("That's odd, there's an entry for level %i even though there's only %i levels in the pack. (levelStats is %i)\n", ths.levelNum, getNumLevels(), st.levelStats->count );
         }
       }
+
+
+
       //Fill in the pack-wide highscore list
       for(i=0; i < sfh.numHsEntries; i++)
       {
@@ -150,7 +151,7 @@ void statsLoad()
         elementsRead = fread(hs,sizeof(hsEntry_t),1,f);
         if( elementsRead == 1 )
         {
-          listAddData(st.packHsTable, (void*)hs);
+          listAppendData(st.packHsTable, (void*)hs);
         }
       }
 
@@ -160,7 +161,6 @@ void statsLoad()
       //TODO: This is not how we will handle it, if the format ever changes we will use version info to migrate to new format.
       printf("File '%s' is version %i but current version is %i, deleting the file.\n", st.hsFn, i, STATS_FILE_FORMAT_VERSION);
       fclose(f);
-
       packUnlinkHsFile();
     }
   }
@@ -189,15 +189,15 @@ void statsSave()
     statsFileHeader_t sfh;
     sfh.hsFileVersion = STATS_FILE_FORMAT_VERSION;
     sfh.progress = st.progress;
-    sfh.numLevelEntries = listSize( st.levelStats );
-    sfh.numHsEntries  = listSize( st.packHsTable );
+    sfh.numLevelEntries = st.levelStats->count;
+    sfh.numHsEntries  = st.packHsTable->count;
 
     //Write header
     fwrite( (void*)(&sfh), sizeof(statsFileHeader_t),1, f );
 
     //Write levelstats
-    it=st.levelStats;
-    while( (it = it->next) )
+    it=&st.levelStats->begin;
+    while( LISTFWD(st.levelStats, it) )
     {
       hs=(hsEntry_t*)it->data;
       //Write entry to file.
@@ -205,8 +205,8 @@ void statsSave()
     }
 
     //Write packWide hstable
-    it = st.packHsTable;
-    while( (it = it->next) )
+    it = &st.packHsTable->begin;
+    while( LISTFWD(st.packHsTable, it) )
     {
       hs = (hsEntry_t*)it->data;
       fwrite( (void*)(hs), sizeof(hsEntry_t), 1, f);
@@ -281,12 +281,12 @@ void statsSubmitBest()
 
 void statsSetLevel(int l)
 {
-  st.cl=listGetItemData(st.levelStats, l);
+  st.cl=(hsEntry_t*)listGetItemAt(st.levelStats, l)->data;
 }
 
 void statsDrawHs(SDL_Surface* screen)
 {
-  listItem* it = stats()->packHsTable;
+  listItem* it = &stats()->packHsTable->begin;
   hsEntry_t* h;
   int i=0;
   char buf[64];
@@ -298,7 +298,7 @@ void statsDrawHs(SDL_Surface* screen)
   txtWriteCenter(screen, FONTSMALL, "L Name      Score  Time  Move Combo", HSCREENW,HSCREENH-50);
   txtWriteCenter(screen, FONTSMALL, "+-+---------+------+-----+----+----", HSCREENW,HSCREENH-40);
 
-  while( (it=it->next) )
+  while( LISTFWD(stats()->packHsTable, it) )
   {
     h= (hsEntry_t*)it->data;
     sprintf(buf, "%-2i%-10s%-7i%2i:%-3i%-5i%-5i", h->levelNum, h->name,h->score, h->time/60, h->time%60, h->moves, h->combos);
@@ -312,9 +312,9 @@ int statsIsHighScore()
 {
   int place=1;
   hsEntry_t* hs;
-  listItem* it = st.packHsTable;
+  listItem* it = &st.packHsTable->begin;
   if( player()->campStats.score < 1000 ) return(0); //No highscores if under 10k
-  while( (it=it->next) )
+  while( LISTFWD(st.packHsTable,it) )
   {
     hs=(hsEntry_t*)it->data;
     if( player()->campStats.score > hs->score )
@@ -336,22 +336,23 @@ void statsSaveHighScore()
   int place = statsIsHighScore();
   int p=0;
 
-  listItem* it = st.packHsTable;
+  listItem* it = &st.packHsTable->begin;
   hsEntry_t* hs;
 
   //Copy from player struct.
   hs = malloc(sizeof(hsEntry_t));
   memcpy( hs, &(player()->campStats), sizeof(hsEntry_t) );
 
-  listInsertData(st.packHsTable, (void*)hs, place-1); //-1 since listInsert expects 0 to be the first position, but statsIsHigh returns >0 to be a valid highscore.
+  listInsertAtIdx(st.packHsTable, (void*)hs, place-1);//-1 since listInsert expects 0 to be the first position, but statsIsHigh returns >0 to be a valid highscore.
+
 
   //Trim the list if there are more than 10.
-  while( (it=it->next) )
+  while( LISTFWD(st.packHsTable,it) )
   {
     p++;
     if(p>10)
     {
-      it=listRemoveItem(st.packHsTable,it);
+      it=listRemoveItem(st.packHsTable,it, LIST_PREV);
     }
   }
 

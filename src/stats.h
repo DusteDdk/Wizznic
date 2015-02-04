@@ -18,7 +18,7 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-#include "list.h"
+#include "list/list.h"
 #include "text.h"
 #include <SDL/SDL.h>
 
@@ -52,8 +52,8 @@ struct stats_s
 {
   char* hsFn; //Stats file to read from
   int progress; //Progress in this pack
-  listItem* levelStats; //list of hsEntries, one for each level, with "best" stats
-  listItem* packHsTable; //pack-wide highscores
+  list_t* levelStats; //list of hsEntries, one for each level, with "best" stats
+  list_t* packHsTable; //pack-wide highscores
   hsEntry_t* cl; //ptr to current levelStats
 };
 typedef struct stats_s stats_t;

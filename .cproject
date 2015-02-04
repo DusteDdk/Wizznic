@@ -1,202 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="cdt.managedbuild.config.gnu.exe.debug.1277965638">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.1277965638" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+		<cconfiguration id="cdt.managedbuild.toolchain.gnu.base.2061790661">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.base.2061790661" moduleId="org.eclipse.cdt.core.settings" name="Default">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.exe.debug.1277965638" name="Debug" parent="cdt.managedbuild.config.gnu.exe.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.exe.debug.895674168" name="Linux GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.exe.debug" superClass="cdt.managedbuild.toolchain.gnu.exe.debug">
-							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.exe.debug.1397210860" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
-							<builder autoBuildTarget="all" buildPath="${workspace_loc:/Wizznic}/Debug" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" errorParsers="" id="org.eclipse.cdt.build.core.internal.builder.727909953" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="3" superClass="org.eclipse.cdt.build.core.internal.builder"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1549648908" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.814783792" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
-								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1110548071" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.431956530" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-							</tool>
-							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1158544402" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
-								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.1941171623" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" value="gnu.c.optimization.level.optimize" valueType="enumerated"/>
-								<option id="gnu.c.compiler.exe.debug.option.debugging.level.1555921901" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.505509415" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="WITH_OPENGL=TRUE"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1579363899" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.530807546" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
-								<option id="gnu.c.link.option.libs.991809338" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="z"/>
-									<listOptionValue builtIn="false" value="pthread"/>
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="SDL_image"/>
-									<listOptionValue builtIn="false" value="SDL_mixer"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.267869761" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.26878530" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug"/>
-							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.580798890" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1330695040" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1651974488" name="wiz.h" rcbsApplicability="disable" resourcePath="src/platform/wiz.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.291737869" name="pspspec.h" rcbsApplicability="disable" resourcePath="src/platform/pspspec.h" toolsToInvoke="">
-						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1637815086" name="Resource Custom Build Step">
-							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.390607259" name="Resource Custom Build Step Input Type">
-								<additionalInput kind="additionalinputdependency" paths=""/>
-							</inputType>
-							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1833275856" name="Resource Custom Build Step Output Type"/>
-						</tool>
-					</fileInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.306674973" name="gp2x.h" rcbsApplicability="disable" resourcePath="src/platform/gp2x.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1893059268" name="pandora.h" rcbsApplicability="disable" resourcePath="src/platform/pandora.h" toolsToInvoke=""/>
-					<sourceEntries>
-						<entry excluding="src/platform/gp2x.c|src/platform/gp2x.h|src/platform/pandora.h|src/platform/pspspec.h|src/platform/pspspec.c|src/platform/wiz.c|src/platform/wiz.h|tools/mkBundle.c|platform/gp2x.h|platform/pspspec.c|platform/pspspec.h|platform/wiz.c|platform/wiz.h|platform/pandora.h|platform/gp2x.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.exe.release.1226469809">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.release.1226469809" moduleId="org.eclipse.cdt.core.settings" name="Release">
-				<externalSettings/>
-				<extensions>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.exe.release.1226469809" name="Release" parent="cdt.managedbuild.config.gnu.exe.release">
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.1226469809." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.175621504" name="Linux GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.exe.release" superClass="cdt.managedbuild.toolchain.gnu.exe.release">
-							<targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.release.259131433" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.release"/>
-							<builder autoBuildTarget="" buildPath="${workspace_loc:/Wizznic}" command="make" enableAutoBuild="false" enabledIncrementalBuild="false" id="cdt.managedbuild.target.gnu.builder.exe.release.148201962" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="false" stopOnErr="true" superClass="cdt.managedbuild.target.gnu.builder.exe.release"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.947773322" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1968752110" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release">
-								<option id="gnu.cpp.compiler.exe.release.option.optimization.level.180355605" name="Optimization Level" superClass="gnu.cpp.compiler.exe.release.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.exe.release.option.debugging.level.1890133200" name="Debug Level" superClass="gnu.cpp.compiler.exe.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
+				<configuration buildProperties="" description="" id="cdt.managedbuild.toolchain.gnu.base.2061790661" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.base.2061790661.2074991821" name="/" resourcePath="">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.base.163220615" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.233811531" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
+							<builder arguments="-f Makefile.linux" command="make" id="cdt.managedbuild.target.gnu.builder.base.578406169" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.2088060736" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.213188970" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.689161776" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.98546539" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release">
-								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.exe.release.option.optimization.level.1790581049" name="Optimization Level" superClass="gnu.c.compiler.exe.release.option.optimization.level" valueType="enumerated"/>
-								<option id="gnu.c.compiler.exe.release.option.debugging.level.1155297064" name="Debug Level" superClass="gnu.c.compiler.exe.release.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1825117628" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="DATADIR=&quot;./&quot;"/>
-									<listOptionValue builtIn="false" value="WITH_OPENGL=TRUE"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1262986694" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.838205499" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1908049120" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.2081940189" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release">
-								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1855238002" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1645619932" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.457041662" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.445163781" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.917923720" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.release.226782231" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.release">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1169327562" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.base.173082898" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1609574198" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.release.1226469809.2046931089" name="wiz.h" rcbsApplicability="disable" resourcePath="src/platform/wiz.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.release.1226469809.1776734156" name="pspspec.h" rcbsApplicability="disable" resourcePath="src/platform/pspspec.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.release.1226469809.2018409474" name="gp2x.h" rcbsApplicability="disable" resourcePath="src/platform/gp2x.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.release.1226469809.1926191894" name="pandora.h" rcbsApplicability="disable" resourcePath="src/platform/pandora.h" toolsToInvoke=""/>
-					<sourceEntries>
-						<entry excluding="src/platform/gp2x.c|src/platform/gp2x.h|src/platform/pandora.h|src/platform/pspspec.h|src/platform/pspspec.c|src/platform/wiz.c|src/platform/wiz.h|tools/mkBundle.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391" moduleId="org.eclipse.cdt.core.settings" name="bundler">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="bundler.bin" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="The tool to make bundles." errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391" name="bundler" parent="cdt.managedbuild.config.gnu.exe.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.exe.debug.1828215897" name="Linux GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.exe.debug" superClass="cdt.managedbuild.toolchain.gnu.exe.debug">
-							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.exe.debug.1174035309" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
-							<builder autoBuildTarget="all" buildPath="${workspace_loc:/Wizznic}/Debug" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" errorParsers="" id="org.eclipse.cdt.build.core.internal.builder.45847087" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="3" superClass="org.eclipse.cdt.build.core.internal.builder"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.2073053952" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1652605896" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
-								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.135193203" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.233398547" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-							</tool>
-							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1423946832" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
-								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.770275182" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" value="gnu.c.optimization.level.optimize" valueType="enumerated"/>
-								<option id="gnu.c.compiler.exe.debug.option.debugging.level.1302384998" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1105033108" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols"/>
-								<option id="gnu.c.compiler.option.warnings.extrawarn.1448107512" name="Extra warnings (-Wextra)" superClass="gnu.c.compiler.option.warnings.extrawarn" value="true" valueType="boolean"/>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.382453890" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.628953873" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
-								<option id="gnu.c.link.option.libs.263688300" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="z"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.2017101790" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1366528485" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug"/>
-							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.128273121" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1695255257" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391.200509817" name="wiz.h" rcbsApplicability="disable" resourcePath="src/platform/wiz.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391.424126680" name="pspspec.h" rcbsApplicability="disable" resourcePath="src/platform/pspspec.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391.2008640194" name="gp2x.h" rcbsApplicability="disable" resourcePath="src/platform/gp2x.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1277965638.1971558391.109267558" name="pandora.h" rcbsApplicability="disable" resourcePath="src/platform/pandora.h" toolsToInvoke=""/>
-					<sourceEntries>
-						<entry excluding="src/platform/gp2x.c|src/platform/gp2x.h|src/platform/pandora.h|src/platform/pspspec.h|src/platform/pspspec.c|src/platform/wiz.c|src/platform/wiz.h|waveimg.h|waveimg.c|transition.h|transition.c|ticks.h|ticks.c|text.h|text.c|teleport.h|teleport.c|swscale.h|swscale.c|switch.h|switch.c|strings.h|strings.c|stats.h|stats.c|states.h|stars.h|stars.c|sprite.h|sprite.c|sound.h|sound.c|skipleveldialog.h|skipleveldialog.c|settings.h|settings.c|pointer.h|pointer.c|player.h|player.c|pixel.h|pixel.c|particles.h|particle.c|pack.h|pack.c|menu.h|menu.c|mbrowse.h|mbrowse.c|libDLC.h|libDLC.c|levelselector.h|levelselector.c|levels.h|levels.c|leveleditor.h|leveleditor.c|input.h|input.c|game.h|game.c|dumplevelimages.h|dumplevelimages.c|draw.h|draw.c|cursor.h|cursor.c|credits.h|credits.c|board.h|board.c|main.c|platform/gp2x.h|platform/pspspec.c|platform/pspspec.h|platform/wiz.c|platform/wiz.h|platform/pandora.h|platform/gp2x.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
-	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Wizznic.cdt.managedbuild.target.gnu.exe.391180741" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/Wizznic"/>
-		</configuration>
-		<configuration configurationName="bundler">
-			<resource resourceType="PROJECT" workspacePath="/Wizznic"/>
-		</configuration>
-		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/Wizznic"/>
-		</configuration>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1277965638;cdt.managedbuild.config.gnu.exe.debug.1277965638.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1158544402;cdt.managedbuild.tool.gnu.c.compiler.input.1579363899">
@@ -208,5 +54,14 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1226469809;cdt.managedbuild.config.gnu.exe.release.1226469809.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.98546539;cdt.managedbuild.tool.gnu.c.compiler.input.1262986694">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="Wizznic-newlist.null.1501673940" name="Wizznic-newlist"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/Wizznic-newlist"/>
+		</configuration>
 	</storageModule>
 </cproject>

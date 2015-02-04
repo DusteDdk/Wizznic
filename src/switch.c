@@ -28,8 +28,8 @@ static void switchReact( playField* pf, int x, int y ); //Should be used only pr
 int switchSetTargets( playField* pf )
 {
   //Figure out switch targets
-  listItem* it = pf->levelInfo->switchList;
-  while( (it=it->next) )
+  listItem* it = &pf->levelInfo->switchList->begin;
+  while( LISTFWD(pf->levelInfo->switchList,it) )
   {
     switch_t* sw = (switch_t*)it->data;
 
@@ -38,7 +38,7 @@ int switchSetTargets( playField* pf )
     {
       printf("Switch error: List tells there is a switch at %i,%i but that is not the case.\n", sw->sx, sw->sy);
       free(sw);
-      listRemoveItem(pf->levelInfo->switchList, it );
+      listRemoveItem(pf->levelInfo->switchList, it, LIST_PREV );
       continue;
     }
 
@@ -47,7 +47,7 @@ int switchSetTargets( playField* pf )
     {
       printf("Switch error: Switch at %i,%i points at %i,%i but that's not a valid target brick.\n", sw->sx, sw->sy, sw->dx, sw->dy);
       free(sw);
-      listRemoveItem(pf->levelInfo->switchList, it );
+      listRemoveItem(pf->levelInfo->switchList, it, LIST_PREV );
       continue;
     }
 
@@ -63,10 +63,10 @@ int switchSetTargets( playField* pf )
 int switchFindTele( playField* pf, int x, int y )
 {
   //When found, we set target =  reservedbrick then use sx/dx hack for teleport destination.
-  listItem* it = pf->levelInfo->teleList;
+  listItem* it = &pf->levelInfo->teleList->begin;
   telePort_t* tp;
 
-  while( (it=it->next) )
+  while( LISTFWD(pf->levelInfo->teleList, it) )
   {
     tp = (telePort_t*)it->data;
     if( tp->sx == x && tp->sy == y )
@@ -109,10 +109,10 @@ void switchAttachTarget( playField* pf, switch_t* sw )
 //Tell if a switch is disabled and pointing to x,y
 int switchAmIEnabled(playField* pf, int x, int y)
 {
-  listItem* it=pf->levelInfo->switchList;
+  listItem* it=&pf->levelInfo->switchList->begin;
   switch_t* sw;
   //Do any switch have this
-  while( (it=it->next) )
+  while( LISTFWD(pf->levelInfo->switchList,it) )
   {
     sw = (switch_t*)it->data;
     if( sw->dx==x && sw->dy==y )
@@ -171,7 +171,7 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
       //We turn off the brick. (if the brick is there, it might not be as we could have lifted it off, placed a brick at destination, and moved off the switch and now try to lift it again)
       if( !newState && (pf->board[ s->target->dx ][ s->target->dy ]==s->target) )
       {
-        listAddData( pf->deactivated, (void*)s->target );
+        listAppendData( pf->deactivated, (void*)s->target );
         pf->board[ s->target->dx ][ s->target->dy ]=NULL;
       }
       boardSetWalls( pf );
@@ -206,9 +206,9 @@ void switchAffectTarget( playField* pf, int x, int y, int newState )
 
 void switchUpdateAll( playField* pf )
 {
-  listItem* it =pf->levelInfo->switchList;
+  listItem* it = &pf->levelInfo->switchList->begin;
 
-  while( (it=it->next) )
+  while( LISTFWD(pf->levelInfo->switchList, it) )
   {
     telePort_t* sw = (telePort_t*)it->data;
     switchReact(pf, sw->sx, sw->sy );
@@ -218,8 +218,8 @@ void switchUpdateAll( playField* pf )
 void switchPutBack(playField* pf)
 {
   //Now we put down activated bricks from list:
-  listItem* it = pf->deactivated;
-  while( (it=it->next) )
+  listItem* it = &pf->deactivated->begin;
+  while( LISTFWD(pf->deactivated,it) )
   {
     brickType* b = (brickType*)it->data;
     if( b->isActive )
@@ -228,7 +228,7 @@ void switchPutBack(playField* pf)
       {
         pf->board[b->dx][b->dy]=b;
         boardSetWalls(pf);
-        it=listRemoveItem(pf->deactivated,it);
+        it=listRemoveItem(pf->deactivated,it, LIST_PREV);
       }
     }
   }

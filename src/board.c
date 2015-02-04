@@ -132,7 +132,7 @@ void queueBrickRemoval(playField* pf,int x,int y)
   if( pf->board[x][y]->dir == 0 )
   {
     pf->board[x][y]->dir=1;
-    listAddData(pf->removeList, (void*)pf->board[x][y]);
+    listAppendData(pf->removeList, (void*)pf->board[x][y]);
   }
 }
 
@@ -200,9 +200,9 @@ int loadField(playField* pf, const char* file)
   //Close the file
   fclose(f);
 
-  pf->movingList = initList();
-  pf->removeList = initList();
-  pf->deactivated = initList();
+  pf->movingList = listInit(NULL);
+  pf->removeList = listInit(NULL);
+  pf->deactivated = listInit(NULL);
 
   pf->blocker = malloc(sizeof(brickType));
   pf->blocker->type=RESERVED;
@@ -239,9 +239,9 @@ void freeField(playField* pf)
   free(pf->blocker);
   free(pf->blockerDst);
   //Clear the lists
-  freeList(pf->movingList);
-  freeList(pf->removeList);
-  freeList(pf->deactivated);
+  listFree(pf->movingList);
+  listFree(pf->removeList);
+  listFree(pf->deactivated);
 }
 
 int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int speed)
@@ -288,7 +288,7 @@ int moveBrick(playField* pf, int x, int y, int dirx, int diry, int block, int sp
       pf->board[x][y]->moveYspeed=speed*diry;
 
       //add to moving
-      listAddData(pf->movingList, (void*)pf->board[x][y]);
+      listAppendData(pf->movingList, (void*)pf->board[x][y]);
 
       pf->board[dx][dy]=pf->blockerDst;
       pf->board[x][y]=pf->blocker;
@@ -354,9 +354,9 @@ void telePortBrick(playField* pf,telePort_t* t,cursorType* cur)
 
 void doTelePort(playField* pf,cursorType* cur)
 {
-  listItem* li=pf->levelInfo->teleList;
+  listItem* li=&pf->levelInfo->teleList->begin;
 
-  while( (li=li->next) )
+  while( LISTFWD(pf->levelInfo->teleList, li) )
   {
     telePort_t* t = (telePort_t*)li->data;
 
@@ -471,10 +471,10 @@ void simField(playField* pf, cursorType* cur)
   int x,y;
 
   //Update moving bricks
-  listItem* li=pf->movingList;
+  listItem* li=&pf->movingList->begin;
   brickType* b;
   x=0;
-  while( (li = li->next) )
+  while( LISTFWD(pf->movingList, li) )
   {
     x++;
    // printf("Bricks in list: %i\n",x);
@@ -537,7 +537,7 @@ void simField(playField* pf, cursorType* cur)
       b->sy=b->dy;
 
       //Remove brick from moving list
-      listRemoveItem( pf->movingList, li );
+      listRemoveItem( pf->movingList, li, LIST_NEXT );
     }
   }
 
@@ -585,8 +585,8 @@ void simField(playField* pf, cursorType* cur)
                 if(b)
                 {
                   //Recurse down to see if there is a mover below.
-                  li=pf->movingList;
-                  while( (li=li->next) )
+                  li=&pf->movingList->begin;
+                  while( LISTFWD(pf->movingList, li) )
                   {
                     if(b)
                     {
@@ -837,9 +837,9 @@ int doRules(playField* pf)
   int bricksLeft=0;
 
   //Count moving bricks
-  listItem* li=pf->movingList;
+  listItem* li=&pf->movingList->begin;
   brickType* b;
-  while( (li = li->next) )
+  while( LISTFWD(pf->movingList, li))
   {
     if( isBrick((brickType*)li->data) )
       bricksLeft++;
@@ -895,8 +895,8 @@ int doRules(playField* pf)
     }
   }
   //Remove ones that need removed
-  li=pf->removeList;
-  while( (li = li->next) )
+  li=&pf->removeList->begin;
+  while( LISTFWD(pf->removeList, li) )
   {
     //Count dying bricks as alive until they are really removed
     bricksLeft++;
@@ -922,14 +922,14 @@ int doRules(playField* pf)
         //Dealloc the brick
         free(b);
         //Remove from list
-        listRemoveItem(pf->removeList, li);
+        listRemoveItem(pf->removeList, li, LIST_NEXT);
       }
     }
   }
 
   //Check for solvability, if no bricks were removed, no bricks are moving, and no bricks are to be removed
   //resuing x as counter.
-  if(!removed && !pf->removeList->next && !pf->movingList->next)
+  if(removed==0 && pf->removeList->count==0 && pf->movingList->count==0)
   {
     for(x=0;x <BRICKSEND;x++)
     {
@@ -999,8 +999,8 @@ brickType* findMoving(playField* pf, int x, int y)
   //Bail if it's not a reserved brick
   if(!pf->board[x][y] || pf->board[x][y]->type!=RESERVED) return(0);
 
-  listItem* li=pf->movingList;
-  while( (li = li->next) )
+  listItem* li=&pf->movingList->begin;
+  while( LISTFWD(pf->movingList, li) )
   {
     br=(brickType*)li->data;
     if( (br->sx == x && br->sy==y) || (br->dx==x && br->dy==y) )
@@ -1072,7 +1072,7 @@ int boardDestroyNextBrick(playField* pf)
         if( pf->board[x][y] != pf->blocker )
         {
           pf->board[x][y]->dir=1;
-          listAddData(pf->removeList, (void*)pf->board[x][y]);
+          listAppendData(pf->removeList, (void*)pf->board[x][y]);
           pf->board[x][y]->dir=0;
           sndPlayOnce(SND_BRICKBREAK,pf->board[x][y]->pxx);
           pf->board[x][y]->tl=pf->levelInfo->brick_die_ticks;
