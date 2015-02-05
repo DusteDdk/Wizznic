@@ -230,8 +230,8 @@
                                     "\n"\
                                     STR_SELECT_CTRLS
 
-#define STR_MENU_ALLOW_UPLOAD        "<- Enable ? ->"
-#define STR_MENU_ALLOW_UPLOAD_U     "<              >"
+#define STR_MENU_ALLOW_UPLOAD        "<- Allow Online ->"
+#define STR_MENU_ALLOW_UPLOAD_U     "<__________________>"
 #define STR_MENU_ALLOW_ANSWER_YES    "Yes! Sounds awesome, thanks!"
 #define STR_MENU_ALLOW_ANSWER_YES_U "[____________________________]"
 #define STR_MENU_ALLOW_ANSWER_NO    "No, I'm not sure why, but no."

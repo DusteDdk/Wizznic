@@ -53,9 +53,7 @@ static float rot=0;
 #define MENUGFXHELP 1
 #define MENUGFXBYE 2
 #define MENUGFXPACKBOX 3
-#define MENUGFXYES 4
-#define MENUGFXNO 5
-#define MENUGFXNUM 6
+#define MENUGFXNUM 4
 
 static SDL_Surface* menuBg[MENUGFXNUM];
 
@@ -74,7 +72,7 @@ static int x,y;
 
 static wavingImage_t waving;
 
-
+static aniType* menuYesNo;
 
 inpStrState* strStateHighScore;
 inpStrState* strStateDlcCode;
@@ -87,8 +85,7 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
   menuBg[MENUGFXBYE]=0;
-  menuBg[MENUGFXYES]=0;
-  menuBg[MENUGFXNO]=0;
+  menuYesNo=0;
 
   menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
 
@@ -1606,19 +1603,16 @@ int runMenu(SDL_Surface* screen)
         starField(screen,0);
         SDL_Rect ynpos;
 
-        if( menuBg[MENUGFXYES]==0)
+        if( menuYesNo == 0)
         {
-          menuBg[MENUGFXYES]=loadImg( DATADIR"data/menu/yes.png");
-        }
-        if(menuBg[MENUGFXNO]==0)
-        {
-          menuBg[MENUGFXNO]=loadImg( DATADIR"data/menu/no.png");
+
+          menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);
         }
 
         ynpos.y = (setting()->bgPos.y)+ 240-64-16;
 
-
-        menuMaxY=0;
+        menuPosY=0; //Using this as a click-lock
+        menuMaxY=1;
         menuMaxX=2;
         txtWrite(screen, FONTSMALL, STR_MENU_UPLOADNAG, HSCREENW-152, HSCREENH-108 );
 
@@ -1626,42 +1620,50 @@ int runMenu(SDL_Surface* screen)
         //Set rect for yes
         ynpos.x = (setting()->bgPos.x)+ 32;
         //Display/blink yes
-        if(menuPosX != 0 ||  dir)
+        if(menuPosX == 0 && dir)
         {
-          SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
+          //SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
+          drawSprite(screen, menuYesNo->spr[0], ynpos.x, ynpos.y);
+        } else {
+          drawSprite(screen, menuYesNo->spr[1], ynpos.x, ynpos.y);
         }
         //Detect pointer click on yes
-        ynpos.w=ynpos.x + menuBg[MENUGFXYES]->w;
-        ynpos.h=ynpos.y + menuBg[MENUGFXYES]->h;
-        if( isBoxClicked( &ynpos ) )
+        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
+        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &ynpos ) )
         {
           menuPosX=0;
+          menuPosY=1; //Slightly obscure.. :p
         }
 
         if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD_U, HSCREENW, HSCREENH+100-32-16 );
         txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD, HSCREENW, HSCREENH+100-32-16);
-        if( isBoxClicked( getTxtBox() ) )
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( getTxtBox() ) )
         {
           menuPosX=1;
         }
 
         //Set rect for no
-        ynpos.x = (setting()->bgPos.x)+ 320-32-menuBg[MENUGFXNO]->w;
+        ynpos.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
         //Display/blink no
-        if(menuPosX != 2 || dir)
+        if(menuPosX == 2 && dir)
         {
-          SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
+         // SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
+          drawSprite(screen, menuYesNo->spr[2], ynpos.x, ynpos.y);
+        } else {
+          drawSprite(screen, menuYesNo->spr[3], ynpos.x, ynpos.y);
         }
         //Detect pointer click on no
-        ynpos.w=ynpos.x + menuBg[MENUGFXNO]->w;
-        ynpos.h=ynpos.y + menuBg[MENUGFXNO]->h;
-        if( isBoxClicked( &ynpos ) )
+        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
+        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &ynpos ) )
         {
           menuPosX=2;
+          menuPosY=1; //Slightly obscure.. :p
         }
 
 
-        if( getButton( C_BTNB) || isPointerClicked() )
+        if( getButton( C_BTNB) || (isPointerClicked() && menuPosY==1) )
         {
           resetBtn( C_BTNB );
           resetMouseBtn();
@@ -1685,11 +1687,10 @@ int runMenu(SDL_Surface* screen)
             sndPlay(SND_WINNER, 160);
           }
 
-          if( menuPosX == 0 || menuPosX == 2 )
+          if( (menuPosX == 0 || menuPosX == 2) )
           {
-            SDL_FreeSurface(menuBg[MENUGFXYES]);
-            SDL_FreeSurface(menuBg[MENUGFXNO]);
-
+            SDL_FreeSurface(menuYesNo->spr[0]->img);
+            freeAni(menuYesNo);
 
             setting()->firstRun=0;
             saveSettings();
