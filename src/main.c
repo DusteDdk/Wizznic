@@ -109,7 +109,6 @@ int main(int argc, char *argv[])
   }
 
   //Read settings
-  printf("Loading settings...\n");
   initSettings();
 
   #if defined(WITH_OPENGL)
@@ -312,13 +311,6 @@ int main(int argc, char *argv[])
   //Load fonts
   txtInit();
 
-  //Load sounds
-  if(!initSound())
-  {
-    printf("Couldn't init sound.\n");
-    return(-1);
-  }
-
   //Menu Graphics
   if(!initMenu(screen))
   {
@@ -334,6 +326,13 @@ int main(int argc, char *argv[])
 
   //Init packs
   packInit();
+
+  //Load sounds
+  if(!initSound())
+  {
+    printf("Couldn't init sound.\n");
+    return(-1);
+  }
 
   //Scan userlevels dir
   makeUserLevelList(screen);

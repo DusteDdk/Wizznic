@@ -35,7 +35,7 @@
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
   #define STR_GAME_PRESSB             "Press B to Play"
-  #define STR_SELECT_CTRLS            "---- Select with [Arrows]/[B] ----\n"
+  #define STR_SELECT_CTRLS            "Use D-PAD, button B.\n"
 
 
 #elif defined (PSP) /// PSP version
@@ -55,7 +55,7 @@
   #define STR_GAME_RESTARTCONFIRM     "Press Circle to confirm"
   #define STR_GAME_PRESSB             "Press Cross to Play"
 
-  #define STR_SELECT_CTRLS           "-- Select with [Arrows]/[Cross] --\n"
+  #define STR_SELECT_CTRLS           "Use D-PAD, Cross.\n"
 
 #elif defined (PANDORA)
     //Menu
@@ -75,7 +75,7 @@
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
     #define STR_GAME_PRESSB             "Press B to Play"
-    #define STR_SELECT_CTRLS            "---- Select with [Arrows]/[B] ----\n"
+    #define STR_SELECT_CTRLS            "Use D-PAD, button B.\n"
 #elif defined(GCW0) /// GCW Zero version
   // Note: GCW Zero button layout matches the GP2X/Wiz layout in the following manner:
   //  GCW Zero - GP2X/Wiz
@@ -103,7 +103,7 @@
   //Game
   #define STR_GAME_RESTARTCONFIRM     "Press again to confirm"
   #define STR_GAME_PRESSB             "Press A to Play"
-  #define STR_SELECT_CTRLS            "---- Select with [D-PAD]/[A] ----\n"
+  #define STR_SELECT_CTRLS            "Use D-PAD, button A.\n"
 
 
 #elif defined(MAME_CTRL)
@@ -122,12 +122,12 @@
     //Game
     #define STR_GAME_RESTARTCONFIRM     "Press B2 to confirm"
     #define STR_GAME_PRESSB             "Press B1 to Play"
-    #define STR_SELECT_CTRLS            "--- Select with [Joystick]/[1] ---\n"
+    #define STR_SELECT_CTRLS            "Use Joystick, button 1.\n"
  #else
     //Menu
     #define STR_MENU_PRESS_B            "Press Ctrl"
     #define STR_MENU_PRESS_B_PLAY       "Press Ctrl to Play"
-    #define STR_SELECT_CTRLS            "--- Select with [Arrow]/[Ctrl] ---\n"
+    #define STR_SELECT_CTRLS            "Use Arrows,Ctrl or Mouse.\n"
 
     #define STR_MENU_LVLEDIT_USAGE      "Edit: Ctrl. Play: Alt. Clone: Z"
 
@@ -219,29 +219,23 @@
                                     "But mostly bee... Advertisements!\n"\
                                     "                        - Jimmy"
 
-#define STR_MENU_UPLOADNAG          "-- Please allow Internet access --\n"\
+#define STR_MENU_UPLOADNAG          "-- Wizznic loves The Internet! --\n"\
                                     "\n"\
-                                    "Wizznic! is a free game that needs\n"\
-                                    "your help to become really great!\n"\
+                                    "  Internet access lets Wizznic\n"\
+                                    "  fetch DLCs, check for new\n"\
+                                    "  versions  and send back\n"\
+                                    "  some game-play info to\n"\
+                                    "  make the game better.\n"\
                                     "\n"\
-                                    "Internet access enables Wizznic\n"\
-                                    "to install DLCs and also upload\n"\
-                                    "gameplay statistics.\n"\
-                                    "\n"\
-                                    "These stats are used to make\n"\
-                                    "new versions more balanced and\n"\
-                                    "improve the gameplay experience.\n"\
-                                    "\n"\
-                                    "This can be changed in Options.\n"\
                                     "\n"\
                                     STR_SELECT_CTRLS
 
-#define STR_MENU_ALLOW_UPLOAD        "<---  --->"
-#define STR_MENU_ALLOW_UPLOAD_U     "<          >"
-#define STR_MENU_ALLOW_ANSWER_YES   "Yes"
-#define STR_MENU_ALLOW_ANSWER_YES_U "[___]"
-#define STR_MENU_ALLOW_ANSWER_NO   "No"
-#define STR_MENU_ALLOW_ANSWER_NO_U "[__]"
+#define STR_MENU_ALLOW_UPLOAD        "<- Enable ? ->"
+#define STR_MENU_ALLOW_UPLOAD_U     "<              >"
+#define STR_MENU_ALLOW_ANSWER_YES    "Yes! Sounds awesome, thanks!"
+#define STR_MENU_ALLOW_ANSWER_YES_U "[____________________________]"
+#define STR_MENU_ALLOW_ANSWER_NO    "No, I'm not sure why, but no."
+#define STR_MENU_ALLOW_ANSWER_NO_U "[_____________________________]"
 
 
 #define STR_MENU_ALLOW_RESET        "<---  --->"
@@ -251,8 +245,8 @@
 //                                  "----------------------------------"
 #define STR_MENU_UPDATE             "---- Wizznic has been updated ----\n"\
                                     "Great news everyone!\n"\
-                                    "There's a new version available!\n"\
-                                    "Grab it at your leisure at:\n"\
+                                    "There's a new version out!\n"\
+                                    "Grab it at:\n"\
                                     "http://wizznic.org/\n"\
                                     "I'm sure it's filled with some\n"\
                                     "pretty cool and awesome stuff! :)\n"\

@@ -53,7 +53,9 @@ static float rot=0;
 #define MENUGFXHELP 1
 #define MENUGFXBYE 2
 #define MENUGFXPACKBOX 3
-#define MENUGFXNUM 4
+#define MENUGFXYES 4
+#define MENUGFXNO 5
+#define MENUGFXNUM 6
 
 static SDL_Surface* menuBg[MENUGFXNUM];
 
@@ -85,6 +87,8 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
   menuBg[MENUGFXBYE]=0;
+  menuBg[MENUGFXYES]=0;
+  menuBg[MENUGFXNO]=0;
 
   menuBg[MENUGFXPACKBOX] = SDL_CreateRGBSurface(SDL_SWSURFACE, 260,42, (setting()->bpp*8), screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,0xff000000);
 
@@ -1599,26 +1603,59 @@ int runMenu(SDL_Surface* screen)
 
       #if !defined (GP2X) || !defined (WIZ)
       case menuStateUploadDiag:
-        starField(screen,1);
+        starField(screen,0);
+        SDL_Rect ynpos;
+
+        if( menuBg[MENUGFXYES]==0)
+        {
+          menuBg[MENUGFXYES]=loadImg( DATADIR"data/menu/yes.png");
+        }
+        if(menuBg[MENUGFXNO]==0)
+        {
+          menuBg[MENUGFXNO]=loadImg( DATADIR"data/menu/no.png");
+        }
+
+        ynpos.y = (setting()->bgPos.y)+ 240-64-16;
+
+
         menuMaxY=0;
         menuMaxX=2;
-        txtWrite(screen, FONTSMALL, STR_MENU_UPLOADNAG, HSCREENW-152, HSCREENH-100 );
+        txtWrite(screen, FONTSMALL, STR_MENU_UPLOADNAG, HSCREENW-152, HSCREENH-108 );
 
-        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD_U, HSCREENW, HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD, HSCREENW, HSCREENH+100);
 
-        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES_U, HSCREENW-(13*8), HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES, HSCREENW-(13*8), HSCREENH+100 );
-        if( isBoxClicked( getTxtBox() ) )
+        //Set rect for yes
+        ynpos.x = (setting()->bgPos.x)+ 32;
+        //Display/blink yes
+        if(menuPosX != 0 ||  dir)
+        {
+          SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
+        }
+        //Detect pointer click on yes
+        ynpos.w=ynpos.x + menuBg[MENUGFXYES]->w;
+        ynpos.h=ynpos.y + menuBg[MENUGFXYES]->h;
+        if( isBoxClicked( &ynpos ) )
         {
           menuPosX=0;
         }
 
-
-
-        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO_U, HSCREENW+(13*8), HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO, HSCREENW+(13*8), HSCREENH+100 );
+        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD_U, HSCREENW, HSCREENH+100-32-16 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_UPLOAD, HSCREENW, HSCREENH+100-32-16);
         if( isBoxClicked( getTxtBox() ) )
+        {
+          menuPosX=1;
+        }
+
+        //Set rect for no
+        ynpos.x = (setting()->bgPos.x)+ 320-32-menuBg[MENUGFXNO]->w;
+        //Display/blink no
+        if(menuPosX != 2 || dir)
+        {
+          SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
+        }
+        //Detect pointer click on no
+        ynpos.w=ynpos.x + menuBg[MENUGFXNO]->w;
+        ynpos.h=ynpos.y + menuBg[MENUGFXNO]->h;
+        if( isBoxClicked( &ynpos ) )
         {
           menuPosX=2;
         }
@@ -1643,10 +1680,17 @@ int runMenu(SDL_Surface* screen)
           if( menuPosX == 2 )
           {
             setting()->uploadStats=0;
+            sndPlay(SND_LOSER, 160);
+          } else {
+            sndPlay(SND_WINNER, 160);
           }
 
           if( menuPosX == 0 || menuPosX == 2 )
           {
+            SDL_FreeSurface(menuBg[MENUGFXYES]);
+            SDL_FreeSurface(menuBg[MENUGFXNO]);
+
+
             setting()->firstRun=0;
             saveSettings();
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500);

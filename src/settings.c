@@ -54,6 +54,7 @@ void initSettings()
 {
   settings.packDir=0;
   settings.playerName=0;
+  printf( "Loading settings from: %s/settings.ini", getConfigDir() );
 
   loadSettings();
 }
@@ -104,8 +105,9 @@ void loadSettings()
   if(settings.playerName)
     free(settings.playerName);
 
-  settings.packDir = malloc(sizeof(char)*(strlen("packs/wizznic")+1) );
-  strcpy(settings.packDir, "packs/wizznic");
+  ///FIXME: This is incorrect when datadir is not .
+  settings.packDir = malloc(sizeof(char)*(strlen("./packs/000_wizznic")+1) );
+  strcpy(settings.packDir, "./packs/000_wizznic");
 
   settings.playerName = malloc(sizeof(char)*11 );
   strcpy(settings.playerName, "player");
@@ -115,6 +117,7 @@ void loadSettings()
     printf("Out of memory, will crash soon.\n");
 
   sprintf( buf, "%s/settings.ini", getConfigDir() );
+
   FILE *f = fopen(buf, "r");
   if(f)
   {
@@ -187,7 +190,7 @@ void loadSettings()
         {
           settings.disableMusic=atoi(val);
         } else
-        if( strcmp("uploadstats",set)==0 )
+        if( strcmp("allowonline",set)==0 )
         {
           //Only if the option is in the file, are we sure they had the choice.
           settings.uploadStats=atoi(val);
@@ -238,28 +241,29 @@ void saveSettings()
 {
   char* buf = malloc(sizeof(char)*1024);
   sprintf( buf, "%s/settings.ini", getConfigDir() );
+
   FILE *f = fopen(buf, "w");
   if(f)
   {
-    fprintf(f, "soundvol=%i\n"
-               "musicvol=%i\n"
-               "# wizclock/vol is ignored on PC.\n"
-               "wizclock=%i\n"
-               "wizvolume=%i\n"
-               "showfps=%i\n"
-               "particles=%i\n"
-               "arcademode=%i\n"
-               "packdir=%s\n"
-               "playername=%s\n"
-               "musicdir=%s\n"
-               "usermusic=%i\n"
-               "disablemusic=%i\n"
-               "uploadstats=%i\n"
-               "glenable=%i\n"
-               "glfilter=%i\n"
-               "glwidth=%i\n"
-               "glheight=%i\n"
-               "fullscreen=%i\n",
+    fprintf(f, "# Sound volume (0-128)\nsoundvol=%i\n\n"
+               "# Music volume (0-128)\nmusicvol=%i\n\n"
+               "# For the GP2X Wiz handheld: CPU Mhz.\nwizclock=%i\n\n"
+               "# For the GP2X Wiz handheld: System-volume.\nwizvolume=%i\n\n"
+               "# Show the FPS counter? 0 = No,  1 = Yes.\nshowfps=%i\n\n"
+               "# Use particle effects? 0 = No,  1 = Yes.\nparticles=%i\n\n"
+               "# 0 = Normal mode, progress through levels.\n# 1 = Arcade mode: Start on first level at game-over.\narcademode=%i\n\n"
+               "# The currently selected content pack.\npackdir=%s\n\n"
+               "# Name of the player.\nplayername=%s\n\n"
+               "# If usermusic is on, play music from this directory.\nmusicdir=%s\n\n"
+               "# 0 = Play the music that comes with the game. 1 = Use user-selected music. \nusermusic=%i\n\n"
+               "# 0 = Play music. 1 = Don't load any music (faster loading)\ndisablemusic=%i\n\n"
+               "# Allow Wizznic to access the Internet (http://wizznic.org)\n# 0 = No, 1 = Yes.\n# Helps Jimmy create more balanced gameplay in future versions.\n# Enables DLC downloading.\nallowonline=%i\n\n"
+               "# 0 = No OpenGL Scaling. 1 = Use OpenGL to scale the image.\nglenable=%i\n\n"
+               "# How to scale graphics ( 0 = Blocky/Sharp, 1 = Smooth/Blurry)\nglfilter=%i\n\n"
+               "# If using glenable, the width of the window in pixels.\nglwidth=%i\n\n"
+               "# If using glenable, the height of the window in pixels.\n# If this is -1, then select window size automatically.\nglheight=%i\n\n"
+               "# Go to full-screen mode.\nfullscreen=%i\n\n"
+               "# printf network traffic (when uploadstats=1)\nshowweb=%i\n",
                settings.soundVol,
                settings.musicVol,
                settings.wizClock,
@@ -277,7 +281,8 @@ void saveSettings()
                settings.glFilter,
                settings.glWidth,
                settings.glHeight,
-               settings.fullScreen);
+               settings.fullScreen,
+               settings.showWeb);
     fclose( f );
   } else {
     printf("saveSettings(); Error: Couldn't open 'settings.ini' for writing.\n");
