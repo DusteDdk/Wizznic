@@ -123,6 +123,9 @@ int dlcCheckOnlineThread(void * d)
   }
 
   free(pBuf);
+  free( cmd->requestCmd );
+  free( cmd );
+
   return(0);
 }
 
