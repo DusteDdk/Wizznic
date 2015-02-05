@@ -54,7 +54,7 @@ void initSettings()
 {
   settings.packDir=0;
   settings.playerName=0;
-  printf( "Loading settings from: %s/settings.ini", getConfigDir() );
+  printf( "Loading settings from: %s/settings.ini\n", getConfigDir() );
 
   loadSettings();
 }
@@ -106,8 +106,8 @@ void loadSettings()
     free(settings.playerName);
 
   ///FIXME: This is incorrect when datadir is not .
-  settings.packDir = malloc(sizeof(char)*(strlen("./packs/000_wizznic")+1) );
-  strcpy(settings.packDir, "./packs/000_wizznic");
+  settings.packDir = malloc(sizeof(char)*(strlen(DATADIR"/packs/000_wizznic")+1) );
+  strcpy(settings.packDir, DATADIR"/packs/000_wizznic");
 
   settings.playerName = malloc(sizeof(char)*11 );
   strcpy(settings.playerName, "player");
