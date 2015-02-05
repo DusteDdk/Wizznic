@@ -44,8 +44,9 @@
 #define SND_BRICKSWAP_DENIED 19
 #define SND_BRICKCOPY 20
 #define SND_BRICKCOPY_DENIED 21
-
-#define NUMSAMPLES 22
+#define SND_WINNER 22
+#define SND_LOSER 23
+#define NUMSAMPLES 24
 
 
 int initSound();

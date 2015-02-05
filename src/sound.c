@@ -34,7 +34,7 @@
 static Mix_Music* mus[2] = {0,0};
 static double mPos[2] = { 0,0 }; //For keeping track of track positions since SDL_Mixer cant.
 
-static char lastLoadedSongFn[1024];
+static char lastLoadedSongFn[2048];
 
 static char* loadedSamples[NUMSAMPLES];
 static Mix_Chunk* samples[NUMSAMPLES];
@@ -72,7 +72,9 @@ int initSound()
 int loadSample(const char* fileName, int index)
 {
   lastPlayed[index]=0;
-
+#ifdef DEBUG
+  printf("loadSample(); Open: %s\n", fileName);
+#endif
   //Check if we should load it
   if(!loadedSamples[index] || strcmp(loadedSamples[index], fileName)!=0)
   {
@@ -121,6 +123,8 @@ void loadSamples(const char* sndDir, const char* musicFile)
   loadSample( packGetFile(sndDir,"brickcopy.ogg"), SND_BRICKCOPY );
   loadSample( packGetFile(sndDir,"brickswapdenied.ogg"), SND_BRICKSWAP );
   loadSample( packGetFile(sndDir,"brickcopydenied.ogg"), SND_BRICKCOPY );
+  loadSample( packGetFile(sndDir, "winner.ogg"), SND_WINNER);
+  loadSample( packGetFile(sndDir, "loser.ogg"), SND_LOSER);
 
   //Music load code
   if(setting()->disableMusic) return;
@@ -155,6 +159,8 @@ void loadMenuSamples()
   loadSample( DATADIR"data/snd/menuclick.ogg", SND_MENUCLICK );
   loadSample( DATADIR"data/snd/rocketboom.ogg", SND_ROCKETBOOM );
   loadSample( DATADIR"data/snd/rocketlaunch.ogg", SND_ROCKETLAUNCH );
+  loadSample( packGetFile("themes/oldskool/snd", "winner.ogg"), SND_WINNER);
+  loadSample( packGetFile("themes/oldskool/snd", "loser.ogg"), SND_LOSER);
 }
 
 void sndPlay(int sample, int posX)
