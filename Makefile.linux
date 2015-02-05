@@ -41,8 +41,8 @@ CFLAGS=-Wall -Wextra -Werror
 ifeq ($(DEBUG),)
   CFLAGS += -O3
 else
-  STRIP = true
   CFLAGS += -g
+  DEFS +=-DDEBUG
 endif
 
 LDFLAGS=$(CFLAGS)
