@@ -53,6 +53,8 @@ static int debugNumInit=0;
 
 static int mouseGrab=0;
 
+static int justWon=0; //Used to detect the moment when the player won
+
 int initGame(SDL_Surface* screen)
 {
     if(player()->gameStarted)
@@ -120,6 +122,8 @@ int initGame(SDL_Surface* screen)
 
     //We also simulate the first switch tick here so all looks right at the countdown.
     switchUpdateAll( &pf );
+
+    justWon=0;
 
     return(1);
 }
@@ -467,6 +471,11 @@ int runGame(SDL_Surface* screen)
     //If no more bricks, countdown time left.
     if(ret == NOBRICKSLEFT)
     {
+      if( !justWon )
+      {
+        justWon=1;
+        sndPlay(SND_WINNER,160);
+      }
       pf.levelInfo->time -= 1000;
       player()->hsEntry.score +=1;
 
@@ -544,7 +553,7 @@ int runGame(SDL_Surface* screen)
         player()->timeouts++;
       }
 
-      sndPlay(SND_TIMEOUT, 160);
+      sndPlay(SND_LOSER, 160);
     } else if(ret==LIFELOST)
     {
       countdown=2000;
@@ -555,7 +564,7 @@ int runGame(SDL_Surface* screen)
         player()->timeouts++;
       }
 
-      sndPlay(SND_TIMEOUT, 160);
+      sndPlay(SND_LOSER, 160);
 
     }
 
