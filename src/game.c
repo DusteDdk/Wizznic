@@ -473,9 +473,9 @@ int runGame(SDL_Surface* screen)
     {
       if( !justWon )
       {
-        justWon=1;
         sndPlay(SND_WINNER,160);
       }
+      justWon++;
       pf.levelInfo->time -= 1000;
       player()->hsEntry.score +=1;
 
@@ -491,7 +491,10 @@ int runGame(SDL_Surface* screen)
         }
       }
 
-      sndPlayOnce(SND_SCORECOUNT, 160);
+      if(justWon > 50)
+      {
+        sndPlayOnce(SND_SCORECOUNT, 160);
+      }
       if(pf.levelInfo->time < 1)
       {
         //Completed level
