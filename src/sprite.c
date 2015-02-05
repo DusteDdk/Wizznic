@@ -27,7 +27,9 @@ SDL_Surface* loadImg( const char* fileName )
 
   if( isFile(fileName) )
   {
-
+#ifdef DEBUG
+    printf("loadImg(); Open: %s\n",fileName);
+#endif
     unoptimized = IMG_Load( fileName );
 
     if(unoptimized!=NULL)
