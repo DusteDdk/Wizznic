@@ -15,6 +15,8 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
+#include <math.h>
+
 #include "menu.h"
 
 #include "userfiles.h"
@@ -57,11 +59,13 @@ static float rot=0;
 
 static SDL_Surface* menuBg[MENUGFXNUM];
 
+static spriteType* menuScrollBar[4];
+
 static int menuState=menuStateIntro;
 
 static int menuPosX=0, menuPosY=0;
 static int menuMaxX, menuMaxY;
-static int menuChangeX=0,menuChangeY=0; //Is one if there's a change
+static int menuChangeX=0,menuChangeY=0; //Is not zero if there's a change
 
 static int dir=0;
 static int countdown=0;
@@ -83,6 +87,11 @@ int initMenu(SDL_Surface* screen)
 {
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
+
+  menuScrollBar[0] = cutSprite(loadImg(DATADIR"data/menu/scrollbar.png"),0,0,19,186);
+  menuScrollBar[1] = cutSprite(menuScrollBar[0]->img,0,186,17,3);
+  menuScrollBar[2] = cutSprite(menuScrollBar[0]->img,0,186+3,11,8);
+  menuScrollBar[3] = cutSprite(menuScrollBar[0]->img,0,186+3+8,11,8);
 
   menuBg[MENUGFXBYE]=0;
   menuYesNo=0;
@@ -143,7 +152,7 @@ void incPosX()
 
 void decPosY()
 {
-  menuChangeY=1;
+  menuChangeY=-1;
   if(!( menuState==menuStatePaused && menuPosY==1 && !player()->gameStarted ))
     sndPlay(SND_MENUMOVE, 160);
   countdown=0;
@@ -173,7 +182,8 @@ int runMenu(SDL_Surface* screen)
   psysSet_t ps; //Particle system for particle effects in menu
   listItem* it;
   fileListItem_t* fItem;
-  SDL_Rect ynpos;
+
+  SDL_Rect r;
 
   if( !dir || getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT ) //Nasty little hack to prevent text from blinking when you try to click it
   {
@@ -1091,7 +1101,7 @@ int runMenu(SDL_Surface* screen)
         starField(screen, 1);
         fireWorks(screen);
         txtWriteCenter(screen, FONTMEDIUM, STR_MENU_SELECT_PACK, HSCREENW, HSCREENH-106);
-        getInpPointerState()->escEnable=1;
+        getInpPointerState()->escEnable=0;
         if(dir && !(getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT )) txtWriteCenter(screen, FONTSMALL, STR_MENU_SELECT_PACK_PRESS_CTRL, HSCREENW, HSCREENH-84);
         menuMaxY= packState()->numPacks;
         ul=0;
@@ -1120,7 +1130,7 @@ int runMenu(SDL_Surface* screen)
           }
 
           //Check if this box was clicked
-          SDL_Rect r;
+
           r.x = HSCREENW-130;
           r.y = HSCREENH-70+(48*(ul-scroll));
           r.w = r.x+260; // Size of graphics + position I know-, that
@@ -1140,15 +1150,49 @@ int runMenu(SDL_Surface* screen)
           //Increase counter (doh, most obvious comment to date)
           ul++;
         }
-        if( ul < packState()->numPacks )
+
+        /*if( ul < packState()->numPacks )
         {
           if(dir) txtWrite(screen, FONTSMALL, STR_MENU_PACKS_MORE, HSCREENW+100, HSCREENH+108);
+        } */
+
+        drawSprite(screen, menuScrollBar[0], HSCREENW+160-19-5, HSCREENH-120+50);
+
+        //Draw indicator
+        drawSprite(screen, menuScrollBar[1], HSCREENW+160-18-5, HSCREENH-120+50+18+round(147.0/(float)((packState()->numPacks))*(float)menuPosY) );
+
+        //Check for mouse hover over buttons
+        r.x = HSCREENW+160-18-5;
+        r.w = r.x+17;
+        r.y = HSCREENH-120+51;
+        r.h = r.y+17;
+        if( (isPointerInBox(&r) && menuPosY > 0) || menuChangeY == -1)
+        {
+          drawSprite(screen, menuScrollBar[2], r.x+3, r.y+5 );
+          if(isPointerClicked())
+          {
+            menuPosY--;
+          }
+        }
+        //Check for mouse hover over buttons
+        r.y = HSCREENH-120+55+162;
+        r.h = r.y+17;
+        if( (isPointerInBox(&r) && menuPosY < packState()->numPacks) || menuChangeY == 1 )
+        {
+          drawSprite(screen, menuScrollBar[3], r.x+3, r.y+5 );
+          if(isPointerClicked())
+          {
+            menuPosY++;
+          }
         }
 
-        if( isPointerEscapeClicked() )
+        r.x = HSCREENW+160-18-5;
+        r.w = r.x+17;
+        r.y = HSCREENH-120+51+16;
+        r.h = r.y+151;
+        if( isPointerInBox(&r) && getInpPointerState()->isDown )
         {
-          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
-          setMenu(menuStatePaused);
+          menuPosY=(int)round( (float)packState()->numPacks/150.0 * (float)(getInpPointerState()->vpY-67));
         }
 
         if( getButton(C_BTNB) || packListItemWasClicked )
@@ -1164,7 +1208,6 @@ int runMenu(SDL_Surface* screen)
               setMenu(menuStateDLC);
             }
 #endif
-
           } else {
 
             packFreeGfx();
@@ -1608,7 +1651,7 @@ int runMenu(SDL_Surface* screen)
           menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);
         }
 
-        ynpos.y = (setting()->bgPos.y)+ 240-64-16;
+        r.y = (setting()->bgPos.y)+ 240-64-16;
 
         menuPosY=0; //Using this as a click-lock
         menuMaxY=1;
@@ -1617,19 +1660,19 @@ int runMenu(SDL_Surface* screen)
 
 
         //Set rect for yes
-        ynpos.x = (setting()->bgPos.x)+ 32;
+        r.x = (setting()->bgPos.x)+ 32;
         //Display/blink yes
         if(menuPosX == 0 && dir)
         {
           //SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
-          drawSprite(screen, menuYesNo->spr[0], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[0], r.x, r.y);
         } else {
-          drawSprite(screen, menuYesNo->spr[1], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[1], r.x, r.y);
         }
         //Detect pointer click on yes
-        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
-        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
-        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &ynpos ) )
+        r.w=r.x + menuYesNo->spr[0]->clip.w;
+        r.h=r.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &r ) )
         {
           menuPosX=0;
           menuPosY=1; //Slightly obscure.. :p
@@ -1643,19 +1686,19 @@ int runMenu(SDL_Surface* screen)
         }
 
         //Set rect for no
-        ynpos.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
+        r.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
         //Display/blink no
         if(menuPosX == 2 && dir)
         {
          // SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
-          drawSprite(screen, menuYesNo->spr[2], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[2], r.x, r.y);
         } else {
-          drawSprite(screen, menuYesNo->spr[3], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[3], r.x, r.y);
         }
         //Detect pointer click on no
-        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
-        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
-        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &ynpos ) )
+        r.w=r.x + menuYesNo->spr[0]->clip.w;
+        r.h=r.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &r ) )
         {
           menuPosX=2;
           menuPosY=1; //Slightly obscure.. :p
@@ -1749,22 +1792,22 @@ int runMenu(SDL_Surface* screen)
           menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);
         }
 
-        ynpos.y = (setting()->bgPos.y)+ 240-60;
+        r.y = (setting()->bgPos.y)+ 240-60;
 
         //Set rect for yes
-        ynpos.x = (setting()->bgPos.x)+ 32;
+        r.x = (setting()->bgPos.x)+ 32;
         //Display/blink yes
         if(menuPosX == 0 && dir)
         {
           //SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
-          drawSprite(screen, menuYesNo->spr[0], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[0], r.x, r.y);
         } else {
-          drawSprite(screen, menuYesNo->spr[1], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[1], r.x, r.y);
         }
         //Detect pointer click on yes
-        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
-        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
-        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &ynpos ) )
+        r.w=r.x + menuYesNo->spr[0]->clip.w;
+        r.h=r.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &r ) )
         {
           menuPosX=0;
           menuPosY=1; //Slightly obscure.. :p
@@ -1778,19 +1821,19 @@ int runMenu(SDL_Surface* screen)
         }
 
         //Set rect for no
-        ynpos.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
+        r.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
         //Display/blink no
         if(menuPosX == 2 && dir)
         {
          // SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
-          drawSprite(screen, menuYesNo->spr[2], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[2], r.x, r.y);
         } else {
-          drawSprite(screen, menuYesNo->spr[3], ynpos.x, ynpos.y);
+          drawSprite(screen, menuYesNo->spr[3], r.x, r.y);
         }
         //Detect pointer click on no
-        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
-        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
-        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &ynpos ) )
+        r.w=r.x + menuYesNo->spr[0]->clip.w;
+        r.h=r.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &r ) )
         {
           menuPosX=2;
           menuPosY=1; //Slightly obscure.. :p
