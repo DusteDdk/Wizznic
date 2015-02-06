@@ -173,6 +173,7 @@ int runMenu(SDL_Surface* screen)
   psysSet_t ps; //Particle system for particle effects in menu
   listItem* it;
   fileListItem_t* fItem;
+  SDL_Rect ynpos;
 
   if( !dir || getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT ) //Nasty little hack to prevent text from blinking when you try to click it
   {
@@ -1601,11 +1602,9 @@ int runMenu(SDL_Surface* screen)
       #if !defined (GP2X) || !defined (WIZ)
       case menuStateUploadDiag:
         starField(screen,0);
-        SDL_Rect ynpos;
 
         if( menuYesNo == 0)
         {
-
           menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);
         }
 
@@ -1691,6 +1690,7 @@ int runMenu(SDL_Surface* screen)
           {
             SDL_FreeSurface(menuYesNo->spr[0]->img);
             freeAni(menuYesNo);
+            menuYesNo=0;
 
             setting()->firstRun=0;
             saveSettings();
@@ -1735,41 +1735,85 @@ int runMenu(SDL_Surface* screen)
 
       case menuStateConfirmReset:
         starField(screen,0);
-        menuMaxY=0;
-        menuMaxX=2;
-        txtWriteCenter(screen, FONTMEDIUM, STR_MENU_ARE_YOU_SURE, HSCREENW,HSCREENH-95);
-        sprintf(buf, STR_MENU_CONFIRM_CLEAR_HIGHSCORES, packState()->cp->name);
-        txtWrite(screen, FONTSMALL, buf, HSCREENW-152, HSCREENH-70 );
 
-        if(menuPosX == 0 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO_U, HSCREENW-(13*8), HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_NO, HSCREENW-(13*8), HSCREENH+100 );
-        if( isBoxClicked( getTxtBox() ) )
+        menuPosY=0; //Using this as a click-lock
+        menuMaxY=1;
+        menuMaxX=2;
+        txtWriteCenter(screen, FONTMEDIUM, STR_MENU_ARE_YOU_SURE, HSCREENW,HSCREENH-95-16);
+        sprintf(buf, STR_MENU_CONFIRM_CLEAR_HIGHSCORES, packState()->cp->name);
+        txtWrite(screen, FONTSMALL, buf, HSCREENW-152, HSCREENH-70-16 );
+
+
+        if( menuYesNo == 0)
+        {
+          menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);
+        }
+
+        ynpos.y = (setting()->bgPos.y)+ 240-60;
+
+        //Set rect for yes
+        ynpos.x = (setting()->bgPos.x)+ 32;
+        //Display/blink yes
+        if(menuPosX == 0 && dir)
+        {
+          //SDL_BlitSurface(menuBg[MENUGFXYES] , NULL, screen, &ynpos );
+          drawSprite(screen, menuYesNo->spr[0], ynpos.x, ynpos.y);
+        } else {
+          drawSprite(screen, menuYesNo->spr[1], ynpos.x, ynpos.y);
+        }
+        //Detect pointer click on yes
+        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
+        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT &&  isPointerInBox( &ynpos ) )
         {
           menuPosX=0;
+          menuPosY=1; //Slightly obscure.. :p
         }
 
-        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET_U, HSCREENW, HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET, HSCREENW, HSCREENH+100);
+        if( menuPosX == 1 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET_U, HSCREENW, HSCREENH+100-25 );
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_RESET, HSCREENW, HSCREENH+100-25);
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( getTxtBox() ) )
+        {
+          menuPosX=1;
+        }
 
-
-        if(menuPosX == 2 && dir) txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES_U, HSCREENW+(13*8), HSCREENH+100 );
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ALLOW_ANSWER_YES, HSCREENW+(13*8), HSCREENH+100 );
-        if( isBoxClicked( getTxtBox() ) )
+        //Set rect for no
+        ynpos.x = (setting()->bgPos.x)+ 320-32-menuYesNo->spr[0]->clip.w;
+        //Display/blink no
+        if(menuPosX == 2 && dir)
+        {
+         // SDL_BlitSurface(menuBg[MENUGFXNO] , NULL, screen, &ynpos );
+          drawSprite(screen, menuYesNo->spr[2], ynpos.x, ynpos.y);
+        } else {
+          drawSprite(screen, menuYesNo->spr[3], ynpos.x, ynpos.y);
+        }
+        //Detect pointer click on no
+        ynpos.w=ynpos.x + menuYesNo->spr[0]->clip.w;
+        ynpos.h=ynpos.y + menuYesNo->spr[0]->clip.h;
+        if( getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT && isPointerInBox( &ynpos ) )
         {
           menuPosX=2;
+          menuPosY=1; //Slightly obscure.. :p
         }
 
-        if( getButton(C_BTNB) || isPointerClicked() )
+
+        if( getButton( C_BTNB) || (isPointerClicked() && menuPosY==1) )
         {
+          SDL_FreeSurface(menuYesNo->spr[0]->img);
+          freeAni(menuYesNo);
+          menuYesNo=0;
+
           resetBtn(C_BTNB);
           resetMouseBtn();
+
           if( menuPosX==0)
           {
+            statsReset();
             setMenu(menuStateOptions);
           }
+
           if( menuPosX==2)
           {
-            statsReset();
             setMenu(menuStateOptions);
           }
         }
