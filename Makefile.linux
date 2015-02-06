@@ -70,6 +70,10 @@ ifeq ($(DEBUG),)
 	$(STRIP) $@
 endif
 
+tools: mkbundle
+
+mkbundle: tools/mkBundle.c src/list/list.c src/bundle.c
+	$(CC) tools/mkBundle.c src/list/list.c src/bundle.c -o mkbundle.bin
 
 .c.o:
 	$(MYCC) -c $< -o $@
@@ -86,4 +90,4 @@ install:
 	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
 
 clean:
-	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o
+	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o mkbundle.bin

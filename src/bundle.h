@@ -26,6 +26,8 @@
 #define BUNDLE_FAIL_UNSUPPORTED_VERSION 32
 #define BUNDLE_FAIL_NOT_BUNDLEFILE 64
 
+#define BUNDLE_FILE_VERSION 0x11
+
 int debundle( const char* file, const char* outDir );
 void bundle( const char* file, const char* inDir);
 //Get a string telling the path to the last extracted bundle (or NULL if no bundle was extracted).
@@ -33,5 +35,6 @@ const char* bundlePath();
 //Frees the bundle-path and sets it to NULL
 void bundlePathReset();
 int getBundleError();
+void bundleSetFlip(uint_fast8_t flip);
 
 #endif

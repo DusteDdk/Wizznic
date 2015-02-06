@@ -24,20 +24,25 @@
 #include "bundle.h"
 #include "list/list.h"
 
-#define bundleFileIdentString "Wizznic Bundle "
-#define bundleFileEndMarkString "<End of Wizznic Bundle>"
-#define bundleFileVersion 0x10
+#define bundleFileIdentString "<WizznicBundle>"
+#define bundleFileEndMarkString "</WizznicBundle>"
+
 
 static char* lastExtractedBundle=NULL;
 static int lastError=0;
+
+// Used to generate a bundle with byte-order opposite of host
+// To test that conversion works both ways.
+static int debugTestSwapBytes=0;
 
 #define TYPE_FILE 1
 #define TYPE_DIR 2
 
 #pragma pack(push, 1)
 typedef struct {
-    char ident[16];
+    char ident[16]; // 15 characters + one 0 terminator
     uint8_t version; //File version
+    uint16_t byteOrderTest;
     uint16_t numEntries;
 } bundleHeader_t;
 
@@ -56,6 +61,29 @@ typedef struct {
     uint32_t dataSize; //Actual size + filename
     void* data;
 } entity;
+
+inline uint16_t uswap16(uint16_t in)
+{
+  return( ((in & 0xFF00u)>>8) | ((in & 0x00FFu)<<8) );
+}
+
+inline uint32_t uswap32(uint32_t in)
+{
+  return( ((in & 0xFF000000) >> (8*3)) | ((in & 0x00FF0000) >> (8*1)) | ((in & 0x0000FF00) << (8*1)) | ((in & 0x000000FF) << (8*3)) );
+}
+
+void swapBundleHeader(bundleHeader_t* in)
+{
+  in->byteOrderTest = uswap16(in->byteOrderTest);
+  in->numEntries = uswap16(in->numEntries);
+}
+
+void swapBundleEntry(bundleFileEntry* be)
+{
+  be->dataLen = uswap32(be->dataLen);
+  be->dataOffset = uswap32(be->dataOffset);
+  be->nameLen = uswap16(be->nameLen);
+}
 
 int dirScan( const char* dir,int type, list_t* list )
 {
@@ -194,6 +222,7 @@ int debundleCreateEntry( bundleFileEntry* fe, const char* fileName, FILE* f )
 int debundle( const char* file, const char* outDir )
 {
   int i;
+  uint_fast8_t swapBytes;
   int ret=BUNDLE_FAIL_NOT_BUNDLEFILE;
   FILE* f=NULL;
   char* name=NULL;
@@ -215,11 +244,17 @@ int debundle( const char* file, const char* outDir )
       //Verify it's a bundle
       if( strcmp(header.ident, bundleFileIdentString) == 0 )
       {
-        //This code reads version 0x10 bundles.
-        if( header.version == 0x10 )
+        //This code reads version 0x11 bundles.
+        if( header.version == BUNDLE_FILE_VERSION )
         {
-          //Create output directory (We ignore this return value because it may exist and that is okay too).
-          //mkdir(outDir, S_IRWXU);
+          if( header.byteOrderTest == 0xFF00 )
+          {
+            swapBytes = 0;
+          } else {
+            printf("Bundle has opposite byte-order, converting.\n");
+            swapBundleHeader(&header);
+            swapBytes = 1;
+          }
 
           fe = malloc( sizeof(bundleFileEntry)* header.numEntries );
 
@@ -230,6 +265,12 @@ int debundle( const char* file, const char* outDir )
             //Create directories and files
             for( i=0; i < header.numEntries; i++ )
             {
+              if(swapBytes)
+              {
+                swapBundleEntry(&fe[i]);
+              }
+
+
               //Verify that type is sane
               if( fe[i].type == TYPE_DIR || fe[i].type == TYPE_FILE )
               {
@@ -318,7 +359,8 @@ void bundle( const char* file, const char* inDir)
   bundleHeader_t header;
   bundleFileEntry* be;
   uint32_t dataOffset=0;
-  header.version = bundleFileVersion;
+  header.version = BUNDLE_FILE_VERSION;
+  header.byteOrderTest = 0xFF00;
   sprintf( header.ident, "%s", bundleFileIdentString );
 
   char endMark[] = bundleFileEndMarkString;
@@ -353,6 +395,11 @@ void bundle( const char* file, const char* inDir)
 
       if(f)
       {
+        if(debugTestSwapBytes)
+        {
+          swapBundleHeader(&header);
+        }
+
         //Write header
         fwrite( (void*)(&header), sizeof(bundleHeader_t),1, f );
 
@@ -366,10 +413,16 @@ void bundle( const char* file, const char* inDir)
 
           be->dataOffset = dataOffset;
           be->dataLen = e->dataSize;
+          dataOffset += be->dataLen+be->nameLen;
+
+          if(debugTestSwapBytes)
+          {
+            swapBundleEntry(be);
+          }
+
 
           fwrite( (void*)be, sizeof(bundleFileEntry), 1, f );
 
-          dataOffset += be->dataLen+be->nameLen;
 
           free(be);
         }
@@ -382,7 +435,7 @@ void bundle( const char* file, const char* inDir)
           //Write file-name
           if( e->type == TYPE_DIR )
           {
-            fwrite( (void*)e->name, sizeof(char)*strlen(e->name), 1, f);
+            fwrite( e->name, strlen(e->name), 1, f);
             printf("Added Dir: %s\n", e->name);
           }
           //If it's a file, write content
@@ -424,4 +477,9 @@ void bundlePathReset()
 int getBundleError()
 {
   return(lastError);
+}
+
+void bundleSetFlip(uint_fast8_t flip)
+{
+  debugTestSwapBytes = flip;
 }
