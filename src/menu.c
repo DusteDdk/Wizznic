@@ -41,6 +41,8 @@
 
 #include "waveimg.h"
 #include "stats.h"
+#include "scrollbar.h"
+#include "about.h"
 
 #include "transition.h"
 
@@ -59,7 +61,6 @@ static float rot=0;
 
 static SDL_Surface* menuBg[MENUGFXNUM];
 
-static spriteType* menuScrollBar[4];
 
 static int menuState=menuStateIntro;
 
@@ -88,10 +89,8 @@ int initMenu(SDL_Surface* screen)
   menuBg[MENUGFXINTRO] = loadImg( DATADIR"data/menu/intro.png" );
   menuBg[MENUGFXHELP] = loadImg( DATADIR""PLATFORM_HELP_FILE );
 
-  menuScrollBar[0] = cutSprite(loadImg(DATADIR"data/menu/scrollbar.png"),0,0,19,186);
-  menuScrollBar[1] = cutSprite(menuScrollBar[0]->img,0,186,17,3);
-  menuScrollBar[2] = cutSprite(menuScrollBar[0]->img,0,186+3,11,8);
-  menuScrollBar[3] = cutSprite(menuScrollBar[0]->img,0,186+3+8,11,8);
+  scrollBarInit();
+  aboutInit();
 
   menuBg[MENUGFXBYE]=0;
   menuYesNo=0;
@@ -524,7 +523,7 @@ int runMenu(SDL_Surface* screen)
     break;
 
     case menuStatePaused:
-      menuMaxY = 9;
+      menuMaxY = 8;
       starField(screen,1);
       if(player()->gameStarted)
       {
@@ -572,38 +571,32 @@ int runMenu(SDL_Surface* screen)
 
       if(dir || menuPosY!= 5)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+20);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_PACK_CHOICE, HSCREENW, HSCREENH+20);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=5;
       }
 
       if(dir || menuPosY!= 6)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_PACK_CHOICE, HSCREENW, HSCREENH+40);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_ABOUT_CHOICE, HSCREENW, HSCREENH+40);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=6;
       }
 
+
       if(dir || menuPosY!= 7)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_HELP_CHOICE, HSCREENW, HSCREENH+60);
+        txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+60);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=7;
       }
 
       if(dir || menuPosY!= 8)
       {
-        txtWriteCenter(screen, FONTSMALL, STR_MENU_EXIT_CHOICE, HSCREENW, HSCREENH+80);
+        sprintf(buf, STR_MENU_PACK_SHOW, packState()->cp->name);
+        txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+100);
         if( isBoxClicked( getTxtBox() ) )
           menuPosY=8;
-      }
-
-      if(dir || menuPosY!= 9)
-      {
-        sprintf(buf, STR_MENU_PACK_SHOW, packState()->cp->name);
-        txtWriteCenter(screen, FONTSMALL, buf, HSCREENW, HSCREENH+105);
-        if( isBoxClicked( getTxtBox() ) )
-          menuPosY=9;
       }
 
 
@@ -660,16 +653,12 @@ int runMenu(SDL_Surface* screen)
             if(player()->gameStarted) cleanUpGame();
             return(STATEMENU);
           break;
-          case 5: //Switch to about screen
+          case 6: //Switch to about screen
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
-            menuState=menuStateAbout;
+            setMenu(menuStateAbout);
           break;
 
-          case 7: //Switch to help screen
-            startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
-            setMenu(menuStateHowto);
-          break;
-          case 8: //Exit program
+          case 7: //Exit program
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             if( statsIsHighScore() )
             {
@@ -679,8 +668,8 @@ int runMenu(SDL_Surface* screen)
               setMenu(menuStateOutro);
             }
           break;
-          case 6:
-          case 9: //Pack selection
+          case 5:
+          case 8: //Pack selection
             startTransition(screen, TRANSITION_TYPE_CURTAIN_UP, 500 );
             setMenu(menuStatePackList);
             menuPosY = packState()->selected;
@@ -737,13 +726,15 @@ int runMenu(SDL_Surface* screen)
       break;
 
       case menuStateAbout:
-        starField(screen, 1);
+        starField(screen, 0);
+        getInpPointerState()->escEnable=1;
         fireWorks(screen);
 
-        txtWriteCenter(screen, FONTMEDIUM,STR_MENU_ABOUT_HEADLINE, HSCREENW, HSCREENH-105);
+        txtWave(screen, FONTSMALL, STR_MENU_ABOUT_WEBSITE, HSCREENW, HSCREENH-120+12,&rot);
 
-        txtWrite(screen, FONTSMALL, STR_MENU_ABOUT_TEXT, HSCREENW-155, HSCREENH-80);
-        txtWave(screen, FONTSMALL, STR_MENU_ABOUT_WEBSITE, HSCREENW, HSCREENH+100,&rot);
+        menuMaxY = aboutScreen(screen, &menuPosY, menuChangeY);
+
+
         //alt z x z x
         static int cheat=-1;
         if( getButton( C_BTNA ) )
@@ -769,10 +760,11 @@ int runMenu(SDL_Surface* screen)
           stats()->progress = getNumLevels();
         }
 
-        if( getButton(C_BTNB) || isPointerClicked() )
+        if( getButton(C_BTNB) || isPointerEscapeClicked() || getButton(C_BTNMENU) )
         {
           resetMouseBtn();
           resetBtn( C_BTNB );
+          resetBtn( C_BTNMENU );
           startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
           menuState=menuStatePaused;
         }
@@ -1151,53 +1143,14 @@ int runMenu(SDL_Surface* screen)
           ul++;
         }
 
-        /*if( ul < packState()->numPacks )
-        {
-          if(dir) txtWrite(screen, FONTSMALL, STR_MENU_PACKS_MORE, HSCREENW+100, HSCREENH+108);
-        } */
 
-        drawSprite(screen, menuScrollBar[0], HSCREENW+160-19-5, HSCREENH-120+50);
-
-        //Draw indicator
-        drawSprite(screen, menuScrollBar[1], HSCREENW+160-18-5, HSCREENH-120+50+18+round(147.0/(float)((packState()->numPacks))*(float)menuPosY) );
-
-        //Check for mouse hover over buttons
-        r.x = HSCREENW+160-18-5;
-        r.w = r.x+17;
-        r.y = HSCREENH-120+51;
-        r.h = r.y+17;
-        if( (isPointerInBox(&r) && menuPosY > 0) || menuChangeY == -1)
-        {
-          drawSprite(screen, menuScrollBar[2], r.x+3, r.y+5 );
-          if(isPointerClicked())
-          {
-            menuPosY--;
-          }
-        }
-        //Check for mouse hover over buttons
-        r.y = HSCREENH-120+55+162;
-        r.h = r.y+17;
-        if( (isPointerInBox(&r) && menuPosY < packState()->numPacks) || menuChangeY == 1 )
-        {
-          drawSprite(screen, menuScrollBar[3], r.x+3, r.y+5 );
-          if(isPointerClicked())
-          {
-            menuPosY++;
-          }
-        }
-
-        r.x = HSCREENW+160-18-5;
-        r.w = r.x+17;
-        r.y = HSCREENH-120+51+16;
-        r.h = r.y+151;
-        if( isPointerInBox(&r) && getInpPointerState()->isDown )
-        {
-          menuPosY=(int)round( (float)packState()->numPacks/150.0 * (float)(getInpPointerState()->vpY-67));
-        }
+        int sb = scrollBar(screen, HSCREENW+160-19-5, HSCREENH-120+50, (float)(packState()->numPacks), menuPosY, menuChangeY);
+        if(sb != -1) menuPosY=sb;
 
         if( getButton(C_BTNB) || packListItemWasClicked )
         {
           resetBtn(C_BTNB);
+          resetMouseBtn();
           //Check if it's the DLC box
           if( menuPosY == packState()->numPacks )
           {
@@ -1645,7 +1598,7 @@ int runMenu(SDL_Surface* screen)
       #if !defined (GP2X) || !defined (WIZ)
       case menuStateUploadDiag:
         starField(screen,0);
-
+        //FIXME: Add hscreen stuff for mouse ? Test with odd native res.
         if( menuYesNo == 0)
         {
           menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);

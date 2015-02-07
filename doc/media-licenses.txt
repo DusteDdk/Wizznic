@@ -16,3 +16,11 @@ Sounds / Stock:
   rocketboom.ogg - Remix of Explosion by Michel Baradari (apollo-music.de)
   brickmove.ogg - flanger9.wav by Arthur.
   teleported.ogg - by dusted
+  winner.ogg - cut, original sound by sonsdebarcelona
+  loser.ogg - cut, original sound by damonmensch
+  switchactivate.ogg -  by dusted
+  switchinactive.ogg - by dusted
+  brickbreak.ogg  - by dusted
+  brickgrab.ogg - by dusted
+  click.ogg - by dusted
+  onewaymove.ogg - by dusted

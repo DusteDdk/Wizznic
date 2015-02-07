@@ -176,8 +176,7 @@
 #define STR_MENU_OPTIONS_CHOICE     "Options"
 #define STR_MENU_EDITOR_CHOICE      "Editor"
 #define STR_MENU_ABOUT_CHOICE       "About"
-#define STR_MENU_PACK_CHOICE        "Pack"
-#define STR_MENU_HELP_CHOICE        "Help"
+#define STR_MENU_PACK_CHOICE        "Packs"
 #define STR_MENU_EXIT_CHOICE        "Exit"
 #define STR_MENU_PACK_SHOW          "Pack: %s"
 
@@ -189,20 +188,6 @@
 		                                  "DLC download is disabled.\n"\
                                       "Go to wizznic.org/dlc"
 
-#define STR_MENU_ABOUT_HEADLINE     "About Wizznic!"
-#define STR_MENU_ABOUT_TEXT         "Wizznic is an arcade game based on\n"\
-                                    "the Taito classic \"Puzznic\" (1989)\n"\
-                                    "\n"\
-                                    "Wizznic was written in C with SDL.\n"\
-                                    "Sfx: See data/media-licenses.txt\n"\
-                                    "Gfx/Code: Jimmy Christensen\n"\
-                                    "It is Free OpenSource Software\n"\
-                                    "licensed under the GPLv3.\n\n"\
-                                    "If you like this game, please\n"\
-                                    "show your appreciation\n"\
-                                    "by creating levels and/or\n"\
-                                    "sound-effects or gfx themes!\n"\
-                                    ".... or donate something :P"
 #define STR_MENU_ABOUT_WEBSITE      "http://wizznic.org/"
 
 #define STR_MENU_BEAT_PACK_HEADLINE "Good job!"
