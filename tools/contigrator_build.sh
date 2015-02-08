@@ -13,7 +13,7 @@ echo "Wizznic build script."
 
 VERSION_LONG=build_$BN_NUM
 VERSION=1.0-dev
-
+BUILD_NUMBER=$BN_NUM
 
 make -f Makefile.win clean
 make -f Makefile.wiz clean
@@ -24,7 +24,7 @@ mv wizznic wizznic_linux_x64_precompiled
 make -j 4 -f Makefile.linux clean
 
 # The chrooted 32 bit linux version.
-sudo -E -P USER=$USER USERNAME=$USER LOGNAME=$LOGNAME -- /usr/sbin/chroot /var/local/32bitDeb/ su -p -l $USER -c "cd /home/contigrator/jobs/Wizznic/workspace/ && make -j 4 -f Makefile.linux CC='ccache gcc'"
+sudo -E -P USER=$USER USERNAME=$USER LOGNAME=$LOGNAME -- /usr/sbin/chroot /var/local/32bitDeb/ su -p -l $USER -c "cd /home/contigrator/jobs/Wizznic/workspace/ && make -j 4 -f Makefile.linux CC='ccache gcc' BUILD_NUMBER=$BN_NUM"
 mv wizznic wizznic_linux_x86_precompiled
 
 #Copy files around and package
