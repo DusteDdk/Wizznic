@@ -13,13 +13,12 @@ echo "Wizznic build script."
 
 VERSION_LONG=build_$BN_NUM
 VERSION=1.0-dev
-BUILD_NUMBER=$BN_NUM
 
 make -f Makefile.win clean
 make -f Makefile.wiz clean
 
 # The 64 bit linux version
-make -j 4 -f Makefile.linux CC='ccache gcc'
+make -j 4 -f Makefile.linux CC='ccache gcc' BUILD_NUMBER=$BN_NUM
 mv wizznic wizznic_linux_x64_precompiled
 make -j 4 -f Makefile.linux clean
 
@@ -39,7 +38,7 @@ rm -R $DST
 make -f Makefile.linux clean
 
 #32 Bit Windows
-make -j 4 -f Makefile.win CC='ccache i586-mingw32msvc-gcc'
+make -j 4 -f Makefile.win CC='ccache i586-mingw32msvc-gcc' BUILD_NUMBER=$BN_NUM
 
 DST=Wizznic_win_build_$BN_NUM
 mkdir $DST
@@ -60,7 +59,7 @@ make -f Makefile.win clean
 
 #Gp2X Wiz
 export TOOLCHAIN=/opt/arm-openwiz-linux-gnu
-make -j 4 -f Makefile.wiz CC='ccache /opt/arm-openwiz-linux-gnu/bin/arm-openwiz-linux-gnu-gcc'
+make -j 4 -f Makefile.wiz CC='ccache /opt/arm-openwiz-linux-gnu/bin/arm-openwiz-linux-gnu-gcc' BUILD_NUMBER=$BN_NUM
 
 DST=Wizznic_wiz_build_$BN_NUM
 
@@ -82,7 +81,7 @@ make -f Makefile.wiz clean
 #GCW-Zero
 
 echo "Making GCW-Zero package"
-make -f Makefile.gcw0  CC='ccache /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc'
+make -f Makefile.gcw0  CC='ccache /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc' BUILD_NUMBER=$BN_NUM
 make -f Makefile.gcw0 install
 mv *.opk $OUT/Wizznic_gcw0_build_"$BN_NUM".opk
 rm -f *.opk
