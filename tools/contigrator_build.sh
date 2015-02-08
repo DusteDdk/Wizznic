@@ -91,6 +91,7 @@ echo "Making source..."
 
 SRCFN="Wizznic_src_build_$BN_NUM.tar.bz2"
 git checkout-index -f -a --prefix ./Wizznic_src_build_$BN_NUM/
+sed -i 's/#define VERSION_STRING CODE_VERSION$/#define VERSION_STRING CODE_VERSION"(S'$BN_NUM')"/g' ./Wizznic_src_build_$BN_NUM/src/strings.h
 tar -jcf $OUT/$SRCFN ./Wizznic_src_build_$BN_NUM
 rm -Rf ./Wizznic_src_build_$BN_NUM
 SRCMD5=`md5sum $OUT/$SRCFN | cut -d ' ' -f 1`
