@@ -1598,7 +1598,6 @@ int runMenu(SDL_Surface* screen)
       #if !defined (GP2X) || !defined (WIZ)
       case menuStateUploadDiag:
         starField(screen,0);
-        //FIXME: Add hscreen stuff for mouse ? Test with odd native res.
         if( menuYesNo == 0)
         {
           menuYesNo = mkAni(loadImg( DATADIR"data/menu/yesno.png"), 36,42,0);

@@ -244,13 +244,13 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
           {
             int i;
             //Draw middle wall (idx 0)
-            drawSprite(graphics.background, graphics.walls[0], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+            drawSprite(graphics.background, graphics.walls[0], pf->board[x][y]->pxx-(HSCREENW-160), pf->board[x][y]->pxy-(HSCREENH-120) );
             //Draw edges (if any)
             for(i=1; i < 13; i++)
             {
               if(pf->board[x][y]->edges & (1<<i) )
               {
-                drawSprite(graphics.background, graphics.walls[i], pf->board[x][y]->pxx, pf->board[x][y]->pxy);
+                drawSprite(graphics.background, graphics.walls[i], pf->board[x][y]->pxx-(HSCREENW-160), pf->board[x][y]->pxy-(HSCREENH-120) );
               }
             }
           }
