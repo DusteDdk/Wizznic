@@ -19,7 +19,16 @@
  ************************************************************************/
 
 #include <SDL/SDL.h>
+
+typedef struct {
+    uint8_t* data;
+    int len;
+} tgaData_t;
+
 void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartImage);
-void tgaSave(SDL_Surface* screen, const char* fileName);
+void tgaSave(tgaData_t* tga, const char* fileName);
+tgaData_t* tgaData(SDL_Surface* screen);
+void tgaFree(tgaData_t* tga);
+
 
 #endif // DUMPLEVELIMAGES_H_INCLUDED

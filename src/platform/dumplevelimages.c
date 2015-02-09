@@ -79,7 +79,10 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
 
     //Save image
     sprintf(buf, "%s.tga", levelInfo(l)->file);
-    tgaSave(screen, buf);
+
+    tgaData_t* tga = tgaData(screen);
+    tgaSave(tga, buf);
+    tgaFree(tga);
 
 
     cleanUpDraw();
@@ -87,47 +90,92 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
   }
 }
 
-void tgaSave(SDL_Surface* screen, const char* fileName)
+tgaData_t* tgaData(SDL_Surface* screen)
 {
   SDL_LockSurface(screen);
+  tgaData_t* tga = malloc(sizeof(tgaData_t));
 
-  FILE *f = fopen(fileName, "w");
+  tga->len = (screen->h*screen->w*3)+(12+6);
+  tga->data = malloc(tga->len*60); //try allocating for 60 fps more, if that's not possible, we bail.
 
-  unsigned char TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};
-  unsigned char header[6] = {screen->w%256,screen->w/256,screen->h%256,screen->h/256,24,( 0  | 32)};
-  fwrite(TGAheader, sizeof(unsigned char), 12, f);
-  fwrite(header, sizeof(unsigned char), 6, f);
+  if(tga->data)
+  {
+    free(tga->data);
+  } else {
+    free(tga);
+    printf("tgaData(); Not enough memory to take screenshot.\n");
+    return(NULL);
+  }
 
-  int numBytes = screen->h*screen->w*3;
-  unsigned char* data = malloc(sizeof(unsigned char)*numBytes);
+  tga->data = malloc(tga->len);
 
+
+  //Tga header
+  tga->data[0] = 0;
+  tga->data[1] = 0;
+  tga->data[2] = 2;
+  tga->data[3] = 0;
+  tga->data[4] = 0;
+  tga->data[5] = 0;
+  tga->data[6] = 0;
+  tga->data[7] = 0;
+  tga->data[8] = 0;
+  tga->data[9] = 0;
+  tga->data[10] = 0;
+  tga->data[11] = 0;
+
+  //File info
+  tga->data[12] = screen->w%256;
+  tga->data[13] = screen->w/256;
+  tga->data[14] = screen->h%256;
+  tga->data[15] = screen->h/256;
+  tga->data[16] = 24;
+  tga->data[17] = ( 0  | 32);
+
+
+#ifdef DEBUG
   printf("Surf info:\n  Pitch: %i\n  BytesPrPixel: %i\n  BitsPrPixel: %i\n",
   screen->pitch, screen->format->BytesPerPixel, screen->format->BitsPerPixel);
 
   printf("Rmask: %i\nGmask %i\nBmask %i\nRshift: %i\nGshift %i\nBshift: %i\n",
   screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
   screen->format->Rshift,screen->format->Gshift,screen->format->Bshift);
+ #endif
 
   int i;
   uint16_t t;
   //Read pixels as one 16 bit number, then extract rgb values, normalize brightness, (green is too high) and swap red/blue, then save to data
+  unsigned char* imgData=&tga->data[18];
   for(i=0; i<screen->w*screen->h; i++)
   {
     t = *((uint16_t*)screen->pixels+i);
 
-    data[i*3] =((t & screen->format->Bmask) >> screen->format->Bshift) *8;  //blue
-    data[i*3+1]= (((t & screen->format->Gmask) >> screen->format->Gshift) ) *4; //green
-    data[i*3+2]  = ((t & screen->format->Rmask) >> screen->format->Rshift) *8; //Red color
+    imgData[i*3] =((t & screen->format->Bmask) >> screen->format->Bshift) *8;  //blue
+    imgData[i*3+1]= (((t & screen->format->Gmask) >> screen->format->Gshift) ) *4; //green
+    imgData[i*3+2]  = ((t & screen->format->Rmask) >> screen->format->Rshift) *8; //Red color
 
   }
+  SDL_UnlockSurface(screen);
+  return(tga);
+}
 
+void tgaSave(tgaData_t* tga, const char* fileName)
+{
+
+  FILE *f = fopen(fileName, "w");
+
+#ifdef DEBUG
+  printf("Saving: %s\n",fileName);
+#endif
   //Write data
-  fwrite(data, sizeof(unsigned char), numBytes, f);
+  fwrite(tga->data, sizeof(unsigned char), tga->len, f);
 
   //Close file
   fclose(f);
+}
 
-  SDL_UnlockSurface(screen);
-
-  printf("Saving: %s\n",fileName);
+void tgaFree(tgaData_t* tga)
+{
+  free(tga->data);
+  free(tga);
 }
