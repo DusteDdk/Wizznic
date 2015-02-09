@@ -51,8 +51,9 @@
 #include <unistd.h>
 #include <SDL/SDL_mixer.h>
 
-#define FFMPEG_VID_STR "ffmpeg -y -f rawvideo -pix_fmt %s -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_nosound.mp4"
-#define FFMPEG_AUD_STR "ffmpeg -y -f s16le -ar 44100 -ac 2 -i %s -i %s_nosound.mp4 -vcodec copy -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 %s"
+#define FFMPEG_VID_STR "ffmpeg -y -loglevel 8 -f rawvideo -pix_fmt %s -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_video.mp4"
+#define FFMPEG_AUD_STR "ffmpeg -y -loglevel 8 -f s16le -ar 44100 -ac 2 -i - -acodec libvorbis -ab 192k %s_sound.ogg"
+#define FFMPEG_MERGE_STR "ffmpeg -y -loglevel 8 -i %s_sound.ogg -i %s_video.mp4 -vcodec copy -acodec copy %s"
 #endif
 
 
@@ -87,12 +88,10 @@ int main(int argc, char *argv[])
 
 #if defined(linux)
   int_fast8_t record=0;
-  FILE* recSndFp = NULL;
-  char *recSndFileName=NULL;
   char *recVidFileName=NULL;
   char *ffmpegCmd=NULL;
-  FILE* recPipe=NULL;
-
+  FILE* recVidPipe=NULL;
+  FILE* recSndPipe = NULL;
 #endif
 
 
@@ -263,11 +262,9 @@ int main(int argc, char *argv[])
       if( i+1 < argc )
       {
         i++;
-        recSndFileName=malloc(strlen(argv[i])+strlen("_snd.raw")+1);
         recVidFileName=malloc(strlen(argv[i]+1) );
         ffmpegCmd=malloc(strlen(argv[i])*3+strlen(FFMPEG_VID_STR)*3);
 
-        sprintf(recSndFileName, "%s_snd.raw", argv[i]);
         sprintf(recVidFileName, "%s", argv[i]);
 
         record=1;
@@ -457,7 +454,6 @@ int main(int argc, char *argv[])
   if(record)
   {
 
-    sprintf(ffmpegCmd, FFMPEG_VID_STR, ( (screen->format->BytesPerPixel==2)?"rgb565le":"bgr24"),  recVidFileName);
 
     //Check destFile does not exist
     if( isFile(recVidFileName) )
@@ -470,31 +466,37 @@ int main(int argc, char *argv[])
     //Try to open pipe
     if( state != STATEQUIT )
     {
-      printf("record: Attempting to popen: %s\n", ffmpegCmd);
-      recPipe = popen(ffmpegCmd,"w");
-      if(recPipe)
+      sprintf(ffmpegCmd, FFMPEG_VID_STR, ( (screen->format->BytesPerPixel==2)?"rgb565le":"bgr24"),  recVidFileName);
+      printf("record: Attempting to popen: '%s': ", ffmpegCmd);
+      recVidPipe = popen(ffmpegCmd,"w");
+      if(recVidPipe)
       {
-        printf("record: popen success.\n");
+        printf("success.\n");
       } else {
-        printf("record: popen failed.\n");
+        printf("failed.\n");
         state=STATEQUIT;
       }
     }
 
     if( state != STATEQUIT )
     {
-      recSndFp = fopen( recSndFileName, "wb" );
-      if( !recSndFp )
+
+
+      sprintf(ffmpegCmd, FFMPEG_AUD_STR, recVidFileName);
+      printf("record: Attempting to popen: '%s': \n", ffmpegCmd);
+      recSndPipe = popen(ffmpegCmd,"w");
+      if( recSndPipe )
       {
-        printf("record: Could not open %s for writing.\n",recSndFileName);
+        printf("success.\n");
+      } else {
+        printf("failed.\n");
         state=STATEQUIT;
       }
     }
 
-
     if( state != STATEQUIT )
     {
-      if( !Mix_RegisterEffect(MIX_CHANNEL_POST, sndRec, NULL, (void*)recSndFp ) )
+      if( !Mix_RegisterEffect(MIX_CHANNEL_POST, sndRec, NULL, (void*)recSndPipe ) )
       {
         printf("record: Could not register sound-record callback.");
         state=STATEQUIT;
@@ -540,7 +542,7 @@ int main(int argc, char *argv[])
 #if defined(linux)
     if(record)
     {
-      fwrite( screen->pixels, (screen->format->BytesPerPixel), (screen->w*screen->h), recPipe );
+      fwrite( screen->pixels, (screen->format->BytesPerPixel), (screen->w*screen->h), recVidPipe );
     }
 #endif
 
@@ -588,30 +590,32 @@ int main(int argc, char *argv[])
   SDL_Quit();
 
 #if defined(linux)
-  if( recSndFp )
+  if( recSndPipe )
   {
-    fclose(recSndFp);
+    pclose(recSndPipe);
   }
-  if( recPipe )
+  if( recVidPipe )
   {
-    pclose(recPipe);
+    pclose(recVidPipe);
   }
 
-  if( recSndFp && recPipe )
+  if( recSndPipe && recVidPipe )
   {
     //ffmpeg merge here
-    sprintf(ffmpegCmd,FFMPEG_AUD_STR, recSndFileName,recVidFileName,recVidFileName);
+    printf("Merging audio and video into '%s': ", recVidFileName);
+    sprintf(ffmpegCmd,FFMPEG_MERGE_STR, recVidFileName,recVidFileName,recVidFileName);
     if( system(ffmpegCmd) == 0 )
     {
-
-      sprintf(ffmpegCmd, "%s_nosound.mp4", recVidFileName);
+      printf("success.\n");
+      sprintf(ffmpegCmd, "%s_video.mp4", recVidFileName);
       unlink(ffmpegCmd);
-      unlink(recSndFileName);
-      printf("Encode success, file saved: %s\n",recVidFileName);
-    } else {
-      printf("Encode failed.\n");
-    }
 
+      sprintf(ffmpegCmd, "%s_sound.ogg", recVidFileName);
+      unlink(ffmpegCmd);
+
+    } else {
+      printf("failed.\n");
+    }
   }
 #endif
 
