@@ -46,7 +46,7 @@
 #include "transition.h"
 #include "platform/libDLC.h"
 
-#if defined(PC)
+#if defined(linux)
 #include <sys/stat.h>
 #include <unistd.h>
 #include <SDL/SDL_mixer.h>
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
   int sdlVideoModeFlags = SDL_SWSURFACE;
   int i;
 
-#if defined(PC)
+#if defined(linux)
   int_fast8_t record=0;
   FILE* recSndFp = NULL;
   char *recSndFileName=NULL;
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
       setting()->rift=1;
       doScale=-1;
 
-#if defined(PC)
+#if defined(linux)
     } else if( strcmp( argv[i], "-record") == 0 )
     {
       if( i+1 < argc )
@@ -454,7 +454,7 @@ int main(int argc, char *argv[])
 
 #endif
 
-#if defined(PC)
+#if defined(linux)
 
   if(record)
   {
@@ -536,7 +536,7 @@ int main(int argc, char *argv[])
     if(setting()->showFps)
       drawFPS(screen);
 
-#if defined(PC)
+#if defined(linux)
     if(record)
     {
       fwrite( screen->pixels, sizeof(uint16_t), screen->w*screen->h, recPipe );
@@ -586,8 +586,7 @@ int main(int argc, char *argv[])
 
   SDL_Quit();
 
-#if defined(PC)
-
+#if defined(linux)
   if( recSndFp )
   {
     fclose(recSndFp);
