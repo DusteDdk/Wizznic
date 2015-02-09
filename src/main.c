@@ -50,6 +50,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <SDL/SDL_mixer.h>
+
+#define FFMPEG_VID_STR "ffmpeg -y -f rawvideo -pix_fmt rgb565le -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_nosound.mp4"
+#define FFMPEG_AUD_STR "ffmpeg -y -f s16le -ar 44100 -ac 2 -i %s -i %s_nosound.mp4 -vcodec copy -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 %s"
 #endif
 
 
@@ -84,7 +87,12 @@ int main(int argc, char *argv[])
 
 #if defined(PC)
   int_fast8_t record=0;
-  FILE* sndFp = NULL;
+  FILE* recSndFp = NULL;
+  char *recSndFileName=NULL;
+  char *recVidFileName=NULL;
+  char *ffmpegCmd=NULL;
+  FILE* recPipe=NULL;
+
 #endif
 
 
@@ -252,8 +260,23 @@ int main(int argc, char *argv[])
 #if defined(PC)
     } else if( strcmp( argv[i], "-record") == 0 )
     {
-      printf("\nRecording audio and video to ./rec/\n\n");
-      record=1;
+      if( i+1 < argc )
+      {
+        i++;
+        recSndFileName=malloc(strlen(argv[i])+strlen("_snd.raw")+1);
+        recVidFileName=malloc(strlen(argv[i]+1) );
+        ffmpegCmd=malloc(strlen(argv[i])*3+strlen(FFMPEG_VID_STR)*3);
+
+        sprintf(recSndFileName, "%s_snd.raw", argv[i]);
+        sprintf(recVidFileName, "%s", argv[i]);
+        sprintf(ffmpegCmd, FFMPEG_VID_STR, recVidFileName);
+
+
+        record=1;
+      } else {
+        printf("\nError! Missing argument: fileName.mp4\n");
+        return(1);
+      }
 #endif
     } else if( i > 0 )
     {
@@ -432,35 +455,52 @@ int main(int argc, char *argv[])
 #endif
 
 #if defined(PC)
-  list_t* frameList = NULL;
+
   if(record)
   {
-    frameList=listInit(NULL);
-
-    if( isDir( "./rec/" ) )
+    //Check destFile does not exist
+    if( isFile(recVidFileName) )
     {
-      printf("record: will not overwrite existing dir: ./rec/\n");
+      printf("record: will not overwrite existing file: %s\nRename or remove it.\n", recVidFileName);
       state=STATEQUIT;
-    } else {
-      if( PLATFORM_MKDIR("rec") == 0 )
+    }
+
+
+    //Try to open pipe
+    if( state != STATEQUIT )
+    {
+      printf("record: Attempting to popen: %s\n", ffmpegCmd);
+      recPipe = popen(ffmpegCmd,"w");
+      if(recPipe)
       {
-        sndFp = fopen( "./rec/audio_int16_2ch.raw", "wb" );
-        if( sndFp )
-        {
-          if( !Mix_RegisterEffect(MIX_CHANNEL_POST, sndRec, NULL, (void*)sndFp ) )
-          {
-            printf("record: Could not register sound-record callback.");
-            state=STATEQUIT;
-          }
-        } else {
-          printf("record: Could not open ./rec/audio_int16_2ch.raw for writing.\n");
-          state=STATEQUIT;
-        }
+        printf("record: popen success.\n");
       } else {
-        printf("record: Could not create directory.\n");
+        printf("record: popen failed.\n");
         state=STATEQUIT;
       }
     }
+
+    if( state != STATEQUIT )
+    {
+      recSndFp = fopen( recSndFileName, "wb" );
+      if( !recSndFp )
+      {
+        printf("record: Could not open %s for writing.\n",recSndFileName);
+        state=STATEQUIT;
+      }
+    }
+
+
+    if( state != STATEQUIT )
+    {
+      if( !Mix_RegisterEffect(MIX_CHANNEL_POST, sndRec, NULL, (void*)recSndFp ) )
+      {
+        printf("record: Could not register sound-record callback.");
+        state=STATEQUIT;
+      }
+    }
+
+
   }
 #endif
 
@@ -499,14 +539,7 @@ int main(int argc, char *argv[])
 #if defined(PC)
     if(record)
     {
-      tgaData_t* tga = (void*)tgaData(screen);
-      if(tga)
-      {
-        listAppendData(frameList, (void*)tga );
-      } else {
-        printf("No more memory, stopping recording.\n");
-        record=0;
-      }
+      fwrite( screen->pixels, sizeof(uint16_t), screen->w*screen->h, recPipe );
     }
 #endif
 
@@ -554,35 +587,31 @@ int main(int argc, char *argv[])
   SDL_Quit();
 
 #if defined(PC)
-  if( sndFp )
+
+  if( recSndFp )
   {
-    fclose(sndFp);
+    fclose(recSndFp);
+  }
+  if( recPipe )
+  {
+    pclose(recPipe);
+  }
 
-    printf("Saving recording...\n");
-    listItem* it = &frameList->begin;
-    char frameName[512];
-    int recNumFrame=0;
-    while( LISTFWD(frameList,it) )
+  if( recSndFp && recPipe )
+  {
+    //ffmpeg merge here
+    sprintf(ffmpegCmd,FFMPEG_AUD_STR, recSndFileName,recVidFileName,recVidFileName);
+    if( system(ffmpegCmd) == 0 )
     {
-      sprintf(frameName, "rec/frame-%09i.tga",recNumFrame);
-      tgaSave( it->data, frameName );
-      recNumFrame++;
-      printf("\rFrame %i/%i",recNumFrame, frameList->count);
+
+      sprintf(ffmpegCmd, "%s_nosound.mp4", recVidFileName);
+      unlink(ffmpegCmd);
+      unlink(recSndFileName);
+      printf("Encode success, file saved: %s\n",recVidFileName);
+    } else {
+      printf("Encode failed.\n");
     }
 
-    printf("\nAttempting to convert with:\nffmpeg -f s16le -ar 44100 -ac 2 -i audio_int16_2ch.raw -r 50 -i frame-%%09d.tga -vcodec h264 -vb 10000k -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 test.mp4\n");
-
-    if( chdir("rec") == 0 )
-    {
-      getcwd(frameName, 511);
-      printf("cwd: %s\n", frameName );
-      if( system("ffmpeg -f s16le -ar 44100 -ac 2 -i audio_int16_2ch.raw -r 50 -i frame-%09d.tga -vcodec h264 -vb 10000k -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 wizznic.mp4")==0 )
-      {
-        printf("\nEncoding done, file rec/wizznic.mp4 written.\n");
-      } else {
-        printf("Encoding failed, is ffmpeg installed?\n");
-      }
-    }
   }
 #endif
 
