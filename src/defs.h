@@ -78,6 +78,11 @@
   #define PC
 #endif
 
+#ifndef PLATFORM_MKDIR
+  #define PLATFORM_MKDIR(dirname) mkdir(dirname,S_IRWXU)
+#endif
+
+
 #ifndef PLATFORM_BORDER_IMAGE
   #define BORDER_IMAGE DATADIR"data/border.png"
 #else

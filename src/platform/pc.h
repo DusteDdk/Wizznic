@@ -27,6 +27,7 @@
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 
 #if defined(WIN32)
+  #define PLATFORM_MKDIR(dirname) mkdir(dirname)
   #if defined(WITH_OPENGL)
     #define GLEW_STATIC
     #include <GL/glew.h>
@@ -37,6 +38,7 @@
   #define CMD_CHECK_DLC_API_VERSION "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent  --url "DLC_SERVER_URL"check/version"
   #define CMD_DOWNLOAD_DLC_FILE "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
 #elif defined(linux) || defined(__linux)
+  #define PLATFORM_MKDIR(dirname) mkdir(dirname,S_IRWXU)
   #define STR_PLATFORM "Linux"
   #if defined(WITH_CURL)
     #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
