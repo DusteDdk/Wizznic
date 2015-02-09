@@ -46,6 +46,13 @@
 #include "transition.h"
 #include "platform/libDLC.h"
 
+#if defined(PC)
+#include <sys/stat.h>
+#include <unistd.h>
+#include <SDL/SDL_mixer.h>
+#endif
+
+
 SDL_Surface* swScreen(int sdlVideoModeFlags)
 {
   SDL_Surface* screen=SDL_SetVideoMode(SCREENW,SCREENH,16, SDL_SWSURFACE | sdlVideoModeFlags);
@@ -62,6 +69,11 @@ SDL_Surface* swScreen(int sdlVideoModeFlags)
   return(screen);
 }
 
+void sndRec(int __attribute__((__unused__))chan, void *stream, int len, void *udata)
+{
+  fwrite(stream, 1, len, (FILE*)udata);
+}
+
 int main(int argc, char *argv[])
 {
   int doScale=0; // 0=Undefined, 1=320x240, -1=OpenGL, >1=SwScale
@@ -69,6 +81,11 @@ int main(int argc, char *argv[])
   int state=1; //Game, Menu, Editor, Quit
   int sdlVideoModeFlags = SDL_SWSURFACE;
   int i;
+
+#if defined(PC)
+  int_fast8_t record=0;
+  FILE* sndFp = NULL;
+#endif
 
 
   #ifdef PSP
@@ -231,6 +248,13 @@ int main(int argc, char *argv[])
       setting()->glEnable=1;
       setting()->rift=1;
       doScale=-1;
+
+#if defined(PC)
+    } else if( strcmp( argv[i], "-record") == 0 )
+    {
+      printf("\nRecording audio and video to ./rec/\n\n");
+      record=1;
+#endif
     } else if( i > 0 )
     {
       printf("\nError: Invalid argument '%s', quitting.\n", argv[i]);
@@ -407,6 +431,39 @@ int main(int argc, char *argv[])
 
 #endif
 
+#if defined(PC)
+  list_t* frameList = NULL;
+  if(record)
+  {
+    frameList=listInit(NULL);
+
+    if( isDir( "./rec/" ) )
+    {
+      printf("record: will not overwrite existing dir: ./rec/\n");
+      state=STATEQUIT;
+    } else {
+      if( PLATFORM_MKDIR("rec") == 0 )
+      {
+        sndFp = fopen( "./rec/audio_int16_2ch.raw", "wb" );
+        if( sndFp )
+        {
+          if( !Mix_RegisterEffect(MIX_CHANNEL_POST, sndRec, NULL, (void*)sndFp ) )
+          {
+            printf("record: Could not register sound-record callback.");
+            state=STATEQUIT;
+          }
+        } else {
+          printf("record: Could not open ./rec/audio_int16_2ch.raw for writing.\n");
+          state=STATEQUIT;
+        }
+      } else {
+        printf("record: Could not create directory.\n");
+        state=STATEQUIT;
+      }
+    }
+  }
+#endif
+
   int lastTick;
   while(state!=STATEQUIT)
   {
@@ -438,6 +495,21 @@ int main(int argc, char *argv[])
 
     if(setting()->showFps)
       drawFPS(screen);
+
+#if defined(PC)
+    if(record)
+    {
+      tgaData_t* tga = (void*)tgaData(screen);
+      if(tga)
+      {
+        listAppendData(frameList, (void*)tga );
+      } else {
+        printf("No more memory, stopping recording.\n");
+        record=0;
+      }
+    }
+#endif
+
 
     switch( doScale )
     {
@@ -480,6 +552,39 @@ int main(int argc, char *argv[])
   #endif
 
   SDL_Quit();
+
+#if defined(PC)
+  if( sndFp )
+  {
+    fclose(sndFp);
+
+    printf("Saving recording...\n");
+    listItem* it = &frameList->begin;
+    char frameName[512];
+    int recNumFrame=0;
+    while( LISTFWD(frameList,it) )
+    {
+      sprintf(frameName, "rec/frame-%09i.tga",recNumFrame);
+      tgaSave( it->data, frameName );
+      recNumFrame++;
+      printf("\rFrame %i/%i",recNumFrame, frameList->count);
+    }
+
+    printf("\nAttempting to convert with:\nffmpeg -f s16le -ar 44100 -ac 2 -i audio_int16_2ch.raw -r 50 -i frame-%%09d.tga -vcodec h264 -vb 10000k -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 test.mp4\n");
+
+    if( chdir("rec") == 0 )
+    {
+      getcwd(frameName, 511);
+      printf("cwd: %s\n", frameName );
+      if( system("ffmpeg -f s16le -ar 44100 -ac 2 -i audio_int16_2ch.raw -r 50 -i frame-%09d.tga -vcodec h264 -vb 10000k -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 wizznic.mp4")==0 )
+      {
+        printf("\nEncoding done, file rec/wizznic.mp4 written.\n");
+      } else {
+        printf("Encoding failed, is ffmpeg installed?\n");
+      }
+    }
+  }
+#endif
 
   return(0);
 }
