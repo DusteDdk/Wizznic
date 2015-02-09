@@ -51,7 +51,7 @@
 #include <unistd.h>
 #include <SDL/SDL_mixer.h>
 
-#define FFMPEG_VID_STR "ffmpeg -y -f rawvideo -pix_fmt rgb565le -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_nosound.mp4"
+#define FFMPEG_VID_STR "ffmpeg -y -f rawvideo -pix_fmt %s -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_nosound.mp4"
 #define FFMPEG_AUD_STR "ffmpeg -y -f s16le -ar 44100 -ac 2 -i %s -i %s_nosound.mp4 -vcodec copy -acodec libvorbis -ab 192k -pix_fmt yuv420p  -r 60 %s"
 #endif
 
@@ -269,8 +269,6 @@ int main(int argc, char *argv[])
 
         sprintf(recSndFileName, "%s_snd.raw", argv[i]);
         sprintf(recVidFileName, "%s", argv[i]);
-        sprintf(ffmpegCmd, FFMPEG_VID_STR, recVidFileName);
-
 
         record=1;
       } else {
@@ -458,6 +456,9 @@ int main(int argc, char *argv[])
 
   if(record)
   {
+
+    sprintf(ffmpegCmd, FFMPEG_VID_STR, ( (screen->format->BytesPerPixel==2)?"rgb565le":"bgr24"),  recVidFileName);
+
     //Check destFile does not exist
     if( isFile(recVidFileName) )
     {
@@ -539,7 +540,7 @@ int main(int argc, char *argv[])
 #if defined(linux)
     if(record)
     {
-      fwrite( screen->pixels, sizeof(uint16_t), screen->w*screen->h, recPipe );
+      fwrite( screen->pixels, (screen->format->BytesPerPixel), (screen->w*screen->h), recPipe );
     }
 #endif
 
