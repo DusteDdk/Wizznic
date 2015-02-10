@@ -70,27 +70,27 @@ void levelSelector(SDL_Surface* screen, int l, int stats)
 
   if(stats!=2)
   {
-    txtWriteCenter(screen, FONTMEDIUM, buf, HSCREENW,HSCREENH-22 );
-    txtWriteCenter(screen, FONTSMALL, levelInfo(l)->levelName, HSCREENW,HSCREENH);
-    txtWriteCenter(screen, FONTSMALL, buf3, HSCREENW,HSCREENH+12 );
 
     if(stats)
     {
+      txtWriteCenter(screen, FONTMEDIUM, buf, HSCREENW,HSCREENH-22 );
+      txtWriteCenter(screen, FONTSMALL, levelInfo(l)->levelName, HSCREENW,HSCREENH);
+      txtWriteCenter(screen, FONTSMALL, buf3, HSCREENW,HSCREENH+12 );
       txtWriteCenter(screen, FONTSMALL, buf2, HSCREENW,HSCREENH+36 );
-    } else if(stats) {
-      txtWriteCenter(screen, FONTSMALL, "Locked!", HSCREENW,HSCREENH+36 );
+    } else {
+      txtWriteCenter(screen, FONTSMALL, "Locked!", HSCREENW,HSCREENH);
     }
   }
 }
 
 
-static float z=200.0;
+
 static float rot=0.0;
 void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
 {
   int x, y; //In the source image
-  int offSetX=HSCREENW-(55*z/100);
-  int offSetY=HSCREENH-(55*z/100);
+  int offSetX=HSCREENW-(55*2);
+  int offSetY=HSCREENH-(55*2);
   int nx, ny; //new x/y value for px
   uint32_t col; //Color of pixel
   uint8_t r,g,b;
@@ -105,7 +105,7 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
 
   for(y=0; y < 110; y++)
   {
-    xInc = cos(rot+y*pxInc)*1000;
+    xInc = round(cos(rot+y*pxInc)*10);
 
     for(x=0; x < 110; x++)
     {
@@ -125,11 +125,9 @@ void drawPreviewImg(SDL_Surface* screen, SDL_Surface* img, int stats)
           col = (grey << img->format->Rshift) | (grey << img->format->Gshift)<<((setting()->bpp==2)?1:0) | (grey << img->format->Bshift);
         }
 
-        nx = x*(int)z;
-        ny = y*(int)z;
+        nx = x*2;
+        ny = y*2;
         nx += xInc;
-        nx /= 100;
-        ny /= 100;
 
         plotPixel(screen, nx+offSetX,ny+offSetY, col);
       }
