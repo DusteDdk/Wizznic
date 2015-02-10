@@ -312,6 +312,12 @@ int statsIsHighScore()
 {
   int place=1;
   hsEntry_t* hs;
+
+  if( player()->inEditor )
+  {
+    return(0);
+  }
+
   listItem* it = &st.packHsTable->begin;
   if( player()->campStats.score < 1000 ) return(0); //No highscores if under 10k
   while( LISTFWD(st.packHsTable,it) )
