@@ -50,8 +50,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <SDL/SDL_mixer.h>
-
-#define FFMPEG_VID_STR "ffmpeg -y -loglevel 8 -f rawvideo -pix_fmt %s -s:v 320x240 -r 50 -i - -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_video.mp4"
+//
+#define FFMPEG_VID_STR "ffmpeg -y -loglevel 8 -f rawvideo -pix_fmt %s -s:v 320x240  -r 50 -i - -sws_flags neighbor -vf scale=1280:960 -c:v libx264 -pix_fmt yuv420p -vb 90000k -r 60 %s_video.mp4"
 #define FFMPEG_AUD_STR "ffmpeg -y -loglevel 8 -f s16le -ar 44100 -ac 2 -i - -acodec libvorbis -ab 192k %s_sound.ogg"
 #define FFMPEG_MERGE_STR "ffmpeg -y -loglevel 8 -i %s_sound.ogg -i %s_video.mp4 -vcodec copy -acodec copy %s"
 #endif
