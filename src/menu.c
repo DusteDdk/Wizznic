@@ -181,6 +181,7 @@ int runMenu(SDL_Surface* screen)
   psysSet_t ps; //Particle system for particle effects in menu
   listItem* it;
   fileListItem_t* fItem;
+  int sb;
 
   SDL_Rect r;
 
@@ -896,8 +897,14 @@ int runMenu(SDL_Surface* screen)
         txtWave(screen, FONTMEDIUM, STR_MENU_LVLEDIT_HEADLINE, HSCREENW, HSCREENH-105, &rot);
         menuMaxY=getNumUserLevels()+1;
 
-        //Just keep it clean.
+        //Just keep it clean. (This is a reference to a pitchshifter song by the way)
         if(player()->gameStarted) cleanUpGame();
+
+        sb = scrollBar(screen, HSCREENW+160-19-15, HSCREENH-120+40, (float)(getNumUserLevels()-1), ((menuPosY<2)?0:menuPosY-2), menuChangeY);
+        if(sb != -1)
+        {
+          menuPosY=sb+2;
+        }
 
         //List levels
         ul=0;   //Userlevel
@@ -907,6 +914,7 @@ int runMenu(SDL_Surface* screen)
           ul = menuPosY-10;
           scroll=ul;
         }
+
 
         int i=0;
         while(ul < getNumUserLevels())
@@ -931,18 +939,6 @@ int runMenu(SDL_Surface* screen)
           if( i > 12 )
           {
             break;
-          }
-        }
-
-        if( getNumUserLevels() > ul && dir )
-        {
-          txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_MORE, HSCREENW, HSCREENH+106-14);
-
-          if( isBoxClicked( getTxtBox() ) )
-          {
-            resetMouseBtn();
-            menuPosY=ul; //hackity hack
-            scroll=ul;
           }
         }
 
@@ -998,7 +994,6 @@ int runMenu(SDL_Surface* screen)
           resetMouseBtn();
           menuPosY=1;
           ul=-4; //No special meaning.
-
         }
 
         if( menuPosY > -1 )
@@ -1008,6 +1003,7 @@ int runMenu(SDL_Surface* screen)
           if(getButton(C_BTNB) || ul < 0 )
           {
             resetBtn(C_BTNB);
+            resetMouseBtn();
 
             if(menuPosY==0) //Load empty, and create new levelname
             {
@@ -1144,7 +1140,7 @@ int runMenu(SDL_Surface* screen)
         }
 
 
-        int sb = scrollBar(screen, HSCREENW+160-19-5, HSCREENH-120+50, (float)(packState()->numPacks), menuPosY, menuChangeY);
+        sb = scrollBar(screen, HSCREENW+160-19-5, HSCREENH-120+50, (float)(packState()->numPacks), menuPosY, menuChangeY);
         if(sb != -1) menuPosY=sb;
 
         if( getButton(C_BTNB) || packListItemWasClicked )
