@@ -377,6 +377,10 @@ int runEditor(SDL_Surface* screen)
       sprintf(buf, "stopimage=%s\n", (pf.levelInfo->stopImg)?pf.levelInfo->stopImg:"none");
       fputs(buf,f);
 
+      sprintf(buf, "showtelepath=%i\n", (pf.levelInfo->showTelePath) );
+      fputs(buf,f);
+
+
       //Teleports
       char* str = teleMkStrings(pf.levelInfo->teleList, "teleport");
       if(str) //Returns 0 if there's no teleports

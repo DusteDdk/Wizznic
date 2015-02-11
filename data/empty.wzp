@@ -26,6 +26,9 @@
 # Maximum length: 15 |
 author=Your Name Here
 
+# Show teleport paths when player has cursor over teleport (1 = yes, 0 = no)
+showtelepaths=0
+
 # Name of the level
 # Maximum length: 27                 |
 levelname=Give the puzzle a name

@@ -44,6 +44,7 @@ struct levelInfo_s
   int time; //Time in seconds to complete
   int brick_die_ticks;  //Ticks the bricks is to die
   int brickDieParticles; //Spawn particles when bricks die
+  int_fast8_t showTelePath; //Highlight teleporter destinations
 };
 typedef struct levelInfo_s levelInfo_t;
 

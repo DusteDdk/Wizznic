@@ -81,6 +81,9 @@ levelInfo_t* mkLevelInfo(const char* fileName)
     //Initialize switchlist
     tl->switchList = listInit(free);
 
+    //Show the teleport destination
+    tl->showTelePath = 1;
+
     //Loop through file
     while(fgets(buf, 255, f))
     {
@@ -182,6 +185,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           {
             //Yes, it's the same format, how neat.
             teleAddFromString(tl->switchList, val);
+          } else
+          if(strcmp("showtelepath", set)==0)
+          {
+            tl->showTelePath=atoi(val);
           }
         } //Got a = in the line
       } //Not [data]

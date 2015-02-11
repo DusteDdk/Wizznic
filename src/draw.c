@@ -392,7 +392,7 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
 
 
     //if cursor is on it, draw the path too
-    if(cur->x == tp->sx && cur->y == tp->sy)
+    if( cur->x == tp->sx && cur->y == tp->sy && pf->levelInfo->showTelePath )
     {
       drawTelePath( screen, tp, 1 );
     }
