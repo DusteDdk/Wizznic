@@ -17,8 +17,8 @@
 
 #include "input.h"
 #include "ticks.h"
-
 #include "defs.h"
+#include "platform/dumplevelimages.h"
 
 #include "settings.h"
 
@@ -342,7 +342,11 @@ int runControls()
           } else if( event.key.keysym.sym == SDLK_BACKSPACE || event.key.keysym.sym == SDLK_RETURN )
           {
             inputChar=event.key.keysym.sym;
-
+#if defined(PC)
+          } else if( event.key.keysym.sym == SDLK_F1 )
+          {
+            screenShot();
+#endif
           }
         break;
         case SDL_KEYUP:

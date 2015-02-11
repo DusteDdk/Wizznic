@@ -148,11 +148,18 @@ tgaData_t* tgaData(SDL_Surface* screen)
   unsigned char* imgData=&tga->data[18];
   for(i=0; i<screen->w*screen->h; i++)
   {
-    t = *((uint16_t*)screen->pixels+i);
+    if(screen->format->BytesPerPixel==2)
+    {
+      t = *((uint16_t*)screen->pixels+i);
 
-    imgData[i*3] =((t & screen->format->Bmask) >> screen->format->Bshift) *8;  //blue
-    imgData[i*3+1]= (((t & screen->format->Gmask) >> screen->format->Gshift) ) *4; //green
-    imgData[i*3+2]  = ((t & screen->format->Rmask) >> screen->format->Rshift) *8; //Red color
+      imgData[i*3] =((t & screen->format->Bmask) >> screen->format->Bshift) *8;  //blue
+      imgData[i*3+1]= (((t & screen->format->Gmask) >> screen->format->Gshift) ) *4; //green
+      imgData[i*3+2]  = ((t & screen->format->Rmask) >> screen->format->Rshift) *8; //Red color
+    } else {
+      imgData[i*3]=(unsigned char)((unsigned char*)screen->pixels)[i*3];
+      imgData[i*3+1]=(unsigned char)((unsigned char*)screen->pixels)[i*3+1];
+      imgData[i*3+2]=(unsigned char)((unsigned char*)screen->pixels)[i*3+2];
+    }
 
   }
   SDL_UnlockSurface(screen);
@@ -179,3 +186,32 @@ void tgaFree(tgaData_t* tga)
   free(tga->data);
   free(tga);
 }
+
+static SDL_Surface* scr;
+void screenShotSetCaptureScreen(SDL_Surface* screen)
+{
+  scr=screen;
+}
+
+void screenShot()
+{
+  tgaData_t* tga = tgaData(scr);
+  char scrName[2048];
+  int num=0;
+
+  //Find next nonexisting match of Wizznic_%02i.tga"
+  do
+  {
+    sprintf(scrName, "Wizznic_%02i.tga", num);
+    if( isFile(scrName) )
+    {
+      scrName[0]=0;
+    }
+    num++;
+  } while (!scrName[0]);
+
+  printf("Saving %s\n",scrName);
+  tgaSave(tga, scrName);
+  tgaFree(tga);
+}
+

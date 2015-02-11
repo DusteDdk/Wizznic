@@ -505,6 +505,8 @@ int main(int argc, char *argv[])
 
 
   }
+
+  screenShotSetCaptureScreen(screen);
 #endif
 
   int lastTick;

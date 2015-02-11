@@ -30,5 +30,7 @@ void tgaSave(tgaData_t* tga, const char* fileName);
 tgaData_t* tgaData(SDL_Surface* screen);
 void tgaFree(tgaData_t* tga);
 
+void screenShotSetCaptureScreen(SDL_Surface* screen);
+void screenShot();
 
 #endif // DUMPLEVELIMAGES_H_INCLUDED
