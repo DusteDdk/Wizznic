@@ -84,6 +84,8 @@ levelInfo_t* mkLevelInfo(const char* fileName)
     //Show the teleport destination
     tl->showTelePath = 1;
 
+    tl->showSwitchPath = 0;
+
     //Loop through file
     while(fgets(buf, 255, f))
     {
@@ -189,6 +191,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           if(strcmp("showtelepath", set)==0)
           {
             tl->showTelePath=atoi(val);
+          } else
+          if(strcmp("showswitchpath", set)==0)
+          {
+            tl->showSwitchPath=atoi(val);
           }
         } //Got a = in the line
       } //Not [data]

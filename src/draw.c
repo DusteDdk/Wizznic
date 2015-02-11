@@ -314,6 +314,23 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       {
         drawSprite(screen, graphics.tiles[RESERVED-1], x*brickSize+boardOffsetX, y*brickSize+boardOffsetY);
       }*/
+
+      //if cursor is on it, draw the path too
+      if( cur->x == x && cur->y == y && isSwitch(pf->board[x][y]) && pf->levelInfo->showSwitchPath )
+      {
+        listItem* it = &(pf->levelInfo->switchList->begin);
+        while( LISTFWD(pf->levelInfo->switchList, it) )
+        {
+          telePort_t* tp = (telePort_t*)it->data;
+          if(tp->sx==x && tp->sy==y)
+          {
+            drawTelePath( screen, tp, 1 );
+            break;
+          }
+        }
+
+      }
+
     }
   } //xy loop
 
@@ -397,6 +414,8 @@ void draw(cursorType* cur, playField* pf, SDL_Surface* screen)
       drawTelePath( screen, tp, 1 );
     }
   }
+
+
 
   //Particles
   runParticles(screen);

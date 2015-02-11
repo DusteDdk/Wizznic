@@ -380,6 +380,9 @@ int runEditor(SDL_Surface* screen)
       sprintf(buf, "showtelepath=%i\n", (pf.levelInfo->showTelePath) );
       fputs(buf,f);
 
+      sprintf(buf, "showswitchpath=%i\n", (pf.levelInfo->showSwitchPath) );
+      fputs(buf,f);
+
 
       //Teleports
       char* str = teleMkStrings(pf.levelInfo->teleList, "teleport");
