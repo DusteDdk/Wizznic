@@ -1,19 +1,20 @@
 #ifndef PANDORA_H_INCLUDED
 #define PANDORA_H_INCLUDED
 
-//Stats uploading for pandora, using wget ?
-#define PLATFORM_SUPPORTS_STATSUPLOAD
-#define STR_PLATFORM "Pandora"
-#define UPLOAD_PROGRAM "wget "STATS_SERVER_URL"/commit.php -O - -q --user-agent=wizznicPandora --timeout=10 --tries=1 --post-data="
 
-//Video
 #define SCREENW 320
 #define SCREENH 240
 
-#ifdef HAVE_GLES
-    #include <GLES/gl.h>
-    #include "eglport.h"
-#endif
+
+//For Uploading stats and downloading DLC's
+#define PLATFORM_SUPPORTS_STATSUPLOAD
+
+#define PLATFORM_MKDIR(dirname) mkdir(dirname,S_IRWXU)
+#define STR_PLATFORM "Pandora"
+#define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
+#define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
+#define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
+
 
 //Audio
 #define SOUND_RATE  22050
@@ -21,11 +22,7 @@
 #define SOUND_BUFFERS 256
 #define SOUND_MIX_CHANNELS 16
 
-//We use software scaling on the pandora
-#define WANT_SWSCALE
-
-//Help file for this platform (appended to DATADIR)
-#define PLATFORM_HELP_FILE        "data/menu/helppc.png"
+#define PLATFORM_HELP_FILE        "data/menu/helppandora.png"
 
 //Button definitions
 #define PLATFORM_BUTTON_UP        SDLK_UP
@@ -42,5 +39,12 @@
 #define PLATFORM_BUTTON_SELECT    SDLK_LCTRL
 #define PLATFORM_BUTTON_VOLUP     0 //Not used
 #define PLATFORM_BUTTON_VOLDOWN   0 //on Pandora
+
+
+#define WANT_SWSCALE
+
+/* TODO:
+	Add hardware scaling, see pc.h for more info
+*/
 
 #endif // PANDORA_H_INCLUDED

@@ -1,0 +1,51 @@
+SDK_PATH=/opt/pandora-tc/usr/local/angstrom/arm
+TARGET_SYS=arm-angstrom-linux-gnueabi
+#PATH=$SDK_PATH/bin:$PATH
+CPATH=$SDK_PATH/$TARGET_SYS/usr/include:$CPATH
+LIBTOOL_SYSROOT_PATH=$SDK_PATH/$TARGET_SYS
+PKG_CONFIG_SYSROOT_DIR=$SDK_PATH/$TARGET_SYS
+PKG_CONFIG_PATH=$SDK_PATH/$TARGET_SYS/usr/lib/pkgconfig
+CONFIG_SITE=$SDK_PATH/site-config
+opkg="LD_LIBRARY_PATH=$SDK_PATH/lib $SDK_PATH/bin/opkg-cl -f $SDK_PATH//etc/opkg-sdk.conf -o $SDK_PATH"
+opkg-target="LD_LIBRARY_PATH=$SDK_PATH/lib $SDK_PATH/bin/opkg-cl -f $SDK_PATH/$TARGET_SYS/etc/opkg.conf -o $SDK_PATH/$TARGET_SYS"
+
+
+CC = $(SDK_PATH)/bin/arm-angstrom-linux-gnueabi-gcc
+LD = $(CC)
+STRIP = $(SDK_PATH)/bin/arm-angstrom-linux-gnueabi-strip 
+
+NAME=wizznic
+TARGET= $(NAME)
+
+DEFS = -DDATADIR="\"./\"" -DPANDORA -DIS_LITTLE_ENDIAN -D_REENTRANT -DDEBUG
+
+ifneq ($(BUILD_NUMBER),)
+  DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
+endif
+
+
+INCS =  -I. -I$SDK_PATH/$TARGET_SYS/usr/include -I$SDK_PATH/$TARGET_SYS/usr/include/SDL
+CFLAGS=-O0 
+LDFLAGS=$(CFLAGS) -L$SDK_PATH/$TARGET_SYS/usr/lib/
+LIBS = -Wl,-rpath,$SDK_PATH/$TARGET_SYS/usr/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
+
+SOURCES = $(wildcard src/*.c) src/platform/libDLC.c src/list/list.c
+OBJS = $(SOURCES:.c=.o)
+
+MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
+
+########################################################################
+
+sdl: $(TARGET)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
+#	$(STRIP) $@
+
+.c.o:
+	$(MYCC) -c $< -o $@
+
+clean:
+	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o
