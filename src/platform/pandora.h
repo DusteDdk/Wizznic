@@ -41,10 +41,19 @@
 #define PLATFORM_BUTTON_VOLDOWN   0 //on Pandora
 
 
-#define WANT_SWSCALE
+//Accelerated scaling
+#include <SDL/SDL.h>
+#include <GLES/gl.h>
+#include <GLES/glext.h>
 
-/* TODO:
-	Add hardware scaling, see pc.h for more info
-*/
+#define HAVE_ACCELERATION
+SDL_Surface* platformInitAccel( int sdlVideoModeFlags );
+void platformDrawScaled(SDL_Surface* src);
+
+//NOTE: This is really just a guess.
+#define WIZ_GL_PIXFORMAT_BGR 0x80e0
+
+#define PLATFORM_NEEDS_EXIT
+void platformExit();
 
 #endif // PANDORA_H_INCLUDED

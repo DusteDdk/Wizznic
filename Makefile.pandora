@@ -17,19 +17,19 @@ STRIP = $(SDK_PATH)/bin/arm-angstrom-linux-gnueabi-strip
 NAME=wizznic
 TARGET= $(NAME)
 
-DEFS = -DDATADIR="\"./\"" -DPANDORA -DIS_LITTLE_ENDIAN -D_REENTRANT -DDEBUG
+DEFS = -DDATADIR="\"./\"" -DPANDORA -DIS_LITTLE_ENDIAN -D_REENTRANT -DDEBUG -DHAVE_GLES
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
 endif
 
 
-INCS =  -I. -I$SDK_PATH/$TARGET_SYS/usr/include -I$SDK_PATH/$TARGET_SYS/usr/include/SDL
+INCS =  -I. -I$(SDK_PATH)/$(TARGET_SYS)/usr/include -I$(SDK_PATH)/$(TARGET_SYS)/usr/include/SDL
 CFLAGS=-O0 
 LDFLAGS=$(CFLAGS) -L$SDK_PATH/$TARGET_SYS/usr/lib/
-LIBS = -Wl,-rpath,$SDK_PATH/$TARGET_SYS/usr/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
+LIBS = -Wl,-rpath,$SDK_PATH/$TARGET_SYS/usr/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread -lGLES_CM -lEGL
 
-SOURCES = $(wildcard src/*.c) src/platform/libDLC.c src/list/list.c
+SOURCES = $(wildcard src/*.c) src/platform/pandora.c src/platform/eglport.c src/platform/libDLC.c src/list/list.c
 OBJS = $(SOURCES:.c=.o)
 
 MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
@@ -39,6 +39,7 @@ MYCC = $(CC) $(CFLAGS) $(INCS) $(DEFS)
 sdl: $(TARGET)
 
 all: $(TARGET)
+
 
 $(TARGET): $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)

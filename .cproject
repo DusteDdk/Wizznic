@@ -64,4 +64,40 @@
 			<resource resourceType="PROJECT" workspacePath="/Wizznic-newlist"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="Linux" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-f Makefile.linux -j8</buildArguments>
+				<buildTarget>all</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="Pandora" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-f Makefile.pandora -j 8</buildArguments>
+				<buildTarget/>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="Pandora Clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-f Makefile.pandora</buildArguments>
+				<buildTarget>clean</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="Linux Clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-f Makefile.linux</buildArguments>
+				<buildTarget>clean</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
+	</storageModule>
 </cproject>
