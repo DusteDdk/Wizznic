@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
+<!-- please see http://pandorawiki.org/PXML_specification for more information before editing, and remember the order does matter -->
+
+   <package id="Wizznic">
+           <author name="Farox" website="http://farox.rbnet.it/"/>
+           <version major="1" minor="0" release="0" build="___BUILD_NUM___"/>
+           <titles>
+                   <title lang="en_US">Wizznic</title>
+           </titles>
+           <descriptions>
+                   <description lang="en_US">Wizznic An implementation of the arcade classic Puzznic. As the original game, your mission is to clear the level of bricks, this is done by moving the bricks about, when two or more bricks of the same kind are next to each other, or on top of eachother, they will disappear and points will be given. The level has to be cleared of bricks before the time runs out, or you will lose a life.</description>
+           </descriptions>
+   </package>
+
+  <application id="wizznic-Wizznic.bin-8782" appdata="wizznic">
+    <exec command="wizznic.sh"/>
+    <title lang="en_US">wizznic</title>
+
+    <author name="Jimmy Christensen" website="http://wizznic.org/"/>
+    <version major="1" minor="0" release="0" build="___BUILD_NUM___"/>	      <!--This programs version-->
+    <osversion major="1" minor="0" release="0" build="0"/>		<!--The minimum OS version required-->
+
+    <description lang="en_US">Wizznic An implementation of the arcade classic Puzznic.</description>
+
+    <icon src="icon.png"/>
+
+
+    <previewpics>
+      <pic src="previews/1.png"/>
+      <pic src="previews/2.png"/>
+      <pic src="previews/3.png"/>
+    </previewpics>
+
+
+    <licenses>
+      <license name="GPLv3" url="http://www.gnu.org/copyleft/gpl.html" sourcecodeurl="https://sourceforge.net/projects/wizznic/"/>
+    </licenses>
+
+    <info name="Wizznic.bin documentation" type="text/plain" src="doc/readme.txt"/>
+
+    <categories>
+      <!-- http://standards.freedesktop.org/menu-spec/latest/apa.html -->
+      <category name="Game">
+	<subcategory name="ArcadeGame"/>
+      </category>
+    </categories>
+
+    <!--<clockspeed frequency="600"/>-->
+  </application>
+
+</PXML>
