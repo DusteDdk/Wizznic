@@ -33,7 +33,6 @@
   #define STR_STRINPUT_CONTROLS "B:Type  A:Delete "
 
   //Game
-  #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
   #define STR_GAME_PRESSB             "Press B to Play"
   #define STR_SELECT_CTRLS            "Use D-PAD, button B.\n"
 
@@ -52,7 +51,6 @@
   #define STR_STRINPUT_CONTROLS  "Start:Save  X:Type  O:Delete"
 
   //Game
-  #define STR_GAME_RESTARTCONFIRM     "Press Circle to confirm"
   #define STR_GAME_PRESSB             "Press Cross to Play"
 
   #define STR_SELECT_CTRLS           "Use D-PAD, Cross.\n"
@@ -73,7 +71,6 @@
     #define STR_STRINPUT_CONTROLS  "B:Type  A:Delete"
 
     //Game
-    #define STR_GAME_RESTARTCONFIRM     "Press A to confirm"
     #define STR_GAME_PRESSB             "Press B to Play"
     #define STR_SELECT_CTRLS            "Use D-PAD, button B.\n"
 #elif defined(GCW0) /// GCW Zero version
@@ -101,7 +98,6 @@
   #define STR_STRINPUT_CONTROLS "A:Type  B:Delete "
 
   //Game
-  #define STR_GAME_RESTARTCONFIRM     "Press again to confirm"
   #define STR_GAME_PRESSB             "Press A to Play"
   #define STR_SELECT_CTRLS            "Use D-PAD, button A.\n"
 
@@ -138,7 +134,6 @@
     #define STR_STRINPUT_CONTROLS  "Ctrl:Type  Alt:Delete"
 
     //Game
-    #define STR_GAME_RESTARTCONFIRM     "Again to confirm"
     #define STR_GAME_PRESSB             "Press Ctrl to Play"
 #endif
 
@@ -378,6 +373,8 @@ extern const char* str_brick_names[];
 #define STR_GAME_UNSOLVABLE         "Unsolvable!"
 #define STR_GAME_LOSTLIFE           "Life Lost!"
 #define STR_GAME_OUTOFTIME          "Out Of Time!"
+#define STR_GAME_RESTARTCONFIRM     "Again to confirm"
+
 
 
 //This put to stdout
