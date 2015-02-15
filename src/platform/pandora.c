@@ -93,7 +93,7 @@ void platformExit()
 
 void platformDrawScaled( SDL_Surface* src )
 {
-  glTexImage2D( GL_TEXTURE_2D, 0, src->format->BytesPerPixel, src->w, src->h, 0, WIZ_GL_PIXFORMAT_BGR, GL_UNSIGNED_BYTE, src->pixels );
+  glTexImage2D( GL_TEXTURE_2D, 0, src->format->BytesPerPixel, src->w, src->h, 0, GL_RGB, GL_UNSIGNED_BYTE, src->pixels );
 
   GLfloat box[] = {0,0,-1,  320,0,-1,     320,240,-1,   0,240,-1};
   GLfloat tex[] = {0,0, 1,0, 1,1, 0,1};
