@@ -127,14 +127,16 @@ void initCredits(SDL_Surface* screen)
   listAppendData(msgList, (void*)initMsg("Website","wizznic.org", screen));
   listAppendData(msgList, (void*)initMsg("Code/Gfx/Sfx","Jimmy Christensen", screen));
   listAppendData(msgList, (void*)initMsg("Gfx","ViperMD", screen));
-
   listAppendData(msgList, (void*)initMsg("Music","Sean Hawk", screen));
+
   listAppendData(msgList, (void*)initMsg("Thx","Qubodup", screen));
   listAppendData(msgList, (void*)initMsg("Thx","Farox", screen));
   listAppendData(msgList, (void*)initMsg("Thx","bMan", screen));
   listAppendData(msgList, (void*)initMsg("Thx","KML", screen));
   listAppendData(msgList, (void*)initMsg("Thx","Neil L", screen));
   listAppendData(msgList, (void*)initMsg("Thx","Zear", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","ReactorScram", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","torpor", screen));
 
   listAppendData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
   listAppendData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
