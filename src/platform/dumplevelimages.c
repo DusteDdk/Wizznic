@@ -32,7 +32,7 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
   char buf[128];
   SDL_Surface* si=0;
   //Set the pack.
-  sprintf(buf, "packs/%s",packName);
+  sprintf(buf, DATADIR"packs/%s",packName);
   packSetByPath( buf );
 
   for(l=0; l < getNumLevels(); l++)
