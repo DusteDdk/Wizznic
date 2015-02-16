@@ -294,6 +294,8 @@ int debundle( const char* file, const char* outDir )
                     {
                       lastExtractedBundle = malloc( strlen(buf)+1 );
                       sprintf(lastExtractedBundle, "%s", buf );
+                      //Hack2: Wizznic does not expect / at the end of the packdir.
+                      lastExtractedBundle[ strlen(lastExtractedBundle)-1 ]=0;
                     }
                   } //Entry was created
 

@@ -53,7 +53,6 @@ int dlcDownloadThread(void * d)
     } else {
       dlcState = DLC_BUNDLE_ERROR;
 
-      unlink("Bundle installation failed.\n");
       printf("Extraction failed.\n");
     }
 
