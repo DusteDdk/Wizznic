@@ -137,6 +137,7 @@ void initCredits(SDL_Surface* screen)
   listAppendData(msgList, (void*)initMsg("Thx","Zear", screen));
   listAppendData(msgList, (void*)initMsg("Thx","ReactorScram", screen));
   listAppendData(msgList, (void*)initMsg("Thx","torpor", screen));
+  listAppendData(msgList, (void*)initMsg("Thx","klopsi", screen));
 
   listAppendData(msgList, (void*)initMsg("Greetings","GP32X.com", screen));
   listAppendData(msgList, (void*)initMsg("Greetings","freegamedev.net", screen));
