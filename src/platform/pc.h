@@ -37,18 +37,12 @@
   #define CMD_UPLOAD_STATS_POST "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
   #define CMD_CHECK_DLC_API_VERSION "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent  --url "DLC_SERVER_URL"check/version"
   #define CMD_DOWNLOAD_DLC_FILE "curl\\curl.exe --user-agent wizznicWindowsCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
-#elif defined(linux) || defined(__linux)
+#else
   #define PLATFORM_MKDIR(dirname) mkdir(dirname,S_IRWXU)
   #define STR_PLATFORM "Linux"
-  #if defined(WITH_CURL)
-    #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
-    #define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
-    #define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
-  #else
-    #define CMD_UPLOAD_STATS_POST "wget "STATS_SERVER_URL"/commit/ -O - -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 --post-data="
-    #define CMD_CHECK_DLC_API_VERSION "wget -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 -O - "DLC_SERVER_URL"check/version"
-    #define CMD_DOWNLOAD_DLC_FILE "wget -q --user-agent=wizznicLinuxWget --timeout=10 --tries=1 "DLC_SERVER_URL"get/%s -O %s"
-  #endif
+  #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
+  #define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
+  #define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicLinuxCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
 #endif
 
 #ifndef WIN32
