@@ -6,7 +6,7 @@
 pkgname=wizznic
 pkgver=<BUILDNUMBER>
 pkgrel=1
-pkgdesc="Wizznic is a puzzlegame where you have to match bricks of the same kind, this is not as easy as you'd think"
+pkgdesc="Most awesome puzzlegame where you have to match bricks of the same kind, is not as easy as you may think."
 arch=(i686 x86_64)
 url="http://wizznic.org/"
 license=('GPL3')
