@@ -10,7 +10,6 @@ Thanks to (In descending order, first contributions are shown last):
     The OpenJazz wiz port authors from whom I used some Wiz code and got inspiration for controller code.
     Jesper Kollerup in advance for his future work on themes (and the unreleased background image that will fit his metal-theme) :)
     Markus Liukka for his excellent feedback and contributed levels.
-    Farox for porting to F100/F200, GP2X and Pandora.
+    Farox for porting to F100/F200, GP2X and Pandora and helping me setup Pandora builds. ( http://farox.rbnet.it/ )
     Sean Hawk, a personal friend who also happens to be a very talented musician.
     pvince81 for his patch, and inspiring me to make it more linux-distribution friendly.
-

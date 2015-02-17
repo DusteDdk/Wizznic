@@ -3,7 +3,7 @@
 <!-- please see http://pandorawiki.org/PXML_specification for more information before editing, and remember the order does matter -->
 
    <package id="Wizznic">
-           <author name="Farox" website="http://farox.rbnet.it/"/>
+           <author name="Jimmy Christensen" website="http://wizznic.org/"/>
            <version major="1" minor="0" release="0" build="___BUILD_NUM___"/>
            <titles>
                    <title lang="en_US">Wizznic</title>
