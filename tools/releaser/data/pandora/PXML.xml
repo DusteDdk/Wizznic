@@ -4,7 +4,7 @@
 
    <package id="Wizznic">
            <author name="Jimmy Christensen" website="http://wizznic.org/"/>
-           <version major="1" minor="0" release="0" build="___BUILD_NUM___"/>
+           <version major="1" minor="0" release="0" build="___BUILD_NUM___" type="Release"/>
            <titles>
                    <title lang="en_US">Wizznic</title>
            </titles>
