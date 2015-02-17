@@ -13,7 +13,7 @@
            </descriptions>
    </package>
 
-  <application id="wizznic-Wizznic.bin-8782" appdata="wizznic">
+  <application id="wizznic-Wizznic.bin-8781" appdata="wizznic">
     <exec command="wizznic.sh"/>
     <title lang="en_US">wizznic</title>
 
