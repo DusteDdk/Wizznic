@@ -379,20 +379,19 @@ extern const char* str_brick_names[];
 
 //This put to stdout
 #define STR_VID_OPTIONS_OPENGL \
-    "    -gl           # Enable OpenGL.\n"\
-    "    -sw           # Disable OpenGL.\n"\
-    "    -glheight PX  # Window width  (-1 for auto).\n"\
-    "    -glwidth  PY  # Window height (-1 for auto).\n"\
-    "    -glfilter ST  # 0=Blocky, 1=Smooth.\n"\
-    "    -rift         # Usable for Oculus Rift.\n"
+    "    -gl            # Enable OpenGL.\n"\
+    "    -sw            # Disable OpenGL.\n"\
+    "    -glheight PX   # Window width  (-1 for auto).\n"\
+    "    -glwidth  PY   # Window height (-1 for auto).\n"\
+    "    -glfilter ST   # 0=Blocky, 1=Smooth.\n"\
+    "    -rift          # Usable for Oculus Rift.\n"
 
 #define STR_VID_OPTIONS_SW \
-    "    -f            # Enable fullscreen.\n"\
-    "    -w            # Disable fullscreen.\n"\
-    "    -z 2          # Software scale to 640x480.\n"\
-    "    -d PACKNAME   # Dump screenshots of levels.\n\n"
-
-
+    "    -record [file] # on pc, use ffmpeg to encode video to file.mp4\n"\
+    "    -d PACKNAME    # Dump screenshots of levels.\n"\
+    "    -f             # Enable fullscreen.\n"\
+    "    -w             # Disable fullscreen.\n"\
+    "    -z 2           # Software scale to 640x480.\n"
 
 
 //Well, string functions...
