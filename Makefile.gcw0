@@ -76,8 +76,8 @@ install:
 	cp -R ./tools/releaser/data/gcw0/* "$(DESTDIR)$(DATADIR)"
 	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
 	find "$(DESTDIR)$(DATADIR)" -type f \! -executable -exec chmod 644 {} \;
-	install -d "$(DESTDIR)$(MANDIR)man1/"
-	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
+	install -d "$(DESTDIR)$(MANDIR)man6/"
+	install -m 644 doc/wizznic.6 "$(DESTDIR)$(MANDIR)man6/"
 	mksquashfs $(DESTDIR) $(OPKNAME)_GCW0_$(RELEASE_VERSION)_$(BUILD_NUMBER).opk -all-root -noappend -no-exports -no-xattrs
 
 clean:
