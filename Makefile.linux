@@ -82,8 +82,8 @@ install:
 	cp -R packs "$(DESTDIR)$(DATADIR)"
 	find "$(DESTDIR)$(DATADIR)" -type d -exec chmod 755 {} \;
 	find "$(DESTDIR)$(DATADIR)" -type f \! -executable -exec chmod 644 {} \;
-	install -d "$(DESTDIR)$(MANDIR)man1/"
-	install -m 644 doc/wizznic.1 "$(DESTDIR)$(MANDIR)man1/"
+	install -d "$(DESTDIR)$(MANDIR)man6/"
+	install -m 644 doc/wizznic.6 "$(DESTDIR)$(MANDIR)man6/"
 
 clean:
 	rm -f $(NAME) src/*.o src/platform/*.o src/list/*.o mkbundle.bin
