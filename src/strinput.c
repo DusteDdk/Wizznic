@@ -118,17 +118,22 @@ int inpStrGet(inpStrState* state, int menuPosX, int menuPosY, int blink)
       }
     }
   }
-  //Blink "Save" underline if selected
-  if( menuPosY==4 && blink)
+
+  //Only show "ENTER" if string nonempty
+  if( strlen(state->str) )
   {
-    if(menuPosX > 9) menuPosX=0;
-    txtWriteCenter(state->dstSurface, FONTSMALL, " _____ ", HSCREENW, HSCREENH+50);
-  }
-  txtWriteCenter(state->dstSurface, FONTSMALL, "[ENTER]", HSCREENW, HSCREENH+50);
-  if( isBoxClicked( getTxtBox() ) )
-  {
-    menuPosY=4;
-    hsKeyboardWasClicked=1;
+    //Blink "ENTER" underline if selected
+    if( menuPosY==4 && blink)
+    {
+      if(menuPosX > 9) menuPosX=0;
+      txtWriteCenter(state->dstSurface, FONTSMALL, " _____ ", HSCREENW, HSCREENH+50);
+    }
+    txtWriteCenter(state->dstSurface, FONTSMALL, "[ENTER]", HSCREENW, HSCREENH+50);
+    if( isBoxClicked( getTxtBox() ) )
+    {
+      menuPosY=4;
+      hsKeyboardWasClicked=1;
+    }
   }
 
   //Blink "Caps" underline if selected
