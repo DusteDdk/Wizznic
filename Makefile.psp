@@ -5,7 +5,7 @@ ifeq ($(DATADIR),)
   DATADIR="./"
 endif 
 
-DEFS = -DDATADIR="\"$(DATADIR)\""
+DEFS = -DDATADIR="\"$(DATADIR)\"" -D_DEFAULT_SOURCE
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
@@ -24,7 +24,7 @@ list:
 SOURCES = $(wildcard src/*.c) src/platform/pspspec.c
 OBJS = $(SOURCES:.c=.o)
 
-CFLAGS = -g -G4 -Wall -O3 -funroll-loops -ffast-math
+CFLAGS = -g -G4 -Wall -O3 -funroll-loops -ffast-math -std=c99
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 

@@ -13,14 +13,14 @@ WINDRES = i586-mingw32msvc-windres
 NAME=wizznic.exe
 TARGET= $(NAME)
 
-DEFS = -DDATADIR="\"./\"" -DWIN32 -DWIN32_CROSS
+DEFS = -DDATADIR="\"./\"" -DWIN32 -DWIN32_CROSS -D_DEFAULT_SOURCE -D__USE_BSD
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
 endif
 
 INCS =  -I.
-CFLAGS=-O3
+CFLAGS=-O3 -std=c99
 LDFLAGS=$(CFLAGS)
 LIBS = -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -lm
 

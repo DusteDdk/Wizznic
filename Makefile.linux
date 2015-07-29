@@ -14,7 +14,7 @@ ifeq ($(DATADIR),)
   DATADIR="./"
 endif 
 
-DEFS = -DDATADIR="\"$(DATADIR)\""
+DEFS = -DDATADIR="\"$(DATADIR)\"" -D_DEFAULT_SOURCE -D__USE_BSD
 
 #default to /usr/share/man for man page
 #note: some systems use /usr/local/share/man, others use /usr/local/man
@@ -33,7 +33,7 @@ ifneq ($(BUILD_NUMBER),)
 endif
 
 INCS =  -I. -I/usr/include -I/usr/include/SDL
-CFLAGS=-Wall -Wextra -Werror
+CFLAGS= -Wall -Wextra -Werror -std=c99
 ifeq ($(DEBUG),)
   CFLAGS += -O3
 else

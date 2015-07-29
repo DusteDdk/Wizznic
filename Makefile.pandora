@@ -17,7 +17,7 @@ STRIP = $(SDK_PATH)/bin/arm-angstrom-linux-gnueabi-strip
 NAME=wizznic
 TARGET= $(NAME)
 
-DEFS = -DDATADIR="\"./\"" -DPANDORA -DIS_LITTLE_ENDIAN -D_REENTRANT
+DEFS = -DDATADIR="\"./\"" -DPANDORA -DIS_LITTLE_ENDIAN -D_REENTRANT -D_BSD_SOURCE -D__USE_BSD
 
 ifneq ($(BUILD_NUMBER),)
   DEFS +=-DBUILD_NUMBER="\"$(BUILD_NUMBER)\""
@@ -25,7 +25,7 @@ endif
 
 
 INCS =  -I. -I$(SDK_PATH)/$(TARGET_SYS)/usr/include -I$(SDK_PATH)/$(TARGET_SYS)/usr/include/SDL
-CFLAGS=-O3
+CFLAGS=-O3 -std=c99
 LDFLAGS=$(CFLAGS) -L$SDK_PATH/$TARGET_SYS/usr/lib/
 LIBS = -Wl,-rpath,$SDK_PATH/$TARGET_SYS/usr/lib -lSDL -lSDL_image -lSDL_mixer -lm -lpthread
 
