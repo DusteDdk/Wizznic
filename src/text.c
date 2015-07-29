@@ -164,7 +164,7 @@ int* getCharSize(int font)
   return(txtSize[font]);
 }
 
-inline SDL_Rect* getTxtBox()
+SDL_Rect* getTxtBox()
 {
   //We make the hitbox a bit larger so its easier to click the text
   txtBox.h += 2;

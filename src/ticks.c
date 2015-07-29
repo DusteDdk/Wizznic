@@ -35,12 +35,12 @@ static int fpsSecondCounter=0;
 static int fps=0;
 static char fpsStr[16] = { '0','0','\0' };
 
-inline int getTicks()
+int getTicks()
 {
   return(ticks);
 }
 
-inline int getTimeSinceFrameStart()
+int getTimeSinceFrameStart()
 {
   return( SDL_GetTicks() - lastTick );
 }

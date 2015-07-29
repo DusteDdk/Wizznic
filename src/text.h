@@ -36,6 +36,6 @@ void txtWrite( SDL_Surface* scr,int font, const char* txt, int x, int y);
 void txtWriteCenter( SDL_Surface* scr,int fontNum, const char* txt, int x, int y);
 void txtWave( SDL_Surface* scr, int fontNum, const char* txt, int x, int y, float* rot);
 int* getCharSize(int font);
-inline SDL_Rect* getTxtBox();
+SDL_Rect* getTxtBox();
 
 #endif // TEXT_H_INCLUDED

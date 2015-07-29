@@ -27,7 +27,7 @@
 static stats_t st;
 
 //Return ptr to stats_t
-inline stats_t* stats()
+stats_t* stats()
 {
   return(&st);
 }

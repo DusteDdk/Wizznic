@@ -55,7 +55,7 @@ struct settings_s {
 };
 typedef struct settings_s settings_t;
 
-inline settings_t* setting();
+settings_t* setting();
 void saveSettings();
 void loadSettings(); //Load (But don't apply) settings
 void applySettings(); //Without loading first (as not to override unsaved settings)

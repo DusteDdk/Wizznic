@@ -125,7 +125,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/pack.h" />
-		<Unit filename="src/particle.c">
+		<Unit filename="src/particles.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/particles.h" />

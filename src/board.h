@@ -83,7 +83,7 @@ int moveBrick(playField* pf, int x, int y, int dirx,int diry, int block, int spe
 void telePortBrick(playField* pf,telePort_t* t, cursorType* cur);
 
 int isBrickFalling(playField* pf, brickType* b);
-inline int isBrick(brickType* b);
+int isBrick(brickType* b);
 int isSwitch(brickType* b);
 
 int isWall(playField* pf, int x, int y);

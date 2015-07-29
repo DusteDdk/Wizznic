@@ -115,7 +115,7 @@ void spawnParticleSystem(psysSet_t* settings)
 
 
 //Just easier than having to deal with it down in the loop
-inline void updateParticle(particle_t* p, psysSet_t* s)
+void updateParticle(particle_t* p, psysSet_t* s)
 {
   //Move
   p->x += p->velx;
@@ -203,7 +203,7 @@ void runParticlesLayer(SDL_Surface* screen, int layer)
 }
 
 //Frees one system
-inline void clearSystem(pSystem_t* s)
+void clearSystem(pSystem_t* s)
 {
   //Free particles
   free(s->particles);
@@ -248,7 +248,7 @@ void initParticles(SDL_Surface* scr)
 
 }
 
-inline void psysSpawnPreset( int preset, int x, int y, int num, int life )
+void psysSpawnPreset( int preset, int x, int y, int num, int life )
 {
   psysPresets[preset].x = x;
   psysPresets[preset].y = y;

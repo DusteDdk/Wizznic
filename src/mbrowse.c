@@ -187,7 +187,7 @@ void fileListMake(const char* path)
   free(buf);
 }
 
-inline list_t* fileList()
+list_t* fileList()
 {
   return(fl);
 }

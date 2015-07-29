@@ -70,14 +70,14 @@ void setAlphaCol( int bpp )
   }
 }
 
-inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b)
+int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b)
 {
   return ( ( r==alphaR && g==alphaG && b==alphaB )?1:0);
 }
 
 
-//inline void plotPixel(SDL_Surface* img, int x, int y, uint16_t col)
-inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col)
+//void plotPixel(SDL_Surface* img, int x, int y, uint16_t col)
+void plotPixel(SDL_Surface* img, int x, int y, uint32_t col)
 {
   //Bail if invalid position
   if(x < (HSCREENW-160) || x > (HSCREENW+159) || y < (HSCREENH-120) || y > (HSCREENH+119) )
@@ -91,13 +91,13 @@ inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col)
 }
 
 //This is only used by software-scaler.
-inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col)
+void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col)
 {
   *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+2*x ) = col;
 }
 
 
-inline uint32_t freadPixel(SDL_Surface* img, int x, int y)
+uint32_t freadPixel(SDL_Surface* img, int x, int y)
 {
   return( *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x ) );
 }

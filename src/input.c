@@ -26,12 +26,12 @@ static SDLKey inputChar=0;
 static int joyCanMoveX=0;
 static int joyCanMoveY=0;
 
-inline SDLKey getChar()
+SDLKey getChar()
 {
   return(inputChar);
 }
 
-inline void resetMouseBtn()
+void resetMouseBtn()
 {
   getInpPointerState()->isDown=0;
   getInpPointerState()->downTime=1;
@@ -44,24 +44,24 @@ static struct {
   int time;
 } button[C_NUM];
 
-inline int getButton(int btn)
+int getButton(int btn)
 {
   return(button[btn].state);
 }
 
-inline void setButton(int btn)
+void setButton(int btn)
 {
   button[btn].state=1;
   button[btn].time=0;
 }
 
 
-inline void resetBtnTimer(int btn)
+void resetBtnTimer(int btn)
 {
   button[btn].time=0;
 }
 
-inline void resetBtn(int btn)
+void resetBtn(int btn)
 {
   button[btn].time=0;
   button[btn].state=0;
@@ -76,7 +76,7 @@ void resetBtnAll()
   }
 }
 
-inline int getBtnTime(int btn)
+int getBtnTime(int btn)
 {
   return(button[btn].time);
 }

@@ -32,7 +32,7 @@ typedef struct {
   uint32_t colWhite;   //Color of dots in cursor
 } inpPointerState_t;
 
-inline inpPointerState_t* getInpPointerState();
+inpPointerState_t* getInpPointerState();
 
 int_fast8_t isPointerClicked(); //This does not take into account if the pointer actually hit anything
 int_fast8_t isAnyBoxHit(); //This will return true if any of the calls to isBoxClicked did this tick.
@@ -42,6 +42,6 @@ int_fast8_t isBoxClicked( SDL_Rect* r );
 int_fast8_t isPointerEscapeClicked(); //Returns 1 if the "escbox" was hit and escEnable=1;
 
 void initPointer(SDL_Surface* screen);
-inline void drawPointer(SDL_Surface* screen);
+void drawPointer(SDL_Surface* screen);
 
 #endif // POINTER_H_INCLUDED

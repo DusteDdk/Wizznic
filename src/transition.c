@@ -179,7 +179,7 @@ void runTransition(SDL_Surface* scr)
   }
 }
 
-inline int_fast8_t  transitionActive()
+int_fast8_t  transitionActive()
 {
   return(t.timeLeft<1?0:1);
 }

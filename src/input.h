@@ -42,13 +42,13 @@
 #define PLATFORM_JOY_DEADZONE 500
 #endif
 
-inline SDLKey getChar();
-inline void setButton(int btn); //Nasty
-inline int getButton(int btn);
-inline int getBtnTime(int btn);
-inline void resetBtnTimer(int btn);
-inline void resetBtn(int btn);
-inline void resetMouseBtn();
+SDLKey getChar();
+void setButton(int btn); //Nasty
+int getButton(int btn);
+int getBtnTime(int btn);
+void resetBtnTimer(int btn);
+void resetBtn(int btn);
+void resetMouseBtn();
 void resetBtnAll();
 int runControls();
 void initControls();

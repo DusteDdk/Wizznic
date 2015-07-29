@@ -819,13 +819,13 @@ void simField(playField* pf, cursorType* cur)
   }
 }
 
-inline int isBrick(brickType* b)
+int isBrick(brickType* b)
 {
   if( b->type < BRICKSBEGIN || b->type > BRICKSEND ) return(0);
   return(1);
 }
 
-inline int onTopOfReserved(playField* pf, int x, int y)
+int onTopOfReserved(playField* pf, int x, int y)
 {
   return( (y+1 < FIELDSIZE && pf->board[x][y+1] && pf->board[x][y+1]->type == RESERVED) );
 }

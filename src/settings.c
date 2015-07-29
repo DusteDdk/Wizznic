@@ -44,7 +44,7 @@
 
 static settings_t settings;
 
-inline settings_t* setting()
+settings_t* setting()
 {
   return(&settings);
 }

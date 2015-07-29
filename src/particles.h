@@ -74,8 +74,8 @@ void initParticles(SDL_Surface* screen);
 void spawnParticleSystem(psysSet_t* settings); //Spawn particle system
 void runParticles(SDL_Surface* screen); //Convenience function, draws all PSYS_LAYER_TOP systems
 void runParticlesLayer(SDL_Surface* screen, int layer); //This runs/draws all particle systems, and emitters on LAYER
-inline void clearParticles(); //Frees all resources and removes all systems and emitters.
-inline void clearSystem(pSystem_t* s); //Frees one system
-inline void psysSpawnPreset( int preset, int x, int y, int num, int life );
+void clearParticles(); //Frees all resources and removes all systems and emitters.
+void clearSystem(pSystem_t* s); //Frees one system
+void psysSpawnPreset( int preset, int x, int y, int num, int life );
 
 #endif // PARTICLES_H_INCLUDED

@@ -27,7 +27,7 @@ static SDL_Surface* ptrBackImg;
 static SDL_Rect ptrBackRect;
 static SDL_Rect backBtnDstRect;
 
-inline inpPointerState_t* getInpPointerState()
+inpPointerState_t* getInpPointerState()
 {
   return(&inpPointer);
 }

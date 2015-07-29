@@ -20,12 +20,12 @@
 
 #include <SDL/SDL.h>
 
-inline void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
-inline void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col);
-inline uint32_t freadPixel(SDL_Surface* img, int x, int y);
+void plotPixel(SDL_Surface* img, int x, int y, uint32_t col);
+void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col);
+uint32_t freadPixel(SDL_Surface* img, int x, int y);
 
 void setAlphaCol( int bpp );
-inline int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b);
+int_fast8_t isAlpha(int_fast8_t r, int_fast8_t g, int_fast8_t b);
 
 void debugPrintSurfaceInfo( SDL_Surface* s);
 char* debugGetFlagInfo( Uint32 flags );

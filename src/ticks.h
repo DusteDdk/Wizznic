@@ -22,9 +22,9 @@
 
 void frameStart();
 
-inline int getTicks();
+int getTicks();
 
-inline int getTimeSinceFrameStart();
+int getTimeSinceFrameStart();
 
 void drawFPS(SDL_Surface* scr);
 

@@ -62,12 +62,12 @@ typedef struct {
     void* data;
 } entity;
 
-inline uint16_t uswap16(uint16_t in)
+uint16_t uswap16(uint16_t in)
 {
   return( ((in & 0xFF00u)>>8) | ((in & 0x00FFu)<<8) );
 }
 
-inline uint32_t uswap32(uint32_t in)
+uint32_t uswap32(uint32_t in)
 {
   return( ((in & 0xFF000000) >> (8*3)) | ((in & 0x00FF0000) >> (8*1)) | ((in & 0x0000FF00) << (8*1)) | ((in & 0x000000FF) << (8*3)) );
 }
