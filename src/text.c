@@ -108,7 +108,7 @@ void txtWrite( SDL_Surface* scr,int fontNum, const char* txt, int x, int y)
       py+=txtSize[fontNum][1];
       px=x-txtSize[fontNum][0];
     }
-    else if(c!=' ' && c>-1 && c<123) //Don't draw spaces or unicode chars. (like danish)
+    else if(c!=' ' && c>0 && c<123) //Don't draw spaces or unicode chars. (like danish)
     {
       drawSprite(scr, txtSprites[fontNum][(int)c-32],px,py);
     }
