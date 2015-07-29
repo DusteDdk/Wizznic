@@ -85,7 +85,7 @@ void WIZ_AdjustVolume( int direction )
 static int omhz=533;
 int WIZ_SetClock(int mhz)
 {
-  if(mhz==omhz) return;
+  if(mhz==omhz) return(0);
   omhz=mhz;
   /* Open CPU reg */
   volatile uint32_t *memregs32;
