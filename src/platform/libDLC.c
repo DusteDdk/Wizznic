@@ -150,3 +150,35 @@ void dlcSetReady()
 {
   dlcState = DLC_READY;
 }
+
+#ifdef PLATFORM_SUPPORTS_STATSUPLOAD
+int dlcPushFile( const char* fileName, char* msg )
+{
+  int ret=0;
+  FILE *pipe;
+  char upCmd[4096];
+  char pBuf[128];
+  sprintf( upCmd, CMD_UPLOAD_DLC_FILE, fileName );
+
+  if( setting()->showWeb ) { printf( "%s\n", upCmd ); }
+
+  msg[0]=0;
+  if( (pipe = popen( upCmd, "r" )) != NULL )
+  {
+    if( fgets( pBuf, 127, pipe)!= NULL )
+    {
+      strcpy(msg, pBuf);
+    }
+
+    fclose(pipe);
+  }
+
+  //We got the "levelX" code back, alls good.
+  if(msg[0]=='l')
+  {
+    ret=1;
+  }
+
+  return(ret);
+}
+#endif

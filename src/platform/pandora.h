@@ -9,11 +9,10 @@
 //For Uploading stats and downloading DLC's
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 
-#define PLATFORM_MKDIR(dirname) mkdir(dirname,S_IRWXU)
-#define STR_PLATFORM "Pandora"
-#define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
-#define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
-#define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
+#define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "API_URL"/stats/commit --data-ascii "
+#define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "API_URL"/check/version"
+#define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "API_URL"/packs/get/%s -o %s"
+#define CMD_UPLOAD_DLC_FILE "curl --user-agent wizznicPandoraCurl --connect-timeout 10 --fail --silent --url "API_URL"/packs/add/level/ --data-binary \"@%s\""
 
 
 //Audio

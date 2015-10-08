@@ -5,13 +5,16 @@
 #define PLATFORM_SUPPORTS_STATSUPLOAD
 #define STR_PLATFORM "GCW Zero"
 #if defined(WITH_CURL)
-  #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "STATS_SERVER_URL"commit/ --data-ascii "
-  #define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"check/version"
-  #define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "DLC_SERVER_URL"get/%s -o %s"
+  #define CMD_UPLOAD_STATS_POST "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "API_URL"/stats/commit --data-ascii "
+  #define CMD_CHECK_DLC_API_VERSION "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "API_URL"/check/version"
+  #define CMD_DOWNLOAD_DLC_FILE "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "API_URL"/packs/get/%s -o %s"
+  #define CMD_UPLOAD_DLC_FILE "curl --user-agent wizznicGCW0Curl --connect-timeout 10 --fail --silent --url "API_URL"/packs/add/level/ --data-binary \"@%s\""
 #else
-  #define CMD_UPLOAD_STATS_POST "wget "STATS_SERVER_URL"/commit/ -O - -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 --post-data="
-  #define CMD_CHECK_DLC_API_VERSION "wget -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 -O - "DLC_SERVER_URL"check/version"
-  #define CMD_DOWNLOAD_DLC_FILE "wget -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 "DLC_SERVER_URL"get/%s -O %s"
+  #define CMD_UPLOAD_STATS_POST "wget "API_URL"/stats/commit -O - -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 --post-data="
+  #define CMD_CHECK_DLC_API_VERSION "wget -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 -O - "API_URL"/check/version"
+  #define CMD_DOWNLOAD_DLC_FILE "wget -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 "API_URL"/packs/get/%s -O %s"
+  #define CMD_UPLOAD_DLC_FILE "wget -q --user-agent=wizznicGCW0Wget --timeout=10 --tries=1 --post-file \"%s\" -O - "API_URL"/packs/add/level/"
+
 #endif
 
 //Video

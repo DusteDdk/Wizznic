@@ -500,17 +500,20 @@ int runGame(SDL_Surface* screen)
         //Completed level
         player()->timeouts=0;
         pf.levelInfo->time=0;
-        statsSubmitBest();
         sndPlay(SND_VICTORY, 160);
 
         if(!player()->inEditor)
         {
+          //Don't submit if it was from the leveleditor
+          statsSubmitBest();
           setMenu(menuStateFinishedLevel);
           if(pf.levelInfo->stopImg)
           {
             gameState=GAMESTATESTOPIMAGE;
             return(STATEPLAY);
           }
+        } else {
+          setLevelCompletable(pf.levelInfo->file, 1);
         }
         cleanUpGame();
         startTransition(screen, TRANSITION_TYPE_ROLL_IN, 700);

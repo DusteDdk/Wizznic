@@ -43,4 +43,9 @@ void dlcSetReady();
 //Start thread to check if the DLC server can be reached, and if we have the right api version.
 void dlcCheckOnline();
 
+//Upload a user-level
+#ifdef PLATFORM_SUPPORTS_STATSUPLOAD
+int dlcPushFile( const char* fileName, char* msg );
+#endif
+
 #endif

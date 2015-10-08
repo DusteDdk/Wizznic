@@ -46,8 +46,10 @@ struct levelInfo_s
   int brickDieParticles; //Spawn particles when bricks die
   int_fast8_t showTelePath; //Highlight teleporter destinations
   int_fast8_t showSwitchPath; //Highlight switch destinations
+  int_fast8_t completable;
 };
 typedef struct levelInfo_s levelInfo_t;
+
 
 list_t* makeLevelList(const char* dir);
 void makeUserLevelList();
@@ -56,5 +58,6 @@ levelInfo_t* mkLevelInfo(const char* fileName);
 void freeLevelInfo(levelInfo_t** p); //given a pointer to the pointer, so it can dereference it properly.
 char* userLevelFile(int num);
 int getNumUserLevels();
+
 
 #endif // LEVELS_H_INCLUDED

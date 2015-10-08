@@ -62,7 +62,7 @@
 
 
 
-    #define STR_MENU_LVLEDIT_USAGE      "Edit: B. Play: A. Clone: Y"
+    #define STR_MENU_LVLEDIT_USAGE      "Edit B Play:A Clone:Y Upload:X"
 
     //Editor
     #define STR_EDIT_CONTROLS "X:Put Y:Del START:Exit SELECT:Save"
@@ -125,7 +125,7 @@
     #define STR_MENU_PRESS_B_PLAY       "Press Ctrl to Play"
     #define STR_SELECT_CTRLS            "Use Arrows,Ctrl or Mouse.\n"
 
-    #define STR_MENU_LVLEDIT_USAGE      "Edit: Ctrl. Play: Alt. Clone: Z"
+    #define STR_MENU_LVLEDIT_USAGE      "Edit:Ctrl Try:Alt Copy:Z Upload:X"
 
     //Editor
     #define STR_EDIT_CONTROLS "X:Put Z:Del ESC:Exit Space:Save"
@@ -307,8 +307,9 @@
 #define STR_MENU_LVLEDIT_USRLVL_SEL "--> Level %i <--"
 
 #define STR_MENU_LVLEDIT_PLAY       "Play"
-#define STR_MENU_LVLEDIT_CLONE      "Clone"
+#define STR_MENU_LVLEDIT_CLONE      "Copy"
 #define STR_MENU_LVLEDIT_EDIT       "Edit"
+#define STR_MENU_LVLEDIT_UPLOAD     "Upload"
 
 #define STR_EDIT_SAVED              "Saved"
 #define STR_EDIT_UNSAVED            "Not saved"

@@ -127,10 +127,7 @@
 #define STATS_FILE_FORMAT_VERSION 1
 
 //Url where stats are
-#define STATS_SERVER_URL "http://wizznic.org/api/stats/"
-
-//Url where the DLC api is
-#define DLC_SERVER_URL "http://wizznic.org/api/packs/"
+#define API_URL "http://wizznic.org/api"
 
 #ifndef STR_PLATFORM
   #ifndef STR_PLATFORM

@@ -56,4 +56,8 @@
 
 #define menuStateDLC 22
 
+#define menuStateLevelUploadOk 23
+
+#define menuStateLevelUploadError 24
+
 #endif // STATES_H_INCLUDED

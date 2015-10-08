@@ -23,6 +23,7 @@
 #include "teleport.h"
 #include "pack.h"
 
+
 #include "userfiles.h"
 
 static list_t* userLevelFiles;
@@ -85,6 +86,8 @@ levelInfo_t* mkLevelInfo(const char* fileName)
     tl->showTelePath = 1;
 
     tl->showSwitchPath = 0;
+
+    tl->completable = 0;
 
     //Loop through file
     while(fgets(buf, 255, f))
@@ -195,6 +198,10 @@ levelInfo_t* mkLevelInfo(const char* fileName)
           if(strcmp("showswitchpath", set)==0)
           {
             tl->showSwitchPath=atoi(val);
+          } else
+          if(strcmp("completable", set)==0)
+          {
+            tl->completable=atoi(val);
           }
         } //Got a = in the line
       } //Not [data]
@@ -374,4 +381,8 @@ void freeLevelInfo(levelInfo_t** p)
   //Set ptr null
   *p=0;
 }
+
+
+
+
 

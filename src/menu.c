@@ -82,6 +82,8 @@ static aniType* menuYesNo;
 inpStrState* strStateHighScore;
 inpStrState* strStateDlcCode;
 
+char message[128];
+
 int getMenuState() { return(menuState); }
 
 int initMenu(SDL_Surface* screen)
@@ -951,7 +953,7 @@ int runMenu(SDL_Surface* screen)
           if( menuPosY > 1)
           {
 
-            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_PLAY, HSCREENW-60, HSCREENH+106 );
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_PLAY, HSCREENW-60-48, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
               resetMouseBtn();
@@ -959,7 +961,7 @@ int runMenu(SDL_Surface* screen)
              // menuPosY=-menuPosY;
             }
 
-            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_EDIT, HSCREENW, HSCREENH+106 );
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_EDIT, HSCREENW-48, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
               resetMouseBtn();
@@ -967,11 +969,19 @@ int runMenu(SDL_Surface* screen)
              // menuPosY=-menuPosY;
             }
 
-            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_CLONE, HSCREENW+60, HSCREENH+106 );
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_CLONE, HSCREENW+60-48, HSCREENH+106 );
             if( isBoxClicked( getTxtBox() ) )
             {
               resetMouseBtn();
               ul=-3; //Decided that -3 means "clone"
+            //  menuPosY=-menuPosY;
+            }
+
+            txtWriteCenter(screen, FONTSMALL, STR_MENU_LVLEDIT_UPLOAD, HSCREENW+60+24, HSCREENH+106 );
+            if( isBoxClicked( getTxtBox() ) )
+            {
+              resetMouseBtn();
+              ul=-4; //Decided that -4 means "Upload"
             //  menuPosY=-menuPosY;
             }
 
@@ -985,7 +995,7 @@ int runMenu(SDL_Surface* screen)
         {
           resetMouseBtn();
           menuPosY=0;
-          ul=-4; //No special meaning.
+          ul=-5; //No special meaning.
         }
 
         if( (!dir || menuPosY!=1)|| (getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT)) txtWriteCenter(screen, FONTSMALL, STR_LVLEDIT_EXIT_CHOICE,HSCREENW,HSCREENH-65);
@@ -993,7 +1003,7 @@ int runMenu(SDL_Surface* screen)
         {
           resetMouseBtn();
           menuPosY=1;
-          ul=-4; //No special meaning.
+          ul=-5; //No special meaning.
         }
 
         if( menuPosY > -1 )
@@ -1028,6 +1038,29 @@ int runMenu(SDL_Surface* screen)
               return(STATEEDIT);
             }
           }
+
+#ifdef PLATFORM_SUPPORTS_STATSUPLOAD
+          //Attempt upload
+          if( getButton(C_BTNX) || ul==-4 )
+          {
+            ul=-5;
+            resetBtn(C_BTNX);
+            resetMouseBtn();
+
+            if( isLevelCompletable(userLevelFile(menuPosY-2)) )
+            {
+              if( dlcPushFile( userLevelFile(menuPosY-2), message ) )
+              {
+                menuState=menuStateLevelUploadOk;
+              } else {
+                menuState=menuStateLevelUploadError;
+              }
+            } else {
+              menuState=menuStateLevelUploadError;
+              sprintf(message, "Complete the level first.");
+            }
+          }
+#endif
 
           //Clone a level
           if( getButton(C_BTNY) || ul==-3 )
@@ -1084,6 +1117,54 @@ int runMenu(SDL_Surface* screen)
         }
 
       break; //< userlevels
+
+      case menuStateLevelUploadOk:
+        starField(screen, 1);
+        fireWorks(screen);
+        getInpPointerState()->escEnable=1;
+        txtWriteCenter(screen, FONTMEDIUM, "Thanks!", HSCREENW, HSCREENH-106);
+
+        //TODO: Externalize strings
+        txtWrite(screen, FONTSMALL, "Thanks for uploading your level!", HSCREENW-160+8, HSCREENH-78);
+        txtWrite(screen, FONTSMALL, "When your level has been reviewed,", HSCREENW-160+8, HSCREENH-78+9);
+        txtWrite(screen, FONTSMALL, "it will appear on wizznic.org", HSCREENW-160+8, HSCREENH-78+9+9);
+        txtWrite(screen, FONTSMALL, "Then you can get it with the code;", HSCREENW-160+8, HSCREENH-78+9+9+9);
+        txtWriteCenter(screen, FONTMEDIUM, message, HSCREENW, HSCREENH-78+9+9+9+9+9);
+
+
+
+
+        if( getButton(C_BTNB) || isPointerEscapeClicked() || getButton(C_BTNMENU) )
+        {
+          resetMouseBtn();
+          resetBtn( C_BTNB );
+          resetBtn( C_BTNMENU );
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+          menuState=menuStateUserLevels;
+        }
+
+        if(dir && !(getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT )) txtWriteCenter(screen, FONTSMALL, "Press Ctrl", HSCREENW, HSCREENH+60);
+
+        break; //< upload level went ok
+
+      case menuStateLevelUploadError:
+        starField(screen, 0);
+        getInpPointerState()->escEnable=1;
+        txtWriteCenter(screen, FONTMEDIUM, "Sorry!", HSCREENW, HSCREENH-106);
+        txtWrite(screen, FONTSMALL, message, HSCREENW-160+28, HSCREENH-78);
+
+        if( getButton(C_BTNB) || isPointerEscapeClicked() || getButton(C_BTNMENU) )
+        {
+          resetMouseBtn();
+          resetBtn( C_BTNB );
+          resetBtn( C_BTNMENU );
+          startTransition(screen, TRANSITION_TYPE_CURTAIN_DOWN, 500 );
+          menuState=menuStateUserLevels;
+        }
+
+        if(dir && !(getInpPointerState()->timeSinceMoved < POINTER_SHOW_TIMEOUT )) txtWriteCenter(screen, FONTSMALL, "Press Ctrl", HSCREENW, HSCREENH+60);
+
+      break; //< something went wrong
 
       case menuStatePackList:
         starField(screen, 1);

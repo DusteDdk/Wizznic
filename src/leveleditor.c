@@ -42,7 +42,6 @@ static cursorType cur;
 static int selBrick=1;
 static int changed=0;
 static char fileName[64];
-static char buf[64];
 static int teleState=0; //Teleport placement iteration
 static int teleSrcPos[2];
 static int editorState;
@@ -64,7 +63,7 @@ void editorLoad(const char* fn, SDL_Surface* screen)
   //Read info's for level.
   pf.levelInfo = mkLevelInfo( fn );
   //Load field
-  loadField(&pf, fileName);
+  loadField(&pf, fn);
 
   initDraw(pf.levelInfo, screen);
   SDL_FreeSurface(stealGfxPtr()->boardImg);
@@ -339,95 +338,15 @@ int runEditor(SDL_Surface* screen)
     if(getButton(C_BTNSELECT) || changed==EDITOR_SAVEBTN_CLICKED)
     {
       resetBtn(C_BTNSELECT);
-      FILE *f = fopen(fileName, "w");
-      int x,y;
-      sprintf(buf, "#Author of level\nauthor=%s\n\n", pf.levelInfo->author);
-      fputs(buf,f);
 
-      sprintf(buf, "#Name of the level\nlevelname=%s\n\n", pf.levelInfo->levelName);
-      fputs(buf,f);
-
-      sprintf(buf, "#Seconds to complete level\nseconds=%i\n\n", pf.levelInfo->time);
-      fputs(buf,f);
-
-      sprintf(buf, "bgfile=%s\n", pf.levelInfo->bgFile);
-      fputs(buf,f);
-
-      sprintf(buf, "tilebase=%s\n", pf.levelInfo->tileBase);
-      fputs(buf,f);
-
-      sprintf(buf, "explbase=%s\n", pf.levelInfo->explBase);
-      fputs(buf,f);
-
-      sprintf(buf, "wallbase=%s\n", pf.levelInfo->wallBase);
-      fputs(buf,f);
-
-      sprintf(buf, "sounddir=%s\n", pf.levelInfo->soundDir);
-      fputs(buf,f);
-
-      sprintf(buf, "charbase=%s\n", pf.levelInfo->fontName);
-      fputs(buf,f);
-
-      sprintf(buf, "cursorfile=%s\n", pf.levelInfo->cursorFile);
-      fputs(buf,f);
-
-      sprintf(buf, "startimage=%s\n", (pf.levelInfo->startImg)?pf.levelInfo->startImg:"none");
-      fputs(buf,f);
-
-      sprintf(buf, "stopimage=%s\n", (pf.levelInfo->stopImg)?pf.levelInfo->stopImg:"none");
-      fputs(buf,f);
-
-      sprintf(buf, "showtelepath=%i\n", (pf.levelInfo->showTelePath) );
-      fputs(buf,f);
-
-      sprintf(buf, "showswitchpath=%i\n", (pf.levelInfo->showSwitchPath) );
-      fputs(buf,f);
-
-
-      //Teleports
-      char* str = teleMkStrings(pf.levelInfo->teleList, "teleport");
-      if(str) //Returns 0 if there's no teleports
+      pf.levelInfo->completable=0;
+      if( saveLevel(fileName, &pf) )
       {
-        fputs("\n#Teleports\n",f);
-        fputs(str,f);
-        free(str);
-      }
-
-      //Switches
-      str = teleMkStrings(pf.levelInfo->switchList, "switch");
-      if(str) //Returns 0 if there's no teleports
-      {
-        fputs("\n#Switches\n",f);
-        fputs(str,f);
-        free(str);
-      }
-
-
-
-      fputs("\n#The level-data block\n[data]",f);
-
-      if(f)
-      {
-        for(y=0; y < FIELDSIZE; y++)
-        {
-          fputc('\n',f);
-          for(x=0; x < FIELDSIZE; x++)
-          {
-            if(pf.board[x][y])
-            {
-              fprintf(f,"%02i", pf.board[x][y]->type);
-            } else {
-              fprintf(f,"00");
-            }
-          }
-        }
-        fputc('\n',f);
-        changed=0;
-        fclose(f);
-
         //Refresh the list of userLevels.
         addUserLevel(fileName);
+        changed=0;
       }
+
 
     }
 
