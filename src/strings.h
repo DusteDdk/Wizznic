@@ -389,7 +389,8 @@ extern const char* str_brick_names[];
 
 #define STR_VID_OPTIONS_SW \
     "    -record [file] # on pc, use ffmpeg to encode video to file.mp4\n"\
-    "    -d PACKNAME    # Dump screenshots of levels.\n"\
+    "    -d PACKNAME    # Dump screenshots of levels in pack.\n"\
+    "    -d FILENAME    # Dump screenshot of level.\n"\
     "    -f             # Enable fullscreen.\n"\
     "    -w             # Disable fullscreen.\n"\
     "    -z 2           # Software scale to 640x480.\n"

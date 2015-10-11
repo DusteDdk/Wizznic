@@ -26,6 +26,7 @@ typedef struct {
 } tgaData_t;
 
 void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartImage);
+void dumpOneLevelFile(SDL_Surface* screen, const char* fileName);
 void tgaSave(tgaData_t* tga, const char* fileName);
 tgaData_t* tgaData(SDL_Surface* screen);
 void tgaFree(tgaData_t* tga);

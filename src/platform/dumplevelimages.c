@@ -90,6 +90,58 @@ void dumplevelimages(SDL_Surface* screen, const char* packName, int dumpStartIma
   }
 }
 
+
+
+void dumpOneLevelFile(SDL_Surface* screen, const char* fileName)
+{
+  playField pf;
+  cursorType cur;
+  char buf[128];
+  //Set the pack.
+  packSetByPath( DATADIR"packs/000_wizznic" );
+
+
+    printf("Dumping level: %s to %s.tga\n", fileName, fileName);
+
+    initCursor(&cur);
+
+    pf.levelInfo = mkLevelInfo( fileName );
+
+    if(!loadField(&pf, fileName ))
+    {
+      printf("Error: Couldn't init board.\n");
+      return;
+    }
+
+    if(!initDraw(pf.levelInfo,screen))
+    {
+      printf("Dump: Error: Couldn't init graphics.\n");
+      return;
+    }
+
+    //Switch off cursor graphics
+    drawDisableCursor(1);
+
+
+    //Draw the image
+    draw(&cur,&pf, screen);
+
+
+    SDL_Flip(screen);
+
+    //Save image
+    sprintf(buf, "%s.tga", fileName);
+
+    tgaData_t* tga = tgaData(screen);
+    tgaSave(tga, buf);
+    tgaFree(tga);
+
+    cleanUpDraw();
+    freeField(&pf);
+    printf("Done.\n");
+}
+
+
 tgaData_t* tgaData(SDL_Surface* screen)
 {
   SDL_LockSurface(screen);
