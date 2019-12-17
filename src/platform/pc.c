@@ -116,7 +116,7 @@ SDL_Surface* normalInitAccel( int sdlVideoModeFlags )
 
   glViewport(w/2-vW/2, 0, vW, (GLint)h);
 
-  glClearColor(1,0,0,1);
+  glClearColor(0,0,0,1);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -165,6 +165,7 @@ SDL_Surface* normalInitAccel( int sdlVideoModeFlags )
   //Set scaling
   setting()->scaleFactor= (float)oglWindow->h/240.0;
 
+
   return(screen);
 }
 
@@ -191,6 +192,7 @@ void drawRift( SDL_Surface* src )
 
 void drawNormal( SDL_Surface* src )
 {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glTexImage2D( GL_TEXTURE_2D, 0, src->format->BytesPerPixel, src->w, src->h, 0, GL_BGR, GL_UNSIGNED_BYTE, src->pixels );
   glCallList(dlist);
   SDL_GL_SwapBuffers();
