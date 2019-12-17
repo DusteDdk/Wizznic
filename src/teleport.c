@@ -95,7 +95,7 @@ char* teleMkStrings(list_t* l, const char* prefix)
   while( LISTFWD(l,it) )
   {
     t = (telePort_t*)it->data;
-    sprintf(str, "%s%s=%i,%i:%i,%i\n",str,prefix, t->sx,t->sy,t->dx,t->dy);
+    sprintf(str+strlen(str), "%s=%i,%i:%i,%i\n", prefix, t->sx, t->sy, t->dx, t->dy);
   }
 
   return(str);
