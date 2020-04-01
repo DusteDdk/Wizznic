@@ -466,7 +466,8 @@ void drawShowCountDown(SDL_Surface* screen,int i)
     ps.fadeColor=0x00;
     ps.srcImg=graphics.countDownSpr[i]->img;
     ps.srcRect=graphics.countDownSpr[i]->clip;
-
+    ps.srcRect.h--;
+    ps.srcRect.w--;
     spawnParticleSystem(&ps);
 
     lastShown=i;

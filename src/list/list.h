@@ -22,10 +22,6 @@
  * along with Wizznic.  If not, see <http://www.gnu.org/licenses/>.     *
  ************************************************************************/
 
-//Macro for iterating
-#define LISTFWD(LIST, IT) (IT=IT->next) != &LIST->end
-#define LISTBCK(LIST, IT) (IT=IT->prev) != &LIST->begin
-
 struct listItemStruct
 {
   void* data;
@@ -86,8 +82,13 @@ list_t* listAddFromArray(list_t* list, void** data, int count );
 #define LIST_DEBUG_SHOW_BACKWARD 2
 #define LIST_DEBUG_SHOW_SHORT 0
 
+
 #define LIST_NEXT 0
 #define LIST_PREV 1
-
+//Macro for iterating
+#define LISTFWD(LIST, IT) (IT->next != &LIST->end) && (IT=IT->next)
+#define LISTBCK(LIST, IT) (IT->prev != &LIST->begin) && (IT->IT->prev)
+#define LISTREMFWD(LIST, IT) IT=listRemoveItem(LIST, IT, LIST_PREV); //Use when removing items from a list during forward iteration
+#define LISTREMBCK(LIST, IT) IT=listRemoveItem(LIST, IT, LIST_NEXT);// Use when removing items from a list during backward iteration
 
 #endif // LIST_H_INCLUDED

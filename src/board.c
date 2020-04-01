@@ -470,11 +470,33 @@ static int horizMover(playField* pf, int x, int y, int dir)
 void simField(playField* pf, cursorType* cur)
 {
   int x,y;
+  brickType* b;
+
+  // Set "checked status"
+  for(y=FIELDSIZE-1; y > -1; y--)
+  {
+    for(x=0; x < FIELDSIZE; x++)
+    {
+      if(pf->board[x][y])
+      {
+        //Unmark "checked" status.
+        pf->board[x][y]->checked=0;
+
+        //Do delayed x movement
+        if( isBrick(pf->board[x][y]) && pf->board[x][y]->dmx )
+        {
+          b=pf->board[x][y];
+          curMoveBrick(pf, b, b->dmx);
+          b->dmx=0;
+        }
+
+      }
+    }
+  }
 
   //Update moving bricks
-  listItem* li=&pf->movingList->begin;
-  brickType* b;
   x=0;
+  listItem* li=&pf->movingList->begin;
   while( LISTFWD(pf->movingList, li) )
   {
     x++;
@@ -538,7 +560,8 @@ void simField(playField* pf, cursorType* cur)
       b->sy=b->dy;
 
       //Remove brick from moving list
-      listRemoveItem( pf->movingList, li, LIST_NEXT );
+      LISTREMFWD(pf->movingList, li);
+
     }
   }
 
@@ -712,7 +735,7 @@ void simField(playField* pf, cursorType* cur)
             }
 
           }
-        } else if(pf->board[x][y] && pf->board[x][y]->isActive && y>0 &&  pf->board[x][y-1] && isBrick( pf->board[x][y-1]) && !isBrickFalling(pf,pf->board[x][y-1]))
+        } else if(pf->board[x][y] && isBrick(pf->board[x][y]) && pf->board[x][y]->isActive && y>0 &&  pf->board[x][y-1] && isBrick( pf->board[x][y-1]) && !isBrickFalling(pf,pf->board[x][y-1]))
         {
           if( pf->board[x][y]->type == REMBRICK)
           {
@@ -798,26 +821,6 @@ void simField(playField* pf, cursorType* cur)
 	//Put back any reactivated walls if there is space.
   switchPutBack(pf);
 
-  for(y=FIELDSIZE-1; y > -1; y--)
-  {
-    for(x=0; x < FIELDSIZE; x++)
-    {
-      if(pf->board[x][y])
-      {
-        //Unmark "checked" status.
-        pf->board[x][y]->checked=0;
-
-        //Do delayed x movement
-        if( isBrick(pf->board[x][y]) && pf->board[x][y]->dmx )
-        {
-          b=pf->board[x][y];
-          curMoveBrick(pf, b, b->dmx);
-          b->dmx=0;
-        }
-
-      }
-    }
-  }
 }
 
 int isBrick(brickType* b)
@@ -923,7 +926,7 @@ int doRules(playField* pf)
         //Dealloc the brick
         free(b);
         //Remove from list
-        listRemoveItem(pf->removeList, li, LIST_NEXT);
+        LISTREMFWD( pf->removeList, li );
       }
     }
   }
