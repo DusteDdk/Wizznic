@@ -102,12 +102,8 @@ uint32_t freadPixel(SDL_Surface* img, int x, int y)
   char* adr = pixels+img->pitch*y+img->format->BytesPerPixel*x; 
   if(img->format->BytesPerPixel == 2) {
     return( *(uint16_t*)adr );
-  } else if(img->format->BytesPerPixel == 3) {
-    return( *(uint32_t*)adr );
   } else {
-    // If you're porting to something and have weird colors from fread pixels,
-    // maybe here's something?
-    return( *(uint8_t*)adr );
+    return( *(uint32_t*)adr );
   }
 }
 
