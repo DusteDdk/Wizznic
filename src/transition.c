@@ -72,8 +72,8 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
       psys.y=(HSCREENH-120);
       psys.srcRect.x=(HSCREENW-160);
       psys.srcRect.y=(HSCREENH-120);
-      psys.srcRect.w=320-1;
-      psys.srcRect.h=240-1;
+      psys.srcRect.w=320;
+      psys.srcRect.h=240;
       psys.vel=0;
 
       spawnParticleSystem(&psys);
