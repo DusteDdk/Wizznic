@@ -81,7 +81,8 @@ void startTransition(SDL_Surface* scr, uint_fast8_t type, uint_fast16_t time)
     case TRANSITION_TYPE_ROLL_IN:
     case TRANSITION_TYPE_CURTAIN_DOWN:
       t.reverse=1;
-    __attribute__ ((fallthrough));/* no break */
+      t.sur->flags=0x00;
+    break;
     case TRANSITION_TYPE_ROLL_OUT:
     case TRANSITION_TYPE_CURTAIN_UP:
       t.sur = SDL_ConvertSurface( scr, scr->format, scr->flags );
