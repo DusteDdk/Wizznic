@@ -5,10 +5,10 @@
 #   SDL_mixer-1.2.12
 #   glew-1.7.0-win32
 
-CC = i586-mingw32msvc-gcc
+CC = i686-w64-mingw32-gcc
 LD = $(CC)
-STRIP = i586-mingw32msvc-strip
-WINDRES = i586-mingw32msvc-windres
+STRIP = i686-w64-mingw32-strip
+WINDRES = i686-w64-mingw32-windres
 
 NAME=wizznic.exe
 TARGET= $(NAME)
