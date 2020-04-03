@@ -10,9 +10,7 @@ Complete each puzzle by destroying all bricks. Bricks are destroyed by moving th
 
 Builds
 ======
-Automatically (read:untested) builds are available for Linux, Windows and Wiz here:
-
-[http://contigrator.wizznic.org/jobs/Wizznic/](http://contigrator.wizznic.org/jobs/Wizznic/ "CI System for Wizznic!")
+Check "Releases" here on github.
 
 Boring parts
 ===
