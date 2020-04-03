@@ -96,9 +96,18 @@ void plotPixelu(SDL_Surface* img, int x, int y, uint16_t col)
   *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+2*x ) = col;
 }
 
-
 uint32_t freadPixel(SDL_Surface* img, int x, int y)
 {
-  return( *(uint32_t*)( (char*)(img->pixels)+img->pitch*y+img->format->BytesPerPixel*x ) );
+  char* pixels = img->pixels;
+  char* adr = pixels+img->pitch*y+img->format->BytesPerPixel*x; 
+  if(img->format->BytesPerPixel == 2) {
+    return( *(uint16_t*)adr );
+  } else if(img->format->BytesPerPixel == 3) {
+    return( *(uint32_t*)adr );
+  } else {
+    // If you're porting to something and have weird colors from fread pixels,
+    // maybe here's something?
+    return( *(uint8_t*)adr );
+  }
 }
 

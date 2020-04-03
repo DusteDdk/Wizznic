@@ -149,6 +149,7 @@ int loadField(playField* pf, const char* file)
   int type=0;
 
   memset( pf->brickTypes, 0,sizeof(pf->brickTypes) );
+  memset( pf->board, 0, sizeof(brickType*)*FIELDSIZE*FIELDSIZE);
 
   //For atoi hack
   temp[2] = '\0';
@@ -190,8 +191,6 @@ int loadField(playField* pf, const char* file)
       if(type !=0)
       {
         newBrick(pf,x,y,type);
-      } else {
-        pf->board[x][y] = 0;
       }
       x++;
     }
@@ -207,9 +206,13 @@ int loadField(playField* pf, const char* file)
 
   pf->blocker = malloc(sizeof(brickType));
   pf->blocker->type=RESERVED;
+  pf->blocker->checked=0;
+  pf->blocker->isActive=0;
 
   pf->blockerDst = malloc(sizeof(brickType));
   pf->blockerDst->type=RESERVED;
+  pf->blocker->checked=0;
+  pf->blocker->isActive=0;
   //Figure out which tile to use for each wall (int 6)
   boardSetWalls(pf);
 
@@ -376,13 +379,13 @@ void doTelePort(playField* pf,cursorType* cur)
   }
 }
 
-//BUG: This function will move a mover which is getting atop or below another.
-//Don't have movers that can touch.
+//Feature: This function will move a mover which is getting atop or below another.
+//Movers that touch will do strange stuff.
 static int vertMover(playField* pf,int x, int y, int dir)
 {
 
-	//Don't do anything if it's inactive.
-	if( !pf->board[x][y]->isActive ) return(0);
+  //Don't do anything if it's inactive.
+  if( !pf->board[x][y]->isActive ) return(0);
 
   //Outside bounds
   if(y+dir < 0 || y+dir == FIELDSIZE) return(0);
