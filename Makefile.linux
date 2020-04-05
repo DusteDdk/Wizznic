@@ -2,7 +2,7 @@
 #To make a system-wide install add DATADIR=/dir/to/data/ and BINDIR=/dir/to/bin/ to the make command
 #To compile without OpenGL scaling support, add WITH_OPENGL=false to the make command.
 
-CC = gcc
+CC ?= gcc
 LD = $(CC)
 STRIP = strip
 MAKE = make
