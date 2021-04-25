@@ -15,3 +15,7 @@ Check "Releases" here on github.
 Boring parts
 ===
 The code is here on github, there's some reading material in the doc directory.
+
+Awesome parts
+===
+If you're awesome, like Wizznic! then consider sending a little donation to my Dogecoin wallet at DHu41ELvTho6SUiuNDnyQYdDmDrYiWZuvR
